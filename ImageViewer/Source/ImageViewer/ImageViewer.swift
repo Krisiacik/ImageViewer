@@ -71,7 +71,8 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
     private var isAnimating = false
     private var isSwipingToDismiss = false
     private var dynamicTransparencyActive = false
-    
+    private var initialCloseButtonFrame = CGRectZero
+
     private let showDuration               = 0.25
     private let dismissDuration            = 0.25
     private let showCloseButtonDuration    = 0.2
@@ -126,6 +127,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
         self.closeButton.setBackgroundImage(closeButtonAssets.normalImage, forState: UIControlState.Normal)
         self.closeButton.setBackgroundImage(closeButtonAssets.highlightedImage, forState: UIControlState.Highlighted)
         self.closeButton.alpha = 0.0
+        self.initialCloseButtonFrame = self.closeButton.frame
     }
     
     private func configureGestureRecognizers() {
@@ -433,10 +435,17 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
         
         if (self.dynamicTransparencyActive == true && keyPath == "contentOffset") {
             
+            let transparencyMultiplier: CGFloat = 10
+            let velocityMultiplier: CGFloat = 300
+            
             let distanceToEdge = (self.scrollView.bounds.height / 2) + (self.imageView.bounds.height / 2)
             
             self.overlayView.alpha = 1 - fabs(self.scrollView.contentOffset.y / distanceToEdge)
-            self.closeButton.alpha = 1 - fabs(self.scrollView.contentOffset.y / distanceToEdge) * 10   //a multiplier makes the effect on transparency kick in much faster. 10 in this case works well.
+            
+            self.closeButton.alpha = 1 - fabs(self.scrollView.contentOffset.y / distanceToEdge) * transparencyMultiplier
+            
+            let newY = self.initialCloseButtonFrame.origin.y - abs(self.scrollView.contentOffset.y / distanceToEdge) * velocityMultiplier
+            self.closeButton.frame = CGRect(origin: CGPoint(x: self.closeButton.frame.origin.x, y: newY), size: self.closeButton.frame.size)
         }
     }
     
