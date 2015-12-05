@@ -81,7 +81,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
     
     private let imageProvider: ImageProvider
     private let configuration: ImageViewerConfiguration
-    private let parentView: UIView
+    private let displacedView: UIView
     
     public var showInitiationBlock: (Void -> Void)? //executed right before the image animation into its final position starts.
     public var showCompletionBlock: (Void -> Void)? //executed as the last step after all the show animations.
@@ -102,11 +102,11 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Initializers
     
-    init(imageProvider: ImageProvider, configuration: ImageViewerConfiguration, parentView: UIView) {
+    init(imageProvider: ImageProvider, configuration: ImageViewerConfiguration, displacedView: UIView) {
         
         self.imageProvider = imageProvider
         self.configuration = configuration
-        self.parentView = parentView
+        self.displacedView = displacedView
         
         super.init(nibName: "ImageViewer", bundle: NSBundle.mainBundle())
         
@@ -139,14 +139,14 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
     
     private func configureImageView() {
         
-        self.parentViewFrameInOurCoordinateSystem = CGRectIntegral(self.applicationWindow!.convertRect(self.parentView.bounds, fromView: self.parentView))
+        self.parentViewFrameInOurCoordinateSystem = CGRectIntegral(self.applicationWindow!.convertRect(self.displacedView.bounds, fromView: self.displacedView))
         
         self.imageView.frame = self.parentViewFrameInOurCoordinateSystem
         self.imageView.contentMode = UIViewContentMode.ScaleAspectFit
         self.view.addSubview(self.imageView)
         
-        UIGraphicsBeginImageContextWithOptions(self.parentView.bounds.size, true, UIScreen.mainScreen().scale)
-        self.parentView.drawViewHierarchyInRect(self.parentView.bounds, afterScreenUpdates: false)
+        UIGraphicsBeginImageContextWithOptions(self.displacedView.bounds.size, true, UIScreen.mainScreen().scale)
+        self.displacedView.drawViewHierarchyInRect(self.displacedView.bounds, afterScreenUpdates: false)
         self.imageView.image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
     }
@@ -209,7 +209,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
         UIView.animateWithDuration(hideCloseButtonDuration, animations: { self.closeButton.alpha = 0.0 })
         
         let rotationTransform = CGAffineTransformMakeRotation(self.degreesToRadians(self.rotationAngleToMatchDeviceOrientation(UIDevice.currentDevice().orientation)))
-        let aspectFitContentSize = self.aspectFitContentSize(forBoundingSize: self.rotationAdjustedBounds().size, contentSize: self.parentView.frame.size)
+        let aspectFitContentSize = self.aspectFitContentSize(forBoundingSize: self.rotationAdjustedBounds().size, contentSize: self.displacedView.frame.size)
         
         UIView.animateWithDuration(showDuration, animations: { () -> Void in
             
@@ -236,7 +236,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
         
         self.isAnimating = true
         self.showInitiationBlock?()
-        self.parentView.hidden = true
+        self.displacedView.hidden = true
         
         let rotationTransform = CGAffineTransformMakeRotation(self.degreesToRadians(self.rotationAngleToMatchDeviceOrientation(UIDevice.currentDevice().orientation)))
         
@@ -268,7 +268,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
                     UIView.animateWithDuration(self.showCloseButtonDuration, animations: { self.closeButton.alpha = 1.0 })
                     self.configureGestureRecognizers()
                     self.showCompletionBlock?()
-                    self.parentView.hidden = false
+                    self.displacedView.hidden = false
                 }
         }
     }
@@ -278,7 +278,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
         guard (self.isAnimating == false) else { return }
         self.isAnimating = true
         self.closeButtonActionInitiationBlock?()
-        self.parentView.hidden = true
+        self.displacedView.hidden = true
         
         UIView.animateWithDuration(self.hideCloseButtonDuration, animations: { self.closeButton.alpha = 0.0 })
         
@@ -295,7 +295,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
             }) { (finished) -> Void in
                 if finished {
                     
-                    self.parentView.hidden = false
+                    self.displacedView.hidden = false
                     self.isAnimating = false
                     NSNotificationCenter.defaultCenter().removeObserver(self)
                     self.view.removeFromSuperview()
@@ -383,7 +383,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
         
         if self.isSwipingToDismiss == false {
             self.swipeToDismissInitiationBlock?()
-            self.parentView.hidden = false
+            self.displacedView.hidden = false
         }
         self.isSwipingToDismiss = true
         self.dynamicTransparencyActive = true
