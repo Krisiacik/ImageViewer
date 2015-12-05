@@ -139,7 +139,6 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
         self.closeButton.setBackgroundImage(closeButtonAssets.normalAsset, forState: UIControlState.Normal)
         self.closeButton.setBackgroundImage(closeButtonAssets.highlightedAsset, forState: UIControlState.Highlighted)
         self.closeButton.alpha = 0.0
-        self.initialCloseButtonFrame = self.closeButton.frame
     }
     
     private func configureGestureRecognizers() {
@@ -193,7 +192,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Animations
     
-   public func show() {
+    public func show() {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotate", name: UIDeviceOrientationDidChangeNotification, object: nil)
         
@@ -206,6 +205,8 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
         self.applicationWindow!.addSubview(self.view)
         rootController.addChildViewController(self)
         self.didMoveToParentViewController(rootController)
+        
+        self.initialCloseButtonFrame = self.closeButton.frame
     }
     
     @IBAction private func close(sender: AnyObject) {
@@ -300,7 +301,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
             
             self.applicationWindow!.windowLevel = UIWindowLevelNormal
             self.scrollView.zoomScale = self.scrollView.minimumZoomScale
-            self.overlayView.backgroundColor = UIColor.clearColor()
+            self.overlayView.alpha = 0.0
             self.closeButton.alpha = 0.0
             self.view.transform = CGAffineTransformIdentity
             self.view.bounds = (self.applicationWindow?.bounds)!
@@ -311,6 +312,8 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
                     
                     self.displacedView.hidden = false
                     self.isAnimating = false
+                    self.overlayView.alpha = 1.0
+                    self.closeButton.alpha = 1.0
                     NSNotificationCenter.defaultCenter().removeObserver(self)
                     self.view.removeFromSuperview()
                     self.removeFromParentViewController()
@@ -337,6 +340,13 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
                 
                 if finished {
                     
+                    self.view.transform = CGAffineTransformIdentity
+                    self.view.bounds = (self.applicationWindow?.bounds)!
+                    self.imageView.frame = self.parentViewFrameInOurCoordinateSystem
+                    
+                    self.overlayView.alpha = 1.0
+                    self.closeButton.alpha = 1.0
+                    self.closeButton.frame = self.initialCloseButtonFrame
                     self.applicationWindow!.windowLevel = UIWindowLevelNormal
                     self.isAnimating = false
                     self.isSwipingToDismiss = false
