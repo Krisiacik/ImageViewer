@@ -6,19 +6,20 @@ ImageViewer is a library that enables a user to visualize an image in fullscreen
 
 
 ```swift
-let buttonConfiguration = ButtonStateAssets(normalImage:UIImage(named: "normalImage"), highlightedImage:UIImage(named: "highlightedImage"))
-let configuration = ImageViewerConfiguration(imageSize: size, closeButtonAssets: buttonConfiguration)
 
 let imageProvider: ImageProvider = ... 
 
-let imageViewer = ImageViewer(imageProvider: imageProvider, configuration: configuration, parentView: parentView)
+let buttonConfiguration = ButtonStateAssets(normalImage:UIImage(named: "normalImage"), highlightedImage:UIImage(named: "highlightedImage"))
+let configuration = ImageViewerConfiguration(imageSize: size, closeButtonAssets: buttonConfiguration)
+
+let imageViewer = ImageViewer(imageProvider: imageProvider, configuration: configuration, displacedView: displacedView)
 
 imageViewer.show()
 ```
 
-* `imageProvier`: An object that conforms to the ImageProvider protocol
-* `configuration`: Contains information about the images that should be used for the close button and the image's size
-* `parentView`: The view that contains the `UIImageView` that is about to be displayed in fullscreen. This assumes that the image is already on screen
+* `imageProvier`: An object that conforms to the `ImageProvider protocol
+* `configuration`: Contains information about the assets that will be used for the close button and the image to be displayed's size
+* `displacedView`: The view that is about to be displayed in fullscreen. 
 
 
 ## License
