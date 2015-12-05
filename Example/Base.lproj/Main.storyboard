@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="image_small" translatesAutoresizingMaskIntoConstraints="NO" id="c4C-Pb-PzI">
+                                <rect key="frame" x="172" y="228" width="256" height="144"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="256" id="QgA-LP-fwG"/>
+                                    <constraint firstAttribute="height" constant="144" id="Ydw-Gg-Iq1"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CZ0-IQ-Biq">
+                                <rect key="frame" x="277" y="550" width="46" height="30"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="46" id="Xiq-cD-bz7"/>
+                                    <constraint firstAttribute="height" constant="30" id="fkh-7b-1iq"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="showViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NQg-YY-KEe"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="CZ0-IQ-Biq" secondAttribute="bottom" constant="20" id="1Yp-Sm-fKv"/>
+                            <constraint firstItem="CZ0-IQ-Biq" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="6wn-w7-nKl"/>
+                            <constraint firstItem="c4C-Pb-PzI" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="koT-og-scm"/>
+                            <constraint firstItem="c4C-Pb-PzI" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="nbo-1l-Is1"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="forestImageView" destination="c4C-Pb-PzI" id="wNU-3O-lzQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="387" y="366"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="image_small" width="256" height="144"/>
+    </resources>
+</document>

@@ -44,14 +44,26 @@ public protocol ImageProvider {
 
 public struct ButtonStateAssets {
     
-    public let normalImage: UIImage
-    public let highlightedImage: UIImage?
+    public let normalAsset: UIImage
+    public let highlightedAsset: UIImage?
+    
+    public init(normalAsset: UIImage, highlightedAsset: UIImage?) {
+        
+        self.normalAsset = normalAsset
+        self.highlightedAsset = highlightedAsset
+    }
 }
 
 public struct ImageViewerConfiguration {
     
     public let imageSize: CGSize
     public let closeButtonAssets: ButtonStateAssets
+    
+    public init(imageSize: CGSize, closeButtonAssets: ButtonStateAssets) {
+        
+        self.imageSize = imageSize
+        self.closeButtonAssets = closeButtonAssets
+    }
 }
 
 public final class ImageViewer: UIViewController, UIScrollViewDelegate {
@@ -103,7 +115,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Initializers
     
-    init(imageProvider: ImageProvider, configuration: ImageViewerConfiguration, displacedView: UIView) {
+    public init(imageProvider: ImageProvider, configuration: ImageViewerConfiguration, displacedView: UIView) {
         
         self.imageProvider = imageProvider
         self.configuration = configuration
@@ -124,8 +136,8 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
         
         let closeButtonAssets = configuration.closeButtonAssets
         
-        self.closeButton.setBackgroundImage(closeButtonAssets.normalImage, forState: UIControlState.Normal)
-        self.closeButton.setBackgroundImage(closeButtonAssets.highlightedImage, forState: UIControlState.Highlighted)
+        self.closeButton.setBackgroundImage(closeButtonAssets.normalAsset, forState: UIControlState.Normal)
+        self.closeButton.setBackgroundImage(closeButtonAssets.highlightedAsset, forState: UIControlState.Highlighted)
         self.closeButton.alpha = 0.0
         self.initialCloseButtonFrame = self.closeButton.frame
     }
