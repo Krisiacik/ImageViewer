@@ -17,7 +17,7 @@ let imageViewer = ImageViewer(imageProvider: imageProvider, configuration: confi
 imageViewer.show()
 ```
 
-* `imageProvier`: An object that conforms to the `ImageProvider protocol
+* `imageProvier`: An object that is able to provide an image via a callback `UIImage? -> Void`
 * `configuration`: Contains information about the assets that will be used for the close button and the image to be displayed's size
 * `displacedView`: The view that is about to be displayed in fullscreen. 
 
