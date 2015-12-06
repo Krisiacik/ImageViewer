@@ -35,6 +35,16 @@ imageViewer.show()
 * `configuration`: Contains information about the assets that will be used for the close button and the image to be displayed's size.
 * `displacedView`: The view that is about to be displayed in fullscreen. 
 
+#### Roadmap 
+
+- [ ] Setup Travis
+- [ ] Clean up internal logic (refactoring mostly)
+- [ ] Remove the XIB file and create the UI with code
+- Investigation
+ - [ ] Investigate the usage of custom transitions
+ - [ ] Investigate a more idiomatic way of dealing with the orientation changes
+- [ ] UI Testing
+- [ ] Expand the ImageViewer to a Gallery
 
 #### Caveats
 
