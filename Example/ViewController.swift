@@ -23,18 +23,20 @@ class ViewController: UIViewController {
         
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+
+    @IBAction func showViewer(sender: AnyObject) {
+        
+        guard let view = sender as? UIView else { return }
         
         let provider = PoorManProvider()
         
         let size = CGSize(width: 1920, height: 1080)
         
         let buttonsAssets = ButtonStateAssets(normalAsset: UIImage(named: "close_normal")!, highlightedAsset: UIImage(named: "close_highlighted")!)
-
+        
         let configuration = ImageViewerConfiguration(imageSize: size, closeButtonAssets: buttonsAssets)
-        self.imagePreviewer = ImageViewer(imageProvider: provider, configuration: configuration, displacedView: forestImageView)
-    }
-
-    @IBAction func showViewer(sender: AnyObject) {
+        self.imagePreviewer = ImageViewer(imageProvider: provider, configuration: configuration, displacedView: view)
         
         self.imagePreviewer.show()
     }
