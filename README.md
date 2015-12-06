@@ -1,8 +1,18 @@
 # ImageViewer
 
+<a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat"></a>
+
 ![](Documentation/preview.gif)
 
 ImageViewer is a library that enables a user to visualize an image in fullscreen. Besides the typical pinch and double tap to zoom, we also provide a vertical swipe to dismiss. Finally, we try to mimic the displacement of the image from its current container into fullscreen, being this feature its main selling point. In our context, you can imagine an image as part of an article and when it's taped, the image being animated into fullscreen.
+
+#### Setup
+
+With Carthage:
+
+```
+github "MailOnline/ImageViewer"
+```
 
 #### Usage
 
