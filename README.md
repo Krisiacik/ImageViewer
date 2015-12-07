@@ -39,7 +39,7 @@ imageViewer.show()
 
 - [ ] Setup Travis
 - [ ] Clean up internal logic (refactoring mostly)
-- [ ] Remove the XIB file and create the UI with code
+- [X] Remove the XIB file and create the UI with code
 - Investigation
  - [ ] Investigate the usage of custom transitions
  - [ ] Investigate a more idiomatic way of dealing with the orientation changes
