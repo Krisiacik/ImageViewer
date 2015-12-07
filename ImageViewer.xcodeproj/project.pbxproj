@@ -13,9 +13,7 @@
 		C7897CEC1C1350B7006447FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7897CEB1C1350B7006447FB /* Assets.xcassets */; };
 		C7897CEF1C1350B7006447FB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7897CED1C1350B7006447FB /* LaunchScreen.storyboard */; };
 		C7897CF41C1356C6006447FB /* ImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DABE651C12632F00F5BD7B /* ImageViewer.swift */; };
-		C7897CF51C1356C6006447FB /* ImageViewer.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7DABE601C12275C00F5BD7B /* ImageViewer.xib */; };
 		C7897CF61C1356C6006447FB /* CGSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DABE631C12276800F5BD7B /* CGSize.swift */; };
-		C7DABE621C12275C00F5BD7B /* ImageViewer.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7DABE601C12275C00F5BD7B /* ImageViewer.xib */; };
 		C7DABE641C12276800F5BD7B /* CGSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DABE631C12276800F5BD7B /* CGSize.swift */; };
 		C7DABE661C12632F00F5BD7B /* ImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DABE651C12632F00F5BD7B /* ImageViewer.swift */; };
 /* End PBXBuildFile section */
@@ -30,7 +28,6 @@
 		C7897CF01C1350B7006447FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7DABE481C12245B00F5BD7B /* ImageViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ImageViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7DABE551C12248600F5BD7B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C7DABE601C12275C00F5BD7B /* ImageViewer.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageViewer.xib; sourceTree = "<group>"; };
 		C7DABE631C12276800F5BD7B /* CGSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGSize.swift; sourceTree = "<group>"; };
 		C7DABE651C12632F00F5BD7B /* ImageViewer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -122,7 +119,6 @@
 			isa = PBXGroup;
 			children = (
 				C7DABE651C12632F00F5BD7B /* ImageViewer.swift */,
-				C7DABE601C12275C00F5BD7B /* ImageViewer.xib */,
 			);
 			path = ImageViewer;
 			sourceTree = "<group>";
@@ -218,7 +214,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7897CEF1C1350B7006447FB /* LaunchScreen.storyboard in Resources */,
-				C7897CF51C1356C6006447FB /* ImageViewer.xib in Resources */,
 				C7897CEC1C1350B7006447FB /* Assets.xcassets in Resources */,
 				C7897CEA1C1350B7006447FB /* Main.storyboard in Resources */,
 			);
@@ -228,7 +223,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7DABE621C12275C00F5BD7B /* ImageViewer.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

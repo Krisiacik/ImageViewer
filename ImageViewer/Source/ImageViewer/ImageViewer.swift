@@ -83,8 +83,10 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
     private var isAnimating = false
     private var isSwipingToDismiss = false
     private var dynamicTransparencyActive = false
-    private var initialCloseButtonFrame = CGRectZero
+    private var initialCloseButtonOrigin = CGPointZero
+    private var closeButtonSize = CGSize(width: 50, height: 50)
 
+    private let closeButtonPadding         = 8.0
     private let showDuration               = 0.25
     private let dismissDuration            = 0.25
     private let showCloseButtonDuration    = 0.2
@@ -121,7 +123,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
         self.configuration = configuration
         self.displacedView = displacedView
         
-        super.init(nibName: "ImageViewer", bundle: NSBundle.mainBundle())
+        super.init(nibName: nil, bundle: nil)
         
         self.extendedLayoutIncludesOpaqueBars = true
     }
@@ -176,6 +178,40 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
     
     // MARK: - View Lifecycle
     
+    public override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        self.scrollView.frame = self.view.bounds
+        
+        let originX = -self.view.bounds.width
+        let originY = -self.view.bounds.height
+
+        let width = self.view.bounds.width * 4
+        let height = self.view.bounds.height * 4
+        
+        self.overlayView.frame = CGRect(origin: CGPoint(x: originX, y: originY), size: CGSize(width: width, height: height))
+        
+        self.closeButton.frame = CGRect(origin: CGPoint(x: self.view.bounds.size.width - CGFloat(closeButtonPadding) - closeButtonSize.width, y: CGFloat(closeButtonPadding)), size: closeButtonSize)
+    }
+    
+    public override func loadView() {
+        super.loadView()
+        
+        self.scrollView = UIScrollView(frame: CGRectZero)
+        self.overlayView = UIView(frame: CGRectZero)
+        self.closeButton = UIButton(frame: CGRectZero)
+
+        self.scrollView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        self.overlayView.autoresizingMask = [.None]
+
+        self.view.addSubview(overlayView)
+        self.view.addSubview(scrollView)
+        self.view.addSubview(closeButton)
+        
+        self.scrollView.delegate = self
+        self.closeButton.addTarget(self, action: "close:", forControlEvents: .TouchUpInside)
+    }
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -206,7 +242,6 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
         rootController.addChildViewController(self)
         self.didMoveToParentViewController(rootController)
         
-        self.initialCloseButtonFrame = self.closeButton.frame
     }
     
     @IBAction private func close(sender: AnyObject) {
@@ -346,7 +381,6 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
                     
                     self.overlayView.alpha = 1.0
                     self.closeButton.alpha = 1.0
-                    self.closeButton.frame = self.initialCloseButtonFrame
                     self.applicationWindow!.windowLevel = UIWindowLevelNormal
                     self.isAnimating = false
                     self.isSwipingToDismiss = false
@@ -466,7 +500,9 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
             
             self.closeButton.alpha = 1 - fabs(self.scrollView.contentOffset.y / distanceToEdge) * transparencyMultiplier
             
-            let newY = self.initialCloseButtonFrame.origin.y - abs(self.scrollView.contentOffset.y / distanceToEdge) * velocityMultiplier
+            
+            
+            let newY = CGFloat(closeButtonPadding) - abs(self.scrollView.contentOffset.y / distanceToEdge) * velocityMultiplier
             self.closeButton.frame = CGRect(origin: CGPoint(x: self.closeButton.frame.origin.x, y: newY), size: self.closeButton.frame.size)
         }
     }
