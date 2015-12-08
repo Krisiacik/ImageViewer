@@ -47,6 +47,7 @@ imageViewer.show()
 - Investigation
  - [ ] Investigate the usage of custom transitions
  - [ ] Investigate a more idiomatic way of dealing with the orientation changes
+- [ ] Change anchor points to improve rotations animation paths   
 - [ ] UI Testing
 - [ ] Expand the ImageViewer to a Gallery
 
