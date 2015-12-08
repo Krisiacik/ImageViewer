@@ -43,7 +43,7 @@ imageViewer.show()
 - [X] Setup Travis
 - [ ] Clean up internal logic (refactoring mostly)
 - [X] Remove the XIB file and create the UI with code
-- [ ] Use UITraitCollection for rotation
+- [X] ~~Use UITraitCollection for rotation~~. `traitCollectionDidChange` is not called if only Portrait is enabled at a project configuration level
 - Investigation
  - [ ] Investigate the usage of custom transitions
  - [ ] Investigate a more idiomatic way of dealing with the orientation changes
