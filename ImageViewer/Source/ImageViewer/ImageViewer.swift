@@ -395,14 +395,18 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
                     self.view.bounds = (self.applicationWindow?.bounds)!
                     self.imageView.frame = self.parentViewFrameInOurCoordinateSystem
                     
-                    self.overlayView.alpha = 1.0
-                    self.closeButton.alpha = 1.0
+                    self.overlayView.alpha = 0.0
+                    self.closeButton.alpha = 0.0
                     self.applicationWindow!.windowLevel = UIWindowLevelNormal
                     self.isAnimating = false
                     self.isSwipingToDismiss = false
                     self.dynamicTransparencyActive = false
-                    self.view.removeFromSuperview()
-                    self.removeFromParentViewController()
+                    if let pvc = self.presentingViewController {
+                        pvc.dismissViewControllerAnimated(false, completion: nil)
+                    } else {
+                        self.view.removeFromSuperview()
+                        self.removeFromParentViewController()
+                    }
                     self.swipeToDismissCompletionBlock?()
                     self.dismissCompletionBlock?()
                 }
