@@ -98,6 +98,8 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
     private let configuration: ImageViewerConfiguration
     private let displacedView: UIView
     
+    private let presentTransition: ImageViewerPresentTransition
+    
     public var showInitiationBlock: (Void -> Void)? //executed right before the image animation into its final position starts.
     public var showCompletionBlock: (Void -> Void)? //executed as the last step after all the show animations.
     public var closeButtonActionInitiationBlock: (Void -> Void)? //executed as the first step before the button's close action starts.
@@ -122,9 +124,11 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
         self.imageProvider = imageProvider
         self.configuration = configuration
         self.displacedView = displacedView
-        
+        self.presentTransition = ImageViewerPresentTransition(sourceView: self.displacedView, duration: self.showDuration)
         super.init(nibName: nil, bundle: nil)
-        
+
+        self.transitioningDelegate = self.presentTransition
+        self.modalPresentationStyle = .Custom
         self.extendedLayoutIncludesOpaqueBars = true
     }
     
@@ -223,7 +227,9 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.showAnimation()
+        if self.presentingViewController == nil {
+            self.showAnimation(self.showDuration, completion: nil)
+        }
     }
     
     // MARK: - Animations
@@ -245,7 +251,6 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
     }
     
     @IBAction private func close(sender: AnyObject) {
-        
         self.closeAnimations()
     }
     
@@ -280,7 +285,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    private func showAnimation() {
+    public func showAnimation(duration: NSTimeInterval, completion: ((Bool) -> Void)?) {
         
         guard self.isAnimating == false else { return }
         
@@ -290,19 +295,26 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
         
         let rotationTransform = CGAffineTransformMakeRotation(self.degreesToRadians(self.rotationAngleToMatchDeviceOrientation(UIDevice.currentDevice().orientation)))
         
-        UIView.animateWithDuration(showDuration, animations: {
+        self.overlayView.alpha = 0.0
+        self.overlayView.backgroundColor = UIColor.blackColor()
+        
+        UIView.animateWithDuration(duration, animations: {
             
-            self.overlayView.backgroundColor = UIColor.blackColor()
+            self.overlayView.alpha = 1.0
             self.view.transform = rotationTransform
             self.view.bounds = self.rotationAdjustedBounds()
             let aspectFitContentSize = self.aspectFitContentSize(forBoundingSize: self.rotationAdjustedBounds().size, contentSize: self.configuration.imageSize)
             self.imageView.bounds = CGRect(origin: CGPointZero, size: aspectFitContentSize)
-            self.imageView.center = self.scrollView.center
+            self.imageView.center = self.rotationAdjustedCenter()
             self.scrollView.contentSize = self.imageView.bounds.size
             
             }) { (finished) -> Void in
+                if let completion = completion {
+                    completion(finished)
+                }
                 
                 if finished {
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotate", name: UIDeviceOrientationDidChangeNotification, object: nil)
                     
                     self.applicationWindow!.windowLevel = UIWindowLevelStatusBar
                     
@@ -347,11 +359,15 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
                     
                     self.displacedView.hidden = false
                     self.isAnimating = false
-                    self.overlayView.alpha = 1.0
-                    self.closeButton.alpha = 1.0
                     NSNotificationCenter.defaultCenter().removeObserver(self)
-                    self.view.removeFromSuperview()
-                    self.removeFromParentViewController()
+                    
+                    if let pvc = self.presentingViewController {
+                        pvc.dismissViewControllerAnimated(false, completion: nil)
+                    } else {
+                        self.view.removeFromSuperview()
+                        self.removeFromParentViewController()
+                    }
+
                     self.closeButtonActionCompletionBlock?()
                     self.dismissCompletionBlock?()
                 }
@@ -546,6 +562,10 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
         guard let window = self.applicationWindow else { return CGRectZero }
         
         return (UIDevice.currentDevice().orientation.isLandscape) ? CGRect(origin: CGPointZero, size: window.bounds.size.inverted()): window.bounds
+    }
+    
+    private func rotationAdjustedCenter() -> CGPoint {
+        return (UIDevice.currentDevice().orientation.isLandscape) ? self.view.center.inverted() : self.view.center
     }
     
     private func rotationAngleToMatchDeviceOrientation(orientation: UIDeviceOrientation) -> CGFloat {
