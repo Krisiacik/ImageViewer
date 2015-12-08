@@ -224,31 +224,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
         self.configureScrollView()
     }
     
-    public override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        if self.presentingViewController == nil {
-            self.showAnimation(self.showDuration, completion: nil)
-        }
-    }
-    
     // MARK: - Animations
-    
-    public func show() {
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotate", name: UIDeviceOrientationDidChangeNotification, object: nil)
-        
-        // If we try to rootController.view.addSubview(self.view)
-        // nothing will happen. That's why we are adding the view
-        // as a subview of the self.applicationWindow
-        guard let rootController = self.applicationWindow?.rootViewController else { return }
-        
-        self.view.frame = UIScreen.mainScreen().bounds
-        self.applicationWindow!.addSubview(self.view)
-        rootController.addChildViewController(self)
-        self.didMoveToParentViewController(rootController)
-        
-    }
     
     @IBAction private func close(sender: AnyObject) {
         self.closeAnimations()
@@ -363,9 +339,6 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
                     
                     if let pvc = self.presentingViewController {
                         pvc.dismissViewControllerAnimated(false, completion: nil)
-                    } else {
-                        self.view.removeFromSuperview()
-                        self.removeFromParentViewController()
                     }
 
                     self.closeButtonActionCompletionBlock?()
@@ -403,9 +376,6 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
                     self.dynamicTransparencyActive = false
                     if let pvc = self.presentingViewController {
                         pvc.dismissViewControllerAnimated(false, completion: nil)
-                    } else {
-                        self.view.removeFromSuperview()
-                        self.removeFromParentViewController()
                     }
                     self.swipeToDismissCompletionBlock?()
                     self.dismissCompletionBlock?()
