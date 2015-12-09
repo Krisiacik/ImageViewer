@@ -235,6 +235,10 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         self.configureScrollView()
     }
     
+    public override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
     // MARK: UIViewControllerTransitioningDelegate
     public func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return presentTransition
@@ -310,7 +314,6 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
                 if finished {
                     NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotate", name: UIDeviceOrientationDidChangeNotification, object: nil)
                     
-                    self.applicationWindow!.windowLevel = UIWindowLevelStatusBar
                     self.scrollView.addSubview(self.imageView)
                     self.imageProvider.provideImage { [weak self] image in
                         self?.imageView.image = image
@@ -337,7 +340,6 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         
         UIView.animateWithDuration(duration, animations: {
             
-            self.applicationWindow!.windowLevel = UIWindowLevelNormal
             self.scrollView.zoomScale = self.scrollView.minimumZoomScale
             self.overlayView.alpha = 0.0
             self.closeButton.alpha = 0.0
@@ -384,7 +386,6 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
                     
                     self.overlayView.alpha = 0.0
                     self.closeButton.alpha = 0.0
-                    self.applicationWindow!.windowLevel = UIWindowLevelNormal
                     self.isAnimating = false
                     self.isSwipingToDismiss = false
                     self.dynamicTransparencyActive = false
