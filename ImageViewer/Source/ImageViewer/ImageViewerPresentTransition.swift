@@ -8,26 +8,15 @@
 
 import UIKit
 
-class ImageViewerPresentTransition: NSObject, UIViewControllerAnimatedTransitioning, UIViewControllerTransitioningDelegate {
+class ImageViewerPresentTransition: NSObject, UIViewControllerAnimatedTransitioning {
 
-    private let sourceView: UIView
     private let duration: NSTimeInterval
 
-    init(sourceView: UIView, duration: NSTimeInterval) {
-        self.sourceView = sourceView
+    init(duration: NSTimeInterval) {
         self.duration = duration
     }
     
-// MARK: UIViewControllerTransitioningDelegate
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return self
-    }
-
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return nil
-    }
-    
-// MARK: UIViewControllerAnimatedTransitioning
+    // MARK: UIViewControllerAnimatedTransitioning
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return self.duration
     }

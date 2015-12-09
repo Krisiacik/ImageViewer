@@ -13,7 +13,7 @@ import AVFoundation
 
 Usage:
 
-- Initialize the VC, set optional initiation and completion blocks, and present by calling "show".
+- Initialize the VC, set optional initiation and completion blocks, and present by calling "presentImageViewer".
 
 How it works:
 
@@ -36,6 +36,13 @@ Features:
 - initiation and completion blocks to support a case where the original image node should be hidden or unhidden alongside show and dismiss animations.
 
 */
+
+extension UIViewController {
+    
+    func presentImageViewer(imageViewer: ImageViewer, completion: (Void -> Void)? = {}) {
+        self.presentViewController(imageViewer, animated: true, completion: completion)
+    }
+}
 
 public protocol ImageProvider {
     
@@ -66,7 +73,7 @@ public struct ImageViewerConfiguration {
     }
 }
 
-public final class ImageViewer: UIViewController, UIScrollViewDelegate {
+public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
     
     @IBOutlet private var scrollView: UIScrollView!
     @IBOutlet private var overlayView: UIView!
@@ -99,6 +106,8 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
     private let displacedView: UIView
     
     private let presentTransition: ImageViewerPresentTransition
+    private let dismissTransition: ImageViewerDismissTransition
+    private let swipeToDismissTransition: ImageViewerSwipeToDismissTransition
     
     public var showInitiationBlock: (Void -> Void)? //executed right before the image animation into its final position starts.
     public var showCompletionBlock: (Void -> Void)? //executed as the last step after all the show animations.
@@ -124,10 +133,12 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
         self.imageProvider = imageProvider
         self.configuration = configuration
         self.displacedView = displacedView
-        self.presentTransition = ImageViewerPresentTransition(sourceView: self.displacedView, duration: self.showDuration)
+        self.presentTransition = ImageViewerPresentTransition(duration: self.showDuration)
+        self.dismissTransition = ImageViewerDismissTransition(duration: self.dismissDuration)
+        self.swipeToDismissTransition = ImageViewerSwipeToDismissTransition()
         super.init(nibName: nil, bundle: nil)
 
-        self.transitioningDelegate = self.presentTransition
+        self.transitioningDelegate = self
         self.modalPresentationStyle = .Custom
         self.extendedLayoutIncludesOpaqueBars = true
     }
@@ -224,10 +235,19 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
         self.configureScrollView()
     }
     
+    // MARK: UIViewControllerTransitioningDelegate
+    public func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return presentTransition
+    }
+    
+    public func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return isSwipingToDismiss ? swipeToDismissTransition : dismissTransition
+    }
+    
     // MARK: - Animations
     
     @IBAction private func close(sender: AnyObject) {
-        self.closeAnimations()
+        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func rotate() {
@@ -261,7 +281,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    public func showAnimation(duration: NSTimeInterval, completion: ((Bool) -> Void)?) {
+    internal func showAnimation(duration: NSTimeInterval, completion: ((Bool) -> Void)?) {
         
         guard self.isAnimating == false else { return }
         
@@ -285,19 +305,14 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
             self.scrollView.contentSize = self.imageView.bounds.size
             
             }) { (finished) -> Void in
-                if let completion = completion {
-                    completion(finished)
-                }
+                completion?(finished)
                 
                 if finished {
                     NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotate", name: UIDeviceOrientationDidChangeNotification, object: nil)
                     
                     self.applicationWindow!.windowLevel = UIWindowLevelStatusBar
-                    
                     self.scrollView.addSubview(self.imageView)
-                    
                     self.imageProvider.provideImage { [weak self] image in
-                        
                         self?.imageView.image = image
                     }
                     
@@ -311,7 +326,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    private func closeAnimations() {
+    internal func closeAnimation(duration: NSTimeInterval, completion: ((Bool) -> Void)?) {
         
         guard (self.isAnimating == false) else { return }
         self.isAnimating = true
@@ -320,7 +335,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
         
         UIView.animateWithDuration(self.hideCloseButtonDuration, animations: { self.closeButton.alpha = 0.0 })
         
-        UIView.animateWithDuration(dismissDuration, animations: {
+        UIView.animateWithDuration(duration, animations: {
             
             self.applicationWindow!.windowLevel = UIWindowLevelNormal
             self.scrollView.zoomScale = self.scrollView.minimumZoomScale
@@ -331,23 +346,20 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
             self.imageView.frame = self.parentViewFrameInOurCoordinateSystem
             
             }) { (finished) -> Void in
+                completion?(finished)
                 if finished {
+                    NSNotificationCenter.defaultCenter().removeObserver(self)
                     
                     self.displacedView.hidden = false
                     self.isAnimating = false
-                    NSNotificationCenter.defaultCenter().removeObserver(self)
                     
-                    if let pvc = self.presentingViewController {
-                        pvc.dismissViewControllerAnimated(false, completion: nil)
-                    }
-
                     self.closeButtonActionCompletionBlock?()
                     self.dismissCompletionBlock?()
                 }
         }
     }
     
-    private func swipeToDismissAnimation(withVerticalTouchPoint verticalTouchPoint: CGFloat,  targetOffset: CGFloat, verticalVelocity: CGFloat) {
+    internal func swipeToDismissAnimation(withVerticalTouchPoint verticalTouchPoint: CGFloat,  targetOffset: CGFloat, verticalVelocity: CGFloat, completion: ((Bool) -> Void)?) {
         
         // in units of "vertical velocity". for example if we have a vertical velocity of 50 per second
         // and the distance to travel is 175, then our spring velocity is 3.5. I.e. we will travel 3.5 units in 1 second.
@@ -361,8 +373,10 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
             self.scrollView.setContentOffset(CGPoint(x: 0, y: targetOffset), animated: false)
             
             }, completion: { (finished) -> Void in
+                completion?(finished)
                 
                 if finished {
+                    NSNotificationCenter.defaultCenter().removeObserver(self)
                     
                     self.view.transform = CGAffineTransformIdentity
                     self.view.bounds = (self.applicationWindow?.bounds)!
@@ -374,9 +388,6 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
                     self.isAnimating = false
                     self.isSwipingToDismiss = false
                     self.dynamicTransparencyActive = false
-                    if let pvc = self.presentingViewController {
-                        pvc.dismissViewControllerAnimated(false, completion: nil)
-                    }
                     self.swipeToDismissCompletionBlock?()
                     self.dismissCompletionBlock?()
                 }
@@ -451,14 +462,15 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate {
             let verticalVelocity = recognizer.velocityInView(self.view).y
             
             if verticalVelocity < -thresholdVelocity {
-                self.swipeToDismissAnimation(withVerticalTouchPoint: latestTouchPoint.y, targetOffset: targetOffsetToReachTop, verticalVelocity: verticalVelocity)
+                self.swipeToDismissTransition.setParameters(latestTouchPoint.y, targetOffset: targetOffsetToReachTop, verticalVelocity: verticalVelocity)
+                self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
             }
             else if verticalVelocity >= -thresholdVelocity && verticalVelocity <= thresholdVelocity {
                 self.swipeToDismissCanceledAnimation()
             }
-                
             else {
-                self.swipeToDismissAnimation(withVerticalTouchPoint: latestTouchPoint.y, targetOffset: targetOffsetToReachBottom, verticalVelocity: verticalVelocity)
+                self.swipeToDismissTransition.setParameters(latestTouchPoint.y, targetOffset: targetOffsetToReachBottom, verticalVelocity: verticalVelocity)
+                self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
             }
             
         default:

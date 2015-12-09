@@ -37,8 +37,7 @@ class ViewController: UIViewController {
         
         let configuration = ImageViewerConfiguration(imageSize: size, closeButtonAssets: buttonsAssets)
         self.imagePreviewer = ImageViewer(imageProvider: provider, configuration: configuration, displacedView: view)
-        
-        self.presentViewController(self.imagePreviewer, animated: true, completion: nil)
+        self.presentImageViewer(self.imagePreviewer)
     }
 }
 
