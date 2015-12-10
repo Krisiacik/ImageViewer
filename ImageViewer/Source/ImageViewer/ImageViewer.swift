@@ -108,6 +108,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     private let presentTransition: ImageViewerPresentTransition
     private let dismissTransition: ImageViewerDismissTransition
     private let swipeToDismissTransition: ImageViewerSwipeToDismissTransition
+    private var shouldShouldHideStatusBar = false
     
     public var showInitiationBlock: (Void -> Void)? //executed right before the image animation into its final position starts.
     public var showCompletionBlock: (Void -> Void)? //executed as the last step after all the show animations.
@@ -236,7 +237,12 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     }
     
     public override func prefersStatusBarHidden() -> Bool {
-        return true
+        return shouldShouldHideStatusBar
+    }
+    
+    private func hideStatusBar(hidden: Bool) {
+        shouldShouldHideStatusBar = hidden
+        setNeedsStatusBarAppearanceUpdate()
     }
     
     // MARK: UIViewControllerTransitioningDelegate
@@ -285,7 +291,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         }
     }
     
-    internal func showAnimation(duration: NSTimeInterval, completion: ((Bool) -> Void)?) {
+    func showAnimation(duration: NSTimeInterval, completion: ((Bool) -> Void)?) {
         
         guard self.isAnimating == false else { return }
         
@@ -299,7 +305,6 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         self.overlayView.backgroundColor = UIColor.blackColor()
         
         UIView.animateWithDuration(duration, animations: {
-            
             self.overlayView.alpha = 1.0
             self.view.transform = rotationTransform
             self.view.bounds = self.rotationAdjustedBounds()
@@ -313,7 +318,8 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
                 
                 if finished {
                     NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotate", name: UIDeviceOrientationDidChangeNotification, object: nil)
-                    
+                    self.hideStatusBar(true)
+
                     self.scrollView.addSubview(self.imageView)
                     self.imageProvider.provideImage { [weak self] image in
                         self?.imageView.image = image
@@ -329,7 +335,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         }
     }
     
-    internal func closeAnimation(duration: NSTimeInterval, completion: ((Bool) -> Void)?) {
+    func closeAnimation(duration: NSTimeInterval, completion: ((Bool) -> Void)?) {
         
         guard (self.isAnimating == false) else { return }
         self.isAnimating = true
@@ -339,7 +345,6 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         UIView.animateWithDuration(self.hideCloseButtonDuration, animations: { self.closeButton.alpha = 0.0 })
         
         UIView.animateWithDuration(duration, animations: {
-            
             self.scrollView.zoomScale = self.scrollView.minimumZoomScale
             self.overlayView.alpha = 0.0
             self.closeButton.alpha = 0.0
@@ -351,7 +356,8 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
                 completion?(finished)
                 if finished {
                     NSNotificationCenter.defaultCenter().removeObserver(self)
-                    
+                    self.hideStatusBar(false)
+
                     self.displacedView.hidden = false
                     self.isAnimating = false
                     
@@ -361,7 +367,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         }
     }
     
-    internal func swipeToDismissAnimation(withVerticalTouchPoint verticalTouchPoint: CGFloat,  targetOffset: CGFloat, verticalVelocity: CGFloat, completion: ((Bool) -> Void)?) {
+    func swipeToDismissAnimation(withVerticalTouchPoint verticalTouchPoint: CGFloat,  targetOffset: CGFloat, verticalVelocity: CGFloat, completion: ((Bool) -> Void)?) {
         
         // in units of "vertical velocity". for example if we have a vertical velocity of 50 per second
         // and the distance to travel is 175, then our spring velocity is 3.5. I.e. we will travel 3.5 units in 1 second.
@@ -371,7 +377,6 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         let expectedDuration = NSTimeInterval( fabs(targetOffset - verticalTouchPoint) / fabs(verticalVelocity))
         
         UIView.animateWithDuration(expectedDuration, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: springVelocity, options: UIViewAnimationOptions.CurveLinear, animations: { () -> Void in
-            
             self.scrollView.setContentOffset(CGPoint(x: 0, y: targetOffset), animated: false)
             
             }, completion: { (finished) -> Void in
@@ -379,7 +384,6 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
                 
                 if finished {
                     NSNotificationCenter.defaultCenter().removeObserver(self)
-                    
                     self.view.transform = CGAffineTransformIdentity
                     self.view.bounds = (self.applicationWindow?.bounds)!
                     self.imageView.frame = self.parentViewFrameInOurCoordinateSystem
@@ -404,6 +408,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             }, completion: { (finished) -> Void in
                 
                 if finished {
+                    self.hideStatusBar(true)
                     
                     self.isAnimating = false
                     self.isSwipingToDismiss = false
@@ -454,7 +459,10 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         
         switch recognizer.state {
             
-        case .Began, .Changed:
+        case .Began:
+            self.hideStatusBar(false)
+            fallthrough
+        case .Changed:
             self.scrollView.setContentOffset(CGPoint(x: 0, y: -latestTouchPoint.y), animated: false)
             
         case .Ended:
