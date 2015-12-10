@@ -51,6 +51,7 @@ viewController.presentImageViewer(imageViewer)
 Because `ImageViewer` was created with a given configuration in mind, it might be limiting factor for certain apps:
 
 * Currently the library will only behave correctly in apps that have rotation disabled (only Portrait). Since we are applying transformations and listening for `UIDeviceOrientationDidChangeNotification`. We have a couple of ideas on how to solve this problem and provide a more predictable behaviour. Given all this,  you shouldn't use for an iPad app.
+* ~~`ImageViewer` is currently a `UIViewController` subclass, we are considering making it a `UIView`, as we find the later lifecycle more reliable. We are adding `ImageViewer`'s root view to the `UIWindow`'s `subViews` and itself as a `childViewController` of the `window.rootViewController`. We are still looking into a way of making this part a bit more idiomatic, while maintaining the great fullscreen look.~~ 
 * We are seeing some issues with the animations due to different aspect ratio between the `displacedView` and the fullscreen `UIImageView`. We aren't sure if it's worth to fix this, as we don't run into this problem.
 
 
