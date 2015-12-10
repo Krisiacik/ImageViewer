@@ -1,6 +1,8 @@
 # ImageViewer
 
 <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat"></a>
+<a href="https://github.com/cocoapods/cocoapods"><img src="https://img.shields.io/cocoapods/v/ImageViewer.svg"></a>
+
 ![](https://travis-ci.org/MailOnline/ImageViewer.svg?branch=master)
 [![Swift 2.1](https://img.shields.io/badge/Swift-2.1-orange.svg?style=flat)](https://developer.apple.com/swift/)
 [![Platforms iOS](https://img.shields.io/badge/Platforms-iOS-lightgray.svg?style=flat)](https://developer.apple.com/swift/)
@@ -13,7 +15,17 @@ ImageViewer is a library that enables a user to visualize an image in fullscreen
 
 #### Setup
 
-With Carthage:
+Cocoapods:
+
+```
+# source 'https://github.com/CocoaPods/Specs.git'
+# use_frameworks!
+# platform :ios, "8.0"
+
+pod "ImageViewer"
+```
+
+Carthage:
 
 ```
 github "MailOnline/ImageViewer"
