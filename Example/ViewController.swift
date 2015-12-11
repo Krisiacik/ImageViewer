@@ -26,7 +26,7 @@ class ViewController: UIViewController {
     }
 
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return [.Portrait, .Landscape]
+        return [.Portrait]
     }
     
     @IBAction func showViewer(sender: AnyObject) {

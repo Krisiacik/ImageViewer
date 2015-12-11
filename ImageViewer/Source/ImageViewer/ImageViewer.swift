@@ -93,6 +93,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     private var dynamicTransparencyActive = false
     private var initialCloseButtonOrigin = CGPointZero
     private var closeButtonSize = CGSize(width: 50, height: 50)
+    private var isPortraitOnly = false
 
     private let closeButtonPadding         = 8.0
     private let showDuration               = 0.25
@@ -109,7 +110,6 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     private let presentTransition: ImageViewerPresentTransition
     private let dismissTransition: ImageViewerDismissTransition
     private let swipeToDismissTransition: ImageViewerSwipeToDismissTransition
-    private var shouldShouldHideStatusBar = false
     
     public var showInitiationBlock: (Void -> Void)? //executed right before the image animation into its final position starts.
     public var showCompletionBlock: (Void -> Void)? //executed as the last step after all the show animations.
@@ -242,15 +242,14 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        isPortraitOnly = presentingViewController!.supportedInterfaceOrientations() == .Portrait ||
+            UIApplication.sharedApplication().supportedInterfaceOrientationsForWindow(nil) == .Portrait
+        
         self.configureCloseButton()
         self.configureImageView()
         self.configureScrollView()
     }
 
-    public override func shouldAutorotate() -> Bool {
-        return false
-    }
-    
     // MARK: UIViewControllerTransitioningDelegate
     public func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return presentTransition
@@ -267,7 +266,6 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     }
     
     func rotate() {
-        
         guard UIDevice.currentDevice().orientation.isFlat == false &&
             self.isAnimating == false else { return }
         
@@ -276,9 +274,10 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         UIView.animateWithDuration(hideCloseButtonDuration, animations: { self.closeButton.alpha = 0.0 })
         
         let aspectFitContentSize = self.aspectFitContentSize(forBoundingSize: self.rotationAdjustedBounds().size, contentSize: self.displacedView.frame.size)
-        
         UIView.animateWithDuration(showDuration, animations: { () -> Void in
-            
+            if self.isPortraitOnly {
+                self.view.transform = self.rotationTransform()
+            }
             self.view.bounds = self.rotationAdjustedBounds()
             self.imageView.bounds = CGRect(origin: CGPointZero, size: aspectFitContentSize)
             self.imageView.center = self.scrollView.center
@@ -286,7 +285,6 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             self.scrollView.setZoomScale(1.0, animated: false)
             
             }) { (finished) -> Void in
-                
                 if (finished) {
                     self.isAnimating = false
                     self.scrollView.maximumZoomScale = self.maximumZoomScale(forBoundingSize: self.rotationAdjustedBounds().size, contentSize: self.imageView.bounds.size)
@@ -307,17 +305,19 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         self.overlayView.backgroundColor = UIColor.blackColor()
         
         UIView.animateWithDuration(duration, animations: {
+            self.view.transform = self.rotationTransform()
             self.overlayView.alpha = 1.0
             self.view.bounds = self.rotationAdjustedBounds()
             let aspectFitContentSize = self.aspectFitContentSize(forBoundingSize: self.rotationAdjustedBounds().size, contentSize: self.configuration.imageSize)
             self.imageView.bounds = CGRect(origin: CGPointZero, size: aspectFitContentSize)
-            self.imageView.center = self.view.center
+            self.imageView.center = self.rotationAdjustedCenter()
             self.scrollView.contentSize = self.imageView.bounds.size
             
             }) { (finished) -> Void in
                 completion?(finished)
                 
                 if finished {
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotate", name: UIDeviceOrientationDidChangeNotification, object: nil)
                     self.applicationWindow!.windowLevel = UIWindowLevelStatusBar + 1
 
                     self.scrollView.addSubview(self.imageView)
@@ -355,6 +355,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             }) { (finished) -> Void in
                 completion?(finished)
                 if finished {
+                    NSNotificationCenter.defaultCenter().removeObserver(self)
                     self.applicationWindow!.windowLevel = UIWindowLevelNormal
 
                     self.displacedView.hidden = false
@@ -552,10 +553,28 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     }
     
     private func rotationAdjustedBounds() -> CGRect {
-        
         guard let window = self.applicationWindow else { return CGRectZero }
+        guard isPortraitOnly else {
+            return window.bounds
+        }
         
-        return window.bounds
+        return (UIDevice.currentDevice().orientation.isLandscape) ? CGRect(origin: CGPointZero, size: window.bounds.size.inverted()): window.bounds
+    }
+    
+    private func rotationAdjustedCenter() -> CGPoint {
+        guard isPortraitOnly else {
+            return self.view.center
+        }
+        
+        return (UIDevice.currentDevice().orientation.isLandscape) ? self.view.center.inverted() : self.view.center
+    }
+    
+    private func rotationTransform() -> CGAffineTransform {
+        guard isPortraitOnly else {
+            return CGAffineTransformIdentity
+        }
+        
+        return CGAffineTransformMakeRotation(self.degreesToRadians(self.rotationAngleToMatchDeviceOrientation(UIDevice.currentDevice().orientation)))
     }
     
     private func rotationAngleToMatchDeviceOrientation(orientation: UIDeviceOrientation) -> CGFloat {
