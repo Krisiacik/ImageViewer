@@ -61,6 +61,7 @@ viewController.presentImageViewer(imageViewer)
 - [ ] Change anchor points to improve rotations animation paths   
 - [ ] UI Testing
 - [ ] Expand the ImageViewer to a Gallery
+- [ ] Consider UIVisualEffectView for the Close button as default option 
 
 #### Caveats
 
