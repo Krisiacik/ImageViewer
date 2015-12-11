@@ -1,7 +1,11 @@
 # ImageViewer
 
 <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat"></a>
+<a href="https://github.com/cocoapods/cocoapods"><img src="https://img.shields.io/cocoapods/v/ImageViewer.svg"></a>
 ![](https://travis-ci.org/MailOnline/ImageViewer.svg?branch=master)
+[![Swift 2.1](https://img.shields.io/badge/Swift-2.1-orange.svg?style=flat)](https://developer.apple.com/swift/)
+[![Platforms iOS](https://img.shields.io/badge/Platforms-iOS-lightgray.svg?style=flat)](https://developer.apple.com/swift/)
+[![License MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat)](https://opensource.org/licenses/MIT)
 
 ImageViewer is a library that enables a user to visualize an image in fullscreen. Besides the typical pinch and double tap to zoom, we also provide a vertical swipe to dismiss. Finally, we try to mimic the displacement of the image from its current container into fullscreen, this feature being its main selling point. In our context, you can imagine an image as part of an article and when it's tapped, the image is animated into fullscreen.
 
@@ -10,7 +14,17 @@ ImageViewer is a library that enables a user to visualize an image in fullscreen
 
 #### Setup
 
-With Carthage:
+Cocoapods:
+
+```
+# source 'https://github.com/CocoaPods/Specs.git'
+# use_frameworks!
+# platform :ios, "8.0"
+
+pod "ImageViewer"
+```
+
+Carthage:
 
 ```
 github "MailOnline/ImageViewer"
@@ -40,9 +54,11 @@ viewController.presentImageViewer(imageViewer)
 - [X] Setup Travis
 - [ ] Clean up internal logic (refactoring mostly)
 - [X] Remove the XIB file and create the UI with code
+- [X] ~~Use UITraitCollection for rotation~~. `traitCollectionDidChange` is not called if only Portrait is enabled at a project configuration level
 - Investigation
  - [X] Investigate the usage of custom transitions
  - [ ] Investigate a more idiomatic way of dealing with the orientation changes
+- [ ] Change anchor points to improve rotations animation paths   
 - [ ] UI Testing
 - [ ] Expand the ImageViewer to a Gallery
 
