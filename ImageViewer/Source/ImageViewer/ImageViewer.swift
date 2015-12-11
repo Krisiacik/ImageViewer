@@ -88,6 +88,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     
     private var parentViewFrameInOurCoordinateSystem = CGRectZero
     private var isAnimating = false
+    private var shouldRotate = false
     private var isSwipingToDismiss = false
     private var dynamicTransparencyActive = false
     private var initialCloseButtonOrigin = CGPointZero
@@ -193,6 +194,11 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     }
     
     // MARK: - View Lifecycle
+    public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        shouldRotate = true
+    }
+    
     
     public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -208,6 +214,11 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         self.overlayView.frame = CGRect(origin: CGPoint(x: originX, y: originY), size: CGSize(width: width, height: height))
         
         self.closeButton.frame = CGRect(origin: CGPoint(x: self.view.bounds.size.width - CGFloat(closeButtonPadding) - closeButtonSize.width, y: CGFloat(closeButtonPadding)), size: closeButtonSize)
+        
+        if shouldRotate {
+            shouldRotate = false
+            rotate()
+        }
     }
     
     public override func loadView() {
@@ -235,14 +246,9 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         self.configureImageView()
         self.configureScrollView()
     }
-    
-    public override func prefersStatusBarHidden() -> Bool {
-        return shouldShouldHideStatusBar
-    }
-    
-    private func hideStatusBar(hidden: Bool) {
-        shouldShouldHideStatusBar = hidden
-        setNeedsStatusBarAppearanceUpdate()
+
+    public override func shouldAutorotate() -> Bool {
+        return false
     }
     
     // MARK: UIViewControllerTransitioningDelegate
@@ -269,12 +275,10 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         
         UIView.animateWithDuration(hideCloseButtonDuration, animations: { self.closeButton.alpha = 0.0 })
         
-        let rotationTransform = CGAffineTransformMakeRotation(self.degreesToRadians(self.rotationAngleToMatchDeviceOrientation(UIDevice.currentDevice().orientation)))
         let aspectFitContentSize = self.aspectFitContentSize(forBoundingSize: self.rotationAdjustedBounds().size, contentSize: self.displacedView.frame.size)
         
         UIView.animateWithDuration(showDuration, animations: { () -> Void in
             
-            self.view.transform = rotationTransform
             self.view.bounds = self.rotationAdjustedBounds()
             self.imageView.bounds = CGRect(origin: CGPointZero, size: aspectFitContentSize)
             self.imageView.center = self.scrollView.center
@@ -299,26 +303,22 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         self.showInitiationBlock?()
         self.displacedView.hidden = true
         
-        let rotationTransform = CGAffineTransformMakeRotation(self.degreesToRadians(self.rotationAngleToMatchDeviceOrientation(UIDevice.currentDevice().orientation)))
-        
         self.overlayView.alpha = 0.0
         self.overlayView.backgroundColor = UIColor.blackColor()
         
         UIView.animateWithDuration(duration, animations: {
             self.overlayView.alpha = 1.0
-            self.view.transform = rotationTransform
             self.view.bounds = self.rotationAdjustedBounds()
             let aspectFitContentSize = self.aspectFitContentSize(forBoundingSize: self.rotationAdjustedBounds().size, contentSize: self.configuration.imageSize)
             self.imageView.bounds = CGRect(origin: CGPointZero, size: aspectFitContentSize)
-            self.imageView.center = self.rotationAdjustedCenter()
+            self.imageView.center = self.view.center
             self.scrollView.contentSize = self.imageView.bounds.size
             
             }) { (finished) -> Void in
                 completion?(finished)
                 
                 if finished {
-                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotate", name: UIDeviceOrientationDidChangeNotification, object: nil)
-                    self.hideStatusBar(true)
+                    self.applicationWindow!.windowLevel = UIWindowLevelStatusBar + 1
 
                     self.scrollView.addSubview(self.imageView)
                     self.imageProvider.provideImage { [weak self] image in
@@ -350,13 +350,12 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             self.closeButton.alpha = 0.0
             self.view.transform = CGAffineTransformIdentity
             self.view.bounds = (self.applicationWindow?.bounds)!
-            self.imageView.frame = self.parentViewFrameInOurCoordinateSystem
+            self.imageView.frame = self.displacedView.frame
             
             }) { (finished) -> Void in
                 completion?(finished)
                 if finished {
-                    NSNotificationCenter.defaultCenter().removeObserver(self)
-                    self.hideStatusBar(false)
+                    self.applicationWindow!.windowLevel = UIWindowLevelNormal
 
                     self.displacedView.hidden = false
                     self.isAnimating = false
@@ -408,8 +407,8 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             }, completion: { (finished) -> Void in
                 
                 if finished {
-                    self.hideStatusBar(true)
-                    
+                    self.applicationWindow!.windowLevel = UIWindowLevelNormal
+
                     self.isAnimating = false
                     self.isSwipingToDismiss = false
                     self.dynamicTransparencyActive = false
@@ -460,7 +459,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         switch recognizer.state {
             
         case .Began:
-            self.hideStatusBar(false)
+            self.applicationWindow!.windowLevel = UIWindowLevelNormal
             fallthrough
         case .Changed:
             self.scrollView.setContentOffset(CGPoint(x: 0, y: -latestTouchPoint.y), animated: false)
@@ -556,11 +555,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         
         guard let window = self.applicationWindow else { return CGRectZero }
         
-        return (UIDevice.currentDevice().orientation.isLandscape) ? CGRect(origin: CGPointZero, size: window.bounds.size.inverted()): window.bounds
-    }
-    
-    private func rotationAdjustedCenter() -> CGPoint {
-        return (UIDevice.currentDevice().orientation.isLandscape) ? self.view.center.inverted() : self.view.center
+        return window.bounds
     }
     
     private func rotationAngleToMatchDeviceOrientation(orientation: UIDeviceOrientation) -> CGFloat {
