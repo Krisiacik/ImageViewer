@@ -582,12 +582,9 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         var desiredRotationAngle: CGFloat = 0
         
         switch orientation {
-            
-        case .Portrait,           .FaceUp:      desiredRotationAngle = 0
-        case .PortraitUpsideDown, .FaceDown:    desiredRotationAngle = -180
-        case .LandscapeLeft:                    desiredRotationAngle = 90
-        case .LandscapeRight:                   desiredRotationAngle = -90
-        default:                                desiredRotationAngle = 0
+            case .LandscapeLeft:                    desiredRotationAngle = 90
+            case .LandscapeRight:                   desiredRotationAngle = -90
+            default:                                desiredRotationAngle = 0
         }
         
         return desiredRotationAngle
