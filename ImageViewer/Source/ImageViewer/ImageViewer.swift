@@ -11,29 +11,31 @@ import AVFoundation
 
 /*
 
+Features:
+
+- double tap to toggle betweeen aspect fit & aspect fill zoom factor.
+- manual pinch to zoom up to approx. 4x the size of full-sized image/
+- rotation support
+- swipe to dismiss
+- initiation and completion blocks to support a case where the original image node should be hidden or unhidden alongside show and dismiss animations.
+
 Usage:
 
 - Initialize the VC, set optional initiation and completion blocks, and present by calling "presentImageViewer".
 
 How it works:
 
-- Attaches itself as a child viewcontroller to the root viewcontroller of the key window.
-- displays itself in fullscreen (nothing is visible at that point, but it's there, trust me...)
-- makes a screenshot of the parent node (can be any UIView subclass really, but a UIImageView is the most logical choice)
-- puts this screnshot into an imageview matchig the position and size of the parent node.
-- sets the target size and position for the imageview to aspect fit size and centered while kicking in the black overlay.
-- animates this imageview into the scrollview (that will serve as zooming canvas) reaching final position and size.
-- tries to get a full-sized version of the image, if succesful, replaces the screenhot with that image.
-- dismiss either with close button, or "swipe up/down" gesture.
-- if closed, image is animated back to it's original position in whatever controller that invoked this image viewer controller.
-
-Features:
-
-- double tap to toggle betweeen aspect fit & aspect fill zoom factor.
-- manual pinch to zoom up to 4x the size of full-sized image
-- rotation support
-- swipe to dismiss
-- initiation and completion blocks to support a case where the original image node should be hidden or unhidden alongside show and dismiss animations.
+- gets presented modaly via convenience UIViewControler extension, using custom modal presentation that is enforced internally.
+- displays itself in full screen (nothing is visible at that point, but it's there, trust me...)
+- makes a screenshot of the displaced view that can be any UIView subclass really, but UIImageView is the most probable choice.
+- puts this screnshot into a new UIImageView and matches its position and size to the displaced view.
+- sets the target size and position for the UIImageView to aspectFit size and centered while kicking in the black overlay.
+- animates the image view into the scroll view (that serves as zooming canvas) and reaches final position and size.
+- immediately tries to get a full-sized version of the image from imageProvider. 
+  If successful, replaces the screenshot in the image view with probably a higher-res image.
+- gets dismissed either via Close button, or via "swipe up/down" gesture.
+- while being "closed", image is animated back to it's "original" position which is a match to the displaced view's position
+  that gives the illusion of a the UI element returning to its original place.
 
 */
 
@@ -49,24 +51,24 @@ public protocol ImageProvider {
     func provideImage(completion: UIImage? -> Void)
 }
 
-public struct ButtonStateAssets {
+public struct CloseButtonAssets {
     
-    public let normalAsset: UIImage
-    public let highlightedAsset: UIImage?
+    public let normal: UIImage
+    public let highlighted: UIImage?
     
     public init(normalAsset: UIImage, highlightedAsset: UIImage?) {
         
-        self.normalAsset = normalAsset
-        self.highlightedAsset = highlightedAsset
+        self.normal = normalAsset
+        self.highlighted = highlightedAsset
     }
 }
 
 public struct ImageViewerConfiguration {
     
     public let imageSize: CGSize
-    public let closeButtonAssets: ButtonStateAssets
+    public let closeButtonAssets: CloseButtonAssets
     
-    public init(imageSize: CGSize, closeButtonAssets: ButtonStateAssets) {
+    public init(imageSize: CGSize, closeButtonAssets: CloseButtonAssets) {
         
         self.imageSize = imageSize
         self.closeButtonAssets = closeButtonAssets
@@ -75,41 +77,47 @@ public struct ImageViewerConfiguration {
 
 public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
     
-    @IBOutlet private var scrollView: UIScrollView!
-    @IBOutlet private var overlayView: UIView!
-    @IBOutlet private var closeButton: UIButton!
-    
+    //UI
+    private let displacedView: UIView
     private var imageView = UIImageView()
-    
-    private var applicationWindow: UIWindow? {
-        if let window = UIApplication.sharedApplication().delegate?.window { return window }
-        return nil
+    private var scrollView: UIScrollView!
+    private var overlayView: UIView!
+    private var closeButton: UIButton!
+    private var applicationWindow: UIWindow {
+        return UIApplication.sharedApplication().delegate!.window!!
     }
     
-    private var parentViewFrameInOurCoordinateSystem = CGRectZero
+    //LOCAL STATE
+    private var displacedViewFrameInLocalCoordinateSystem = CGRectZero
     private var isAnimating = false
     private var isSwipingToDismiss = false
     private var dynamicTransparencyActive = false
+    private var shouldHideStatusBar = false
+    
+    private let imageProvider: ImageProvider
+    
+    //LOCAL CONFIG
+    private let configuration: ImageViewerConfiguration
     private var initialCloseButtonOrigin = CGPointZero
     private var closeButtonSize = CGSize(width: 50, height: 50)
-
     private let closeButtonPadding         = 8.0
     private let showDuration               = 0.25
     private let dismissDuration            = 0.25
     private let showCloseButtonDuration    = 0.2
     private let hideCloseButtonDuration    = 0.05
     private let zoomDuration               = 0.2
-    private let thresholdVelocity: CGFloat = 1000 // It works as a threshold.
+    private let thresholdVelocity: CGFloat = 1000 // The swipe's speed must cross this threshold for the image to finish the animation instead of returning back to the center of screen. There is no special reason for the choice of nicely rounded value of 1000, it is just a coincidence it works well.
+
+    //INTERACTIONS
+    private let doubleTapRecognizer = UITapGestureRecognizer()
+    private let panGestureRecognizer = UIPanGestureRecognizer()
     
-    private let imageProvider: ImageProvider
-    private let configuration: ImageViewerConfiguration
-    private let displacedView: UIView
-    
+    //TRANSITIONS
     private let presentTransition: ImageViewerPresentTransition
     private let dismissTransition: ImageViewerDismissTransition
     private let swipeToDismissTransition: ImageViewerSwipeToDismissTransition
-    private var shouldShouldHideStatusBar = false
     
+    //LIFE CYCLE BLOCKS
     public var showInitiationBlock: (Void -> Void)? //executed right before the image animation into its final position starts.
     public var showCompletionBlock: (Void -> Void)? //executed as the last step after all the show animations.
     public var closeButtonActionInitiationBlock: (Void -> Void)? //executed as the first step before the button's close action starts.
@@ -117,11 +125,9 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     public var swipeToDismissInitiationBlock: (Void -> Void)? //executed as the fist step for swipe to dismiss action.
     public var swipeToDismissCompletionBlock: (Void -> Void)? //executed as the last step for swipe to dismiss action.
     public var dismissCompletionBlock: (Void -> Void)? //executed as the last step when the ImageViewer is dismissed (either via the close button, or swipe)
+
     
-    private let doubleTapRecognizer = UITapGestureRecognizer()
-    private let panGestureRecognizer = UIPanGestureRecognizer()
-    
-    // MARK: - Dealloc
+    // MARK: - Deinitializers
     
     deinit {
         self.scrollView.removeObserver(self, forKeyPath: "contentOffset")
@@ -154,8 +160,8 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         
         let closeButtonAssets = configuration.closeButtonAssets
         
-        self.closeButton.setBackgroundImage(closeButtonAssets.normalAsset, forState: UIControlState.Normal)
-        self.closeButton.setBackgroundImage(closeButtonAssets.highlightedAsset, forState: UIControlState.Highlighted)
+        self.closeButton.setBackgroundImage(closeButtonAssets.normal, forState: UIControlState.Normal)
+        self.closeButton.setBackgroundImage(closeButtonAssets.highlighted, forState: UIControlState.Highlighted)
         self.closeButton.alpha = 0.0
     }
     
@@ -170,9 +176,9 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     
     private func configureImageView() {
         
-        self.parentViewFrameInOurCoordinateSystem = CGRectIntegral(self.applicationWindow!.convertRect(self.displacedView.bounds, fromView: self.displacedView))
+        self.displacedViewFrameInLocalCoordinateSystem = CGRectIntegral(self.applicationWindow.convertRect(self.displacedView.bounds, fromView: self.displacedView))
         
-        self.imageView.frame = self.parentViewFrameInOurCoordinateSystem
+        self.imageView.frame = self.displacedViewFrameInLocalCoordinateSystem
         self.imageView.contentMode = UIViewContentMode.ScaleAspectFit
         self.view.addSubview(self.imageView)
         
@@ -237,15 +243,15 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     }
     
     public override func prefersStatusBarHidden() -> Bool {
-        return shouldShouldHideStatusBar
+        return shouldHideStatusBar
     }
     
     private func hideStatusBar(hidden: Bool) {
-        shouldShouldHideStatusBar = hidden
+        shouldHideStatusBar = hidden
         setNeedsStatusBarAppearanceUpdate()
     }
     
-    // MARK: UIViewControllerTransitioningDelegate
+    // MARK: - Transitioning Delegate
     public func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return presentTransition
     }
@@ -256,14 +262,13 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     
     // MARK: - Animations
     
-    @IBAction private func close(sender: AnyObject) {
+    private func close(sender: AnyObject) {
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func rotate() {
         
-        guard UIDevice.currentDevice().orientation.isFlat == false &&
-            self.isAnimating == false else { return }
+        guard UIDevice.currentDevice().orientation.isFlat == false && self.isAnimating == false else { return }
         
         self.isAnimating = true
         
@@ -305,6 +310,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         self.overlayView.backgroundColor = UIColor.blackColor()
         
         UIView.animateWithDuration(duration, animations: {
+            
             self.overlayView.alpha = 1.0
             self.view.transform = rotationTransform
             self.view.bounds = self.rotationAdjustedBounds()
@@ -345,15 +351,17 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         UIView.animateWithDuration(self.hideCloseButtonDuration, animations: { self.closeButton.alpha = 0.0 })
         
         UIView.animateWithDuration(duration, animations: {
+            
             self.scrollView.zoomScale = self.scrollView.minimumZoomScale
             self.overlayView.alpha = 0.0
             self.closeButton.alpha = 0.0
             self.view.transform = CGAffineTransformIdentity
-            self.view.bounds = (self.applicationWindow?.bounds)!
-            self.imageView.frame = self.parentViewFrameInOurCoordinateSystem
+            self.view.bounds = self.applicationWindow.bounds
+            self.imageView.frame = self.displacedViewFrameInLocalCoordinateSystem
             
             }) { (finished) -> Void in
                 completion?(finished)
+                
                 if finished {
                     NSNotificationCenter.defaultCenter().removeObserver(self)
                     self.hideStatusBar(false)
@@ -385,8 +393,8 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
                 if finished {
                     NSNotificationCenter.defaultCenter().removeObserver(self)
                     self.view.transform = CGAffineTransformIdentity
-                    self.view.bounds = (self.applicationWindow?.bounds)!
-                    self.imageView.frame = self.parentViewFrameInOurCoordinateSystem
+                    self.view.bounds = self.applicationWindow.bounds
+                    self.imageView.frame = self.displacedViewFrameInLocalCoordinateSystem
                     
                     self.overlayView.alpha = 0.0
                     self.closeButton.alpha = 0.0
@@ -417,12 +425,11 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         })
     }
     
-    // MARK: - Interaction Handling (UIScrollViewDelegate)
+    // MARK: - Interaction Handling
     
     func scrollViewDidDoubleTap(recognizer: UITapGestureRecognizer) {
         
         let touchPoint = recognizer.locationOfTouch(0, inView: self.imageView)
-        
         let aspectFillScale = self.aspectFillZoomScale(forBoundingSize: self.rotationAdjustedBounds().size, contentSize: self.imageView.bounds.size)
         
         if (self.scrollView.zoomScale == 1.0 || self.scrollView.zoomScale > aspectFillScale) {
@@ -554,9 +561,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     
     private func rotationAdjustedBounds() -> CGRect {
         
-        guard let window = self.applicationWindow else { return CGRectZero }
-        
-        return (UIDevice.currentDevice().orientation.isLandscape) ? CGRect(origin: CGPointZero, size: window.bounds.size.inverted()): window.bounds
+        return (UIDevice.currentDevice().orientation.isLandscape) ? CGRect(origin: CGPointZero, size: self.applicationWindow.bounds.size.inverted()): self.applicationWindow.bounds
     }
     
     private func rotationAdjustedCenter() -> CGPoint {
