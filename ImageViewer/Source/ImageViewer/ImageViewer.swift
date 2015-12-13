@@ -350,7 +350,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             self.closeButton.alpha = 0.0
             self.view.transform = CGAffineTransformIdentity
             self.view.bounds = (self.applicationWindow?.bounds)!
-            self.imageView.frame = self.displacedView.frame
+            self.imageView.frame = CGRectIntegral(self.applicationWindow!.convertRect(self.displacedView.bounds, fromView: self.displacedView))
             
             }) { (finished) -> Void in
                 completion?(finished)
