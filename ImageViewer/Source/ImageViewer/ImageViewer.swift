@@ -317,7 +317,9 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
                 completion?(finished)
                 
                 if finished {
-                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotate", name: UIDeviceOrientationDidChangeNotification, object: nil)
+                    if self.isPortraitOnly {
+                        NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotate", name: UIDeviceOrientationDidChangeNotification, object: nil)
+                    }
                     self.applicationWindow!.windowLevel = UIWindowLevelStatusBar + 1
 
                     self.scrollView.addSubview(self.imageView)
