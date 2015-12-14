@@ -25,6 +25,10 @@ class ViewController: UIViewController {
         super.viewDidLoad()
     }
 
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return [.Portrait]
+    }
+    
     @IBAction func showViewer(sender: AnyObject) {
         
         guard let view = sender as? UIView else { return }
