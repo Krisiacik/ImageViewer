@@ -37,9 +37,9 @@ Features:
 
 */
 
-extension UIViewController {
+public extension UIViewController {
     
-    func presentImageViewer(imageViewer: ImageViewer, completion: (Void -> Void)? = {}) {
+    public func presentImageViewer(imageViewer: ImageViewer, completion: (Void -> Void)? = {}) {
         self.presentViewController(imageViewer, animated: true, completion: completion)
     }
 }
