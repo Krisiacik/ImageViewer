@@ -7,10 +7,10 @@
 //
 
 import Foundation
-
 import UIKit
 
 class ImageViewerSwipeToDismissTransition: NSObject, UIViewControllerAnimatedTransitioning {
+    
     private var verticalTouchPoint: CGFloat = 0
     private var targetOffset: CGFloat = 0
     private var verticalVelocity: CGFloat = 0
@@ -21,7 +21,8 @@ class ImageViewerSwipeToDismissTransition: NSObject, UIViewControllerAnimatedTra
         self.verticalVelocity = verticalVelocity
     }
     
-    // MARK: UIViewControllerAnimatedTransitioning
+    // MARK: - UIViewControllerAnimatedTransitioning
+
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return NSTimeInterval(fabs(targetOffset - verticalTouchPoint) / fabs(verticalVelocity))
     }
@@ -35,7 +36,7 @@ class ImageViewerSwipeToDismissTransition: NSObject, UIViewControllerAnimatedTra
                 verticalVelocity: verticalVelocity,
                 completion: { (finished) -> Void in
                     transitionContext.completeTransition(finished)
-                })
+            })
         }
     }
 }

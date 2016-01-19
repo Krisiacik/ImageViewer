@@ -9,13 +9,15 @@
 import UIKit
 
 class ImageViewerDismissTransition: NSObject, UIViewControllerAnimatedTransitioning {
+    
     private let duration: NSTimeInterval
     
     init(duration: NSTimeInterval) {
         self.duration = duration
     }
     
-    // MARK: UIViewControllerAnimatedTransitioning
+    // MARK: - UIViewControllerAnimatedTransitioning
+
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return self.duration
     }
