@@ -155,8 +155,8 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         
         let closeButtonAssets = configuration.closeButtonAssets
         
-        self.closeButton.setBackgroundImage(closeButtonAssets.normalAsset, forState: UIControlState.Normal)
-        self.closeButton.setBackgroundImage(closeButtonAssets.highlightedAsset, forState: UIControlState.Highlighted)
+        self.closeButton.setImage(closeButtonAssets.normalAsset, forState: UIControlState.Normal)
+        self.closeButton.setImage(closeButtonAssets.highlightedAsset, forState: UIControlState.Highlighted)
         self.closeButton.alpha = 0.0
     }
     
@@ -410,8 +410,8 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             }, completion: { (finished) -> Void in
                 
                 if finished {
-                    self.applicationWindow!.windowLevel = UIWindowLevelNormal
-
+                    self.applicationWindow!.windowLevel = UIWindowLevelStatusBar + 1
+                    
                     self.isAnimating = false
                     self.isSwipingToDismiss = false
                     self.dynamicTransparencyActive = false
@@ -510,17 +510,14 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             let distanceToEdge = (self.scrollView.bounds.height / 2) + (self.imageView.bounds.height / 2)
             
             self.overlayView.alpha = 1 - fabs(self.scrollView.contentOffset.y / distanceToEdge)
-            
             self.closeButton.alpha = 1 - fabs(self.scrollView.contentOffset.y / distanceToEdge) * transparencyMultiplier
-            
-            
             
             let newY = CGFloat(closeButtonPadding) - abs(self.scrollView.contentOffset.y / distanceToEdge) * velocityMultiplier
             self.closeButton.frame = CGRect(origin: CGPoint(x: self.closeButton.frame.origin.x, y: newY), size: self.closeButton.frame.size)
         }
     }
     
-    // MARK: - Utilitity
+    // MARK: - Utility
     
     private func contentCenter(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGPoint {
         
