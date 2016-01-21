@@ -510,17 +510,14 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             let distanceToEdge = (self.scrollView.bounds.height / 2) + (self.imageView.bounds.height / 2)
             
             self.overlayView.alpha = 1 - fabs(self.scrollView.contentOffset.y / distanceToEdge)
-            
             self.closeButton.alpha = 1 - fabs(self.scrollView.contentOffset.y / distanceToEdge) * transparencyMultiplier
-            
-            
             
             let newY = CGFloat(closeButtonPadding) - abs(self.scrollView.contentOffset.y / distanceToEdge) * velocityMultiplier
             self.closeButton.frame = CGRect(origin: CGPoint(x: self.closeButton.frame.origin.x, y: newY), size: self.closeButton.frame.size)
         }
     }
     
-    // MARK: - Utilitity
+    // MARK: - Utility
     
     private func contentCenter(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGPoint {
         
