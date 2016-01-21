@@ -155,8 +155,8 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         
         let closeButtonAssets = configuration.closeButtonAssets
         
-        self.closeButton.setBackgroundImage(closeButtonAssets.normalAsset, forState: UIControlState.Normal)
-        self.closeButton.setBackgroundImage(closeButtonAssets.highlightedAsset, forState: UIControlState.Highlighted)
+        self.closeButton.setImage(closeButtonAssets.normalAsset, forState: UIControlState.Normal)
+        self.closeButton.setImage(closeButtonAssets.highlightedAsset, forState: UIControlState.Highlighted)
         self.closeButton.alpha = 0.0
     }
     
