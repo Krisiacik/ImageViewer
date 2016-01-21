@@ -410,8 +410,8 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             }, completion: { (finished) -> Void in
                 
                 if finished {
-                    self.applicationWindow!.windowLevel = UIWindowLevelNormal
-
+                    self.applicationWindow!.windowLevel = UIWindowLevelStatusBar + 1
+                    
                     self.isAnimating = false
                     self.isSwipingToDismiss = false
                     self.dynamicTransparencyActive = false
