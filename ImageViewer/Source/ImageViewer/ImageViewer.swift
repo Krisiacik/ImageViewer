@@ -53,12 +53,24 @@ public struct ButtonStateAssets {
     
     public let normalAsset: UIImage
     public let highlightedAsset: UIImage?
+    
+    public init(normalAsset: UIImage, highlightedAsset: UIImage?) {
+        
+        self.normalAsset = normalAsset
+        self.highlightedAsset = highlightedAsset
+    }
 }
 
 public struct ImageViewerConfiguration {
     
     public let imageSize: CGSize
     public let closeButtonAssets: ButtonStateAssets
+    
+    public init(imageSize: CGSize, closeButtonAssets: ButtonStateAssets) {
+        
+        self.imageSize = imageSize
+        self.closeButtonAssets = closeButtonAssets
+    }
 }
 
 public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
