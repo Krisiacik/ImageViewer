@@ -53,24 +53,12 @@ public struct ButtonStateAssets {
     
     public let normalAsset: UIImage
     public let highlightedAsset: UIImage?
-    
-    public init(normalAsset: UIImage, highlightedAsset: UIImage?) {
-        
-        self.normalAsset = normalAsset
-        self.highlightedAsset = highlightedAsset
-    }
 }
 
 public struct ImageViewerConfiguration {
     
     public let imageSize: CGSize
     public let closeButtonAssets: ButtonStateAssets
-    
-    public init(imageSize: CGSize, closeButtonAssets: ButtonStateAssets) {
-        
-        self.imageSize = imageSize
-        self.closeButtonAssets = closeButtonAssets
-    }
 }
 
 public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
@@ -156,8 +144,8 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         
         let closeButtonAssets = configuration.closeButtonAssets
         
-        closeButton.setBackgroundImage(closeButtonAssets.normalAsset, forState: UIControlState.Normal)
-        closeButton.setBackgroundImage(closeButtonAssets.highlightedAsset, forState: UIControlState.Highlighted)
+        closeButton.setImage(closeButtonAssets.normalAsset, forState: UIControlState.Normal)
+        closeButton.setImage(closeButtonAssets.highlightedAsset, forState: UIControlState.Highlighted)
         closeButton.alpha = 0.0
     }
     
@@ -411,8 +399,8 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             }, completion: { (finished) -> Void in
                 
                 if finished {
-                    self.applicationWindow!.windowLevel = UIWindowLevelNormal
-
+                    self.applicationWindow!.windowLevel = UIWindowLevelStatusBar + 1
+                    
                     self.isAnimating = false
                     self.isSwipingToDismiss = false
                     self.dynamicTransparencyActive = false
@@ -510,15 +498,15 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             
             let distanceToEdge = (scrollView.bounds.height / 2) + (imageView.bounds.height / 2)
             
-            overlayView.alpha = 1 - fabs(scrollView.contentOffset.y / distanceToEdge)
-            closeButton.alpha = 1 - fabs(scrollView.contentOffset.y / distanceToEdge) * transparencyMultiplier
+            overlayView.alpha = 1 - fabs(self.scrollView.contentOffset.y / distanceToEdge)
+            closeButton.alpha = 1 - fabs(self.scrollView.contentOffset.y / distanceToEdge) * transparencyMultiplier
             
-            let newY = CGFloat(closeButtonPadding) - abs(scrollView.contentOffset.y / distanceToEdge) * velocityMultiplier
-            closeButton.frame = CGRect(origin: CGPoint(x: closeButton.frame.origin.x, y: newY), size: closeButton.frame.size)
+            let newY = CGFloat(closeButtonPadding) - abs(self.scrollView.contentOffset.y / distanceToEdge) * velocityMultiplier
+            closeButton.frame = CGRect(origin: CGPoint(x: self.closeButton.frame.origin.x, y: newY), size: self.closeButton.frame.size)
         }
     }
     
-    // MARK: - Utilitity
+    // MARK: - Utility
     
     private func contentCenter(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGPoint {
         
