@@ -20,16 +20,16 @@ How it works:
 - Attaches itself as a child viewcontroller to the root viewcontroller of the key window.
 - displays itself in fullscreen (nothing is visible at that point, but it's there, trust me...)
 - makes a screenshot of the parent node (can be any UIView subclass really, but a UIImageView is the most logical choice)
-- puts this screnshot into an imageview matchig the position and size of the parent node.
+- puts this screenshot into an imageview matching the position and size of the parent node.
 - sets the target size and position for the imageview to aspect fit size and centered while kicking in the black overlay.
 - animates this imageview into the scrollview (that will serve as zooming canvas) reaching final position and size.
-- tries to get a full-sized version of the image, if succesful, replaces the screenhot with that image.
+- tries to get a full-sized version of the image, if successful, replaces the screenshot with that image.
 - dismiss either with close button, or "swipe up/down" gesture.
 - if closed, image is animated back to it's original position in whatever controller that invoked this image viewer controller.
 
 Features:
 
-- double tap to toggle betweeen aspect fit & aspect fill zoom factor.
+- double tap to toggle between aspect fit & aspect fill zoom factor.
 - manual pinch to zoom up to 4x the size of full-sized image
 - rotation support
 - swipe to dismiss
@@ -115,7 +115,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     public var showCompletionBlock: (Void -> Void)? //executed as the last step after all the show animations.
     public var closeButtonActionInitiationBlock: (Void -> Void)? //executed as the first step before the button's close action starts.
     public var closeButtonActionCompletionBlock: (Void -> Void)? //executed as the last step for close button's close action.
-    public var swipeToDismissInitiationBlock: (Void -> Void)? //executed as the fist step for swipe to dismiss action.
+    public var swipeToDismissInitiationBlock: (Void -> Void)? //executed as the first step for swipe to dismiss action.
     public var swipeToDismissCompletionBlock: (Void -> Void)? //executed as the last step for swipe to dismiss action.
     public var dismissCompletionBlock: (Void -> Void)? //executed as the last step when the ImageViewer is dismissed (either via the close button, or swipe)
     
@@ -522,7 +522,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     
     private func contentCenter(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGPoint {
         
-        // When the zoom scale changes i.e. the image is zoomed in our out, the hypothetical center
+        // When the zoom scale changes i.e. the image is zoomed in or out, the hypothetical center
         // of content view changes too. But the default Apple implementation is keeping the last center
         // value which doesn't make much sense. If the image ratio is not matching the screen 
         // ratio, there will be some empty space horizontaly or verticaly. This needs to be calculated
