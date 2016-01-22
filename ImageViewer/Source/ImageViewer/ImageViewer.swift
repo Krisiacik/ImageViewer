@@ -498,11 +498,11 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             
             let distanceToEdge = (scrollView.bounds.height / 2) + (imageView.bounds.height / 2)
             
-            overlayView.alpha = 1 - fabs(self.scrollView.contentOffset.y / distanceToEdge)
-            closeButton.alpha = 1 - fabs(self.scrollView.contentOffset.y / distanceToEdge) * transparencyMultiplier
+            overlayView.alpha = 1 - fabs(scrollView.contentOffset.y / distanceToEdge)
+            closeButton.alpha = 1 - fabs(scrollView.contentOffset.y / distanceToEdge) * transparencyMultiplier
             
-            let newY = CGFloat(closeButtonPadding) - abs(self.scrollView.contentOffset.y / distanceToEdge) * velocityMultiplier
-            closeButton.frame = CGRect(origin: CGPoint(x: self.closeButton.frame.origin.x, y: newY), size: self.closeButton.frame.size)
+            let newY = CGFloat(closeButtonPadding) - abs(scrollView.contentOffset.y / distanceToEdge) * velocityMultiplier
+            closeButton.frame = CGRect(origin: CGPoint(x: closeButton.frame.origin.x, y: newY), size: closeButton.frame.size)
         }
     }
     
