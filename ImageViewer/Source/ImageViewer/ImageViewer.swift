@@ -40,7 +40,7 @@ Features:
 public extension UIViewController {
     
     public func presentImageViewer(imageViewer: ImageViewer, completion: (Void -> Void)? = {}) {
-        self.presentViewController(imageViewer, animated: true, completion: completion)
+        presentViewController(imageViewer, animated: true, completion: completion)
     }
 }
 
@@ -75,15 +75,14 @@ public struct ImageViewerConfiguration {
 
 public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
     
-    @IBOutlet private var scrollView: UIScrollView!
-    @IBOutlet private var overlayView: UIView!
-    @IBOutlet private var closeButton: UIButton!
+    private var scrollView: UIScrollView!
+    private var overlayView: UIView!
+    private var closeButton: UIButton!
     
     private var imageView = UIImageView()
     
     private var applicationWindow: UIWindow? {
-        if let window = UIApplication.sharedApplication().delegate?.window { return window }
-        return nil
+        return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 }
     }
     
     private var parentViewFrameInOurCoordinateSystem = CGRectZero
@@ -122,7 +121,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     private let doubleTapRecognizer = UITapGestureRecognizer()
     private let panGestureRecognizer = UIPanGestureRecognizer()
     
-    // MARK: - Dealloc
+    // MARK: - Deinit
     
     deinit {
         scrollView.removeObserver(self, forKeyPath: "contentOffset")
@@ -136,8 +135,8 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         self.configuration = configuration
         self.displacedView = displacedView
         
-        self.presentTransition = ImageViewerPresentTransition(duration: self.showDuration)
-        self.dismissTransition = ImageViewerDismissTransition(duration: self.dismissDuration)
+        self.presentTransition = ImageViewerPresentTransition(duration: showDuration)
+        self.dismissTransition = ImageViewerDismissTransition(duration: dismissDuration)
         self.swipeToDismissTransition = ImageViewerSwipeToDismissTransition()
         super.init(nibName: nil, bundle: nil)
 
@@ -167,7 +166,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         doubleTapRecognizer.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(doubleTapRecognizer)
         panGestureRecognizer.addTarget(self, action: "scrollViewDidPan:")
-        view.addGestureRecognizer(self.panGestureRecognizer)
+        view.addGestureRecognizer(panGestureRecognizer)
     }
     
     private func configureImageView() {
@@ -175,7 +174,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         parentViewFrameInOurCoordinateSystem = CGRectIntegral(applicationWindow!.convertRect(displacedView.bounds, fromView: displacedView))
         
         imageView.frame = parentViewFrameInOurCoordinateSystem
-        imageView.contentMode = UIViewContentMode.ScaleAspectFit
+        imageView.contentMode = .ScaleAspectFit
         view.addSubview(imageView)
         
         UIGraphicsBeginImageContextWithOptions(displacedView.bounds.size, true, UIScreen.mainScreen().scale)
@@ -195,11 +194,11 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     }
     
     // MARK: - View Lifecycle
+    
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
         shouldRotate = true
     }
-    
     
     public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -252,6 +251,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     }
 
     // MARK: UIViewControllerTransitioningDelegate
+    
     public func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return presentTransition
     }
@@ -262,7 +262,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     
     // MARK: - Animations
     
-    @IBAction private func close(sender: AnyObject) {
+    private func close(sender: AnyObject) {
         presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
