@@ -82,8 +82,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     private var imageView = UIImageView()
     
     private var applicationWindow: UIWindow? {
-        if let window = UIApplication.sharedApplication().delegate?.window { return window }
-        return nil
+        return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 }
     }
     
     private var parentViewFrameInOurCoordinateSystem = CGRectZero
