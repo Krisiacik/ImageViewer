@@ -19,7 +19,7 @@ class ImageViewerPresentTransition: NSObject, UIViewControllerAnimatedTransition
     // MARK: - UIViewControllerAnimatedTransitioning
 
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        return self.duration
+        return duration
     }
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
@@ -30,7 +30,7 @@ class ImageViewerPresentTransition: NSObject, UIViewControllerAnimatedTransition
         container?.addSubview(toViewController.view)
         
         if let imageViewer = toViewController as? ImageViewer {
-            imageViewer.showAnimation(self.duration, completion: {(finished) -> Void in
+            imageViewer.showAnimation(duration, completion: {(finished) -> Void in
                 transitionContext.completeTransition(finished)
             })
         }

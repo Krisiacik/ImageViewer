@@ -19,14 +19,14 @@ class ImageViewerDismissTransition: NSObject, UIViewControllerAnimatedTransition
     // MARK: - UIViewControllerAnimatedTransitioning
 
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        return self.duration
+        return duration
     }
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
         let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)!
         
         if let imageViewer = fromViewController as? ImageViewer {
-            imageViewer.closeAnimation(self.duration, completion: {(finished) -> Void in
+            imageViewer.closeAnimation(duration, completion: {(finished) -> Void in
                 transitionContext.completeTransition(finished)
             })
         }
