@@ -7,7 +7,7 @@
 [![Platforms iOS](https://img.shields.io/badge/Platforms-iOS-lightgray.svg?style=flat)](https://developer.apple.com/swift/)
 [![License MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat)](https://opensource.org/licenses/MIT)
 
-ImageViewer is a library that enables a user to visualize an image in fullscreen. Besides the typical pinch and double tap to zoom, we also provide a vertical swipe to dismiss. Finally, we try to mimic the displacement of the image from its current container into fullscreen, this feature being its main selling point. In our context, you can imagine an image as part of an article and when it's tapped, the image is animated into fullscreen.
+ImageViewer is a library that enables a user to present an image in fullscreen. Besides the typical pinch and double tap to zoom, we also provide a vertical swipe to dismiss. Finally, we try to mimic the displacement of the image from its current container into fullscreen, this feature being its main selling point. In our context, you can imagine an image as part of an article and when it's tapped, the image is animated into fullscreen.
 
 ![](Documentation/preview.gif)
 
@@ -52,7 +52,7 @@ viewController.presentImageViewer(imageViewer)
 #### Roadmap 
 
 - [X] Setup Travis
-- [ ] Clean up internal logic (refactoring mostly)
+- [X] Clean up internal logic (refactoring mostly)
 - [X] Remove the XIB file and create the UI with code
 - [X] ~~Use UITraitCollection for rotation~~. `traitCollectionDidChange` is not called if only Portrait is enabled at a project configuration level
 - Investigation
