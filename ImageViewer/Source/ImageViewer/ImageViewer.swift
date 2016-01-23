@@ -262,7 +262,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     
     // MARK: - Animations
     
-    @IBAction private func close(sender: AnyObject) {
+    private func close(sender: AnyObject) {
         presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
