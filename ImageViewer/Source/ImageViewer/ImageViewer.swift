@@ -40,7 +40,7 @@ Features:
 public extension UIViewController {
     
     public func presentImageViewer(imageViewer: ImageViewer, completion: (Void -> Void)? = {}) {
-        self.presentViewController(imageViewer, animated: true, completion: completion)
+        presentViewController(imageViewer, animated: true, completion: completion)
     }
 }
 
@@ -136,8 +136,8 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         self.configuration = configuration
         self.displacedView = displacedView
         
-        self.presentTransition = ImageViewerPresentTransition(duration: self.showDuration)
-        self.dismissTransition = ImageViewerDismissTransition(duration: self.dismissDuration)
+        self.presentTransition = ImageViewerPresentTransition(duration: showDuration)
+        self.dismissTransition = ImageViewerDismissTransition(duration: dismissDuration)
         self.swipeToDismissTransition = ImageViewerSwipeToDismissTransition()
         super.init(nibName: nil, bundle: nil)
 
