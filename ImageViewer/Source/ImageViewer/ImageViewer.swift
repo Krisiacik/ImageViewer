@@ -75,9 +75,9 @@ public struct ImageViewerConfiguration {
 
 public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
     
-    @IBOutlet private var scrollView: UIScrollView!
-    @IBOutlet private var overlayView: UIView!
-    @IBOutlet private var closeButton: UIButton!
+    private var scrollView: UIScrollView!
+    private var overlayView: UIView!
+    private var closeButton: UIButton!
     
     private var imageView = UIImageView()
     
