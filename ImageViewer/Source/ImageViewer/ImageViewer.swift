@@ -166,7 +166,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         doubleTapRecognizer.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(doubleTapRecognizer)
         panGestureRecognizer.addTarget(self, action: "scrollViewDidPan:")
-        view.addGestureRecognizer(self.panGestureRecognizer)
+        view.addGestureRecognizer(panGestureRecognizer)
     }
     
     private func configureImageView() {
@@ -174,7 +174,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         parentViewFrameInOurCoordinateSystem = CGRectIntegral(applicationWindow!.convertRect(displacedView.bounds, fromView: displacedView))
         
         imageView.frame = parentViewFrameInOurCoordinateSystem
-        imageView.contentMode = UIViewContentMode.ScaleAspectFit
+        imageView.contentMode = .ScaleAspectFit
         view.addSubview(imageView)
         
         UIGraphicsBeginImageContextWithOptions(displacedView.bounds.size, true, UIScreen.mainScreen().scale)
@@ -199,7 +199,6 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
         shouldRotate = true
     }
-    
     
     public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
