@@ -11,29 +11,31 @@ import AVFoundation
 
 /*
 
+Features:
+
+- double tap to toggle betweeen aspect fit & aspect fill zoom factor.
+- manual pinch to zoom up to approx. 4x the size of full-sized image
+- rotation support
+- swipe to dismiss
+- initiation and completion blocks to support a case where the original image node should be hidden or unhidden alongside show and dismiss animations.
+
 Usage:
 
 - Initialize the VC, set optional initiation and completion blocks, and present by calling "presentImageViewer".
 
 How it works:
 
-- Attaches itself as a child viewcontroller to the root viewcontroller of the key window.
-- displays itself in fullscreen (nothing is visible at that point, but it's there, trust me...)
-- makes a screenshot of the parent node (can be any UIView subclass really, but a UIImageView is the most logical choice)
-- puts this screenshot into an imageview matching the position and size of the parent node.
-- sets the target size and position for the imageview to aspect fit size and centered while kicking in the black overlay.
-- animates this imageview into the scrollview (that will serve as zooming canvas) reaching final position and size.
-- tries to get a full-sized version of the image, if successful, replaces the screenshot with that image.
-- dismiss either with close button, or "swipe up/down" gesture.
-- if closed, image is animated back to it's original position in whatever controller that invoked this image viewer controller.
-
-Features:
-
-- double tap to toggle between aspect fit & aspect fill zoom factor.
-- manual pinch to zoom up to 4x the size of full-sized image
-- rotation support
-- swipe to dismiss
-- initiation and completion blocks to support a case where the original image node should be hidden or unhidden alongside show and dismiss animations.
+- Gets presented modaly via convenience UIViewControler extension, using custom modal presentation that is enforced internally.
+- Displays itself in full screen (nothing is visible at that point, but it's there, trust me...)
+- Makes a screenshot of the displaced view that can be any UIView subclass really, but UIImageView is the most probable choice.
+- Puts this screenshot into a new UIImageView and matches its position and size to the displaced view.
+- Sets the target size and position for the UIImageView to aspectFit size and centered while kicking in the black overlay.
+- Animates the image view into the scroll view (that serves as zooming canvas) and reaches final position and size.
+- Immediately tries to get a full-sized version of the image from imageProvider.
+- If successful, replaces the screenshot in the image view with probably a higher-res image.
+- Gets dismissed either via Close button, or via "swipe up/down" gesture.
+- While being "closed", image is animated back to it's "original" position which is a rect that matches to the displaced view's position
+which overall gives us the illusion of the UI element returning to its original place.
 
 */
 
