@@ -15,8 +15,6 @@ class ImageViewerPresentTransition: NSObject, UIViewControllerAnimatedTransition
     init(duration: NSTimeInterval) {
         self.duration = duration
     }
-    
-    // MARK: - UIViewControllerAnimatedTransitioning
 
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return duration

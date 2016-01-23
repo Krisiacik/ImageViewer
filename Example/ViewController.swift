@@ -37,7 +37,7 @@ class ViewController: UIViewController {
         
         let size = CGSize(width: 1920, height: 1080)
         
-        let buttonsAssets = ButtonStateAssets(normalAsset: UIImage(named: "close_normal")!, highlightedAsset: UIImage(named: "close_highlighted")!)
+        let buttonsAssets = CloseButtonAssets(normal: UIImage(named: "close_normal")!, highlighted: UIImage(named: "close_highlighted")!)
         
         let configuration = ImageViewerConfiguration(imageSize: size, closeButtonAssets: buttonsAssets)
         self.imagePreviewer = ImageViewer(imageProvider: provider, configuration: configuration, displacedView: view)

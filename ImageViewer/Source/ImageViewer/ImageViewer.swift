@@ -13,21 +13,21 @@ import AVFoundation
 
 Features:
 
-- double tap to toggle betweeen aspect fit & aspect fill zoom factor.
+- double tap to toggle betweeen Aspect Fit & Aspect Fill zoom factor
 - manual pinch to zoom up to approx. 4x the size of full-sized image
 - rotation support
 - swipe to dismiss
-- initiation and completion blocks to support a case where the original image node should be hidden or unhidden alongside show and dismiss animations.
+- initiation and completion blocks to support a case where the original image node should be hidden or unhidden alongside show and dismiss animations
 
 Usage:
 
-- Initialize the VC, set optional initiation and completion blocks, and present by calling "presentImageViewer".
+- Initialize ImageViewer, set optional initiation and completion blocks, and present by calling "presentImageViewer".
 
 How it works:
 
-- Gets presented modaly via convenience UIViewControler extension, using custom modal presentation that is enforced internally.
+- Gets presented modally via convenience UIViewControler extension, using custom modal presentation that is enforced internally.
 - Displays itself in full screen (nothing is visible at that point, but it's there, trust me...)
-- Makes a screenshot of the displaced view that can be any UIView subclass really, but UIImageView is the most probable choice.
+- Makes a screenshot of the displaced view that can be any UIView (or subclass) really, but UIImageView is the most probable choice.
 - Puts this screenshot into a new UIImageView and matches its position and size to the displaced view.
 - Sets the target size and position for the UIImageView to aspectFit size and centered while kicking in the black overlay.
 - Animates the image view into the scroll view (that serves as zooming canvas) and reaches final position and size.
@@ -51,24 +51,18 @@ public protocol ImageProvider {
     func provideImage(completion: UIImage? -> Void)
 }
 
-public struct ButtonStateAssets {
+public struct CloseButtonAssets {
     
-    public let normalAsset: UIImage
-    public let highlightedAsset: UIImage?
-    
-    public init(normalAsset: UIImage, highlightedAsset: UIImage?) {
-        
-        self.normalAsset = normalAsset
-        self.highlightedAsset = highlightedAsset
-    }
+    public let normal: UIImage
+    public let highlighted: UIImage?
 }
 
 public struct ImageViewerConfiguration {
     
     public let imageSize: CGSize
-    public let closeButtonAssets: ButtonStateAssets
+    public let closeButtonAssets: CloseButtonAssets
     
-    public init(imageSize: CGSize, closeButtonAssets: ButtonStateAssets) {
+    public init(imageSize: CGSize, closeButtonAssets: CloseButtonAssets) {
         
         self.imageSize = imageSize
         self.closeButtonAssets = closeButtonAssets
@@ -77,25 +71,30 @@ public struct ImageViewerConfiguration {
 
 public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
     
+    //UI
     private var scrollView: UIScrollView!
     private var overlayView: UIView!
     private var closeButton: UIButton!
-    
     private var imageView = UIImageView()
     
+    private let displacedView: UIView
     private var applicationWindow: UIWindow? {
         return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 }
     }
     
+    //LOCAL STATE
     private var parentViewFrameInOurCoordinateSystem = CGRectZero
     private var isAnimating = false
     private var shouldRotate = false
     private var isSwipingToDismiss = false
     private var dynamicTransparencyActive = false
+    private var isPortraitOnly = false
+    private let imageProvider: ImageProvider
+    
+    //LOCAL CONFIG
+    private let configuration: ImageViewerConfiguration
     private var initialCloseButtonOrigin = CGPointZero
     private var closeButtonSize = CGSize(width: 50, height: 50)
-    private var isPortraitOnly = false
-
     private let closeButtonPadding         = 8.0
     private let showDuration               = 0.25
     private let dismissDuration            = 0.25
@@ -103,15 +102,13 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     private let hideCloseButtonDuration    = 0.05
     private let zoomDuration               = 0.2
     private let thresholdVelocity: CGFloat = 1000 // It works as a threshold.
-    
-    private let imageProvider: ImageProvider
-    private let configuration: ImageViewerConfiguration
-    private let displacedView: UIView
-    
+
+    //TRANSITIONS
     private let presentTransition: ImageViewerPresentTransition
     private let dismissTransition: ImageViewerDismissTransition
     private let swipeToDismissTransition: ImageViewerSwipeToDismissTransition
     
+    //LIFE CYCLE BLOCKS
     public var showInitiationBlock: (Void -> Void)? //executed right before the image animation into its final position starts.
     public var showCompletionBlock: (Void -> Void)? //executed as the last step after all the show animations.
     public var closeButtonActionInitiationBlock: (Void -> Void)? //executed as the first step before the button's close action starts.
@@ -120,6 +117,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     public var swipeToDismissCompletionBlock: (Void -> Void)? //executed as the last step for swipe to dismiss action.
     public var dismissCompletionBlock: (Void -> Void)? //executed as the last step when the ImageViewer is dismissed (either via the close button, or swipe)
     
+    //INTERACTIONS
     private let doubleTapRecognizer = UITapGestureRecognizer()
     private let panGestureRecognizer = UIPanGestureRecognizer()
     
@@ -140,6 +138,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         self.presentTransition = ImageViewerPresentTransition(duration: showDuration)
         self.dismissTransition = ImageViewerDismissTransition(duration: dismissDuration)
         self.swipeToDismissTransition = ImageViewerSwipeToDismissTransition()
+        
         super.init(nibName: nil, bundle: nil)
 
         transitioningDelegate = self
@@ -157,8 +156,8 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         
         let closeButtonAssets = configuration.closeButtonAssets
         
-        closeButton.setImage(closeButtonAssets.normalAsset, forState: UIControlState.Normal)
-        closeButton.setImage(closeButtonAssets.highlightedAsset, forState: UIControlState.Highlighted)
+        closeButton.setImage(closeButtonAssets.normal, forState: UIControlState.Normal)
+        closeButton.setImage(closeButtonAssets.highlighted, forState: UIControlState.Highlighted)
         closeButton.alpha = 0.0
     }
     
@@ -167,6 +166,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         doubleTapRecognizer.addTarget(self, action: "scrollViewDidDoubleTap:")
         doubleTapRecognizer.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(doubleTapRecognizer)
+        
         panGestureRecognizer.addTarget(self, action: "scrollViewDidPan:")
         view.addGestureRecognizer(panGestureRecognizer)
     }
@@ -252,7 +252,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         configureScrollView()
     }
 
-    // MARK: UIViewControllerTransitioningDelegate
+    // MARK: - Transitioning Delegate
     
     public func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return presentTransition
@@ -264,7 +264,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     
     // MARK: - Animations
     
-    @IBAction private func close(sender: AnyObject) {
+    func close(sender: AnyObject) {
         presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -374,8 +374,8 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     
     func swipeToDismissAnimation(withVerticalTouchPoint verticalTouchPoint: CGFloat,  targetOffset: CGFloat, verticalVelocity: CGFloat, completion: ((Bool) -> Void)?) {
         
-        // in units of "vertical velocity". for example if we have a vertical velocity of 50 per second
-        // and the distance to travel is 175, then our spring velocity is 3.5. I.e. we will travel 3.5 units in 1 second.
+        // in units of "vertical velocity". for example if we have a vertical velocity of 50 units (which are points really) per second
+        // and the distance to travel is 175 units, then our spring velocity is 3.5. I.e. we will travel 3.5 units in 1 second.
         let springVelocity = fabs(verticalVelocity / (targetOffset - verticalTouchPoint))
         
         //how much time it will take to travel the remaining distance given the above speed.
@@ -422,7 +422,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         })
     }
     
-    // MARK: - Interaction Handling (UIScrollViewDelegate)
+    // MARK: - Interaction Handling
     
     func scrollViewDidDoubleTap(recognizer: UITapGestureRecognizer) {
         

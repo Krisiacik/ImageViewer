@@ -20,8 +20,6 @@ class ImageViewerSwipeToDismissTransition: NSObject, UIViewControllerAnimatedTra
         self.targetOffset = targetOffset
         self.verticalVelocity = verticalVelocity
     }
-    
-    // MARK: - UIViewControllerAnimatedTransitioning
 
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return NSTimeInterval(fabs(targetOffset - verticalTouchPoint) / fabs(verticalVelocity))
