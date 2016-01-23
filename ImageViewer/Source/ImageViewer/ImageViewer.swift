@@ -121,7 +121,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     private let doubleTapRecognizer = UITapGestureRecognizer()
     private let panGestureRecognizer = UIPanGestureRecognizer()
     
-    // MARK: - Dealloc
+    // MARK: - Deinit
     
     deinit {
         scrollView.removeObserver(self, forKeyPath: "contentOffset")
@@ -194,6 +194,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     }
     
     // MARK: - View Lifecycle
+    
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
         shouldRotate = true
@@ -251,6 +252,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     }
 
     // MARK: UIViewControllerTransitioningDelegate
+    
     public func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return presentTransition
     }
