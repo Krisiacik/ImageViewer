@@ -14,7 +14,7 @@ ImageViewer is a library that enables a user to present an image in fullscreen. 
 
 #### Setup
 
-Cocoapods:
+CocoaPods:
 
 ```
 # source 'https://github.com/CocoaPods/Specs.git'
