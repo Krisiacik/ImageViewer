@@ -36,6 +36,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     func configureImageView() {
         
         imageView.contentMode = UIViewContentMode.ScaleAspectFit
+        imageView.backgroundColor = UIColor.yellowColor()
         
         if let screenshotImage = screenshot {
             updateImageAndContentSize(screenshotImage)
@@ -50,9 +51,10 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func updateImageAndContentSize(image: UIImage) {
-        
-        imageView.image = image
+
+        scrollView.zoomScale = 1
         let aspectFitSize = aspectFitContentSize(forBoundingSize: UIScreen.mainScreen().bounds.size, contentSize: image.size)
+        imageView.image = image
         imageView.frame.size = aspectFitSize
         self.scrollView.contentSize = aspectFitSize
         imageView.center = scrollView.boundsCenter
@@ -60,13 +62,14 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     
     func configureScrollView() {
         
+        scrollView.backgroundColor = UIColor.greenColor()
         scrollView.delegate = self
         scrollView.decelerationRate = 0.5
         scrollView.contentInset = UIEdgeInsetsZero
         scrollView.contentOffset = CGPointZero
         scrollView.contentSize = imageViewModel.size
         scrollView.minimumZoomScale = 1
-        scrollView.maximumZoomScale = 12
+        scrollView.maximumZoomScale = 4
     }
     
     func createViewHierarchy() {
@@ -87,31 +90,12 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func scrollViewDidZoom(scrollView: UIScrollView) {
-        
-        let center = contentCenter(forBoundingSize: scrollView.bounds.size, contentSize: scrollView.contentSize)
-        
-        imageView.center = center
+
+        imageView.center = contentCenter(forBoundingSize: scrollView.bounds.size, contentSize: scrollView.contentSize)
     }
     
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         
         return imageView
     }
-}
-
-// MARK: - Utility
-
-private func contentCenter(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGPoint {
-    
-    // When the zoom scale changes i.e. the image is zoomed in or out, the hypothetical center
-    // of content view changes too. But the default Apple implementation is keeping the last center
-    // value which doesn't make much sense. If the image ratio is not matching the screen
-    // ratio, there will be some empty space horizontaly or verticaly. This needs to be calculated
-    // so that we can get the correct new center value. When these are added, edges of contentView
-    // are aligned in realtime and always aligned with corners of scrollview.
-    
-    let horizontalOffest = (boundingSize.width > contentSize.width) ? ((boundingSize.width - contentSize.width) * 0.5): 0.0
-    let verticalOffset = (boundingSize.height > contentSize.height) ? ((boundingSize.height - contentSize.height) * 0.5): 0.0
-    
-    return CGPoint(x: contentSize.width * 0.5 + horizontalOffest,  y: contentSize.height * 0.5 + verticalOffset)
 }
