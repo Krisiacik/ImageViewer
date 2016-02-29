@@ -13,5 +13,5 @@ protocol GalleryViewModel {
     var imageViewModels: GalleryImageViewModel { get }
     var headerView: UIView? { get }
     var footerView: UIView? { get }
-    var reloadView: UIView  { get }
+    var reloadView: UIView?  { get }
 }
