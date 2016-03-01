@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     
     @IBAction func showViewer(sender: AnyObject) {
         
-        let screenShotImage = UIImage(named: "1small")
+        let screenShotImage = UIImage(named: "8small")
         let fullSizedImageURL = NSURL(string: "http://buzzerg.com/wp-content/uploads/8589130426979-fresh-and-natural-beauty-of-wallpaper-hd.jpg")!
         
         let imageViewModel = MyGalleryImageViewModel(url: fullSizedImageURL, size: CGSize(width: 320, height: 200))
@@ -80,7 +80,7 @@ class MyGalleryImageViewModel: GalleryImageViewModel {
             dispatch_async(dispatch_get_main_queue()) { () -> Void in
                 
                 //this would idealy fetch from web url or image cache...for the moment let's hardcode the output..
-                let image = UIImage(named: "1")
+                let image = UIImage(named: "8")
                 
                 completion(image)
             }

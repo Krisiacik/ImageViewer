@@ -74,6 +74,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     
     func configureScrollView() {
         
+        scrollView.backgroundColor = UIColor.greenColor()
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
         scrollView.delegate = self
@@ -131,7 +132,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         
         let touchPoint = recognizer.locationOfTouch(0, inView: imageView)
         
-        let aspectFillScale = aspectFillZoomScale(forBoundingSize: rotationAdjustedBounds().size, contentSize: imageView.bounds.size)
+        let aspectFillScale = aspectFillZoomScale(forBoundingSize: scrollView.bounds.size, contentSize: imageView.bounds.size)
         
         if (scrollView.zoomScale == 1.0 || scrollView.zoomScale > aspectFillScale) {
             
