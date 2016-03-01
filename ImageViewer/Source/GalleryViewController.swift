@@ -22,7 +22,7 @@ public class GalleryViewController : UIPageViewController   {
         self.viewModel = viewModel
         datasource = GalleryViewControllerDatasource(viewModel: viewModel)
         
-        super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: nil)
+        super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(int: 10)])
 
         self.dataSource = datasource
         
@@ -41,7 +41,6 @@ public class GalleryViewController : UIPageViewController   {
         closeButton = UIButton()
         closeButton.setImage(UIImage(named: "close_normal"), forState: UIControlState.Normal)
         closeButton.setImage(UIImage(named: "close_highlighted"), forState: UIControlState.Highlighted)
-        closeButton.backgroundColor = UIColor.redColor()
         closeButton.addTarget(self, action: "close", forControlEvents: .TouchUpInside)
         self.view.addSubview(closeButton)
     }
@@ -57,16 +56,6 @@ public class GalleryViewController : UIPageViewController   {
         self.dismissViewControllerAnimated(false, completion: nil)
     }
 }
-
-//extension GalleryViewController {
-//    
-//    convenience init(images: [GalleryImageViewModel], imageProvider: ImageProvider, startIndex: Int) {
-//        
-//        let galleryViewModel = MyGalleryViewModel(images: images, startIndex: startIndex)
-//        
-//        self.init(viewModel: galleryViewModel, imageProvider: imageProvider)
-//    }
-//}
 
 public extension UIViewController {
     
