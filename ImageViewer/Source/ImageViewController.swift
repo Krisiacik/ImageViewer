@@ -10,11 +10,22 @@ import UIKit
 
 class ImageViewController: UIViewController, UIScrollViewDelegate {
     
-    let scrollView = UIScrollView()
-    let screenshot: UIImage?
+    //UI
+    private let scrollView = UIScrollView()
+    private let screenshot: UIImage?
+    private let imageView = UIImageView()
+    var applicationWindow: UIWindow? {
+        return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 }
+    }
+    
+    //MODEL & STATE
     let imageViewModel: GalleryImageViewModel
-    let imageView = UIImageView()
     let index: Int
+    private var isPortraitOnly = false
+    private let zoomDuration = 0.2
+    
+    //INTERACTIONS
+    private let doubleTapRecognizer = UITapGestureRecognizer()
     
     init(screenshot:UIImage?, imageViewModel: GalleryImageViewModel, index: Int) {
         
@@ -26,6 +37,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         
         configureImageView()
         configureScrollView()
+        configureGestureRecognizers()
         createViewHierarchy()
     }
     
@@ -72,6 +84,13 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         scrollView.maximumZoomScale = 4
     }
     
+    func configureGestureRecognizers() {
+        
+        doubleTapRecognizer.addTarget(self, action: "scrollViewDidDoubleTap:")
+        doubleTapRecognizer.numberOfTapsRequired = 2
+        scrollView.addGestureRecognizer(doubleTapRecognizer)
+    }
+    
     func createViewHierarchy() {
         
         scrollView.addSubview(imageView)
@@ -89,6 +108,29 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
     }
     
+    func scrollViewDidDoubleTap(recognizer: UITapGestureRecognizer) {
+        
+        let touchPoint = recognizer.locationOfTouch(0, inView: imageView)
+        
+        let aspectFillScale = aspectFillZoomScale(forBoundingSize: rotationAdjustedBounds().size, contentSize: imageView.bounds.size)
+        
+        if (scrollView.zoomScale == 1.0 || scrollView.zoomScale > aspectFillScale) {
+            
+            let zoomRectangle = zoomRect(ForScrollView: scrollView, scale: aspectFillScale, center: touchPoint)
+            
+            UIView.animateWithDuration(zoomDuration, animations: {
+                
+                self.scrollView.zoomToRect(zoomRectangle, animated: false)
+            })
+        }
+        else  {
+            UIView.animateWithDuration(zoomDuration, animations: {
+                
+                self.scrollView.setZoomScale(1.0, animated: false)
+            })
+        }
+    }
+    
     func scrollViewDidZoom(scrollView: UIScrollView) {
 
         imageView.center = contentCenter(forBoundingSize: scrollView.bounds.size, contentSize: scrollView.contentSize)
@@ -97,5 +139,14 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         
         return imageView
+    }
+    
+    func rotationAdjustedBounds() -> CGRect {
+        guard let window = applicationWindow else { return CGRectZero }
+        guard isPortraitOnly else {
+            return window.bounds
+        }
+        
+        return (UIDevice.currentDevice().orientation.isLandscape) ? CGRect(origin: CGPointZero, size: window.bounds.size.inverted()): window.bounds
     }
 }
