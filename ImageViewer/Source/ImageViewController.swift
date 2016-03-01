@@ -109,6 +109,24 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
     }
     
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        
+        rotate(toBoundingSize: size, transitionCoordinator: coordinator)
+    }
+    
+    func rotate(toBoundingSize boundingSize: CGSize, transitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        
+        coordinator.animateAlongsideTransition({ [weak self] transitionContext in
+            
+            if let imageView = self?.imageView, scrollView = self?.scrollView {
+                
+                imageView.bounds.size = aspectFitContentSize(forBoundingSize: boundingSize, contentSize: imageView.bounds.size)
+                scrollView.zoomScale = 1
+            }
+        }, completion: nil)
+    }
+    
     func scrollViewDidDoubleTap(recognizer: UITapGestureRecognizer) {
         
         let touchPoint = recognizer.locationOfTouch(0, inView: imageView)
