@@ -49,6 +49,7 @@ public extension UIViewController {
 public protocol ImageProvider {
     
     func provideImage(completion: UIImage? -> Void)
+    func provideImage(atIndex index: Int, completion: UIImage? -> Void)
 }
 
 public struct CloseButtonAssets {

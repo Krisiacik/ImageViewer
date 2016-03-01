@@ -17,57 +17,79 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jdg-OI-jGr">
-                                <rect key="frame" x="172" y="20" width="256" height="144"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="256" id="cR1-Av-9Wf"/>
-                                    <constraint firstAttribute="height" constant="144" id="u0n-uo-eUP"/>
-                                </constraints>
-                                <state key="normal" title="Button" image="image_small"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Asb-C9-sGn">
+                                <rect key="frame" x="33" y="33" width="86" height="54"/>
+                                <state key="normal" backgroundImage="1"/>
                                 <connections>
-                                    <action selector="showViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="e6g-m3-fsn"/>
+                                    <action selector="showViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ato-4V-8Nt"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="msT-C2-wTG">
-                                <rect key="frame" x="172" y="436" width="256" height="144"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="144" id="A5O-Ul-Lz1"/>
-                                    <constraint firstAttribute="width" constant="256" id="Wxz-UV-6ts"/>
-                                </constraints>
-                                <state key="normal" title="Button" image="image_small"/>
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vjF-Ww-f3O">
+                                <rect key="frame" x="33" y="96" width="68" height="38"/>
+                                <state key="normal" backgroundImage="2"/>
                                 <connections>
-                                    <action selector="showViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ahi-4i-mt8"/>
+                                    <action selector="showViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="22x-FR-XYg"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Afc-5R-dCh">
-                                <rect key="frame" x="172" y="234" width="256" height="144"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="144" id="6Dl-NX-09W"/>
-                                    <constraint firstAttribute="width" constant="256" id="H9Y-0s-CSS"/>
-                                </constraints>
-                                <state key="normal" title="Button" image="image_small"/>
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ybD-W4-tqi">
+                                <rect key="frame" x="33" y="141" width="105" height="78"/>
+                                <state key="normal" backgroundImage="3"/>
                                 <connections>
-                                    <action selector="showViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eq1-9S-WCA"/>
+                                    <action selector="showViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="uTl-P0-M3X"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CJl-WL-vk9">
+                                <rect key="frame" x="33" y="227" width="47" height="29"/>
+                                <state key="normal" backgroundImage="4"/>
+                                <connections>
+                                    <action selector="showViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1pE-pj-ujc"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZtP-5M-x0L">
+                                <rect key="frame" x="33" y="264" width="163" height="108"/>
+                                <state key="normal" backgroundImage="5"/>
+                                <connections>
+                                    <action selector="showViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sGB-fh-eqg"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fd6-Vz-POJ">
+                                <rect key="frame" x="33" y="380" width="201" height="83"/>
+                                <state key="normal" backgroundImage="6"/>
+                                <connections>
+                                    <action selector="showViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="enz-SV-xd2"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="6" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bne-tn-gLP">
+                                <rect key="frame" x="33" y="471" width="68" height="50"/>
+                                <state key="normal" backgroundImage="7"/>
+                                <connections>
+                                    <action selector="showViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dFP-bf-WXD"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="7" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UDT-vb-Md5">
+                                <rect key="frame" x="167" y="33" width="118" height="167"/>
+                                <state key="normal" backgroundImage="8"/>
+                                <connections>
+                                    <action selector="showViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0k2-cj-RSf"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="Afc-5R-dCh" firstAttribute="leading" secondItem="Jdg-OI-jGr" secondAttribute="leading" id="1Ft-GS-hak"/>
-                            <constraint firstItem="Afc-5R-dCh" firstAttribute="top" secondItem="Jdg-OI-jGr" secondAttribute="bottom" constant="70" id="4UB-CL-3Kt"/>
-                            <constraint firstItem="msT-C2-wTG" firstAttribute="top" secondItem="Afc-5R-dCh" secondAttribute="bottom" constant="58" id="CFj-bn-ACe"/>
-                            <constraint firstItem="Afc-5R-dCh" firstAttribute="leading" secondItem="msT-C2-wTG" secondAttribute="leading" id="LPr-C7-fEO"/>
-                            <constraint firstItem="Jdg-OI-jGr" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="PRW-SS-Zb4"/>
-                            <constraint firstItem="Jdg-OI-jGr" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="pfC-SE-JZ7"/>
-                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="345" y="274"/>
+            <point key="canvasLocation" x="-95" y="150"/>
         </scene>
     </scenes>
     <resources>
-        <image name="image_small" width="256" height="144"/>
+        <image name="1" width="1920" height="1200"/>
+        <image name="2" width="1366" height="768"/>
+        <image name="3" width="500" height="374"/>
+        <image name="4" width="1680" height="1050"/>
+        <image name="5" width="1024" height="681"/>
+        <image name="6" width="618" height="257"/>
+        <image name="7" width="600" height="437"/>
+        <image name="8" width="1024" height="1448"/>
     </resources>
 </document>

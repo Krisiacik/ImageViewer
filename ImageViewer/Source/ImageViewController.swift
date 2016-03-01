@@ -12,14 +12,14 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     
     //UI
     private let scrollView = UIScrollView()
-    private let screenshot: UIImage?
     private let imageView = UIImageView()
     var applicationWindow: UIWindow? {
         return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 }
     }
     
     //MODEL & STATE
-    let imageViewModel: GalleryImageViewModel
+    let imageViewModel: GalleryViewModel
+    let showDisplacedImage: Bool
     let index: Int
     private var isPortraitOnly = false
     private let zoomDuration = 0.2
@@ -27,11 +27,11 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     //INTERACTIONS
     private let doubleTapRecognizer = UITapGestureRecognizer()
     
-    init(screenshot:UIImage?, imageViewModel: GalleryImageViewModel, index: Int) {
-        
-        self.screenshot = screenshot
+    init(imageViewModel: GalleryViewModel, imageIndex: Int, showDisplacedImage: Bool) {
+
         self.imageViewModel = imageViewModel
-        self.index = index
+        self.index = imageIndex
+        self.showDisplacedImage = showDisplacedImage
         
         super.init(nibName: nil, bundle: nil)
         
@@ -50,14 +50,17 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         imageView.contentMode = UIViewContentMode.ScaleAspectFit
         imageView.backgroundColor = UIColor.yellowColor()
         
-        if let screenshotImage = screenshot {
-            updateImageAndContentSize(screenshotImage)
+        if showDisplacedImage {
+            updateImageAndContentSize(imageViewModel.displacedImage)
         }
         
-        imageViewModel.fetchImage {[weak self] image in
+        imageViewModel.fetchImage(self.index) { [weak self] image in
             
-            if let fullSizedImage = image {
-                self?.updateImageAndContentSize(fullSizedImage)
+            dispatch_async(dispatch_get_main_queue()) {
+                
+                if let fullSizedImage = image {
+                    self?.updateImageAndContentSize(fullSizedImage)
+                }
             }
         }
     }
@@ -81,7 +84,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         scrollView.decelerationRate = 0.5
         scrollView.contentInset = UIEdgeInsetsZero
         scrollView.contentOffset = CGPointZero
-        scrollView.contentSize = imageViewModel.size
+        scrollView.contentSize = CGSize(width: 100, height: 100) //FIX THIS
         scrollView.minimumZoomScale = 1
         scrollView.maximumZoomScale = 4
     }
