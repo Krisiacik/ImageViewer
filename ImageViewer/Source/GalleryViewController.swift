@@ -14,8 +14,8 @@ public class GalleryViewController : UIPageViewController   {
     private var closeButton: UIButton!
     private let viewModel: GalleryViewModel
     private let datasource: GalleryViewControllerDatasource
-    private var closeButtonSize              = CGSize(width: 50, height: 50)
-    private let closeButtonPadding: CGFloat  = 8.0
+    private var closeButtonSize = CGSize(width: 50, height: 50)
+    private let closeButtonPadding: CGFloat = 8.0
     
     init(viewModel: GalleryViewModel) {
         

@@ -40,6 +40,8 @@ class PoorManProvider: ImageProvider {
     
     func provideImage(atIndex index: Int, completion: UIImage? -> Void) {
         
+        sleep(3)
+        
         let images = [
             UIImage(named: "1"),
             UIImage(named: "2"),
