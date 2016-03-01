@@ -27,31 +27,21 @@
 		EB1CEBE11C846DEF00BB27B8 /* GalleryImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEBEF991C846962008C1E58 /* GalleryImageViewModel.swift */; };
 		EB1CEBE21C846DEF00BB27B8 /* GalleryViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEBEF9B1C846D17008C1E58 /* GalleryViewControllerDelegate.swift */; };
 		EB1CEBE31C846DEF00BB27B8 /* GalleryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEBEF971C846928008C1E58 /* GalleryViewModel.swift */; };
-		EB1CEBE41C846DEF00BB27B8 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEBEF931C84665B008C1E58 /* ImageViewController.swift */; };
 		EB1CEBE51C846DEF00BB27B8 /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEBEF951C846847008C1E58 /* GalleryViewController.swift */; };
 		EB1CEC161C84A4EE00BB27B8 /* AspectFitSizeFunctionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1CEC151C84A4EE00BB27B8 /* AspectFitSizeFunctionTest.swift */; };
 		EB1CEC181C84A4EE00BB27B8 /* ImageViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7DABE481C12245B00F5BD7B /* ImageViewer.framework */; };
 		EB1CEC1F1C84A54600BB27B8 /* UtilityFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1CEC1E1C84A54600BB27B8 /* UtilityFunctions.swift */; };
-		EB1CEC201C84A54600BB27B8 /* UtilityFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1CEC1E1C84A54600BB27B8 /* UtilityFunctions.swift */; };
 		EB1CEC221C84A64100BB27B8 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1CEC211C84A64100BB27B8 /* UIView.swift */; };
 		EB4DEBC01C84A6FD00D5F897 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1CEC211C84A64100BB27B8 /* UIView.swift */; };
 		EB4DEBC11C84A8B400D5F897 /* UtilityFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1CEC1E1C84A54600BB27B8 /* UtilityFunctions.swift */; };
+		EB6A56CA1C85A19000BBDEF6 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEBEF931C84665B008C1E58 /* ImageViewController.swift */; };
+		EB6A56CD1C85A3AD00BBDEF6 /* UtilityFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1CEC1E1C84A54600BB27B8 /* UtilityFunctions.swift */; };
 		EBEBEF941C84665B008C1E58 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEBEF931C84665B008C1E58 /* ImageViewController.swift */; };
 		EBEBEF961C846847008C1E58 /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEBEF951C846847008C1E58 /* GalleryViewController.swift */; };
 		EBEBEF981C846928008C1E58 /* GalleryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEBEF971C846928008C1E58 /* GalleryViewModel.swift */; };
 		EBEBEF9A1C846962008C1E58 /* GalleryImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEBEF991C846962008C1E58 /* GalleryImageViewModel.swift */; };
 		EBEBEF9C1C846D17008C1E58 /* GalleryViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEBEF9B1C846D17008C1E58 /* GalleryViewControllerDelegate.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		EB1CEC191C84A4EE00BB27B8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C7DABE3F1C12245B00F5BD7B /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C7DABE471C12245B00F5BD7B;
-			remoteInfo = ImageViewer;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		4CB66CD41C18772B002DB91F /* ImageViewerDismissTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewerDismissTransition.swift; sourceTree = "<group>"; };
@@ -269,7 +259,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				EB1CEC1A1C84A4EE00BB27B8 /* PBXTargetDependency */,
 			);
 			name = ImageViewerTests;
 			productName = ImageViewerTests;
@@ -356,13 +345,13 @@
 				C7897CF41C1356C6006447FB /* ImageViewer.swift in Sources */,
 				4CB66CD81C187F9C002DB91F /* ImageViewerSwipeToDismissTransition.swift in Sources */,
 				EB1CEBE51C846DEF00BB27B8 /* GalleryViewController.swift in Sources */,
+				EB6A56CA1C85A19000BBDEF6 /* ImageViewController.swift in Sources */,
 				C7897CE71C1350B7006447FB /* ViewController.swift in Sources */,
 				4CD1C49A1C16099B008D5F84 /* ImageViewerPresentTransition.swift in Sources */,
 				EB1CEBE31C846DEF00BB27B8 /* GalleryViewModel.swift in Sources */,
 				4CD1C49C1C16FF64008D5F84 /* CGPoint.swift in Sources */,
 				EB4DEBC01C84A6FD00D5F897 /* UIView.swift in Sources */,
 				EB1CEBE11C846DEF00BB27B8 /* GalleryImageViewModel.swift in Sources */,
-				EB1CEBE41C846DEF00BB27B8 /* ImageViewController.swift in Sources */,
 				C7897CE51C1350B7006447FB /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -391,20 +380,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB1CEC201C84A54600BB27B8 /* UtilityFunctions.swift in Sources */,
+				EB6A56CD1C85A3AD00BBDEF6 /* UtilityFunctions.swift in Sources */,
 				EB1CEC161C84A4EE00BB27B8 /* AspectFitSizeFunctionTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		EB1CEC1A1C84A4EE00BB27B8 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C7DABE471C12245B00F5BD7B /* ImageViewer */;
-			targetProxy = EB1CEC191C84A4EE00BB27B8 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		C7897CE81C1350B7006447FB /* Main.storyboard */ = {

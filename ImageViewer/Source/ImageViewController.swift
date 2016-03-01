@@ -74,7 +74,8 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     
     func configureScrollView() {
         
-        scrollView.backgroundColor = UIColor.greenColor()
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.showsVerticalScrollIndicator = false
         scrollView.delegate = self
         scrollView.decelerationRate = 0.5
         scrollView.contentInset = UIEdgeInsetsZero
