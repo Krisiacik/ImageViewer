@@ -13,6 +13,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     //UI
     private let scrollView = UIScrollView()
     private let imageView = UIImageView()
+    private let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .White)
     var applicationWindow: UIWindow? {
         return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 }
     }
@@ -23,17 +24,22 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     let index: Int
     private var isPortraitOnly = false
     private let zoomDuration = 0.2
+    weak private var fadeInHandler: ImageFadeInHandler?
     
     //INTERACTIONS
     private let doubleTapRecognizer = UITapGestureRecognizer()
     
-    init(imageViewModel: GalleryViewModel, imageIndex: Int, showDisplacedImage: Bool) {
-
+    init(imageViewModel: GalleryViewModel, imageIndex: Int, showDisplacedImage: Bool, fadeInHandler: ImageFadeInHandler?) {
+        
         self.imageViewModel = imageViewModel
         self.index = imageIndex
         self.showDisplacedImage = showDisplacedImage
+        self.fadeInHandler = fadeInHandler
         
         super.init(nibName: nil, bundle: nil)
+        
+        activityIndicatorView.startAnimating()
+        self.scrollView.addSubview(activityIndicatorView)
         
         configureImageView()
         configureScrollView()
@@ -48,7 +54,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     func configureImageView() {
         
         imageView.contentMode = UIViewContentMode.ScaleAspectFit
-        imageView.backgroundColor = UIColor.yellowColor()
         
         if showDisplacedImage {
             updateImageAndContentSize(imageViewModel.displacedImage)
@@ -66,13 +71,37 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func updateImageAndContentSize(image: UIImage) {
-
-        scrollView.zoomScale = 1
-        let aspectFitSize = aspectFitContentSize(forBoundingSize: UIScreen.mainScreen().bounds.size, contentSize: image.size)
-        imageView.image = image
-        imageView.frame.size = aspectFitSize
-        self.scrollView.contentSize = aspectFitSize
-        imageView.center = scrollView.boundsCenter
+        
+        if imageView.image == nil {
+            
+            scrollView.zoomScale = 1
+            let aspectFitSize = aspectFitContentSize(forBoundingSize: UIScreen.mainScreen().bounds.size, contentSize: image.size)
+            imageView.frame.size = aspectFitSize
+            self.scrollView.contentSize = aspectFitSize
+            imageView.center = scrollView.boundsCenter
+        }
+        
+        if let handler = fadeInHandler where handler.wasPresented(self.index) == false {
+            
+            if self.index != self.imageViewModel.startIndex {
+                
+                activityIndicatorView.stopAnimating()
+                
+                UIView.transitionWithView(self.scrollView, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                    
+                    self.imageView.image = image
+                    
+                    }, completion: { finished in
+                        
+                        handler.imagePresentedAtIndex(self.index)
+                })
+                
+                return
+            }
+        }
+        
+        self.imageView.image = image
+        fadeInHandler?.imagePresentedAtIndex(self.index)
     }
     
     func configureScrollView() {
@@ -106,10 +135,23 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         
         scrollView.frame = self.view.bounds
         imageView.center = scrollView.boundsCenter
+        activityIndicatorView.center = scrollView.boundsCenter
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+//        print("WILL APPEAR \(self.index)")
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+//        print("DID APPEAR \(self.index)")
     }
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
@@ -127,7 +169,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
                 imageView.bounds.size = aspectFitContentSize(forBoundingSize: boundingSize, contentSize: imageView.bounds.size)
                 scrollView.zoomScale = 1
             }
-        }, completion: nil)
+            }, completion: nil)
     }
     
     func scrollViewDidDoubleTap(recognizer: UITapGestureRecognizer) {
@@ -154,7 +196,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func scrollViewDidZoom(scrollView: UIScrollView) {
-
+        
         imageView.center = contentCenter(forBoundingSize: scrollView.bounds.size, contentSize: scrollView.contentSize)
     }
     

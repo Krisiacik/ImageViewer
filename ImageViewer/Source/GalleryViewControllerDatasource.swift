@@ -11,10 +11,12 @@ import UIKit
 class GalleryViewControllerDatasource: NSObject, UIPageViewControllerDataSource {
     
     let viewModel: GalleryViewModel
+    weak var fadeInHandler: ImageFadeInHandler?
 
-    init(viewModel: GalleryViewModel) {
+    init(viewModel: GalleryViewModel, fadeInHandler: ImageFadeInHandler) {
         
         self.viewModel = viewModel
+        self.fadeInHandler = fadeInHandler
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
@@ -24,7 +26,7 @@ class GalleryViewControllerDatasource: NSObject, UIPageViewControllerDataSource 
         
         let nextIndex = currentController.index - 1
         
-        return ImageViewController(imageViewModel: self.viewModel , imageIndex: nextIndex, showDisplacedImage: (nextIndex == self.viewModel.startIndex))
+        return ImageViewController(imageViewModel: self.viewModel , imageIndex: nextIndex, showDisplacedImage: (nextIndex == self.viewModel.startIndex), fadeInHandler: fadeInHandler)
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
@@ -34,7 +36,7 @@ class GalleryViewControllerDatasource: NSObject, UIPageViewControllerDataSource 
         
         let nextIndex = currentController.index + 1
         
-        return ImageViewController(imageViewModel: self.viewModel , imageIndex: nextIndex, showDisplacedImage: (nextIndex == self.viewModel.startIndex))
+        return ImageViewController(imageViewModel: self.viewModel , imageIndex: nextIndex, showDisplacedImage: (nextIndex == self.viewModel.startIndex), fadeInHandler: fadeInHandler)
     }
     
 //    func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {

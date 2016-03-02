@@ -39,8 +39,11 @@ class PoorManProvider: ImageProvider {
     }
     
     func provideImage(atIndex index: Int, completion: UIImage? -> Void) {
-        
-        sleep(2)
+
+        if index == 2 || index == 4 || index == 6 {
+
+            sleep(2)
+        }
         
         let images = [
             UIImage(named: "1"),

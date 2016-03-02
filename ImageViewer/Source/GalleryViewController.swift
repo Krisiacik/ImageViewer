@@ -16,6 +16,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     private let datasource: GalleryViewControllerDatasource
     private var closeButtonSize = CGSize(width: 50, height: 50)
     private let closeButtonPadding: CGFloat = 8.0
+    private let fadeInHandler = ImageFadeInHandler()
 
     //LOCAL CONFIG
     private let presentTransitionDuration = 0.25
@@ -27,7 +28,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         
         self.viewModel = viewModel
         self.presentTransition = GalleryPresentTransition(duration: presentTransitionDuration, displacedView: self.viewModel.displacedView)
-        self.datasource = GalleryViewControllerDatasource(viewModel: viewModel) //it needs to be kept alive with strong reference
+        self.datasource = GalleryViewControllerDatasource(viewModel: viewModel, fadeInHandler: self.fadeInHandler) //it needs to be kept alive with strong reference
 
         super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(int: 10)])
 
@@ -36,7 +37,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         self.modalPresentationStyle = .Custom
         extendedLayoutIncludesOpaqueBars = true
         
-        let initialImageController = ImageViewController(imageViewModel: viewModel, imageIndex: viewModel.startIndex, showDisplacedImage: true)
+        let initialImageController = ImageViewController(imageViewModel: viewModel, imageIndex: viewModel.startIndex, showDisplacedImage: true, fadeInHandler: fadeInHandler)
         self.setViewControllers([initialImageController], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
         initialImageController.view.hidden = true
         
