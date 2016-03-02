@@ -45,3 +45,16 @@ public func zoomRect(ForScrollView scrollView: UIScrollView, scale: CGFloat, cen
     
     return CGRect(x: originX, y: originY, width: width, height: height)
 }
+
+func screenshotFromView(view: UIView) -> UIImage {
+    
+    let image: UIImage
+    
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, true, UIScreen.mainScreen().scale)
+    view.drawViewHierarchyInRect(view.bounds, afterScreenUpdates: false)
+    image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    
+    return image
+    
+}

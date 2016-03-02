@@ -9,25 +9,41 @@
 import UIKit
 
 
-public class GalleryViewController : UIPageViewController   {
+public class GalleryViewController : UIPageViewController, UIViewControllerTransitioningDelegate  {
     
     private var closeButton: UIButton!
     private let viewModel: GalleryViewModel
     private let datasource: GalleryViewControllerDatasource
     private var closeButtonSize = CGSize(width: 50, height: 50)
     private let closeButtonPadding: CGFloat = 8.0
+
+    //LOCAL CONFIG
+    private let presentTransitionDuration = 0.25
+    
+    //TRANSITIONS
+    let presentTransition: GalleryPresentTransition
     
     init(viewModel: GalleryViewModel) {
         
         self.viewModel = viewModel
-        datasource = GalleryViewControllerDatasource(viewModel: viewModel)
-        
+        self.presentTransition = GalleryPresentTransition(duration: presentTransitionDuration, displacedView: self.viewModel.displacedView)
+        self.datasource = GalleryViewControllerDatasource(viewModel: viewModel) //it needs to be kept alive with strong reference
+
         super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(int: 10)])
 
         self.dataSource = datasource
+        self.transitioningDelegate = self
+        self.modalPresentationStyle = .Custom
+        extendedLayoutIncludesOpaqueBars = true
         
         let initialImageController = ImageViewController(imageViewModel: viewModel, imageIndex: viewModel.startIndex, showDisplacedImage: true)
         self.setViewControllers([initialImageController], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
+        initialImageController.view.hidden = true
+        
+        self.presentTransition.completion = {
+            
+            initialImageController.view.hidden = false
+        }
         
         configureCloseButton()
     }
@@ -52,6 +68,16 @@ public class GalleryViewController : UIPageViewController   {
         closeButton.frame.origin = CGPoint(x: self.view.frame.size.width - closeButtonSize.width - closeButtonPadding, y: closeButtonPadding)
     }
     
+    // MARK: - Transitioning Delegate
+    
+    public func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return presentTransition
+    }
+    
+    public func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return nil
+    }
+    
     func close() {
         self.dismissViewControllerAnimated(false, completion: nil)
     }
@@ -60,6 +86,6 @@ public class GalleryViewController : UIPageViewController   {
 public extension UIViewController {
     
     public func presentImageGallery(gallery: GalleryViewController, completion: (Void -> Void)? = {}) {
-        presentViewController(gallery, animated: false, completion: completion)
+        presentViewController(gallery, animated: true, completion: completion)
     }
 }

@@ -37,13 +37,13 @@ class GalleryViewControllerDatasource: NSObject, UIPageViewControllerDataSource 
         return ImageViewController(imageViewModel: self.viewModel , imageIndex: nextIndex, showDisplacedImage: (nextIndex == self.viewModel.startIndex))
     }
     
-    func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
-        
-        return viewModel.imageCount
-    }
-    
-    func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int {
-        
-        return viewModel.startIndex
-    }
+//    func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
+//        
+//        return viewModel.imageCount
+//    }
+//    
+//    func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int {
+//        
+//        return viewModel.startIndex
+//    }
 }
