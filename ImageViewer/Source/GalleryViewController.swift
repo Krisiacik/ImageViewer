@@ -68,7 +68,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         closeButton.frame.size = closeButtonSize
         closeButton.frame.origin = CGPoint(x: self.view.frame.size.width - closeButtonSize.width - closeButtonPadding, y: closeButtonPadding)
     }
-    
+ 
     // MARK: - Transitioning Delegate
     
     public func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
