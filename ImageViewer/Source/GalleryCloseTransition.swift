@@ -16,25 +16,18 @@ class GalleryCloseTransition: NSObject, UIViewControllerAnimatedTransitioning {
     init(duration: NSTimeInterval) {
         
         self.duration = duration
-
     }
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+        
         return duration
     }
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
         
-        //get the temporary container view that facilitates all the animations
-        let transitionContainerView = transitionContext.containerView()! //Apple, Apple..
-
-        //get the source controller's root view and add it to the scene
+        let transitionContainerView = transitionContext.containerView()!
         let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)!
         transitionContainerView.addSubview(fromViewController.view)
-        
-//        //get the target controller's root view and add it to the scene
-//        let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-//        transitionContainerView.addSubview(toViewController.view)
         
         UIView.animateWithDuration(self.duration, delay: 0, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
             

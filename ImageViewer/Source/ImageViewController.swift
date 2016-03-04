@@ -81,7 +81,6 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     deinit {
         
         self.scrollView.removeObserver(self, forKeyPath: "contentOffset")
@@ -105,7 +104,37 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
             }
         }
     }
-
+    
+    func configureScrollView() {
+        
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.delegate = self
+        scrollView.decelerationRate = 0.5
+        scrollView.contentInset = UIEdgeInsetsZero
+        scrollView.contentOffset = CGPointZero
+        scrollView.contentSize = CGSize(width: 100, height: 100) //FIX THIS
+        scrollView.minimumZoomScale = 1
+        scrollView.maximumZoomScale = 4
+        scrollView.addObserver(self, forKeyPath: "contentOffset", options: NSKeyValueObservingOptions.New, context: nil)
+    }
+    
+    func configureGestureRecognizers() {
+        
+        doubleTapRecognizer.addTarget(self, action: "scrollViewDidDoubleTap:")
+        doubleTapRecognizer.numberOfTapsRequired = 2
+        scrollView.addGestureRecognizer(doubleTapRecognizer)
+        
+        panGestureRecognizer.addTarget(self, action: "scrollViewDidPan:")
+        panGestureRecognizer.delegate = self
+        view.addGestureRecognizer(panGestureRecognizer)
+    }
+    
+    func createViewHierarchy() {
+        
+        scrollView.addSubview(imageView)
+        self.view.addSubview(scrollView)
+    }
     
     func updateImageAndContentSize(image: UIImage) {
         
@@ -141,35 +170,10 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         fadeInHandler?.imagePresentedAtIndex(self.index)
     }
     
-    func configureScrollView() {
+    public override func viewDidLoad() {
+        super.viewDidLoad()
         
-        scrollView.showsHorizontalScrollIndicator = false
-        scrollView.showsVerticalScrollIndicator = false
-        scrollView.delegate = self
-        scrollView.decelerationRate = 0.5
-        scrollView.contentInset = UIEdgeInsetsZero
-        scrollView.contentOffset = CGPointZero
-        scrollView.contentSize = CGSize(width: 100, height: 100) //FIX THIS
-        scrollView.minimumZoomScale = 1
-        scrollView.maximumZoomScale = 4
-        scrollView.addObserver(self, forKeyPath: "contentOffset", options: NSKeyValueObservingOptions.New, context: nil)
-    }
-    
-    func configureGestureRecognizers() {
-        
-        doubleTapRecognizer.addTarget(self, action: "scrollViewDidDoubleTap:")
-        doubleTapRecognizer.numberOfTapsRequired = 2
-        scrollView.addGestureRecognizer(doubleTapRecognizer)
-        
-        panGestureRecognizer.addTarget(self, action: "scrollViewDidPan:")
-        panGestureRecognizer.delegate = self
-        view.addGestureRecognizer(panGestureRecognizer)
-    }
-    
-    func createViewHierarchy() {
-        
-        scrollView.addSubview(imageView)
-        self.view.addSubview(scrollView)
+        self.view.backgroundColor = UIColor.blackColor()
     }
     
     public override func viewDidLayoutSubviews() {
@@ -179,12 +183,6 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         blackOverlayView.frame = self.view.bounds
         imageView.center = scrollView.boundsCenter
         activityIndicatorView.center = scrollView.boundsCenter
-    }
-    
-    public override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        self.view.backgroundColor = UIColor.blackColor()
     }
     
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
@@ -266,18 +264,22 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
             
             if finalVerticalVelocity < -thresholdVelocity {
                 
-                swipeTodismissTransition.finishInteractiveTransition(latestTouchPoint.y, targetOffset: targetOffsetToReachTop, escapeVelocity: finalVerticalVelocity) {
+                swipeTodismissTransition.finishInteractiveTransition(latestTouchPoint.y, targetOffset: targetOffsetToReachTop, escapeVelocity: finalVerticalVelocity) {  [weak self] in
                     
+                    self?.isSwipingToDismiss = false
                     presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
                 }
             }
             else if finalVerticalVelocity >= -thresholdVelocity && finalVerticalVelocity <= thresholdVelocity {
                 
-                swipeTodismissTransition.cancelTransition()
+                swipeTodismissTransition.cancelTransition() { [weak self] in
+                    self?.isSwipingToDismiss = false
+                }
             }
             else {
-                swipeTodismissTransition.finishInteractiveTransition(latestTouchPoint.y, targetOffset: targetOffsetToReachBottom, escapeVelocity: finalVerticalVelocity) {
+                swipeTodismissTransition.finishInteractiveTransition(latestTouchPoint.y, targetOffset: targetOffsetToReachBottom, escapeVelocity: finalVerticalVelocity) { [weak self] in
                     
+                    self?.isSwipingToDismiss = false
                     presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
                 }
             }
@@ -353,8 +355,11 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
             
             self.blackOverlayView.alpha = 1 - percentDistance
             
-            if let delegate = self.delegate {
-                delegate.imageViewController(self, swipeToDismissDistanceToEdge: percentDistance)
+            if isSwipingToDismiss {
+                
+                if let delegate = self.delegate {
+                    delegate.imageViewController(self, swipeToDismissDistanceToEdge: percentDistance)
+                }
             }
         }
     }

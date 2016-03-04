@@ -58,8 +58,6 @@ class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransitioning 
         //put it into the container
         transitionContainerView.addSubview(animatedImageView)
         
-        //find rotation state
-        
         UIView.animateWithDuration(self.duration, animations: { () -> Void in
             
             //animate it into the center (with optionaly rotating) - that basically includes changing the size and position
