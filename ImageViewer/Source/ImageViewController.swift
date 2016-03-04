@@ -42,7 +42,7 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
     private let panGestureRecognizer = UIPanGestureRecognizer()
     
     //TRANSITIONS
-    private var swipeTodismissTransition: GallerySwipeToDismissTransition!
+    private var swipeTodismissTransition: GallerySwipeToDismissTransition?
     
     //LIFE CYCLE BLOCKS
     public var showInitiationBlock: (Void -> Void)? //executed right before the image animation into its final position starts.
@@ -137,6 +137,8 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
     }
     
     func updateImageAndContentSize(image: UIImage) {
+
+        activityIndicatorView.stopAnimating()
         
         if imageView.image == nil {
             
@@ -230,7 +232,10 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
     
     func scrollViewDidPan(recognizer: UIPanGestureRecognizer) {
         
-        guard scrollView.zoomScale == scrollView.minimumZoomScale else { return }
+        guard
+            self.imageView.image != nil && //a swipe gesture with empty scrollview doesn't make sense
+            scrollView.zoomScale == scrollView.minimumZoomScale
+            else { return }
 
         if isSwipingToDismiss == false {
             swipeToDismissInitiationBlock?()
@@ -253,7 +258,7 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
             
         case .Changed:
             
-            swipeTodismissTransition.updateInteractiveTransition(-latestTouchPoint.y)
+            swipeTodismissTransition?.updateInteractiveTransition(-latestTouchPoint.y)
             
         case .Ended:
             
@@ -264,7 +269,7 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
             
             if finalVerticalVelocity < -thresholdVelocity {
                 
-                swipeTodismissTransition.finishInteractiveTransition(latestTouchPoint.y, targetOffset: targetOffsetToReachTop, escapeVelocity: finalVerticalVelocity) {  [weak self] in
+                swipeTodismissTransition?.finishInteractiveTransition(latestTouchPoint.y, targetOffset: targetOffsetToReachTop, escapeVelocity: finalVerticalVelocity) {  [weak self] in
                     
                     self?.isSwipingToDismiss = false
                     presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
@@ -272,12 +277,12 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
             }
             else if finalVerticalVelocity >= -thresholdVelocity && finalVerticalVelocity <= thresholdVelocity {
                 
-                swipeTodismissTransition.cancelTransition() { [weak self] in
+                swipeTodismissTransition?.cancelTransition() { [weak self] in
                     self?.isSwipingToDismiss = false
                 }
             }
             else {
-                swipeTodismissTransition.finishInteractiveTransition(latestTouchPoint.y, targetOffset: targetOffsetToReachBottom, escapeVelocity: finalVerticalVelocity) { [weak self] in
+                swipeTodismissTransition?.finishInteractiveTransition(latestTouchPoint.y, targetOffset: targetOffsetToReachBottom, escapeVelocity: finalVerticalVelocity) { [weak self] in
                     
                     self?.isSwipingToDismiss = false
                     presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
