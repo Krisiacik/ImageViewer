@@ -178,6 +178,12 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         self.view.backgroundColor = UIColor.blackColor()
     }
     
+    public override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        self.scrollView.zoomScale = 1.0
+    }
+    
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
