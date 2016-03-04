@@ -20,14 +20,17 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
 
     //LOCAL CONFIG
     private let presentTransitionDuration = 0.25
+    private let dismissTransitionDuration = 1.00
     
     //TRANSITIONS
     let presentTransition: GalleryPresentTransition
+    let closeTransition: GalleryCloseTransition
     
     init(viewModel: GalleryViewModel) {
         
         self.viewModel = viewModel
         self.presentTransition = GalleryPresentTransition(duration: presentTransitionDuration, displacedView: self.viewModel.displacedView)
+        self.closeTransition = GalleryCloseTransition(duration: dismissTransitionDuration)
 
         super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(int: 10)])
         
@@ -54,8 +57,6 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         initialImageController.view.hidden = true
         
         self.presentTransition.completion = {
-            
-            self.view.backgroundColor = UIColor.clearColor()
             initialImageController.view.hidden = false
         }
     }
@@ -92,11 +93,14 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     }
     
     func close() {
-        self.dismissViewControllerAnimated(false, completion: nil)
+        
+        self.modalTransitionStyle = .CrossDissolve
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func imageViewController(controller: ImageViewController, swipeToDismissDistanceToEdge distance: CGFloat) {
-        
+
+        self.view.backgroundColor = (distance == 0) ? UIColor.blackColor() : UIColor.clearColor()
         closeButton.alpha = 1 - distance * 4
     }
 }

@@ -26,9 +26,7 @@ class GallerySwipeToDismissTransition {
     func finishInteractiveTransition(verticalTouchPoint: CGFloat,  targetOffset: CGFloat, escapeVelocity: CGFloat, completion: (() -> Void)?) {
         
         //guard escape velocity
-        
-        
-            
+
             // in units of "vertical velocity". for example if we have a vertical velocity of 50 units (which are points really) per second
             // and the distance to travel is 175 units, then our spring velocity is 3.5. I.e. we will travel 3.5 units in 1 second.
             let springVelocity = fabs(escapeVelocity / (targetOffset - verticalTouchPoint))
@@ -44,13 +42,15 @@ class GallerySwipeToDismissTransition {
             })
         }
 
-    func cancelTransition() {
+    func cancelTransition(completion: (() -> Void)? = {}) {
         
         UIView.animateWithDuration(0.2, delay: 0, options: .CurveLinear, animations: { () -> Void in
             
             self.scrollView?.setContentOffset(CGPointZero, animated: false)
             
             }) { finished in
+                
+                completion?()
         }
     }
     
