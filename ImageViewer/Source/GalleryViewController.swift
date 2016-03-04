@@ -9,11 +9,11 @@
 import UIKit
 
 
-public class GalleryViewController : UIPageViewController, UIViewControllerTransitioningDelegate  {
+public class GalleryViewController : UIPageViewController, UIViewControllerTransitioningDelegate, ImageViewControllerDelegate  {
     
     private var closeButton: UIButton!
     private let viewModel: GalleryViewModel
-    private let datasource: GalleryViewControllerDatasource
+    private var datasource: GalleryViewControllerDatasource!
     private var closeButtonSize = CGSize(width: 50, height: 50)
     private let closeButtonPadding: CGFloat = 8.0
     private let fadeInHandler = ImageFadeInHandler()
@@ -28,16 +28,28 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         
         self.viewModel = viewModel
         self.presentTransition = GalleryPresentTransition(duration: presentTransitionDuration, displacedView: self.viewModel.displacedView)
-        self.datasource = GalleryViewControllerDatasource(viewModel: viewModel, fadeInHandler: self.fadeInHandler) //it needs to be kept alive with strong reference
 
         super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(int: 10)])
+        
+        self.datasource = GalleryViewControllerDatasource(viewModel: viewModel, fadeInHandler: self.fadeInHandler, imageControllerDelegate: self) //it needs to be kept alive with strong reference
 
         self.dataSource = datasource
         self.transitioningDelegate = self
         self.modalPresentationStyle = .Custom
         extendedLayoutIncludesOpaqueBars = true
+
+        configureInitialImageController()
+        configureCloseButton()
+        createViewHierarchy()
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configureInitialImageController() {
         
-        let initialImageController = ImageViewController(imageViewModel: viewModel, imageIndex: viewModel.startIndex, showDisplacedImage: true, fadeInHandler: fadeInHandler)
+        let initialImageController = ImageViewController(imageViewModel: viewModel, imageIndex: viewModel.startIndex, showDisplacedImage: true, fadeInHandler: fadeInHandler, delegate: self)
         self.setViewControllers([initialImageController], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
         initialImageController.view.hidden = true
         
@@ -46,12 +58,6 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
             self.view.backgroundColor = UIColor.clearColor()
             initialImageController.view.hidden = false
         }
-        
-        configureCloseButton()
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     private func configureCloseButton() {
@@ -60,6 +66,11 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         closeButton.setImage(UIImage(named: "close_normal"), forState: UIControlState.Normal)
         closeButton.setImage(UIImage(named: "close_highlighted"), forState: UIControlState.Highlighted)
         closeButton.addTarget(self, action: "close", forControlEvents: .TouchUpInside)
+        closeButton.userInteractionEnabled = true
+    }
+    
+    func createViewHierarchy() {
+        
         self.view.addSubview(closeButton)
     }
     
@@ -82,6 +93,11 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     
     func close() {
         self.dismissViewControllerAnimated(false, completion: nil)
+    }
+    
+    func imageViewController(controller: ImageViewController, swipeToDismissDistanceToEdge distance: CGFloat) {
+        
+        closeButton.alpha = 1 - distance * 4
     }
 }
 

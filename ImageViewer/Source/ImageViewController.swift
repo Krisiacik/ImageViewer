@@ -14,11 +14,13 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
     private let scrollView = UIScrollView()
     private let imageView = UIImageView()
     private let blackOverlayView = UIView()
-    private let containerView = UIView()
     private let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .White)
     var applicationWindow: UIWindow? {
         return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 }
     }
+    
+    //DELEGATE
+    var delegate: ImageViewControllerDelegate?
     
     //MODEL & STATE
     let imageViewModel: GalleryViewModel
@@ -52,12 +54,13 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
     public var swipeToDismissCompletionBlock: (Void -> Void)? //executed as the last step for swipe to dismiss action.
     public var dismissCompletionBlock: (Void -> Void)? //executed as the last step when the ImageViewer is dismissed (either via the close button, or swipe)
     
-    init(imageViewModel: GalleryViewModel, imageIndex: Int, showDisplacedImage: Bool, fadeInHandler: ImageFadeInHandler?) {
+    init(imageViewModel: GalleryViewModel, imageIndex: Int, showDisplacedImage: Bool, fadeInHandler: ImageFadeInHandler?, delegate: ImageViewControllerDelegate?) {
         
         self.imageViewModel = imageViewModel
         self.index = imageIndex
         self.showDisplacedImage = showDisplacedImage
         self.fadeInHandler = fadeInHandler
+        self.delegate = delegate
         
         super.init(nibName: nil, bundle: nil)
         
@@ -175,7 +178,6 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         
         scrollView.frame = self.view.bounds
         blackOverlayView.frame = self.view.bounds
-        containerView.frame = self.view.bounds
         imageView.center = scrollView.boundsCenter
         activityIndicatorView.center = scrollView.boundsCenter
     }
@@ -378,16 +380,12 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         
         if (dynamicTransparencyActive == true && keyPath == "contentOffset") {
             
-//            let transparencyMultiplier: CGFloat = 10
-//            let velocityMultiplier: CGFloat = 300
-            
             let distanceToEdge = (scrollView.bounds.height / 2) + (imageView.bounds.height / 2)
+            let percentDistance = fabs(scrollView.contentOffset.y / distanceToEdge)
+
+            self.blackOverlayView.alpha = 1 - percentDistance
             
-            self.blackOverlayView.alpha = 1 - fabs(scrollView.contentOffset.y / distanceToEdge)
-//            closeButton.alpha = 1 - fabs(scrollView.contentOffset.y / distanceToEdge) * transparencyMultiplier
-            
-//            let newY = CGFloat(closeButtonPadding) - abs(scrollView.contentOffset.y / distanceToEdge) * velocityMultiplier
-//            closeButton.frame = CGRect(origin: CGPoint(x: closeButton.frame.origin.x, y: newY), size: closeButton.frame.size)
+            self.delegate?.imageViewController(self, swipeToDismissDistanceToEdge: percentDistance)
         }
     }
 }

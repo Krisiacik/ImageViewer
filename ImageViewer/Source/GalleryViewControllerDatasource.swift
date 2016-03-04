@@ -12,11 +12,13 @@ class GalleryViewControllerDatasource: NSObject, UIPageViewControllerDataSource 
     
     let viewModel: GalleryViewModel
     weak var fadeInHandler: ImageFadeInHandler?
+    weak var imageControllerDelegate: ImageViewControllerDelegate?
 
-    init(viewModel: GalleryViewModel, fadeInHandler: ImageFadeInHandler) {
+    init(viewModel: GalleryViewModel, fadeInHandler: ImageFadeInHandler, imageControllerDelegate: ImageViewControllerDelegate) {
         
         self.viewModel = viewModel
         self.fadeInHandler = fadeInHandler
+        self.imageControllerDelegate = imageControllerDelegate
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
@@ -26,7 +28,7 @@ class GalleryViewControllerDatasource: NSObject, UIPageViewControllerDataSource 
         
         let nextIndex = currentController.index - 1
         
-        return ImageViewController(imageViewModel: self.viewModel , imageIndex: nextIndex, showDisplacedImage: (nextIndex == self.viewModel.startIndex), fadeInHandler: fadeInHandler)
+        return ImageViewController(imageViewModel: self.viewModel , imageIndex: nextIndex, showDisplacedImage: (nextIndex == self.viewModel.startIndex), fadeInHandler: fadeInHandler, delegate: imageControllerDelegate)
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
@@ -36,7 +38,7 @@ class GalleryViewControllerDatasource: NSObject, UIPageViewControllerDataSource 
         
         let nextIndex = currentController.index + 1
         
-        return ImageViewController(imageViewModel: self.viewModel , imageIndex: nextIndex, showDisplacedImage: (nextIndex == self.viewModel.startIndex), fadeInHandler: fadeInHandler)
+        return ImageViewController(imageViewModel: self.viewModel , imageIndex: nextIndex, showDisplacedImage: (nextIndex == self.viewModel.startIndex), fadeInHandler: fadeInHandler, delegate: imageControllerDelegate)
     }
     
 //    func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
