@@ -69,7 +69,7 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         self.modalPresentationStyle = .Custom
         
         activityIndicatorView.startAnimating()
-        self.scrollView.addSubview(activityIndicatorView)
+        self.view.addSubview(activityIndicatorView)
         
         configureImageView()
         configureScrollView()
@@ -182,7 +182,7 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         scrollView.frame = self.view.bounds
         blackOverlayView.frame = self.view.bounds
         imageView.center = scrollView.boundsCenter
-        activityIndicatorView.center = scrollView.boundsCenter
+        activityIndicatorView.center = self.view.boundsCenter
     }
     
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
