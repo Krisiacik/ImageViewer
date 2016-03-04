@@ -217,7 +217,7 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         
         coordinator.animateAlongsideTransition({ [weak self] transitionContext in
             
-            if let imageView = self?.imageView, scrollView = self?.scrollView {
+            if let imageView = self?.imageView, _ = imageView.image, scrollView = self?.scrollView {
                 
                 imageView.bounds.size = aspectFitContentSize(forBoundingSize: boundingSize, contentSize: imageView.bounds.size)
                 scrollView.zoomScale = 1
