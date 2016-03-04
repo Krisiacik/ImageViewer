@@ -53,7 +53,7 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
     public var swipeToDismissCompletionBlock: (Void -> Void)? //executed as the last step for swipe to dismiss action.
     public var dismissCompletionBlock: (Void -> Void)? //executed as the last step when the ImageViewer is dismissed (either via the close button, or swipe)
     
-    init(imageViewModel: GalleryViewModel, imageIndex: Int, showDisplacedImage: Bool, fadeInHandler: ImageFadeInHandler?, delegate: ImageViewControllerDelegate?) {
+    init(imageViewModel: GalleryViewModel, configuration: [GalleryConfiguration], imageIndex: Int, showDisplacedImage: Bool, fadeInHandler: ImageFadeInHandler?, delegate: ImageViewControllerDelegate?) {
         
         self.imageViewModel = imageViewModel
         self.index = imageIndex
@@ -62,6 +62,17 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         self.delegate = delegate
         
         super.init(nibName: nil, bundle: nil)
+        
+        configuration.forEach { configurationItem in
+            
+            switch configurationItem {
+                
+            case .SpinnerColor(let color):  activityIndicatorView.color = color
+            case .SpinnerStyle(let style):  activityIndicatorView.activityIndicatorViewStyle = style
+            default: break
+                
+            }
+        }
         
         self.view.backgroundColor = UIColor.clearColor()
         blackOverlayView.backgroundColor = UIColor.blackColor()
@@ -174,6 +185,9 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
+        isPortraitOnly = presentingViewController?.supportedInterfaceOrientations() == .Portrait ||
+            UIApplication.sharedApplication().supportedInterfaceOrientationsForWindow(nil) == .Portrait
         
         self.view.backgroundColor = UIColor.blackColor()
     }

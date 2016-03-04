@@ -11,30 +11,52 @@ import UIKit
 
 public class GalleryViewController : UIPageViewController, UIViewControllerTransitioningDelegate, ImageViewControllerDelegate  {
     
+    //UI
     private var closeButton: UIButton!
+    
+    //DATA
     private let viewModel: GalleryViewModel
     private var datasource: GalleryViewControllerDatasource!
-    private var closeButtonSize = CGSize(width: 50, height: 50)
-    private let closeButtonPadding: CGFloat = 8.0
     private let fadeInHandler = ImageFadeInHandler()
 
     //LOCAL CONFIG
+    
+    private let configuration: [GalleryConfiguration]
+    private var spinnerColor = UIColor.whiteColor()
+    private var spinnerStyle = UIActivityIndicatorViewStyle.White
+    private var defaultDividerWidth: Float = 10
     private let presentTransitionDuration = 0.25
     private let dismissTransitionDuration = 1.00
+    private let closeButtonPadding: Float = 8.0
     
     //TRANSITIONS
     let presentTransition: GalleryPresentTransition
     let closeTransition: GalleryCloseTransition
     
-    init(viewModel: GalleryViewModel) {
+    init(viewModel: GalleryViewModel, configuration: [GalleryConfiguration] = defaultGalleryConfiguration()) {
         
         self.viewModel = viewModel
+        self.configuration = configuration
+        
+        var dividerWidth: Float?
+        
+        for item in configuration {
+            
+            switch item {
+                
+            case .ImageDividerWidth(let width):     dividerWidth = Float(width)
+            case .SpinnerStyle(let style):          spinnerStyle = style
+            case .SpinnerColor(let color):          spinnerColor = color
+            case .CloseButton(let button):          closeButton = button
+            }
+        }
+        
         self.presentTransition = GalleryPresentTransition(duration: presentTransitionDuration, displacedView: self.viewModel.displacedView)
         self.closeTransition = GalleryCloseTransition(duration: dismissTransitionDuration)
-
-        super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(int: 10)])
         
-        self.datasource = GalleryViewControllerDatasource(viewModel: viewModel, fadeInHandler: self.fadeInHandler, imageControllerDelegate: self) //it needs to be kept alive with strong reference
+        super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(float: dividerWidth ?? defaultDividerWidth)])
+        
+        self.datasource = GalleryViewControllerDatasource(viewModel: viewModel, configuration: configuration, fadeInHandler: self.fadeInHandler, imageControllerDelegate: self) //it needs to be kept alive with strong reference
 
         self.dataSource = datasource
         self.transitioningDelegate = self
@@ -52,7 +74,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     
     func configureInitialImageController() {
         
-        let initialImageController = ImageViewController(imageViewModel: viewModel, imageIndex: viewModel.startIndex, showDisplacedImage: true, fadeInHandler: fadeInHandler, delegate: self)
+        let initialImageController = ImageViewController(imageViewModel: viewModel, configuration: configuration, imageIndex: viewModel.startIndex, showDisplacedImage: true, fadeInHandler: fadeInHandler, delegate: self)
         self.setViewControllers([initialImageController], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
         initialImageController.view.hidden = true
         
@@ -63,11 +85,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     
     private func configureCloseButton() {
         
-        closeButton = UIButton()
-        closeButton.setImage(UIImage(named: "close_normal"), forState: UIControlState.Normal)
-        closeButton.setImage(UIImage(named: "close_highlighted"), forState: UIControlState.Highlighted)
         closeButton.addTarget(self, action: "close", forControlEvents: .TouchUpInside)
-        closeButton.userInteractionEnabled = true
     }
     
     func createViewHierarchy() {
@@ -78,8 +96,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        closeButton.frame.size = closeButtonSize
-        closeButton.frame.origin = CGPoint(x: self.view.frame.size.width - closeButtonSize.width - closeButtonPadding, y: closeButtonPadding)
+        closeButton.frame.origin = CGPoint(x: self.view.frame.size.width - closeButton.frame.size.width - closeButtonPadding, y: closeButtonPadding)
     }
  
     // MARK: - Transitioning Delegate
@@ -98,7 +115,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func imageViewController(controller: ImageViewController, swipeToDismissDistanceToEdge distance: CGFloat) {
+    func imageViewController(controller: ImageViewController, swipeToDismissDistanceToEdge distance: Float) {
 
         self.view.backgroundColor = (distance == 0) ? UIColor.blackColor() : UIColor.clearColor()
         closeButton.alpha = 1 - distance * 4

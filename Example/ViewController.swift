@@ -18,10 +18,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
     }
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return [.Portrait]
-    }
-    
     @IBAction func showViewer(sender: UIView) {
         
         let poorManProvider = PoorManProvider()
