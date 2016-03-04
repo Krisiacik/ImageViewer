@@ -24,10 +24,9 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     private let configuration: [GalleryConfiguration]
     private var spinnerColor = UIColor.whiteColor()
     private var spinnerStyle = UIActivityIndicatorViewStyle.White
-    private var defaultDividerWidth: Float = 10
     private let presentTransitionDuration = 0.25
     private let dismissTransitionDuration = 1.00
-    private let closeButtonPadding: Float = 8.0
+    private let closeButtonPadding: CGFloat = 8.0
     
     //TRANSITIONS
     let presentTransition: GalleryPresentTransition
@@ -54,7 +53,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         self.presentTransition = GalleryPresentTransition(duration: presentTransitionDuration, displacedView: self.viewModel.displacedView)
         self.closeTransition = GalleryCloseTransition(duration: dismissTransitionDuration)
         
-        super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(float: dividerWidth ?? defaultDividerWidth)])
+        super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(float: dividerWidth ?? 10)])
         
         self.datasource = GalleryViewControllerDatasource(viewModel: viewModel, configuration: configuration, fadeInHandler: self.fadeInHandler, imageControllerDelegate: self) //it needs to be kept alive with strong reference
 
@@ -115,7 +114,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func imageViewController(controller: ImageViewController, swipeToDismissDistanceToEdge distance: Float) {
+    func imageViewController(controller: ImageViewController, swipeToDismissDistanceToEdge distance: CGFloat) {
 
         self.view.backgroundColor = (distance == 0) ? UIColor.blackColor() : UIColor.clearColor()
         closeButton.alpha = 1 - distance * 4
