@@ -13,6 +13,8 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
     //UI
     private let scrollView = UIScrollView()
     private let imageView = UIImageView()
+    private let blackOverlayView = UIView()
+    private let containerView = UIView()
     private let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .White)
     var applicationWindow: UIWindow? {
         return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 }
@@ -31,7 +33,7 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
     
     //LOCAL CONFIG
     private let thresholdVelocity: CGFloat = 1000 // It works as a threshold.
-
+    private let hideCloseButtonDuration    = 0.05
     
     //INTERACTIONS
     private let doubleTapRecognizer = UITapGestureRecognizer()
@@ -59,6 +61,9 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         
         super.init(nibName: nil, bundle: nil)
         
+        self.view.backgroundColor = UIColor.clearColor()
+        blackOverlayView.backgroundColor = UIColor.blackColor()
+        self.view.addSubview(blackOverlayView)
         self.modalPresentationStyle = .Custom
         
         activityIndicatorView.startAnimating()
@@ -72,6 +77,12 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
     
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Deinit
+    
+    deinit {
+        scrollView.removeObserver(self, forKeyPath: "contentOffset")
     }
     
     func configureImageView() {
@@ -138,6 +149,8 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         scrollView.contentSize = CGSize(width: 100, height: 100) //FIX THIS
         scrollView.minimumZoomScale = 1
         scrollView.maximumZoomScale = 4
+        scrollView.addObserver(self, forKeyPath: "contentOffset", options: NSKeyValueObservingOptions.New, context: nil)
+        
     }
     
     func configureGestureRecognizers() {
@@ -161,26 +174,22 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         super.viewDidLayoutSubviews()
         
         scrollView.frame = self.view.bounds
+        blackOverlayView.frame = self.view.bounds
+        containerView.frame = self.view.bounds
         imageView.center = scrollView.boundsCenter
         activityIndicatorView.center = scrollView.boundsCenter
     }
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.view.backgroundColor = UIColor.blackColor()
     }
 
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
 //        print("WILL APPEAR \(self.index)")
-    }
-    
-    public override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        swipeToDissmissTransition = GallerySwipeToDismissTransition(presentingViewController: self.presentingViewController, scrollView: self.scrollView)
-        
-        print("TEST")
     }
     
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
@@ -228,11 +237,10 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
     
     func scrollViewDidPan(recognizer: UIPanGestureRecognizer) {
 
-        let presentingViewController = self.presentingViewController
-        let presentingControllerCurrentPresentationStyle = self.presentingViewController?.modalPresentationStyle
+        swipeToDissmissTransition = GallerySwipeToDismissTransition(presentingViewController: self.presentingViewController, scrollView: self.scrollView)
         
-        self.presentingViewController?.modalPresentationStyle = .Custom
-        self.presentingViewController?.transitioningDelegate = self
+        self.parentViewController?.view.backgroundColor = UIColor.clearColor()
+
 
         guard scrollView.zoomScale == scrollView.minimumZoomScale else { return }
         
@@ -252,45 +260,36 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         case .Began:
             
             applicationWindow!.windowLevel = UIWindowLevelNormal
-//            self.presentingViewController?.dismissViewControllerAnimated(true, completion: { () -> Void in
-//                
-//                //intentionaly kept strong reference. We need to cleanup after ourselves and when the block is executed, ImageViewController doesn't exist. So we store a reference to presenting view controller and return the presentation style to its previous state. Settings the style is guaranteed to work as it comes from the presenting controller so if the controller exists, then the style exists.
-//                presentingViewController?.modalPresentationStyle = presentingControllerCurrentPresentationStyle!
-//            })
-            
-            fallthrough
             
         case .Changed:
-            
-            
-            swipeToDissmissTransition.scrollView = self.scrollView
+
             swipeToDissmissTransition.updateInteractiveTransition(-latestTouchPoint.y)
             
         case .Ended:
             
-            
-            self.presentingViewController?.dismissViewControllerAnimated(true, completion: { () -> Void in
-                
-                //intentionaly kept strong reference. We need to cleanup after ourselves and when the block is executed, ImageViewController doesn't exist. So we store a reference to presenting view controller and return the presentation style to its previous state. Settings the style is guaranteed to work as it comes from the presenting controller so if the controller exists, then the style exists.
-                presentingViewController?.modalPresentationStyle = presentingControllerCurrentPresentationStyle!
-            })
+            let presentingViewController = self.presentingViewController
             
             //in points per second
-            let verticalVelocity = recognizer.velocityInView(view).y
+            let finalVerticalVelocity = recognizer.velocityInView(view).y
             
-            if verticalVelocity < -thresholdVelocity {
-//                swipeToDismissTransition.setParameters(latestTouchPoint.y, targetOffset: targetOffsetToReachTop, verticalVelocity: verticalVelocity)
+            if finalVerticalVelocity < -thresholdVelocity {
                 
-                //swipeToDissmissTransition.finishInteractiveTransition()
+                swipeToDissmissTransition.finishInteractiveTransition(latestTouchPoint.y, targetOffset: targetOffsetToReachTop, escapeVelocity: finalVerticalVelocity) {
                 
+                    presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
+                }
             }
-            else if verticalVelocity >= -thresholdVelocity && verticalVelocity <= thresholdVelocity {
-                //swipeToDissmissTransition.cancelInteractiveTransition()
+            else if finalVerticalVelocity >= -thresholdVelocity && finalVerticalVelocity <= thresholdVelocity {
+                
+                swipeToDissmissTransition.cancelTransition()
+                self.parentViewController?.view.backgroundColor = UIColor.blackColor()
+
             }
             else {
-//                swipeToDismissTransition.setParameters(latestTouchPoint.y, targetOffset: targetOffsetToReachBottom, verticalVelocity: verticalVelocity)
-                //swipeToDissmissTransition.finishInteractiveTransition()
-
+                swipeToDissmissTransition.finishInteractiveTransition(latestTouchPoint.y, targetOffset: targetOffsetToReachBottom, escapeVelocity: finalVerticalVelocity) {
+                    
+                    presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
+                }
             }
             
         default:
@@ -314,6 +313,38 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
                     self.dynamicTransparencyActive = false
                 }
         })
+    }
+    
+    func closeAnimation(duration: NSTimeInterval, completion: ((Bool) -> Void)?) {
+        
+        guard (self.isAnimating == false) else { return }
+        isAnimating = true
+        closeButtonActionInitiationBlock?()
+        imageViewModel.displacedView.hidden = true
+        
+//        UIView.animateWithDuration(hideCloseButtonDuration, animations: { self.closeButton.alpha = 0.0 })
+//        
+        UIView.animateWithDuration(duration, animations: {
+            self.scrollView.zoomScale = self.scrollView.minimumZoomScale
+            self.blackOverlayView.alpha = 0.0
+//            self.closeButton.alpha = 0.0
+            self.view.transform = CGAffineTransformIdentity
+            self.view.bounds = (self.applicationWindow?.bounds)!
+            self.imageView.frame = CGRectIntegral(self.applicationWindow!.convertRect(self.imageViewModel.displacedView.bounds, fromView: self.imageViewModel.displacedView))
+            
+            }) { (finished) -> Void in
+                completion?(finished)
+                if finished {
+                    NSNotificationCenter.defaultCenter().removeObserver(self)
+                    self.applicationWindow!.windowLevel = UIWindowLevelNormal
+                    
+                    self.imageViewModel.displacedView.hidden = false
+                    self.isAnimating = false
+                    
+                    self.closeButtonActionCompletionBlock?()
+                    self.dismissCompletionBlock?()
+                }
+        }
     }
     
     public func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -341,13 +372,22 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         return (UIDevice.currentDevice().orientation.isLandscape) ? CGRect(origin: CGPointZero, size: window.bounds.size.inverted()): window.bounds
     }
     
-//    public func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        
-//        return swipeToDissmissTransition
-//    }
-//    
-//    public func interactionControllerForDismissal(animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-//        
-//        return self.swipeToDissmissTransition
-//    }
+    // MARK: - KVO
+    
+    override public func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String: AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        
+        if (dynamicTransparencyActive == true && keyPath == "contentOffset") {
+            
+//            let transparencyMultiplier: CGFloat = 10
+//            let velocityMultiplier: CGFloat = 300
+            
+            let distanceToEdge = (scrollView.bounds.height / 2) + (imageView.bounds.height / 2)
+            
+            self.blackOverlayView.alpha = 1 - fabs(scrollView.contentOffset.y / distanceToEdge)
+//            closeButton.alpha = 1 - fabs(scrollView.contentOffset.y / distanceToEdge) * transparencyMultiplier
+            
+//            let newY = CGFloat(closeButtonPadding) - abs(scrollView.contentOffset.y / distanceToEdge) * velocityMultiplier
+//            closeButton.frame = CGRect(origin: CGPoint(x: closeButton.frame.origin.x, y: newY), size: closeButton.frame.size)
+        }
+    }
 }

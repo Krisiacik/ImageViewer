@@ -43,6 +43,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         
         self.presentTransition.completion = {
             
+            self.view.backgroundColor = UIColor.clearColor()
             initialImageController.view.hidden = false
         }
         
