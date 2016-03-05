@@ -12,8 +12,12 @@ class GalleryViewModel {
     
     let imageProvider: ImageProvider
     let displacedView: UIView
+    var headerView: UIView?
+    var footerView: UIView?
     let imageCount: Int
     let startIndex: Int
+    var landedPageAtIndexCompletion: ((Int) -> Void)? //called everytime ANY animation stops in the page controller and a page at index is on screen
+    var changedPageToIndexCompletion: ((Int) -> Void)? //called after any animation IF & ONLY there is a change in page index compared to before animations started
     
     var displacedImage: UIImage {
         

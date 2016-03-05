@@ -255,7 +255,9 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         guard
             self.imageView.image != nil && //a swipe gesture with empty scrollview doesn't make sense
             scrollView.zoomScale == scrollView.minimumZoomScale
-            else { return }
+            else {
+                return
+        }
 
         if isSwipingToDismiss == false {
             swipeToDismissInitiationBlock?()

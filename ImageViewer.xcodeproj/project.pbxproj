@@ -42,12 +42,14 @@
 		EB6A56CD1C85A3AD00BBDEF6 /* UtilityFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1CEC1E1C84A54600BB27B8 /* UtilityFunctions.swift */; };
 		EB6A56CF1C85D4F500BBDEF6 /* GalleryViewControllerDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6A56CE1C85D4F500BBDEF6 /* GalleryViewControllerDatasource.swift */; };
 		EB6A56D01C85D4F500BBDEF6 /* GalleryViewControllerDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6A56CE1C85D4F500BBDEF6 /* GalleryViewControllerDatasource.swift */; };
+		EB71AC4A1C8A784D00F83E86 /* GalleryViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB71AC491C8A784D00F83E86 /* GalleryViewControllerDelegate.swift */; };
 		EBA0A9531C89C653005B8DD3 /* GalleryConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA0A9521C89C653005B8DD3 /* GalleryConfiguration.swift */; };
 		EBA0A9541C89C653005B8DD3 /* GalleryConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA0A9521C89C653005B8DD3 /* GalleryConfiguration.swift */; };
 		EBA90E3F1C8729E2000AA697 /* GalleryPresentTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA90E3E1C8729E2000AA697 /* GalleryPresentTransition.swift */; };
 		EBA90E401C8729E2000AA697 /* GalleryPresentTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA90E3E1C8729E2000AA697 /* GalleryPresentTransition.swift */; };
 		EBA90E431C875225000AA697 /* ImageFadeInHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA90E421C875225000AA697 /* ImageFadeInHandler.swift */; };
 		EBA90E441C875225000AA697 /* ImageFadeInHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA90E421C875225000AA697 /* ImageFadeInHandler.swift */; };
+		EBDA90FF1C8A7B1500556247 /* GalleryViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB71AC491C8A784D00F83E86 /* GalleryViewControllerDelegate.swift */; };
 		EBEBEF941C84665B008C1E58 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEBEF931C84665B008C1E58 /* ImageViewController.swift */; };
 		EBEBEF961C846847008C1E58 /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEBEF951C846847008C1E58 /* GalleryViewController.swift */; };
 		EBEBEF981C846928008C1E58 /* GalleryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEBEF971C846928008C1E58 /* GalleryViewModel.swift */; };
@@ -78,6 +80,7 @@
 		EB243F961C8996DF006DEF58 /* ImageViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewControllerDelegate.swift; sourceTree = "<group>"; };
 		EB243F991C899F1C006DEF58 /* GalleryCloseTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryCloseTransition.swift; sourceTree = "<group>"; };
 		EB6A56CE1C85D4F500BBDEF6 /* GalleryViewControllerDatasource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryViewControllerDatasource.swift; sourceTree = "<group>"; };
+		EB71AC491C8A784D00F83E86 /* GalleryViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryViewControllerDelegate.swift; sourceTree = "<group>"; };
 		EBA0A9521C89C653005B8DD3 /* GalleryConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryConfiguration.swift; sourceTree = "<group>"; };
 		EBA90E3E1C8729E2000AA697 /* GalleryPresentTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GalleryPresentTransition.swift; path = ImageViewer/GalleryPresentTransition.swift; sourceTree = "<group>"; };
 		EBA90E421C875225000AA697 /* ImageFadeInHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageFadeInHandler.swift; sourceTree = "<group>"; };
@@ -209,6 +212,7 @@
 				EBA90E421C875225000AA697 /* ImageFadeInHandler.swift */,
 				EBEBEF951C846847008C1E58 /* GalleryViewController.swift */,
 				EBA0A9521C89C653005B8DD3 /* GalleryConfiguration.swift */,
+				EB71AC491C8A784D00F83E86 /* GalleryViewControllerDelegate.swift */,
 				EB6A56CE1C85D4F500BBDEF6 /* GalleryViewControllerDatasource.swift */,
 			);
 			name = "Gallery Controller";
@@ -401,6 +405,7 @@
 				EB4DEBC01C84A6FD00D5F897 /* UIView.swift in Sources */,
 				EB243F911C889F88006DEF58 /* GallerySwipeToDismissTransition.swift in Sources */,
 				EB6A56CF1C85D4F500BBDEF6 /* GalleryViewControllerDatasource.swift in Sources */,
+				EBDA90FF1C8A7B1500556247 /* GalleryViewControllerDelegate.swift in Sources */,
 				C7897CE51C1350B7006447FB /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -413,6 +418,7 @@
 				4CD1C49D1C16FF64008D5F84 /* CGPoint.swift in Sources */,
 				EB243F921C889F88006DEF58 /* GallerySwipeToDismissTransition.swift in Sources */,
 				4CB66CD91C187F9C002DB91F /* ImageViewerSwipeToDismissTransition.swift in Sources */,
+				EB71AC4A1C8A784D00F83E86 /* GalleryViewControllerDelegate.swift in Sources */,
 				EBA90E401C8729E2000AA697 /* GalleryPresentTransition.swift in Sources */,
 				4CB66CD61C18772B002DB91F /* ImageViewerDismissTransition.swift in Sources */,
 				EBEBEF941C84665B008C1E58 /* ImageViewController.swift in Sources */,

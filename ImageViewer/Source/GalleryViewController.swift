@@ -16,11 +16,13 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     
     //DATA
     private let viewModel: GalleryViewModel
-    private var datasource: GalleryViewControllerDatasource!
+    private var galleryDelegate: GalleryViewControllerDelegate!
+    private var galleryDatasource: GalleryViewControllerDatasource!
     private let fadeInHandler = ImageFadeInHandler()
-
-    //LOCAL CONFIG
+    var currentIndex: Int
+    var previousIndex: Int
     
+    //LOCAL CONFIG
     private let configuration: [GalleryConfiguration]
     private var spinnerColor = UIColor.whiteColor()
     private var spinnerStyle = UIActivityIndicatorViewStyle.White
@@ -32,10 +34,17 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     let presentTransition: GalleryPresentTransition
     let closeTransition: GalleryCloseTransition
     
+    //COMPLETION
+    var landedPageAtIndexCompletion: ((Int) -> Void)? //called everytime ANY animation stops in the page controller and a page at index is on screen
+    var changedPageToIndexCompletion: ((Int) -> Void)? //called after any animation IF & ONLY there is a change in page index compared to before animations started
+
+    
     init(viewModel: GalleryViewModel, configuration: [GalleryConfiguration] = defaultGalleryConfiguration()) {
         
         self.viewModel = viewModel
         self.configuration = configuration
+        self.currentIndex = viewModel.startIndex
+        self.previousIndex = viewModel.startIndex
         
         var dividerWidth: Float?
         
@@ -55,9 +64,12 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         
         super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(float: dividerWidth ?? 10)])
         
-        self.datasource = GalleryViewControllerDatasource(viewModel: viewModel, configuration: configuration, fadeInHandler: self.fadeInHandler, imageControllerDelegate: self) //it needs to be kept alive with strong reference
-
-        self.dataSource = datasource
+        //they need to be kept alive with strong reference
+        self.galleryDelegate = GalleryViewControllerDelegate()
+        self.galleryDatasource = GalleryViewControllerDatasource(viewModel: viewModel, configuration: configuration, fadeInHandler: self.fadeInHandler, imageControllerDelegate: self)
+        self.delegate = galleryDelegate
+        self.dataSource = galleryDatasource
+        
         self.transitioningDelegate = self
         self.modalPresentationStyle = .Custom
         extendedLayoutIncludesOpaqueBars = true

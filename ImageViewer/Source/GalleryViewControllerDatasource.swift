@@ -14,7 +14,7 @@ class GalleryViewControllerDatasource: NSObject, UIPageViewControllerDataSource 
     let configuration: [GalleryConfiguration]
     weak var fadeInHandler: ImageFadeInHandler?
     weak var imageControllerDelegate: ImageViewControllerDelegate?
-
+    
     init(viewModel: GalleryViewModel, configuration: [GalleryConfiguration], fadeInHandler: ImageFadeInHandler, imageControllerDelegate: ImageViewControllerDelegate) {
         
         self.viewModel = viewModel
@@ -42,14 +42,4 @@ class GalleryViewControllerDatasource: NSObject, UIPageViewControllerDataSource 
         
         return ImageViewController(imageViewModel: self.viewModel, configuration: configuration, imageIndex: nextIndex, showDisplacedImage: (nextIndex == self.viewModel.startIndex), fadeInHandler: fadeInHandler, delegate: imageControllerDelegate)
     }
-    
-//    func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
-//        
-//        return viewModel.imageCount
-//    }
-//    
-//    func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int {
-//        
-//        return viewModel.startIndex
-//    }
 }
