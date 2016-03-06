@@ -385,7 +385,7 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
             if isSwipingToDismiss {
                 
                 if let delegate = self.delegate {
-                    delegate.imageViewController(self, swipeToDismissDistanceToEdge: percentDistance)
+                    delegate.imageViewController(self, didSwipeToDismissWithDistanceToEdge: percentDistance)
                 }
             }
         }

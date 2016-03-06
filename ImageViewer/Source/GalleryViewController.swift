@@ -38,6 +38,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     var landedPageAtIndexCompletion: ((Int) -> Void)? //called everytime ANY animation stops in the page controller and a page at index is on screen
     var changedPageToIndexCompletion: ((Int) -> Void)? //called after any animation IF & ONLY there is a change in page index compared to before animations started
 
+    // MARK: - VC Setup
     
     init(viewModel: GalleryViewModel, configuration: [GalleryConfiguration] = defaultGalleryConfiguration()) {
         
@@ -95,7 +96,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     }
     
     private func configureCloseButton() {
-        
+
         closeButton.addTarget(self, action: "close", forControlEvents: .TouchUpInside)
     }
     
@@ -120,13 +121,17 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         return nil
     }
     
+    // MARK: - Actions
+    
     func close() {
         
         self.modalTransitionStyle = .CrossDissolve
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+
+    // MARK: - Image Controller Delegate
     
-    func imageViewController(controller: ImageViewController, swipeToDismissDistanceToEdge distance: CGFloat) {
+    func imageViewController(controller: ImageViewController, didSwipeToDismissWithDistanceToEdge distance: CGFloat) {
 
         self.view.backgroundColor = (distance == 0) ? UIColor.blackColor() : UIColor.clearColor()
         closeButton.alpha = 1 - distance * 4

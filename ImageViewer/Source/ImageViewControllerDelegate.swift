@@ -10,5 +10,5 @@ import UIKit
 
 protocol ImageViewControllerDelegate: class {
     
-    func imageViewController(controller: ImageViewController, swipeToDismissDistanceToEdge distance: CGFloat)
+    func imageViewController(controller: ImageViewController, didSwipeToDismissWithDistanceToEdge distance: CGFloat)
 }
