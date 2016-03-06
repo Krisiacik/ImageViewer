@@ -10,36 +10,46 @@ import UIKit
 
 class GalleryViewControllerDatasource: NSObject, UIPageViewControllerDataSource {
     
+    let imageControllerFactory: ImageViewControllerFactory
     let viewModel: GalleryViewModel
-    let configuration: [GalleryConfiguration]
-    weak var fadeInHandler: ImageFadeInHandler?
-    weak var imageControllerDelegate: ImageViewControllerDelegate?
+    let galleryPagingMode: GalleryPagingMode
     
-    init(viewModel: GalleryViewModel, configuration: [GalleryConfiguration], fadeInHandler: ImageFadeInHandler, imageControllerDelegate: ImageViewControllerDelegate) {
+    init(imageControllerFactory: ImageViewControllerFactory, viewModel: GalleryViewModel, galleryPagingMode: GalleryPagingMode) {
         
+        self.imageControllerFactory = imageControllerFactory
         self.viewModel = viewModel
-        self.configuration = configuration
-        self.fadeInHandler = fadeInHandler
-        self.imageControllerDelegate = imageControllerDelegate
+        self.galleryPagingMode = galleryPagingMode
+        
+        UIDevice.currentDevice().orientation
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
         
         guard let currentController = viewController as? ImageViewController else { return nil }
-        guard currentController.index > 0 else { return nil }
+        let previousIndex = (currentController.index == 0) ? viewModel.imageCount - 1 : currentController.index - 1
         
-        let nextIndex = currentController.index - 1
-        
-        return ImageViewController(imageViewModel: self.viewModel, configuration: configuration, imageIndex: nextIndex, showDisplacedImage: (nextIndex == self.viewModel.startIndex), fadeInHandler: fadeInHandler, delegate: imageControllerDelegate)
+        switch galleryPagingMode {
+            
+        case .Standard:
+            return (currentController.index > 0) ? imageControllerFactory.createImageViewController(previousIndex) : nil
+            
+        case .Carousel:
+            return imageControllerFactory.createImageViewController(previousIndex)
+        }
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
         
         guard let currentController = viewController as? ImageViewController  else { return nil }
-        guard currentController.index < viewModel.imageCount - 1 else { return nil }
+        let nextIndex = (currentController.index == viewModel.imageCount - 1) ? 0 : currentController.index + 1
         
-        let nextIndex = currentController.index + 1
-        
-        return ImageViewController(imageViewModel: self.viewModel, configuration: configuration, imageIndex: nextIndex, showDisplacedImage: (nextIndex == self.viewModel.startIndex), fadeInHandler: fadeInHandler, delegate: imageControllerDelegate)
+        switch galleryPagingMode {
+            
+        case .Standard:
+            return (currentController.index < viewModel.imageCount - 1) ? imageControllerFactory.createImageViewController(nextIndex) : nil
+            
+        case .Carousel:
+            return imageControllerFactory.createImageViewController(nextIndex)
+        }
     }
 }

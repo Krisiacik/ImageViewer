@@ -16,9 +16,10 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     
     //DATA
     private let viewModel: GalleryViewModel
-    private var galleryDelegate: GalleryViewControllerDelegate!
+    private var galleryDelegate = GalleryViewControllerDelegate()
     private var galleryDatasource: GalleryViewControllerDatasource!
     private let fadeInHandler = ImageFadeInHandler()
+    private var galleryPagingMode = GalleryPagingMode.Standard
     var currentIndex: Int
     var previousIndex: Int
     
@@ -37,7 +38,10 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     //COMPLETION
     var landedPageAtIndexCompletion: ((Int) -> Void)? //called everytime ANY animation stops in the page controller and a page at index is on screen
     var changedPageToIndexCompletion: ((Int) -> Void)? //called after any animation IF & ONLY there is a change in page index compared to before animations started
-
+    
+    //IMAGE VC FACTORY
+    var imageControllerFactory: ImageViewControllerFactory!
+    
     // MARK: - VC Setup
     
     init(viewModel: GalleryViewModel, configuration: [GalleryConfiguration] = defaultGalleryConfiguration()) {
@@ -57,6 +61,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
             case .SpinnerStyle(let style):          spinnerStyle = style
             case .SpinnerColor(let color):          spinnerColor = color
             case .CloseButton(let button):          closeButton = button
+            case .PagingMode(let mode):             galleryPagingMode = mode
             }
         }
         
@@ -65,16 +70,17 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         
         super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(float: dividerWidth ?? 10)])
         
-        //they need to be kept alive with strong reference
-        self.galleryDelegate = GalleryViewControllerDelegate()
-        self.galleryDatasource = GalleryViewControllerDatasource(viewModel: viewModel, configuration: configuration, fadeInHandler: self.fadeInHandler, imageControllerDelegate: self)
+        self.imageControllerFactory = ImageViewControllerFactory(imageViewModel: viewModel, configuration: configuration, fadeInHandler: fadeInHandler, delegate: self)
+        
+        //needs to be kept alive with strong reference
+        self.galleryDatasource = GalleryViewControllerDatasource(imageControllerFactory: imageControllerFactory, viewModel: viewModel,             galleryPagingMode: galleryPagingMode)
         self.delegate = galleryDelegate
         self.dataSource = galleryDatasource
         
         self.transitioningDelegate = self
         self.modalPresentationStyle = .Custom
         extendedLayoutIncludesOpaqueBars = true
-
+        
         configureInitialImageController()
         configureCloseButton()
         createViewHierarchy()
@@ -96,7 +102,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     }
     
     private func configureCloseButton() {
-
+        
         closeButton.addTarget(self, action: "close", forControlEvents: .TouchUpInside)
     }
     
@@ -110,7 +116,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         
         closeButton.frame.origin = CGPoint(x: self.view.frame.size.width - closeButton.frame.size.width - closeButtonPadding, y: closeButtonPadding)
     }
- 
+    
     // MARK: - Transitioning Delegate
     
     public func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
@@ -128,11 +134,11 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         self.modalTransitionStyle = .CrossDissolve
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-
+    
     // MARK: - Image Controller Delegate
     
     func imageViewController(controller: ImageViewController, didSwipeToDismissWithDistanceToEdge distance: CGFloat) {
-
+        
         self.view.backgroundColor = (distance == 0) ? UIColor.blackColor() : UIColor.clearColor()
         closeButton.alpha = 1 - distance * 4
     }

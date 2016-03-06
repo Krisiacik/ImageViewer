@@ -49,6 +49,8 @@
 		EBA90E401C8729E2000AA697 /* GalleryPresentTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA90E3E1C8729E2000AA697 /* GalleryPresentTransition.swift */; };
 		EBA90E431C875225000AA697 /* ImageFadeInHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA90E421C875225000AA697 /* ImageFadeInHandler.swift */; };
 		EBA90E441C875225000AA697 /* ImageFadeInHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA90E421C875225000AA697 /* ImageFadeInHandler.swift */; };
+		EBB390031C8C692800CE1F71 /* ImageViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB390021C8C692800CE1F71 /* ImageViewControllerFactory.swift */; };
+		EBB390041C8C692800CE1F71 /* ImageViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB390021C8C692800CE1F71 /* ImageViewControllerFactory.swift */; };
 		EBDA90FF1C8A7B1500556247 /* GalleryViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB71AC491C8A784D00F83E86 /* GalleryViewControllerDelegate.swift */; };
 		EBEBEF941C84665B008C1E58 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEBEF931C84665B008C1E58 /* ImageViewController.swift */; };
 		EBEBEF961C846847008C1E58 /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEBEF951C846847008C1E58 /* GalleryViewController.swift */; };
@@ -84,6 +86,7 @@
 		EBA0A9521C89C653005B8DD3 /* GalleryConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryConfiguration.swift; sourceTree = "<group>"; };
 		EBA90E3E1C8729E2000AA697 /* GalleryPresentTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GalleryPresentTransition.swift; path = ImageViewer/GalleryPresentTransition.swift; sourceTree = "<group>"; };
 		EBA90E421C875225000AA697 /* ImageFadeInHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageFadeInHandler.swift; sourceTree = "<group>"; };
+		EBB390021C8C692800CE1F71 /* ImageViewControllerFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewControllerFactory.swift; sourceTree = "<group>"; };
 		EBEBEF931C84665B008C1E58 /* ImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		EBEBEF951C846847008C1E58 /* GalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
 		EBEBEF971C846928008C1E58 /* GalleryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryViewModel.swift; sourceTree = "<group>"; };
@@ -222,6 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				EBEBEF931C84665B008C1E58 /* ImageViewController.swift */,
+				EBB390021C8C692800CE1F71 /* ImageViewControllerFactory.swift */,
 				EB243F961C8996DF006DEF58 /* ImageViewControllerDelegate.swift */,
 			);
 			name = "Image Controller";
@@ -402,6 +406,7 @@
 				EB1CEBE31C846DEF00BB27B8 /* GalleryViewModel.swift in Sources */,
 				EBA90E431C875225000AA697 /* ImageFadeInHandler.swift in Sources */,
 				4CD1C49C1C16FF64008D5F84 /* CGPoint.swift in Sources */,
+				EBB390031C8C692800CE1F71 /* ImageViewControllerFactory.swift in Sources */,
 				EB4DEBC01C84A6FD00D5F897 /* UIView.swift in Sources */,
 				EB243F911C889F88006DEF58 /* GallerySwipeToDismissTransition.swift in Sources */,
 				EB6A56CF1C85D4F500BBDEF6 /* GalleryViewControllerDatasource.swift in Sources */,
@@ -428,6 +433,7 @@
 				EB243F9B1C899F1C006DEF58 /* GalleryCloseTransition.swift in Sources */,
 				EBEBEF961C846847008C1E58 /* GalleryViewController.swift in Sources */,
 				EB243F981C8996DF006DEF58 /* ImageViewControllerDelegate.swift in Sources */,
+				EBB390041C8C692800CE1F71 /* ImageViewControllerFactory.swift in Sources */,
 				C7DABE661C12632F00F5BD7B /* ImageViewer.swift in Sources */,
 				EB6A56D01C85D4F500BBDEF6 /* GalleryViewControllerDatasource.swift in Sources */,
 				EBEBEF981C846928008C1E58 /* GalleryViewModel.swift in Sources */,

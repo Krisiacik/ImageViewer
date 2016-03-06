@@ -21,7 +21,7 @@ class ViewController: UIViewController {
     @IBAction func showViewer(sender: UIView) {
         
         let poorManProvider = PoorManProvider()
-        let galleryViewModel = GalleryViewModel(imageProvider: poorManProvider, imageCount: 7, displacedView: sender,  displacedViewIndex: sender.tag)
+        let galleryViewModel = GalleryViewModel(imageProvider: poorManProvider, imageCount: images.count, displacedView: sender,  displacedViewIndex: sender.tag)
         
         galleryViewModel.landedPageAtIndexCompletion = { index in
             
@@ -46,16 +46,16 @@ class PoorManProvider: ImageProvider {
     
     func provideImage(atIndex index: Int, completion: UIImage? -> Void) {
         
-        let images = [
-            UIImage(named: "0"),
-            UIImage(named: "1"),
-            UIImage(named: "2"),
-            UIImage(named: "3"),
-            UIImage(named: "4"),
-            UIImage(named: "5"),
-            UIImage(named: "6"),
-            UIImage(named: "7")]
-        
         completion(images[index])
     }
 }
+
+let images = [
+    UIImage(named: "0"),
+    UIImage(named: "1"),
+    UIImage(named: "2"),
+    UIImage(named: "3"),
+    UIImage(named: "4"),
+    UIImage(named: "5"),
+    UIImage(named: "6"),
+    UIImage(named: "7")]

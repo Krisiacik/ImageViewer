@@ -8,12 +8,19 @@
 
 import UIKit
 
+enum GalleryPagingMode {
+    
+    case Standard
+    case Carousel
+}
+
 enum GalleryConfiguration {
     
     case ImageDividerWidth(CGFloat)
     case SpinnerStyle(UIActivityIndicatorViewStyle)
     case SpinnerColor(UIColor)
     case CloseButton(UIButton)
+    case PagingMode(GalleryPagingMode)
 }
 
 func defaultGalleryConfiguration() -> [GalleryConfiguration] {
@@ -27,5 +34,7 @@ func defaultGalleryConfiguration() -> [GalleryConfiguration] {
     button.setImage(UIImage(named: "close_highlighted"), forState: UIControlState.Highlighted)
     let closeButton = GalleryConfiguration.CloseButton(button)
     
-    return [dividerWidth, spinnerStyle, spinnerColor, closeButton]
+    let pagingMode = GalleryConfiguration.PagingMode(GalleryPagingMode.Carousel)
+    
+    return [dividerWidth, spinnerStyle, spinnerColor, closeButton, pagingMode]
 }
