@@ -11,11 +11,11 @@ import UIKit
 class ImageViewControllerFactory {
     
     var imageViewModel: GalleryViewModel
-    var configuration: [GalleryConfiguration]
+    var configuration: GalleryConfiguration
     var fadeInHandler: ImageFadeInHandler
     weak var delegate: ImageViewControllerDelegate?
     
-    init(imageViewModel: GalleryViewModel, configuration: [GalleryConfiguration], fadeInHandler: ImageFadeInHandler, delegate: ImageViewControllerDelegate) {
+    init(imageViewModel: GalleryViewModel, configuration: GalleryConfiguration, fadeInHandler: ImageFadeInHandler, delegate: ImageViewControllerDelegate) {
         
         self.imageViewModel = imageViewModel
         self.configuration = configuration

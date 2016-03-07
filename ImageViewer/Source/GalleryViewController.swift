@@ -24,7 +24,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     var previousIndex: Int
     
     //LOCAL CONFIG
-    private let configuration: [GalleryConfiguration]
+    private let configuration: GalleryConfiguration
     private var spinnerColor = UIColor.whiteColor()
     private var spinnerStyle = UIActivityIndicatorViewStyle.White
     private let presentTransitionDuration = 0.25
@@ -44,7 +44,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     
     // MARK: - VC Setup
     
-    public init(viewModel: GalleryViewModel, configuration: [GalleryConfiguration] = defaultGalleryConfiguration()) {
+    public init(viewModel: GalleryViewModel, configuration: GalleryConfiguration = defaultGalleryConfiguration()) {
         
         self.viewModel = viewModel
         self.configuration = configuration

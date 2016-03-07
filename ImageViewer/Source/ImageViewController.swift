@@ -53,7 +53,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     var swipeToDismissCompletionBlock: (Void -> Void)? //executed as the last step for swipe to dismiss action.
     var dismissCompletionBlock: (Void -> Void)? //executed as the last step when the ImageViewer is dismissed (either via the close button, or swipe)
     
-    init(imageViewModel: GalleryViewModel, configuration: [GalleryConfiguration], imageIndex: Int, showDisplacedImage: Bool, fadeInHandler: ImageFadeInHandler?, delegate: ImageViewControllerDelegate?) {
+    init(imageViewModel: GalleryViewModel, configuration: GalleryConfiguration, imageIndex: Int, showDisplacedImage: Bool, fadeInHandler: ImageFadeInHandler?, delegate: ImageViewControllerDelegate?) {
         
         self.imageViewModel = imageViewModel
         self.index = imageIndex

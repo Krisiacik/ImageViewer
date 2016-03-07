@@ -14,7 +14,9 @@ public enum GalleryPagingMode {
     case Carousel
 }
 
-public enum GalleryConfiguration {
+public typealias GalleryConfiguration = [GalleryConfigurationItem]
+
+public enum GalleryConfigurationItem {
     
     case ImageDividerWidth(CGFloat)
     case SpinnerStyle(UIActivityIndicatorViewStyle)
@@ -23,18 +25,18 @@ public enum GalleryConfiguration {
     case PagingMode(GalleryPagingMode)
 }
 
-func defaultGalleryConfiguration() -> [GalleryConfiguration] {
+func defaultGalleryConfiguration() -> GalleryConfiguration {
     
-    let dividerWidth = GalleryConfiguration.ImageDividerWidth(10)
-    let spinnerColor = GalleryConfiguration.SpinnerColor(UIColor.whiteColor())
-    let spinnerStyle = GalleryConfiguration.SpinnerStyle(UIActivityIndicatorViewStyle.White)
+    let dividerWidth = GalleryConfigurationItem.ImageDividerWidth(10)
+    let spinnerColor = GalleryConfigurationItem.SpinnerColor(UIColor.whiteColor())
+    let spinnerStyle = GalleryConfigurationItem.SpinnerStyle(UIActivityIndicatorViewStyle.White)
     
     let button = UIButton(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 50, height: 50)))
     button.setImage(UIImage(named: "close_normal"), forState: UIControlState.Normal)
     button.setImage(UIImage(named: "close_highlighted"), forState: UIControlState.Highlighted)
-    let closeButton = GalleryConfiguration.CloseButton(button)
+    let closeButton = GalleryConfigurationItem.CloseButton(button)
     
-    let pagingMode = GalleryConfiguration.PagingMode(GalleryPagingMode.Carousel)
+    let pagingMode = GalleryConfigurationItem.PagingMode(GalleryPagingMode.Carousel)
     
     return [dividerWidth, spinnerStyle, spinnerColor, closeButton, pagingMode]
 }
