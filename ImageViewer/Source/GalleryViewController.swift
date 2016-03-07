@@ -131,6 +131,25 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     
     func close() {
         
+        if currentIndex == viewModel.startIndex {
+            
+            self.view.backgroundColor = UIColor.clearColor()
+            
+            if let imageController = self.viewControllers?.first as? ImageViewController {
+                
+                imageController.closeAnimation(0.2, completion: { [weak self] finished in
+                    
+                    self?.innerClose()
+                })
+            }
+        }
+        else {
+            innerClose()
+        }
+    }
+    
+    func innerClose() {
+     
         self.modalTransitionStyle = .CrossDissolve
         self.dismissViewControllerAnimated(true, completion: nil)
     }

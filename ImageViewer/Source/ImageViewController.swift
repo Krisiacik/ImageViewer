@@ -13,7 +13,7 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
     //UI
     private let scrollView = UIScrollView()
     private let imageView = UIImageView()
-    private let blackOverlayView = UIView()
+    let blackOverlayView = UIView()
     private let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .White)
     var applicationWindow: UIWindow? {
         return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 }
