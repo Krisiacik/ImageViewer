@@ -8,13 +8,13 @@
 
 import UIKit
 
-enum GalleryPagingMode {
+public enum GalleryPagingMode {
     
     case Standard
     case Carousel
 }
 
-enum GalleryConfiguration {
+public enum GalleryConfiguration {
     
     case ImageDividerWidth(CGFloat)
     case SpinnerStyle(UIActivityIndicatorViewStyle)

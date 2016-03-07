@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate {
+class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate {
     
     //UI
     private let scrollView = UIScrollView()
@@ -45,13 +45,13 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
     private var swipeTodismissTransition: GallerySwipeToDismissTransition?
     
     //LIFE CYCLE BLOCKS
-    public var showInitiationBlock: (Void -> Void)? //executed right before the image animation into its final position starts.
-    public var showCompletionBlock: (Void -> Void)? //executed as the last step after all the show animations.
-    public var closeButtonActionInitiationBlock: (Void -> Void)? //executed as the first step before the button's close action starts.
-    public var closeButtonActionCompletionBlock: (Void -> Void)? //executed as the last step for close button's close action.
-    public var swipeToDismissInitiationBlock: (Void -> Void)? //executed as the first step for swipe to dismiss action.
-    public var swipeToDismissCompletionBlock: (Void -> Void)? //executed as the last step for swipe to dismiss action.
-    public var dismissCompletionBlock: (Void -> Void)? //executed as the last step when the ImageViewer is dismissed (either via the close button, or swipe)
+    var showInitiationBlock: (Void -> Void)? //executed right before the image animation into its final position starts.
+    var showCompletionBlock: (Void -> Void)? //executed as the last step after all the show animations.
+    var closeButtonActionInitiationBlock: (Void -> Void)? //executed as the first step before the button's close action starts.
+    var closeButtonActionCompletionBlock: (Void -> Void)? //executed as the last step for close button's close action.
+    var swipeToDismissInitiationBlock: (Void -> Void)? //executed as the first step for swipe to dismiss action.
+    var swipeToDismissCompletionBlock: (Void -> Void)? //executed as the last step for swipe to dismiss action.
+    var dismissCompletionBlock: (Void -> Void)? //executed as the last step when the ImageViewer is dismissed (either via the close button, or swipe)
     
     init(imageViewModel: GalleryViewModel, configuration: [GalleryConfiguration], imageIndex: Int, showDisplacedImage: Bool, fadeInHandler: ImageFadeInHandler?, delegate: ImageViewControllerDelegate?) {
         
@@ -88,7 +88,7 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         createViewHierarchy()
     }
     
-    public required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -183,7 +183,7 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         fadeInHandler?.imagePresentedAtIndex(self.index)
     }
     
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         isPortraitOnly = presentingViewController?.supportedInterfaceOrientations() == .Portrait ||
@@ -192,13 +192,13 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         self.view.backgroundColor = UIColor.blackColor()
     }
     
-    public override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         
         self.scrollView.zoomScale = 1.0
     }
     
-    public override func viewDidLayoutSubviews() {
+    override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         scrollView.frame = self.view.bounds
@@ -207,7 +207,7 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         activityIndicatorView.center = self.view.boundsCenter
     }
     
-    public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
         
         rotate(toBoundingSize: size, transitionCoordinator: coordinator)
@@ -245,7 +245,7 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         }
     }
     
-    public func scrollViewDidZoom(scrollView: UIScrollView) {
+    func scrollViewDidZoom(scrollView: UIScrollView) {
         
         imageView.center = contentCenter(forBoundingSize: scrollView.bounds.size, contentSize: scrollView.contentSize)
     }
@@ -346,7 +346,7 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         }
     }
     
-    public func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         
         if  gestureRecognizer == panGestureRecognizer {
             
@@ -357,7 +357,7 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
         return false
     }
     
-    public func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         
         return imageView
     }
@@ -373,7 +373,7 @@ public class ImageViewController: UIViewController, UIScrollViewDelegate, UIGest
     
     // MARK: - KVO
     
-    override public func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String: AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String: AnyObject]?, context: UnsafeMutablePointer<Void>) {
         
         if (dynamicTransparencyActive == true && keyPath == "contentOffset") {
             
