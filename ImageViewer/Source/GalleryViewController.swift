@@ -44,7 +44,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     
     // MARK: - VC Setup
     
-    init(viewModel: GalleryViewModel, configuration: [GalleryConfiguration] = defaultGalleryConfiguration()) {
+    public init(viewModel: GalleryViewModel, configuration: [GalleryConfiguration] = defaultGalleryConfiguration()) {
         
         self.viewModel = viewModel
         self.configuration = configuration
