@@ -38,6 +38,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     private let zoomDuration = 0.2
     
     //INTERACTIONS
+    private let singleTapRecognizer = UITapGestureRecognizer()
     private let doubleTapRecognizer = UITapGestureRecognizer()
     private let panGestureRecognizer = UIPanGestureRecognizer()
     
@@ -131,10 +132,16 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     }
     
     func configureGestureRecognizers() {
+
+        singleTapRecognizer.addTarget(self, action: "scrollViewDidSingleTap:")
+        singleTapRecognizer.numberOfTapsRequired = 1
+        scrollView.addGestureRecognizer(singleTapRecognizer)
         
         doubleTapRecognizer.addTarget(self, action: "scrollViewDidDoubleTap:")
         doubleTapRecognizer.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(doubleTapRecognizer)
+        
+        singleTapRecognizer.requireGestureRecognizerToFail(doubleTapRecognizer)
         
         panGestureRecognizer.addTarget(self, action: "scrollViewDidPan:")
         panGestureRecognizer.delegate = self
@@ -223,6 +230,11 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
                 scrollView.zoomScale = 1
             }
             }, completion: nil)
+    }
+    
+    func scrollViewDidSingleTap(recognizer: UITapGestureRecognizer) {
+        
+        self.delegate?.imageViewControllerDidSingleTap(self)
     }
     
     func scrollViewDidDoubleTap(recognizer: UITapGestureRecognizer) {

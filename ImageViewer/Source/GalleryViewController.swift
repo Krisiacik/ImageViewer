@@ -32,7 +32,10 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     private let presentTransitionDuration = 0.25
     private let dismissTransitionDuration = 1.00
     private let closeButtonPadding: CGFloat = 8.0
+    private let headerViewMarginTop: CGFloat = 20
     private let swipeToDissmissFadeOutAccelerationFactor: CGFloat = 6
+    private let toggleHeaderFooterAnimationDuration = 0.15
+    private let closeAnimationDuration = 0.2
     
     //TRANSITIONS
     let presentTransition: GalleryPresentTransition
@@ -139,7 +142,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         
         closeButton.frame.origin = CGPoint(x: self.view.frame.size.width - closeButton.frame.size.width - closeButtonPadding, y: closeButtonPadding)
         headerView?.center = self.view.boundsCenter
-        headerView?.frame.origin.y = 20
+        headerView?.frame.origin.y = headerViewMarginTop
     }
     
     // MARK: - Transitioning Delegate
@@ -162,7 +165,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
             
             if let imageController = self.viewControllers?.first as? ImageViewController {
                 
-                imageController.closeAnimation(0.2, completion: { [weak self] finished in
+                imageController.closeAnimation(closeAnimationDuration, completion: { [weak self] finished in
                     
                     self?.innerClose()
                 })
@@ -189,6 +192,20 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         
         closeButton.alpha = alpha
         headerView?.alpha = alpha
+    }
+    
+    func imageViewControllerDidSingleTap(controller: ImageViewController) {
+        
+        UIView.animateWithDuration(toggleHeaderFooterAnimationDuration) { [weak self] in
+            
+            if let header = self?.headerView {
+                header.alpha = (header.alpha == 0) ? 1 : 0
+            }
+            
+            if let close = self?.closeButton {
+                close.alpha = (close.alpha == 0) ? 1 : 0
+            }
+        }
     }
 }
 
