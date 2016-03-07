@@ -23,17 +23,17 @@ class ViewController: UIViewController {
         let poorManProvider = PoorManProvider()
         let galleryViewModel = GalleryViewModel(imageProvider: poorManProvider, imageCount: images.count, displacedView: sender,  displacedViewIndex: sender.tag)
         
-        galleryViewModel.landedPageAtIndexCompletion = { index in
-            
-            print("LANDED AT: \(index)")
-        }
-
-        galleryViewModel.changedPageToIndexCompletion = { index in
-            
-            print("CHANGED PAGE TO: \(index)")
-        }
+        let frame = CGRect(origin: CGPoint.zero, size: CGSize(width: 80, height: 24))
+        let headerView = CounterView(frame: frame, currentIndex: sender.tag, count: images.count)
+//        headerView.layer.borderColor = UIColor.redColor().CGColor
+//        headerView.layer.borderWidth = 2.0
         
+        galleryViewModel.landedPageAtIndexCompletion = { headerView.currentIndex = $0 }
+        galleryViewModel.changedPageToIndexCompletion = { headerView.currentIndex = $0 }
+    
         let galleryViewController = GalleryViewController(viewModel: galleryViewModel)
+        galleryViewController.headerView = headerView
+        
         self.presentImageGallery(galleryViewController)
     }
 }

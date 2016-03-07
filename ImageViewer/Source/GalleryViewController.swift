@@ -13,6 +13,8 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     
     //UI
     private var closeButton: UIButton!
+    public var headerView: UIView?
+    public var footerView: UIView?
     
     //DATA
     private let viewModel: GalleryViewModel
@@ -30,6 +32,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     private let presentTransitionDuration = 0.25
     private let dismissTransitionDuration = 1.00
     private let closeButtonPadding: CGFloat = 8.0
+    private let swipeToDissmissFadeOutAccelerationFactor: CGFloat = 6
     
     //TRANSITIONS
     let presentTransition: GalleryPresentTransition
@@ -73,7 +76,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         self.imageControllerFactory = ImageViewControllerFactory(imageViewModel: viewModel, configuration: configuration, fadeInHandler: fadeInHandler, delegate: self)
         
         //needs to be kept alive with strong reference
-        self.galleryDatasource = GalleryViewControllerDatasource(imageControllerFactory: imageControllerFactory, viewModel: viewModel,             galleryPagingMode: galleryPagingMode)
+        self.galleryDatasource = GalleryViewControllerDatasource(imageControllerFactory: imageControllerFactory, viewModel: viewModel, galleryPagingMode: galleryPagingMode)
         self.delegate = galleryDelegate
         self.dataSource = galleryDatasource
         
@@ -81,13 +84,18 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         self.modalPresentationStyle = .Custom
         extendedLayoutIncludesOpaqueBars = true
         
+        configurePagingCompletionBlocks()
         configureInitialImageController()
-        configureCloseButton()
-        createViewHierarchy()
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configurePagingCompletionBlocks() {
+        
+        self.landedPageAtIndexCompletion = viewModel.landedPageAtIndexCompletion
+        self.changedPageToIndexCompletion = viewModel.changedPageToIndexCompletion
     }
     
     func configureInitialImageController() {
@@ -111,10 +119,27 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         self.view.addSubview(closeButton)
     }
     
+    func configureHeaderView() {
+        
+        if let view = headerView {
+            self.view.addSubview(view)
+        }
+    }
+    
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        configureHeaderView()
+        configureCloseButton()
+        createViewHierarchy()
+    }
+    
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         closeButton.frame.origin = CGPoint(x: self.view.frame.size.width - closeButton.frame.size.width - closeButtonPadding, y: closeButtonPadding)
+        headerView?.center = self.view.boundsCenter
+        headerView?.frame.origin.y = 20
     }
     
     // MARK: - Transitioning Delegate
@@ -159,7 +184,11 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     func imageViewController(controller: ImageViewController, didSwipeToDismissWithDistanceToEdge distance: CGFloat) {
         
         self.view.backgroundColor = (distance == 0) ? UIColor.blackColor() : UIColor.clearColor()
-        closeButton.alpha = 1 - distance * 4
+        
+        let alpha = 1 - distance * swipeToDissmissFadeOutAccelerationFactor
+        
+        closeButton.alpha = alpha
+        headerView?.alpha = alpha
     }
 }
 
