@@ -13,7 +13,7 @@ class ImageViewControllerFactory {
     var imageViewModel: GalleryViewModel
     var configuration: [GalleryConfiguration]
     var fadeInHandler: ImageFadeInHandler
-    var delegate: ImageViewControllerDelegate
+    weak var delegate: ImageViewControllerDelegate?
     
     init(imageViewModel: GalleryViewModel, configuration: [GalleryConfiguration], fadeInHandler: ImageFadeInHandler, delegate: ImageViewControllerDelegate) {
         
