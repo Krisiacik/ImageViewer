@@ -23,6 +23,8 @@ public enum GalleryConfigurationItem {
     case SpinnerColor(UIColor)
     case CloseButton(UIButton)
     case PagingMode(GalleryPagingMode)
+    case HeaderViewLayout(HeaderLayout)
+    case FooterViewLayout(FooterLayout)
 }
 
 func defaultGalleryConfiguration() -> GalleryConfiguration {
@@ -38,5 +40,8 @@ func defaultGalleryConfiguration() -> GalleryConfiguration {
     
     let pagingMode = GalleryConfigurationItem.PagingMode(GalleryPagingMode.Carousel)
     
-    return [dividerWidth, spinnerStyle, spinnerColor, closeButton, pagingMode]
+    let headerLayout = GalleryConfigurationItem.HeaderViewLayout(HeaderLayout.Center(25))
+    let footerLayout = GalleryConfigurationItem.FooterViewLayout(FooterLayout.Center(25))
+    
+    return [dividerWidth, spinnerStyle, spinnerColor, closeButton, pagingMode, headerLayout, footerLayout]
 }

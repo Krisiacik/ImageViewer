@@ -23,16 +23,20 @@ class ViewController: UIViewController {
         let poorManProvider = PoorManProvider()
         let galleryViewModel = GalleryViewModel(imageProvider: poorManProvider, imageCount: images.count, displacedView: sender,  displacedViewIndex: sender.tag)
         
-        let frame = CGRect(origin: CGPoint.zero, size: CGSize(width: 80, height: 24))
-        let headerView = CounterView(frame: frame, currentIndex: sender.tag, count: images.count)
-//        headerView.layer.borderColor = UIColor.redColor().CGColor
-//        headerView.layer.borderWidth = 2.0
+        let headerFrame = CGRect(origin: CGPoint.zero, size: CGSize(width: 200, height: 24))
+        let headerView = CounterView(frame: headerFrame, currentIndex: sender.tag, count: images.count)
+        headerView.backgroundColor = UIColor.redColor()
+
+        let footerFrame = CGRect(origin: CGPoint.zero, size: CGSize(width: 200, height: 24))
+        let footerView = CounterView(frame: footerFrame, currentIndex: sender.tag, count: images.count)
+        footerView.backgroundColor = UIColor.blueColor()
         
         galleryViewModel.landedPageAtIndexCompletion = { headerView.currentIndex = $0 }
         galleryViewModel.changedPageToIndexCompletion = { headerView.currentIndex = $0 }
     
         let galleryViewController = GalleryViewController(viewModel: galleryViewModel)
         galleryViewController.headerView = headerView
+        galleryViewController.footerView = footerView
         
         self.presentImageGallery(galleryViewController)
     }

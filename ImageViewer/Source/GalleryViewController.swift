@@ -36,6 +36,8 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     private let swipeToDissmissFadeOutAccelerationFactor: CGFloat = 6
     private let toggleHeaderFooterAnimationDuration = 0.15
     private let closeAnimationDuration = 0.2
+    private var headerLayout = HeaderLayout.Center(25)
+    private var footerLayout = FooterLayout.Center(25)
     
     //TRANSITIONS
     let presentTransition: GalleryPresentTransition
@@ -68,6 +70,8 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
             case .SpinnerColor(let color):          spinnerColor = color
             case .CloseButton(let button):          closeButton = button
             case .PagingMode(let mode):             galleryPagingMode = mode
+            case .HeaderViewLayout(let layout):     headerLayout = layout
+            case .FooterViewLayout(let layout):     footerLayout = layout
             }
         }
         
@@ -125,8 +129,15 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     
     func configureHeaderView() {
         
-        if let view = headerView {
-            self.view.addSubview(view)
+        if let header = headerView {
+            self.view.addSubview(header)
+        }
+    }
+    
+    func configureFooterView() {
+        
+        if let footer = footerView {
+            self.view.addSubview(footer)
         }
     }
     
@@ -134,6 +145,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         super.viewDidLoad()
         
         configureHeaderView()
+        configureFooterView()
         configureCloseButton()
         createViewHierarchy()
     }
@@ -142,8 +154,70 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         super.viewDidLayoutSubviews()
         
         closeButton.frame.origin = CGPoint(x: self.view.frame.size.width - closeButton.frame.size.width - closeButtonPadding, y: closeButtonPadding)
-        headerView?.center = self.view.boundsCenter
-        headerView?.frame.origin.y = headerViewMarginTop
+        
+        layoutHeaderView()
+        layoutFooterView()
+    }
+    
+    func layoutHeaderView() {
+        
+        if let header = headerView {
+            
+            switch headerLayout {
+                
+            case .Center(let marginTop):
+                
+                header.center = self.view.boundsCenter
+                header.frame.origin.y = marginTop
+                
+            case .PinBoth(let marginTop, let marginLeft,let marginRight):
+                
+                header.autoresizingMask = .FlexibleWidth
+                header.frame.origin = CGPoint(x: marginLeft, y: marginTop)
+                header.frame.size.width = self.view.frame.width - marginLeft - marginRight
+                
+            case .PinLeft(let marginTop, let marginLeft):
+                
+                header.autoresizingMask = .FlexibleRightMargin
+                header.frame.origin = CGPoint(x: marginLeft, y: marginTop)
+                
+            case .PinRight(let marginTop, let marginRight):
+                
+                header.autoresizingMask = .FlexibleLeftMargin
+                header.frame.origin = CGPoint(x: self.view.frame.width - marginRight - header.frame.width, y: marginTop)
+            }
+        }
+    }
+    
+    func layoutFooterView() {
+        
+        if let footer = footerView {
+            
+            switch footerLayout {
+                
+            case .Center(let marginBottom):
+                
+                footer.autoresizingMask = .FlexibleTopMargin
+                footer.center = self.view.boundsCenter
+                footer.frame.origin.y = self.view.frame.height - footer.frame.height - marginBottom
+                
+            case .PinBoth(let marginBottom, let marginLeft,let marginRight):
+                
+                footer.autoresizingMask = .FlexibleWidth
+                footer.frame.origin = CGPoint(x: marginLeft, y: marginBottom)
+                footer.frame.size.width = self.view.frame.width - marginLeft - marginRight
+                
+            case .PinLeft(let marginBottom, let marginLeft):
+                
+                footer.autoresizingMask = .FlexibleRightMargin
+                footer.frame.origin = CGPoint(x: marginLeft, y: self.view.frame.height - footer.frame.height - marginBottom)
+                
+            case .PinRight(let marginBottom, let marginRight):
+                
+                footer.autoresizingMask = .FlexibleLeftMargin
+                footer.frame.origin = CGPoint(x: self.view.frame.width - marginRight - footer.frame.width, y: marginBottom)
+            }
+        }
     }
     
     // MARK: - Transitioning Delegate
