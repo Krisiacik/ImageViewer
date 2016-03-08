@@ -205,7 +205,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
             case .PinBoth(let marginBottom, let marginLeft,let marginRight):
                 
                 footer.autoresizingMask = .FlexibleWidth
-                footer.frame.origin = CGPoint(x: marginLeft, y: marginBottom)
+                footer.frame.origin = CGPoint(x: marginLeft, y: self.view.frame.height - footer.frame.height - marginBottom)
                 footer.frame.size.width = self.view.frame.width - marginLeft - marginRight
                 
             case .PinLeft(let marginBottom, let marginLeft):
