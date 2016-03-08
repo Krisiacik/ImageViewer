@@ -24,6 +24,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     private var galleryPagingMode = GalleryPagingMode.Standard
     var currentIndex: Int
     var previousIndex: Int
+    private var isHeaderFooterHidden = false
     
     //LOCAL CONFIG
     private let configuration: GalleryConfiguration
@@ -243,7 +244,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
                 imageController.closeAnimation(closeAnimationDuration, completion: { [weak self] finished in
                     
                     self?.innerClose()
-                })
+                    })
             }
         }
         else {
@@ -252,7 +253,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     }
     
     func innerClose() {
-     
+        
         self.modalTransitionStyle = .CrossDissolve
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -263,29 +264,29 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         
         self.view.backgroundColor = (distance == 0) ? UIColor.blackColor() : UIColor.clearColor()
         
-        let alpha = 1 - distance * swipeToDissmissFadeOutAccelerationFactor
-        
-        closeButton.alpha = alpha
-        headerView?.alpha = alpha
-        footerView?.alpha = alpha
+        if isHeaderFooterHidden == false {
+            
+            let alpha = 1 - distance * swipeToDissmissFadeOutAccelerationFactor
+            
+            closeButton.alpha = alpha
+            headerView?.alpha = alpha
+            footerView?.alpha = alpha
+        }
     }
     
     func imageViewControllerDidSingleTap(controller: ImageViewController) {
         
-        UIView.animateWithDuration(toggleHeaderFooterAnimationDuration) { [weak self] in
+        let alpha: CGFloat = (isHeaderFooterHidden) ? 1 : 0
+        
+        isHeaderFooterHidden = !isHeaderFooterHidden
+        
+        UIView.animateWithDuration(toggleHeaderFooterAnimationDuration, animations: { [weak self] in
             
-            if let header = self?.headerView {
-                header.alpha = (header.alpha == 0) ? 1 : 0
-            }
+            self?.headerView?.alpha = alpha
+            self?.footerView?.alpha = alpha
+            self?.closeButton?.alpha = alpha
             
-            if let footer = self?.footerView {
-                footer.alpha = (footer.alpha == 0) ? 1 : 0
-            }
-            
-            if let close = self?.closeButton {
-                close.alpha = (close.alpha == 0) ? 1 : 0
-            }
-        }
+            })
     }
 }
 
