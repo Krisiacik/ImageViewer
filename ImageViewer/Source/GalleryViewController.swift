@@ -277,6 +277,10 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
                 header.alpha = (header.alpha == 0) ? 1 : 0
             }
             
+            if let footer = self?.footerView {
+                footer.alpha = (footer.alpha == 0) ? 1 : 0
+            }
+            
             if let close = self?.closeButton {
                 close.alpha = (close.alpha == 0) ? 1 : 0
             }
