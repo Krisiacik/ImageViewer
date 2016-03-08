@@ -89,6 +89,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         
         configurePagingCompletionBlocks()
         configureInitialImageController()
+        self.landedPageAtIndexCompletion?(self.currentIndex)
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -108,10 +109,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         initialImageController.view.hidden = true
         
         self.presentTransition.completion = {
-            
             initialImageController.view.hidden = false
-            self.landedPageAtIndexCompletion?(self.currentIndex)
-            self.changedPageToIndexCompletion?(self.currentIndex)
         }
     }
     
