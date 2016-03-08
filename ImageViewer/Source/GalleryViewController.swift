@@ -108,7 +108,10 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         initialImageController.view.hidden = true
         
         self.presentTransition.completion = {
+            
             initialImageController.view.hidden = false
+            self.landedPageAtIndexCompletion?(self.currentIndex)
+            self.changedPageToIndexCompletion?(self.currentIndex)
         }
     }
     
