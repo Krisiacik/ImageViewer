@@ -267,6 +267,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         
         closeButton.alpha = alpha
         headerView?.alpha = alpha
+        footerView?.alpha = alpha
     }
     
     func imageViewControllerDidSingleTap(controller: ImageViewController) {
