@@ -177,7 +177,7 @@
 		C7DABE581C1224EA00F5BD7B /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				EBEBEF901C84578E008C1E58 /* Gallery */,
+				EB1F6E1A1C908E210046A7FB /* Gallery */,
 				C7DABE5E1C12275C00F5BD7B /* ImageViewer */,
 				C7DABE5D1C12275C00F5BD7B /* Extensions */,
 			);
@@ -214,18 +214,55 @@
 			path = ImageViewerTests;
 			sourceTree = "<group>";
 		};
-		EB6A56D11C85E3FB00BBDEF6 /* Gallery Controller */ = {
+		EB1F6E151C908DB70046A7FB /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				EBA90E421C875225000AA697 /* ImageFadeInHandler.swift */,
+				EB71AC491C8A784D00F83E86 /* GalleryViewControllerDelegate.swift */,
+				EB6A56CE1C85D4F500BBDEF6 /* GalleryViewControllerDatasource.swift */,
+			);
+			name = Delegates;
+			sourceTree = "<group>";
+		};
+		EB1F6E161C908DCE0046A7FB /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				EBEBEF971C846928008C1E58 /* GalleryViewModel.swift */,
-				EBA90E421C875225000AA697 /* ImageFadeInHandler.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		EB1F6E171C908DD30046A7FB /* Controller */ = {
+			isa = PBXGroup;
+			children = (
 				EBEBEF951C846847008C1E58 /* GalleryViewController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		EB1F6E181C908DDF0046A7FB /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
 				EBA0A9521C89C653005B8DD3 /* GalleryConfiguration.swift */,
-				EB71AC491C8A784D00F83E86 /* GalleryViewControllerDelegate.swift */,
-				EB6A56CE1C85D4F500BBDEF6 /* GalleryViewControllerDatasource.swift */,
+			);
+			name = Configuration;
+			sourceTree = "<group>";
+		};
+		EB1F6E191C908DEB0046A7FB /* Layout */ = {
+			isa = PBXGroup;
+			children = (
 				EB7B7E4D1C8F240D006834F7 /* HeaderFooterLayout.swift */,
 			);
-			name = "Gallery Controller";
+			name = Layout;
+			sourceTree = "<group>";
+		};
+		EB1F6E1A1C908E210046A7FB /* Gallery */ = {
+			isa = PBXGroup;
+			children = (
+				EBEBEF901C84578E008C1E58 /* Page Controller */,
+				EB6A56D21C85E41700BBDEF6 /* Image Controller */,
+			);
+			name = Gallery;
 			sourceTree = "<group>";
 		};
 		EB6A56D21C85E41700BBDEF6 /* Image Controller */ = {
@@ -248,15 +285,18 @@
 			name = Transitions;
 			sourceTree = "<group>";
 		};
-		EBEBEF901C84578E008C1E58 /* Gallery */ = {
+		EBEBEF901C84578E008C1E58 /* Page Controller */ = {
 			isa = PBXGroup;
 			children = (
-				EB1CEC1E1C84A54600BB27B8 /* UtilityFunctions.swift */,
 				EBA90E411C8729EB000AA697 /* Transitions */,
-				EB6A56D11C85E3FB00BBDEF6 /* Gallery Controller */,
-				EB6A56D21C85E41700BBDEF6 /* Image Controller */,
+				EB1F6E161C908DCE0046A7FB /* Model */,
+				EB1F6E181C908DDF0046A7FB /* Configuration */,
+				EB1F6E171C908DD30046A7FB /* Controller */,
+				EB1F6E151C908DB70046A7FB /* Delegates */,
+				EB1F6E191C908DEB0046A7FB /* Layout */,
+				EB1CEC1E1C84A54600BB27B8 /* UtilityFunctions.swift */,
 			);
-			name = Gallery;
+			name = "Page Controller";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
