@@ -12,7 +12,7 @@ import UIKit
 public class GalleryViewController : UIPageViewController, UIViewControllerTransitioningDelegate, ImageViewControllerDelegate  {
     
     //UI
-    private var closeButton: UIButton!
+    private var closeButton: UIButton?
     public var headerView: UIView?
     public var footerView: UIView?
     
@@ -120,12 +120,15 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     
     private func configureCloseButton() {
         
-        closeButton.addTarget(self, action: "close", forControlEvents: .TouchUpInside)
+        closeButton?.addTarget(self, action: "close", forControlEvents: .TouchUpInside)
     }
     
     func createViewHierarchy() {
         
-        self.view.addSubview(closeButton)
+        if let close = closeButton {
+
+            self.view.addSubview(close)
+        }
     }
     
     func configureHeaderView() {
@@ -154,7 +157,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        closeButton.frame.origin = CGPoint(x: self.view.frame.size.width - closeButton.frame.size.width - closeButtonPadding, y: closeButtonPadding)
+        closeButton?.frame.origin = CGPoint(x: self.view.frame.size.width - closeButton!.frame.size.width - closeButtonPadding, y: closeButtonPadding)
         
         layoutHeaderView()
         layoutFooterView()
@@ -268,7 +271,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
             
             let alpha = 1 - distance * swipeToDissmissFadeOutAccelerationFactor
             
-            closeButton.alpha = alpha
+            closeButton?.alpha = alpha
             headerView?.alpha = alpha
             footerView?.alpha = alpha
         }
