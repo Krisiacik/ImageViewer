@@ -25,11 +25,11 @@ class ViewController: UIViewController {
         
         let headerFrame = CGRect(origin: CGPoint.zero, size: CGSize(width: 200, height: 24))
         let headerView = CounterView(frame: headerFrame, currentIndex: sender.tag, count: images.count)
-        headerView.backgroundColor = UIColor.redColor()
+
 
         let footerFrame = CGRect(origin: CGPoint.zero, size: CGSize(width: 200, height: 24))
         let footerView = CounterView(frame: footerFrame, currentIndex: sender.tag, count: images.count)
-        footerView.backgroundColor = UIColor.blueColor()
+
         
         galleryViewModel.landedPageAtIndexCompletion = {
             headerView.currentIndex = $0
