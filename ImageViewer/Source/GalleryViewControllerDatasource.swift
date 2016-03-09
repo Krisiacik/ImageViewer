@@ -18,13 +18,13 @@ class GalleryViewControllerDatasource: NSObject, UIPageViewControllerDataSource 
         
         self.imageControllerFactory = imageControllerFactory
         self.viewModel = viewModel
-        self.galleryPagingMode = galleryPagingMode
+        self.galleryPagingMode =  (viewModel.imageCount > 1) ? galleryPagingMode : GalleryPagingMode.Standard
         
         UIDevice.currentDevice().orientation
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
-        
+
         guard let currentController = viewController as? ImageViewController else { return nil }
         let previousIndex = (currentController.index == 0) ? viewModel.imageCount - 1 : currentController.index - 1
         
@@ -39,7 +39,7 @@ class GalleryViewControllerDatasource: NSObject, UIPageViewControllerDataSource 
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
-        
+
         guard let currentController = viewController as? ImageViewController  else { return nil }
         let nextIndex = (currentController.index == viewModel.imageCount - 1) ? 0 : currentController.index + 1
         
