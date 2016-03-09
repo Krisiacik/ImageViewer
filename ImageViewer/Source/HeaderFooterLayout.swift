@@ -13,6 +13,12 @@ public typealias MarginRight = CGFloat
 public typealias MarginTop = CGFloat
 public typealias MarginBottom = CGFloat
 
+public enum CloseButtonLayout {
+    
+    case PinLeft(MarginTop, MarginLeft)
+    case PinRight(MarginTop, MarginRight)
+}
+
 public enum HeaderLayout {
     
     case PinLeft(MarginTop, MarginLeft)

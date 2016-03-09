@@ -42,7 +42,7 @@ class CounterView: UIView {
     func updateLabel() {
         
         let stringTemplate = "%d of %d"
-        let countString = String(format: stringTemplate, arguments:[currentIndex, count])
+        let countString = String(format: stringTemplate, arguments:[currentIndex + 1, count])
         
         countLabel.attributedText = NSAttributedString(string: countString, attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(17), NSForegroundColorAttributeName: UIColor.whiteColor()])
     }

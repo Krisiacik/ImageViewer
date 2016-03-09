@@ -37,6 +37,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     private let swipeToDissmissFadeOutAccelerationFactor: CGFloat = 6
     private let toggleHeaderFooterAnimationDuration = 0.15
     private let closeAnimationDuration = 0.2
+    private var closeLayout = CloseButtonLayout.PinRight(25, 16)
     private var headerLayout = HeaderLayout.Center(25)
     private var footerLayout = FooterLayout.Center(25)
     
@@ -73,6 +74,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
             case .PagingMode(let mode):             galleryPagingMode = mode
             case .HeaderViewLayout(let layout):     headerLayout = layout
             case .FooterViewLayout(let layout):     footerLayout = layout
+            case .CloseLayout(let layout):          closeLayout = layout
             }
         }
         
@@ -119,7 +121,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     }
     
     private func configureCloseButton() {
-        
+
         closeButton?.addTarget(self, action: "close", forControlEvents: .TouchUpInside)
     }
     
@@ -156,11 +158,31 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        closeButton?.frame.origin = CGPoint(x: self.view.frame.size.width - closeButton!.frame.size.width - closeButtonPadding, y: closeButtonPadding)
-        
+
+        layoutCloseButton()
         layoutHeaderView()
         layoutFooterView()
+    }
+    
+    func layoutCloseButton() {
+        
+        if let close = closeButton {
+            
+            switch closeLayout {
+                
+            case .PinRight(let marginTop, let marginRight):
+                
+                close.autoresizingMask = [.FlexibleBottomMargin, .FlexibleLeftMargin]
+                close.frame.origin.x = self.view.frame.size.width - marginRight - close.frame.size.width
+                close.frame.origin.y = marginTop
+                
+            case .PinLeft(let marginTop, let marginLeft):
+                
+                close.autoresizingMask = [.FlexibleBottomMargin, .FlexibleRightMargin]
+                close.frame.origin.x = marginLeft
+                close.frame.origin.y = marginTop
+            }
+        }
     }
     
     func layoutHeaderView() {

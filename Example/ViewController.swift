@@ -31,9 +31,16 @@ class ViewController: UIViewController {
         let footerView = CounterView(frame: footerFrame, currentIndex: sender.tag, count: images.count)
         footerView.backgroundColor = UIColor.blueColor()
         
-        galleryViewModel.landedPageAtIndexCompletion = { headerView.currentIndex = $0 }
-        galleryViewModel.changedPageToIndexCompletion = { headerView.currentIndex = $0 }
-    
+        galleryViewModel.landedPageAtIndexCompletion = {
+            headerView.currentIndex = $0
+            footerView.currentIndex = $0
+        }
+        galleryViewModel.changedPageToIndexCompletion = {
+        
+            headerView.currentIndex = $0
+            footerView.currentIndex = $0
+        }
+        
         let galleryViewController = GalleryViewController(viewModel: galleryViewModel)
         galleryViewController.headerView = headerView
         galleryViewController.footerView = footerView
