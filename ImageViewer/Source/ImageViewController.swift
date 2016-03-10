@@ -34,6 +34,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     
     //LOCAL CONFIG
     private let thresholdVelocity: CGFloat = 1000 // It works as a threshold.
+    private let rotationAnimationDuration = 0.2
     private let hideCloseButtonDuration    = 0.05
     private let zoomDuration = 0.2
     
@@ -75,6 +76,8 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
             }
         }
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "adjustImageViewForRotation", name: UIDeviceOrientationDidChangeNotification, object: nil)
+        
         self.view.backgroundColor = UIColor.clearColor()
         blackOverlayView.backgroundColor = UIColor.blackColor()
         self.view.addSubview(blackOverlayView)
@@ -95,6 +98,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     
     deinit {
         
+         NSNotificationCenter.defaultCenter().removeObserver(self)
         self.scrollView.removeObserver(self, forKeyPath: "contentOffset")
     }
     
@@ -161,7 +165,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         if imageView.image == nil {
             
             scrollView.zoomScale = 1
-            let aspectFitSize = aspectFitContentSize(forBoundingSize: UIScreen.mainScreen().bounds.size, contentSize: image.size)
+            let aspectFitSize = aspectFitContentSize(forBoundingSize: self.rotationAdjustedBounds().size, contentSize: image.size)
             imageView.frame.size = aspectFitSize
             self.scrollView.contentSize = aspectFitSize
             imageView.center = scrollView.boundsCenter
@@ -188,6 +192,15 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         
         self.imageView.image = image
         fadeInHandler?.imagePresentedAtIndex(self.index)
+    }
+    
+    func adjustImageViewForRotation() {
+        
+        UIView.animateWithDuration(rotationAnimationDuration, animations: { () -> Void in
+            
+            self.imageView.bounds.size = aspectFitContentSize(forBoundingSize: self.rotationAdjustedBounds().size, contentSize: self.imageView.bounds.size)
+            self.scrollView.zoomScale = 1.0
+            })
     }
     
     override func viewDidLoad() {
