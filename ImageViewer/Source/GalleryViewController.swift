@@ -15,6 +15,9 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     private var closeButton: UIButton?
     public var headerView: UIView?
     public var footerView: UIView?
+    private var applicationWindow: UIWindow? {
+        return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 }
+    }
     
     //DATA
     private let viewModel: GalleryViewModel
@@ -25,6 +28,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     var currentIndex: Int
     var previousIndex: Int
     private var isHeaderFooterHidden = false
+    private var isPortraitOnly = false
     
     //LOCAL CONFIG
     private let configuration: GalleryConfiguration
@@ -96,11 +100,79 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         
         configurePagingCompletionBlocks()
         configureInitialImageController()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotate", name: UIDeviceOrientationDidChangeNotification, object: nil)
+        
         self.landedPageAtIndexCompletion?(self.currentIndex)
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    func rotate() {
+    
+        guard isPortraitOnly else { return } //if the app supports rotation on global level, we don't need to rotate here manually because the rotation of keyWindow will rotate all app's content with it via affine transform and from the perspective of the gallery it is just a simple relayout. Allowing access to remaining code only makes sense if the app is portrait only but we still want to support rotation inside the gallery.
+
+//        let temporaryBlackRotationView = UIView()
+//        temporaryBlackRotationView.backgroundColor = UIColor.blackColor()
+//        temporaryBlackRotationView.bounds.size = CGSize(width: 1500, height: 1500)
+//        temporaryBlackRotationView.center = self.view.boundsCenter
+//        self.view.insertSubview(temporaryBlackRotationView, atIndex: 0)
+
+        self.willRotateToInterfaceOrientation(UIApplication.sharedApplication().statusBarOrientation, duration: 1.0)
+        
+        let aspectFitSize = aspectFitContentSize(forBoundingSize: self.rotationAdjustedBounds().size, contentSize: viewModel.displacedView.bounds.size)
+        
+        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { () -> Void in
+        
+            self.view.transform = self.rotationTransform()
+            self.view.bounds = self.rotationAdjustedBounds()
+            
+            })
+            { finished  in
+        
+//            temporaryBlackRotationView.removeFromSuperview()
+        }
+    }
+    
+    private func rotationAdjustedBounds() -> CGRect {
+        guard let window = applicationWindow else { return CGRectZero }
+        guard isPortraitOnly else {
+            return window.bounds
+        }
+        
+        return (UIDevice.currentDevice().orientation.isLandscape) ? CGRect(origin: CGPointZero, size: window.bounds.size.inverted()): window.bounds
+    }
+    
+    private func rotationTransform() -> CGAffineTransform {
+        guard isPortraitOnly else {
+            return CGAffineTransformIdentity
+        }
+        
+        return CGAffineTransformMakeRotation(degreesToRadians(rotationAngleToMatchDeviceOrientation(UIDevice.currentDevice().orientation)))
+    }
+    
+    private func rotationAngleToMatchDeviceOrientation(orientation: UIDeviceOrientation) -> CGFloat {
+        
+        var desiredRotationAngle: CGFloat = 0
+        
+        switch orientation {
+        case .LandscapeLeft:                    desiredRotationAngle = 90
+        case .LandscapeRight:                   desiredRotationAngle = -90
+        case .PortraitUpsideDown:               desiredRotationAngle = 180
+        default:                                desiredRotationAngle = 0
+        }
+        
+        return desiredRotationAngle
+    }
+    
+    private func degreesToRadians(degree: CGFloat) -> CGFloat {
+        return CGFloat(M_PI) * degree / 180
     }
     
     func configurePagingCompletionBlocks() {
@@ -149,6 +221,9 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
+        isPortraitOnly = presentingViewController!.supportedInterfaceOrientations() == .Portrait ||
+            UIApplication.sharedApplication().supportedInterfaceOrientationsForWindow(nil) == .Portrait
         
         configureHeaderView()
         configureFooterView()
