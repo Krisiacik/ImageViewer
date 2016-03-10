@@ -196,11 +196,19 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     
     func adjustImageViewForRotation() {
         
+        guard UIDevice.currentDevice().orientation.isFlat == false &&
+            isAnimating == false else { return }
+        
+        isAnimating = true
+        
         UIView.animateWithDuration(rotationAnimationDuration, animations: { () -> Void in
             
             self.imageView.bounds.size = aspectFitContentSize(forBoundingSize: self.rotationAdjustedBounds().size, contentSize: self.imageView.bounds.size)
             self.scrollView.zoomScale = 1.0
-            })
+            }) { [weak self] finished in
+                
+                self?.isAnimating = false
+        }
     }
     
     override func viewDidLoad() {

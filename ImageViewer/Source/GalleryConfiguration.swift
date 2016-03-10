@@ -39,7 +39,7 @@ func defaultGalleryConfiguration() -> GalleryConfiguration {
     button.setImage(UIImage(named: "close_highlighted"), forState: UIControlState.Highlighted)
     let closeButton = GalleryConfigurationItem.CloseButton(button)
     
-    let pagingMode = GalleryConfigurationItem.PagingMode(GalleryPagingMode.Carousel)
+    let pagingMode = GalleryConfigurationItem.PagingMode(GalleryPagingMode.Standard)
     
     let closeLayout = GalleryConfigurationItem.CloseLayout(CloseButtonLayout.PinRight(8, 16))
     let headerLayout = GalleryConfigurationItem.HeaderViewLayout(HeaderLayout.Center(25))

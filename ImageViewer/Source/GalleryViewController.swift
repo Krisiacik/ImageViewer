@@ -29,6 +29,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     var previousIndex: Int
     private var isHeaderFooterHidden = false
     private var isPortraitOnly = false
+    private var isAnimating = false
     
     //LOCAL CONFIG
     private let configuration: GalleryConfiguration
@@ -129,6 +130,11 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     func rotate() {
     
         guard isPortraitOnly else { return } //if the app supports rotation on global level, we don't need to rotate here manually because the rotation of keyWindow will rotate all app's content with it via affine transform and from the perspective of the gallery it is just a simple relayout. Allowing access to remaining code only makes sense if the app is portrait only but we still want to support rotation inside the gallery.
+        
+        guard UIDevice.currentDevice().orientation.isFlat == false &&
+            isAnimating == false else { return }
+        
+        isAnimating = true
 
         let overlayView = applyOverlayView()
 
@@ -140,9 +146,10 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
             self.view.layoutIfNeeded()
             
             })
-            { finished  in
+            { [weak self] finished  in
 
             overlayView.removeFromSuperview()
+                self?.isAnimating = false
         }
     }
     

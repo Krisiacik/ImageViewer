@@ -10,21 +10,31 @@ import UIKit
 
 class GalleryViewControllerDelegate: NSObject, UIPageViewControllerDelegate {
     
+    
+    
+    //    func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]) {
+    ////         print("WILL TRANSITION")
+    //
+    ////        let pending = pendingViewControllers.first as! ImageViewController
+    ////        print("PENDING INDEX: \(pending.index)")
+    //    }
+    
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         
-        if let imageController = pageViewController.viewControllers?.first as? ImageViewController,
-            pageController = pageViewController as? GalleryViewController {
-                
-                if imageController.index != pageController.currentIndex {
-
-                    pageController.previousIndex = pageController.currentIndex
-                    pageController.currentIndex = imageController.index
-                    
-                    pageController.changedPageToIndexCompletion?(imageController.index)
-                }
-                else {
-                    pageController.landedPageAtIndexCompletion?(imageController.index)
-                }
+        print("CHILDVIEWCONTROLLERS: \(pageViewController.childViewControllers)")
+        pageViewController.childViewControllers.forEach { controller in
+            
+            let vc = controller as! ImageViewController
+            print("IMAGE VC INDEX: \(vc.index)")
         }
+        
+        
+        print("*******")
+        
+//            if let imageController = pageViewController.childViewControllers.first as? ImageViewController,
+//                pageController = pageViewController as? GalleryViewController {
+//                    
+//                    pageController.landedPageAtIndexCompletion?(imageController.index)
+//        }
     }
 }
