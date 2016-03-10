@@ -12,7 +12,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     
     //UI
     private let scrollView = UIScrollView()
-    private let imageView = UIImageView()
+    let imageView = UIImageView()
     let blackOverlayView = UIView()
     private let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .White)
     var applicationWindow: UIWindow? {
