@@ -41,11 +41,11 @@ class ViewController: UIViewController {
             footerView.currentIndex = $0
         }
         
-        let galleryViewController = GalleryViewController(viewModel: galleryViewModel)
-        galleryViewController.headerView = headerView
-        galleryViewController.footerView = footerView
+        let galleryViewController = GalleryCollectionViewController(viewModel: galleryViewModel)
+//        galleryViewController.headerView = headerView
+//        galleryViewController.footerView = footerView
         
-        self.presentImageGallery(galleryViewController)
+        self.presentCollectionImageGallery(galleryViewController)
     }
 }
 

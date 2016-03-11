@@ -60,10 +60,14 @@ func screenshotFromView(view: UIView) -> UIImage {
 
 func rotationAdjustedBounds() -> CGRect {
     
-    let applicationWindow = UIApplication.sharedApplication().delegate?.window?.flatMap { $0 }
-    guard let window = applicationWindow else { return CGRectZero }
-
-    let invertedBoundsSize = window.bounds.size.inverted()
-    let invertedBounds = CGRect(origin: CGPointZero, size: invertedBoundsSize)
-    return (UIDevice.currentDevice().orientation.isLandscape == true) ? invertedBounds : window.bounds
+    return UIScreen.mainScreen().bounds
+    
+//    print("*******")
+//    print("NORMAL BOUNDS \(UIScreen.mainScreen().bounds)")
+//    
+//    let invertedBoundsSize = UIScreen.mainScreen().bounds.size.inverted()
+//    let invertedBounds = CGRect(origin: CGPointZero, size: invertedBoundsSize)
+//    print("INVERTED BOUNDS \(invertedBounds)")
+//    
+//    return (UIDevice.currentDevice().orientation.isLandscape == true) ? invertedBounds : UIScreen.mainScreen().bounds
 }

@@ -10,47 +10,41 @@ import UIKit
 
 class GalleryCollectionViewCell: UICollectionViewCell {
     
-    private let viewModel: GalleryViewModel
-    private var imageController: ImageViewController
+    private var viewModel: GalleryViewModel?
+    private var imageControllerDelegate: ImageViewControllerDelegate?
+    private var imageController: ImageViewController?
+    var index : Int = 0
     
-    var index : Int = 0 {
-        didSet {
-            
-            updateImage(index)
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.subviews.forEach { subview in
+            subview.removeFromSuperview()
         }
+        
+        self.imageController = nil
     }
     
-    init(viewModel: GalleryViewModel, imageControllerDelegate: ImageViewControllerDelegate) {
+    override init(frame: CGRect) {
         
-        self.viewModel = viewModel
-        self.imageController = ImageViewController(imageViewModel: viewModel, configuration: [], imageIndex: 0, showDisplacedImage: true, fadeInHandler: viewModel.fadeInHandler, delegate: imageControllerDelegate)
-
-        super.init(frame: CGRect.zero)
+        super.init(frame: frame)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func updateImage(index: Int) {
+    func configure(viewModel: GalleryViewModel, imageControllerDelegate: ImageViewControllerDelegate, index: Int) {
         
-        self.viewModel.fetchImage(index) { [weak self] image in
-            
-            dispatch_async(dispatch_get_main_queue()) {
-                
-                if let fullSizedImage = image {
-                    self?.updateImageAndContentSize(fullSizedImage)
-                }
-            }
-        }
-    }
-    
-    func updateImageAndContentSize(image: UIImage)  {
+        self.viewModel = viewModel
+        self.imageControllerDelegate = imageControllerDelegate
         
-        scrollView.zoomScale = 1
-        let aspectFitSize = aspectFitContentSize(forBoundingSize: rotationAdjustedBounds().size, contentSize: image.size)
-        imageView.frame.size = aspectFitSize
-        self.scrollView.contentSize = aspectFitSize
-        imageView.center = scrollView.boundsCenter
+        let imageController = ImageViewController(imageViewModel: viewModel, configuration: [], imageIndex: index, showDisplacedImage: false, fadeInHandler: ImageFadeInHandler(), delegate: imageControllerDelegate)
+        self.imageController = imageController
+
+        imageController.view.translatesAutoresizingMaskIntoConstraints = false
+        imageController.view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        
+        self.addSubview(imageController.view)
     }
 }
