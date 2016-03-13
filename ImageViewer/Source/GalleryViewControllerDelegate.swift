@@ -10,31 +10,25 @@ import UIKit
 
 class GalleryViewControllerDelegate: NSObject, UIPageViewControllerDelegate {
     
-    
-    
-    //    func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]) {
-    ////         print("WILL TRANSITION")
-    //
-    ////        let pending = pendingViewControllers.first as! ImageViewController
-    ////        print("PENDING INDEX: \(pending.index)")
-    //    }
-    
+    var newCurrentIndex: Int = 0
+
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        
-        print("CHILDVIEWCONTROLLERS: \(pageViewController.childViewControllers)")
-        pageViewController.childViewControllers.forEach { controller in
+
+        if let pageController = pageViewController as? GalleryViewController {
             
-            let vc = controller as! ImageViewController
-            print("IMAGE VC INDEX: \(vc.index)")
+            if completed {
+                if let imageController = pageViewController.viewControllers?.first as? ImageViewController {
+                        newCurrentIndex =  imageController.index
+                }
+            }
+            else {
+                if let imageController = previousViewControllers.first as? ImageViewController  {
+                        newCurrentIndex =  imageController.index
+                }
+            }
+            
+            pageController.currentIndex = newCurrentIndex
+            pageController.landedPageAtIndexCompletion?(newCurrentIndex)
         }
-        
-        
-        print("*******")
-        
-//            if let imageController = pageViewController.childViewControllers.first as? ImageViewController,
-//                pageController = pageViewController as? GalleryViewController {
-//                    
-//                    pageController.landedPageAtIndexCompletion?(imageController.index)
-//        }
     }
 }
