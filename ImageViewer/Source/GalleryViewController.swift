@@ -137,8 +137,6 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         
         isAnimating = true
         
-        print("ROTATE")
-        
         let overlayView = applyOverlayView()
         
         UIView.animateWithDuration(rotationAnimationDuration, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { () -> Void in

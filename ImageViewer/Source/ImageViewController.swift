@@ -200,8 +200,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         
         isAnimating = true
         
-        print("ADJUST IMAGE")
-        
         UIView.animateWithDuration(rotationAnimationDuration, animations: { () -> Void in
             
             self.imageView.bounds.size = aspectFitContentSize(forBoundingSize: rotationAdjustedBounds().size, contentSize: self.imageView.bounds.size)
@@ -363,7 +361,12 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
                 self.imageView.transform = CGAffineTransformInvert(rotationTransform())
             }
 
-            self.imageView.frame = self.view.convertRect(self.imageViewModel.displacedView.frame, fromView: self.applicationWindow)
+            //get position of displaced view in window
+            let displacedViewInWindowPosition = self.applicationWindow!.convertRect(self.imageViewModel.displacedView.bounds, fromView: self.imageViewModel.displacedView)
+            //translate that to gallery view
+            let displacedViewInOurCoordinateSystem = self.view.convertRect(displacedViewInWindowPosition, fromView: self.applicationWindow!)
+            
+            self.imageView.frame = displacedViewInOurCoordinateSystem
             
             }) { (finished) -> Void in
                 completion?(finished)
