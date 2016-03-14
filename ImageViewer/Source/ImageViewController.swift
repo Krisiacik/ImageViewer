@@ -363,7 +363,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
                 self.imageView.transform = CGAffineTransformInvert(rotationTransform())
             }
 
-            self.imageView.frame = self.view.convertRect(self.imageViewModel.displacedView.frame, fromView: self.presentingViewController!.view)
+            self.imageView.frame = self.view.convertRect(self.imageViewModel.displacedView.frame, fromView: self.applicationWindow)
             
             }) { (finished) -> Void in
                 completion?(finished)
