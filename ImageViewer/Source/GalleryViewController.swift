@@ -45,6 +45,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     private var closeLayout = CloseButtonLayout.PinRight(25, 16)
     private var headerLayout = HeaderLayout.Center(25)
     private var footerLayout = FooterLayout.Center(25)
+    private var statusBarHidden = true
     
     //TRANSITIONS
     let presentTransition: GalleryPresentTransition
@@ -80,6 +81,8 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
             case .HeaderViewLayout(let layout):     headerLayout = layout
             case .FooterViewLayout(let layout):     footerLayout = layout
             case .CloseLayout(let layout):          closeLayout = layout
+            case .StatusBarHidden(let hidden):      statusBarHidden = hidden
+            
             }
         }
         
@@ -205,6 +208,11 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         self.presentTransition.headerView = self.headerView
         self.presentTransition.footerView = self.footerView
         self.presentTransition.closeView = self.closeButton
+    }
+    
+    public override func prefersStatusBarHidden() -> Bool {
+        
+        return statusBarHidden
     }
     
     public override func viewDidLoad() {
