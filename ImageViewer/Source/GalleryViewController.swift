@@ -28,7 +28,6 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     var currentIndex: Int
     var previousIndex: Int
     private var isHeaderFooterHidden = false
-    private var isPortraitOnly = false
     private var isAnimating = false
     
     //LOCAL CONFIG
@@ -98,7 +97,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         
         self.transitioningDelegate = self
         self.modalPresentationStyle = .Custom
-        extendedLayoutIncludesOpaqueBars = true
+        self.extendedLayoutIncludesOpaqueBars = true
         
         configurePagingCompletionBlocks()
         configureInitialImageController()
@@ -127,21 +126,25 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         return overlayView
     }
     
-    func rotate() {
+    // MARK: - Animations
     
-        guard isPortraitOnly else { return } //if the app supports rotation on global level, we don't need to rotate here manually because the rotation of keyWindow will rotate all app's content with it via affine transform and from the perspective of the gallery it is just a simple relayout. Allowing access to remaining code only makes sense if the app is portrait only but we still want to support rotation inside the gallery.
+    func rotate() {
+
+        guard isPortraitOnly() else { return } //if the app supports rotation on global level, we don't need to rotate here manually because the rotation of keyWindow will rotate all app's content with it via affine transform and from the perspective of the gallery it is just a simple relayout. Allowing access to remaining code only makes sense if the app is portrait only but we still want to support rotation inside the gallery.
         
         guard UIDevice.currentDevice().orientation.isFlat == false &&
             isAnimating == false else { return }
         
         isAnimating = true
-
+        
+        print("ROTATE")
+        
         let overlayView = applyOverlayView()
-
+        
         UIView.animateWithDuration(rotationAnimationDuration, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { () -> Void in
 
-            self.view.transform = self.rotationTransform()
-            self.view.bounds = self.rotationAdjustedBounds()
+            self.view.transform = rotationTransform()
+            self.view.bounds = rotationAdjustedBounds()
             self.view.setNeedsLayout()
             self.view.layoutIfNeeded()
             
@@ -153,40 +156,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         }
     }
     
-    private func rotationAdjustedBounds() -> CGRect {
-        guard let window = applicationWindow else { return CGRectZero }
-        guard isPortraitOnly else {
-            return window.bounds
-        }
-        
-        return (UIDevice.currentDevice().orientation.isLandscape) ? CGRect(origin: CGPointZero, size: window.bounds.size.inverted()): window.bounds
-    }
-    
-    private func rotationTransform() -> CGAffineTransform {
-        guard isPortraitOnly else {
-            return CGAffineTransformIdentity
-        }
-        
-        return CGAffineTransformMakeRotation(degreesToRadians(rotationAngleToMatchDeviceOrientation(UIDevice.currentDevice().orientation)))
-    }
-    
-    private func rotationAngleToMatchDeviceOrientation(orientation: UIDeviceOrientation) -> CGFloat {
-        
-        var desiredRotationAngle: CGFloat = 0
-        
-        switch orientation {
-        case .LandscapeLeft:                    desiredRotationAngle = 90
-        case .LandscapeRight:                   desiredRotationAngle = -90
-        case .PortraitUpsideDown:               desiredRotationAngle = 180
-        default:                                desiredRotationAngle = 0
-        }
-        
-        return desiredRotationAngle
-    }
-    
-    private func degreesToRadians(degree: CGFloat) -> CGFloat {
-        return CGFloat(M_PI) * degree / 180
-    }
+    // MARK: - Configuration
     
     func configurePagingCompletionBlocks() {
         
@@ -232,17 +202,24 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         }
     }
     
+    func configurePresentTransition() {
+        
+        self.presentTransition.headerView = self.headerView
+        self.presentTransition.footerView = self.footerView
+        self.presentTransition.closeView = self.closeButton
+    }
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
-        isPortraitOnly = presentingViewController!.supportedInterfaceOrientations() == .Portrait ||
-            UIApplication.sharedApplication().supportedInterfaceOrientationsForWindow(nil) == .Portrait
         
         configureHeaderView()
         configureFooterView()
         configureCloseButton()
+        configurePresentTransition()
         createViewHierarchy()
     }
+    
+    // MARK: - Layout
     
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -348,20 +325,30 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     
     func close() {
         
-        if currentIndex == viewModel.startIndex {
+        UIView.animateWithDuration(0.1, animations: { [weak self] in
             
-            self.view.backgroundColor = UIColor.clearColor()
+            self?.headerView?.alpha = 0.0
+            self?.footerView?.alpha = 0.0
+            self?.closeButton?.alpha = 0.0
             
-            if let imageController = self.viewControllers?.first as? ImageViewController {
-                
-                imageController.closeAnimation(closeAnimationDuration, completion: { [weak self] finished in
+            }) { [weak self] done in
+              
+                if self?.currentIndex == self?.viewModel.startIndex {
                     
+                    self?.view.backgroundColor = UIColor.clearColor()
+                    
+                    if let imageController = self?.viewControllers?.first as? ImageViewController {
+                        
+                        imageController.closeAnimation(self?.closeAnimationDuration ?? 0.2, completion: { [weak self] finished in
+                            
+                            self?.innerClose()
+                            })
+                    }
+                }
+                else {
                     self?.innerClose()
-                    })
-            }
-        }
-        else {
-            innerClose()
+                }
+                
         }
     }
     

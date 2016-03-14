@@ -12,6 +12,9 @@ class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransitioning 
     
     private let duration: NSTimeInterval
     private let displacedView: UIView
+    var headerView: UIView?
+    var footerView: UIView?
+    var closeView: UIView?
     var completion: (() -> Void)?
     
     init(duration: NSTimeInterval, displacedView: UIView) {
@@ -40,11 +43,21 @@ class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransitioning 
         toViewController.view.backgroundColor = UIColor.blackColor()
         toViewController.view.alpha = 0.0
         
+        if isPortraitOnly() {
+            toViewController.view.transform = rotationTransform()
+            toViewController.view.bounds = rotationAdjustedBounds()
+        }
+        
         //make a screenshot of displaced view so we can create our own animated view
         let screenshot = screenshotFromView(displacedView)
         
         //make the original displacedView hidden, we can give an illusion it is moving away from its parent view
         displacedView.hidden = true
+        
+        //hide the gallery views
+        headerView?.alpha = 0.0
+        footerView?.alpha = 0.0
+        closeView?.alpha = 0.0
         
         //translate coordinates of displaced view into our coordinate system (which is now the transition container view) so that we match the animation start position on device screen level
         let origin = transitionContainerView.convertPoint(CGPoint.zero, fromView: displacedView)
@@ -58,13 +71,20 @@ class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransitioning 
         //put it into the container
         transitionContainerView.addSubview(animatedImageView)
         
-        UIView.animateWithDuration(self.duration, animations: { () -> Void in
+        UIView.animateWithDuration(self.duration, animations: { [weak self] () -> Void in
             
-            //animate it into the center (with optionaly rotating) - that basically includes changing the size and position
-            animatedImageView.frame.size = aspectFitContentSize(forBoundingSize: transitionContainerView.bounds.size, contentSize: animatedImageView.bounds.size)
+            if isPortraitOnly() == true {
+                animatedImageView.transform = rotationTransform()
+            }
+                //animate it into the center (with optionaly rotating) - that basically includes changing the size and position
+            
+            let boundingSize = rotationAdjustedBounds().size
+            let aspectFitSize = aspectFitContentSize(forBoundingSize: boundingSize, contentSize: animatedImageView.bounds.size)
+            
+            animatedImageView.bounds.size = aspectFitSize
             animatedImageView.center = transitionContainerView.boundsCenter
             
-            //transition the bacground to full black
+            //transition the background to full black
             toViewController.view.alpha = 1.0
             
             }, completion: { [weak self] finished in
@@ -72,6 +92,13 @@ class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransitioning 
                 animatedImageView.removeFromSuperview()
                 transitionContext.completeTransition(finished)
                 self?.displacedView.hidden = false
+                
+                //unhide gallery views
+                UIView.animateWithDuration(0.2, animations: { [weak self] in
+                    self?.headerView?.alpha = 1.0
+                    self?.footerView?.alpha = 1.0
+                    self?.closeView?.alpha = 1.0
+                })
             })
     }
     

@@ -11,7 +11,7 @@ import UIKit
 class GalleryViewControllerDelegate: NSObject, UIPageViewControllerDelegate {
     
     var newCurrentIndex: Int = 0
-
+    
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
 
         if let pageController = pageViewController as? GalleryViewController {

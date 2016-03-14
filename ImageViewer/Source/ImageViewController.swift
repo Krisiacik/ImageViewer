@@ -27,7 +27,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     weak private var fadeInHandler: ImageFadeInHandler?
     let index: Int
     let showDisplacedImage: Bool
-    private var isPortraitOnly = false
     private var isSwipingToDismiss = false
     private var isAnimating = false
     private var dynamicTransparencyActive = false
@@ -165,7 +164,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         if imageView.image == nil {
             
             scrollView.zoomScale = 1
-            let aspectFitSize = aspectFitContentSize(forBoundingSize: self.rotationAdjustedBounds().size, contentSize: image.size)
+            let aspectFitSize = aspectFitContentSize(forBoundingSize: rotationAdjustedBounds().size, contentSize: image.size)
             imageView.frame.size = aspectFitSize
             self.scrollView.contentSize = aspectFitSize
             imageView.center = scrollView.boundsCenter
@@ -195,15 +194,17 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     }
     
     func adjustImageViewForRotation() {
-        
+ 
         guard UIDevice.currentDevice().orientation.isFlat == false &&
             isAnimating == false else { return }
         
         isAnimating = true
         
+        print("ADJUST IMAGE")
+        
         UIView.animateWithDuration(rotationAnimationDuration, animations: { () -> Void in
             
-            self.imageView.bounds.size = aspectFitContentSize(forBoundingSize: self.rotationAdjustedBounds().size, contentSize: self.imageView.bounds.size)
+            self.imageView.bounds.size = aspectFitContentSize(forBoundingSize: rotationAdjustedBounds().size, contentSize: self.imageView.bounds.size)
             self.scrollView.zoomScale = 1.0
             }) { [weak self] finished in
                 
@@ -213,9 +214,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        isPortraitOnly = presentingViewController?.supportedInterfaceOrientations() == .Portrait ||
-            UIApplication.sharedApplication().supportedInterfaceOrientationsForWindow(nil) == .Portrait
         
         self.view.backgroundColor = UIColor.blackColor()
     }
@@ -354,15 +352,18 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         guard (self.isAnimating == false) else { return }
         isAnimating = true
         closeButtonActionInitiationBlock?()
+        
         imageViewModel.displacedView.hidden = true
 
         UIView.animateWithDuration(duration, animations: {
             self.scrollView.zoomScale = self.scrollView.minimumZoomScale
             self.blackOverlayView.alpha = 0.0
 
-            self.view.transform = CGAffineTransformIdentity
-            self.view.bounds = (self.applicationWindow?.bounds)!
-            self.imageView.frame = CGRectIntegral(self.applicationWindow!.convertRect(self.imageViewModel.displacedView.bounds, fromView: self.imageViewModel.displacedView))
+            if isPortraitOnly() {
+                self.imageView.transform = CGAffineTransformInvert(rotationTransform())
+            }
+
+            self.imageView.frame = self.view.convertRect(self.imageViewModel.displacedView.frame, fromView: self.presentingViewController!.view)
             
             }) { (finished) -> Void in
                 completion?(finished)
@@ -393,15 +394,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         
         return imageView
-    }
-    
-    func rotationAdjustedBounds() -> CGRect {
-        guard let window = applicationWindow else { return CGRectZero }
-        guard isPortraitOnly else {
-            return window.bounds
-        }
-        
-        return (UIDevice.currentDevice().orientation.isLandscape) ? CGRect(origin: CGPointZero, size: window.bounds.size.inverted()): window.bounds
     }
     
     // MARK: - KVO

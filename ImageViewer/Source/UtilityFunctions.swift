@@ -56,5 +56,46 @@ func screenshotFromView(view: UIView) -> UIImage {
     UIGraphicsEndImageContext()
     
     return image
-    
 }
+
+func rotationTransform() -> CGAffineTransform {
+    
+    return CGAffineTransformMakeRotation(degreesToRadians(rotationAngleToMatchDeviceOrientation(UIDevice.currentDevice().orientation)))
+}
+
+func degreesToRadians(degree: CGFloat) -> CGFloat {
+    return CGFloat(M_PI) * degree / 180
+}
+
+private func rotationAngleToMatchDeviceOrientation(orientation: UIDeviceOrientation) -> CGFloat {
+    
+    var desiredRotationAngle: CGFloat = 0
+    
+    switch orientation {
+    case .LandscapeLeft:                    desiredRotationAngle = 90
+    case .LandscapeRight:                   desiredRotationAngle = -90
+    case .PortraitUpsideDown:               desiredRotationAngle = 180
+    default:                                desiredRotationAngle = 0
+    }
+    
+    return desiredRotationAngle
+}
+
+func rotationAdjustedBounds() -> CGRect {
+    
+    let applicationWindow = UIApplication.sharedApplication().delegate?.window?.flatMap { $0 }
+    guard let window = applicationWindow else { return UIScreen.mainScreen().bounds }
+    
+    if isPortraitOnly() {
+        
+        return (UIDevice.currentDevice().orientation.isLandscape) ? CGRect(origin: CGPointZero, size: window.bounds.size.inverted()): window.bounds
+    }
+    
+    return window.bounds
+}
+
+func isPortraitOnly() -> Bool {
+    
+    return UIApplication.sharedApplication().supportedInterfaceOrientationsForWindow(nil) == .Portrait
+}
+

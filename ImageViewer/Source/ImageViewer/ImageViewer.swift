@@ -89,7 +89,6 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     private var shouldRotate = false
     private var isSwipingToDismiss = false
     private var dynamicTransparencyActive = false
-    private var isPortraitOnly = false
     private let imageProvider: ImageProvider
     
     //LOCAL CONFIG
@@ -244,10 +243,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
-        isPortraitOnly = presentingViewController!.supportedInterfaceOrientations() == .Portrait ||
-            UIApplication.sharedApplication().supportedInterfaceOrientationsForWindow(nil) == .Portrait
-        
+
         configureCloseButton()
         configureImageView()
         configureScrollView()
@@ -279,7 +275,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         
         let aspectFitContentSize = self.aspectFitContentSize(forBoundingSize: rotationAdjustedBounds().size, contentSize: displacedView.frame.size)
         UIView.animateWithDuration(showDuration, animations: { () -> Void in
-            if self.isPortraitOnly {
+            if isPortraitOnly() {
                 self.view.transform = self.rotationTransform()
             }
             self.view.bounds = self.rotationAdjustedBounds()
@@ -321,7 +317,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
                 completion?(finished)
                 
                 if finished {
-                    if self.isPortraitOnly {
+                    if isPortraitOnly() {
                         NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotate", name: UIDeviceOrientationDidChangeNotification, object: nil)
                     }
                     self.applicationWindow!.windowLevel = UIWindowLevelStatusBar + 1
@@ -556,7 +552,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     
     private func rotationAdjustedBounds() -> CGRect {
         guard let window = applicationWindow else { return CGRectZero }
-        guard isPortraitOnly else {
+        guard isPortraitOnly() else {
             return window.bounds
         }
         
@@ -564,7 +560,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     }
     
     private func rotationAdjustedCenter() -> CGPoint {
-        guard isPortraitOnly else {
+        guard isPortraitOnly() else {
             return view.center
         }
         
@@ -572,7 +568,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     }
     
     private func rotationTransform() -> CGAffineTransform {
-        guard isPortraitOnly else {
+        guard isPortraitOnly() else {
             return CGAffineTransformIdentity
         }
         
