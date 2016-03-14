@@ -71,7 +71,7 @@ class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransitioning 
         //put it into the container
         transitionContainerView.addSubview(animatedImageView)
         
-        UIView.animateWithDuration(self.duration, animations: { [weak self] () -> Void in
+        UIView.animateWithDuration(self.duration, animations: { () -> Void in
             
             if isPortraitOnly() == true {
                 animatedImageView.transform = rotationTransform()
