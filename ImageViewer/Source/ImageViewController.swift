@@ -8,6 +8,13 @@
 
 import UIKit
 
+
+enum SwipeToDismiss {
+    
+    case Horizontal
+    case Vertical
+}
+
 class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate {
     
     //UI
@@ -28,6 +35,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     let index: Int
     let showDisplacedImage: Bool
     private var isSwipingToDismiss = false
+    private var swipingToDissmiss: SwipeToDismiss?
     private var isAnimating = false
     private var dynamicTransparencyActive = false
     
@@ -284,10 +292,9 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         guard
             self.imageView.image != nil && //a swipe gesture with empty scrollview doesn't make sense
             scrollView.zoomScale == scrollView.minimumZoomScale
-            else {
-                return
-        }
-
+            
+            else {  return }
+        
         if isSwipingToDismiss == false {
             swipeToDismissInitiationBlock?()
             imageViewModel.displacedView.hidden = false
@@ -296,8 +303,11 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         isSwipingToDismiss = true
         dynamicTransparencyActive = true
         
-        let targetOffsetToReachTop =  (view.bounds.height / 2) + (imageView.bounds.height / 2)
-        let targetOffsetToReachBottom =  -targetOffsetToReachTop
+//        let targetOffsetToReachLeft = (view.bounds.width / 2) + (imageView.bounds.width / 2)
+//        let targetOffsetToReachTop =  (view.bounds.height / 2) + (imageView.bounds.height / 2)
+//        let targetOffsetToReachBottom =  -targetOffsetToReachTop
+//        let targetOffsetToReachRight =  -targetOffsetToReachLeft
+
         let latestTouchPoint = recognizer.translationInView(view)
         
         switch recognizer.state {
@@ -309,31 +319,65 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
             
         case .Changed:
             
-            swipeTodismissTransition?.updateInteractiveTransition(-latestTouchPoint.y)
+            let velocity = recognizer.velocityInView(self.view)
+            
+            if swipingToDissmiss == nil {
+                
+                swipingToDissmiss = (fabs(velocity.x) > fabs(velocity.y)) ? .Horizontal : .Vertical
+            }
+            
+            switch swipingToDissmiss! {
+                
+            case .Horizontal:
+                
+                swipeTodismissTransition?.updateInteractiveTransition(horizontalOffset: -latestTouchPoint.x)
+                
+            case .Vertical:
+                
+                swipeTodismissTransition?.updateInteractiveTransition(verticalOffset: -latestTouchPoint.y)
+            }
             
         case .Ended:
             
             let presentingViewController = self.presentingViewController
             
             //in points per second
-            let finalVerticalVelocity = recognizer.velocityInView(view).y
-            
-            if finalVerticalVelocity < -thresholdVelocity {
+            var finalVelocity: CGFloat
+            var latestTouchPointDirectionalComponent: CGFloat
+            var targetOffset: CGFloat
+
+            switch swipingToDissmiss! {
                 
-                swipeTodismissTransition?.finishInteractiveTransition(latestTouchPoint.y, targetOffset: targetOffsetToReachTop, escapeVelocity: finalVerticalVelocity) {  [weak self] in
+            case .Horizontal:
+                
+                finalVelocity = recognizer.velocityInView(view).x
+                latestTouchPointDirectionalComponent = latestTouchPoint.x
+                targetOffset = (view.bounds.width / 2) + (imageView.bounds.width / 2)
+            
+                
+            case .Vertical:
+                
+                finalVelocity = recognizer.velocityInView(view).y
+                latestTouchPointDirectionalComponent = latestTouchPoint.y
+                targetOffset = (view.bounds.height / 2) + (imageView.bounds.height / 2)
+            }
+            
+            if finalVelocity < -thresholdVelocity {
+                
+                swipeTodismissTransition?.finishInteractiveTransition(latestTouchPointDirectionalComponent, targetOffset: targetOffset, escapeVelocity: finalVelocity) {  [weak self] in
                     
                     self?.isSwipingToDismiss = false
                     presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
                 }
             }
-            else if finalVerticalVelocity >= -thresholdVelocity && finalVerticalVelocity <= thresholdVelocity {
+            else if finalVelocity >= -thresholdVelocity && finalVelocity <= thresholdVelocity {
                 
                 swipeTodismissTransition?.cancelTransition() { [weak self] in
                     self?.isSwipingToDismiss = false
                 }
             }
             else {
-                swipeTodismissTransition?.finishInteractiveTransition(latestTouchPoint.y, targetOffset: targetOffsetToReachBottom, escapeVelocity: finalVerticalVelocity) { [weak self] in
+                swipeTodismissTransition?.finishInteractiveTransition(latestTouchPointDirectionalComponent, targetOffset: -targetOffset, escapeVelocity: finalVelocity) { [weak self] in
                     
                     self?.isSwipingToDismiss = false
                     presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
@@ -385,10 +429,19 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         
-        if  gestureRecognizer == panGestureRecognizer {
-            
-            let velocity = panGestureRecognizer.velocityInView(panGestureRecognizer.view)
-            return fabs(velocity.y) > fabs(velocity.x)
+        //we only care about the pan gesture recognizer & if it has a valid case for "swipe to dismiss" gesture...
+        guard gestureRecognizer == panGestureRecognizer else { return false }
+        
+        let velocity = panGestureRecognizer.velocityInView(panGestureRecognizer.view)
+        
+        //if the vertical velocity (in both up and bottom direction) is faster then horizontal velocity..it is clearly a vertical swipe to dismiss so we allow it.
+        guard fabs(velocity.y) < fabs(velocity.x) else { return true }
+        
+        
+        //a special case for horizontal "swipe to dismiss" is when the gallery has carousel mode OFF, then it is possible to reach the beginning or the end of image set while paging. PAging will stop at index = 0 or at index.max. In this case we allow to jump out from the gallery also via horizontal swipe to dismiss.
+        if (self.index == 0 && velocity.x > 0) || (self.index == self.imageViewModel.imageCount - 1 && velocity.x < 0) {
+
+            return true
         }
         
         return false
@@ -405,8 +458,22 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         
         if (dynamicTransparencyActive == true && keyPath == "contentOffset") {
             
-            let distanceToEdge = (scrollView.bounds.height / 2) + (imageView.bounds.height / 2)
-            let percentDistance = fabs(scrollView.contentOffset.y / distanceToEdge)
+            
+            let distanceToEdge: CGFloat
+            let percentDistance: CGFloat
+            
+            switch swipingToDissmiss! {
+                
+            case .Horizontal:
+                
+                distanceToEdge = (scrollView.bounds.width / 2) + (imageView.bounds.width / 2)
+                percentDistance = fabs(scrollView.contentOffset.x / distanceToEdge)
+                
+            case .Vertical:
+                
+                distanceToEdge = (scrollView.bounds.height / 2) + (imageView.bounds.height / 2)
+                percentDistance = fabs(scrollView.contentOffset.y / distanceToEdge)
+            }
             
             self.blackOverlayView.alpha = 1 - percentDistance
             
