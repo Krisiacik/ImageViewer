@@ -33,7 +33,7 @@ class GallerySwipeToDismissTransition {
         let expectedDuration = NSTimeInterval( fabs(targetOffset - touchPoint) / fabs(escapeVelocity))
 
         UIView.animateWithDuration(expectedDuration * 0.65, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: springVelocity, options: UIViewAnimationOptions.CurveLinear, animations: { () -> Void in
-            self.scrollView?.setContentOffset(CGPoint(x: 0, y: targetOffset), animated: false)
+            self.scrollView?.setContentOffset(CGPoint(x: targetOffset, y: 0), animated: false)
             
             }, completion: { (finished) -> Void in
                 completion?()

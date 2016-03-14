@@ -38,7 +38,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     private let dismissTransitionDuration = 1.00
     private let closeButtonPadding: CGFloat = 8.0
     private let headerViewMarginTop: CGFloat = 20
-    private let swipeToDissmissFadeOutAccelerationFactor: CGFloat = 6
+    private let swipeToDismissFadeOutAccelerationFactor: CGFloat = 6
     private let toggleHeaderFooterAnimationDuration = 0.15
     private let closeAnimationDuration = 0.2
     private let rotationAnimationDuration = 0.2
@@ -372,7 +372,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         
         if isHeaderFooterHidden == false {
             
-            let alpha = 1 - distance * swipeToDissmissFadeOutAccelerationFactor
+            let alpha = 1 - distance * swipeToDismissFadeOutAccelerationFactor
             
             closeButton?.alpha = alpha
             headerView?.alpha = alpha
