@@ -10,7 +10,6 @@ import UIKit
 
 public class GalleryViewModel {
     
-    let fadeInHandler = ImageFadeInHandler()
     let imageProvider: ImageProvider
     let displacedView: UIView
     let imageCount: Int

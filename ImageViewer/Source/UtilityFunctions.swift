@@ -56,18 +56,5 @@ func screenshotFromView(view: UIView) -> UIImage {
     UIGraphicsEndImageContext()
     
     return image
-}
-
-func rotationAdjustedBounds() -> CGRect {
     
-    return UIScreen.mainScreen().bounds
-    
-//    print("*******")
-//    print("NORMAL BOUNDS \(UIScreen.mainScreen().bounds)")
-//    
-//    let invertedBoundsSize = UIScreen.mainScreen().bounds.size.inverted()
-//    let invertedBounds = CGRect(origin: CGPointZero, size: invertedBoundsSize)
-//    print("INVERTED BOUNDS \(invertedBounds)")
-//    
-//    return (UIDevice.currentDevice().orientation.isLandscape == true) ? invertedBounds : UIScreen.mainScreen().bounds
 }

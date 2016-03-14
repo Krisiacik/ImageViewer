@@ -36,7 +36,8 @@ class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransitioning 
         //make it align with scene geometry
         toViewController.view.frame = UIScreen.mainScreen().bounds
         
-        //prepare transition of background from transparent to fully opaque background color
+        //prepare transition of background from transparent to full black
+        toViewController.view.backgroundColor = UIColor.blackColor()
         toViewController.view.alpha = 0.0
         
         //make a screenshot of displaced view so we can create our own animated view

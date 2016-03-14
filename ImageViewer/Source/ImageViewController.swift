@@ -12,7 +12,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     
     //UI
     private let scrollView = UIScrollView()
-    let imageView = UIImageView()
+    private let imageView = UIImageView()
     let blackOverlayView = UIView()
     private let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .White)
     var applicationWindow: UIWindow? {
@@ -164,38 +164,34 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         
         if imageView.image == nil {
             
+            scrollView.zoomScale = 1
             let aspectFitSize = aspectFitContentSize(forBoundingSize: self.rotationAdjustedBounds().size, contentSize: image.size)
-            
-            imageView.bounds.size = aspectFitSize
-            scrollView.contentSize = aspectFitSize
+            imageView.frame.size = aspectFitSize
+            self.scrollView.contentSize = aspectFitSize
             imageView.center = scrollView.boundsCenter
-            imageView.backgroundColor = UIColor.blueColor()
-            self.imageView.image = image
-            
-            return
         }
         
-//        if let handler = fadeInHandler where handler.wasPresented(self.index) == false {
-//            
-//            if self.index != self.imageViewModel.startIndex {
-//                
-//                activityIndicatorView.stopAnimating()
-//                
-//                UIView.transitionWithView(self.scrollView, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-//                    
-//                    self.imageView.image = image
-//                    
-//                    }, completion: { finished in
-//                        
-//                        handler.imagePresentedAtIndex(self.index)
-//                })
-//                
-//                return
-//            }
-//        }
+        if let handler = fadeInHandler where handler.wasPresented(self.index) == false {
+            
+            if self.index != self.imageViewModel.startIndex {
+                
+                activityIndicatorView.stopAnimating()
+                
+                UIView.transitionWithView(self.scrollView, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                    
+                    self.imageView.image = image
+                    
+                    }, completion: { finished in
+                        
+                        handler.imagePresentedAtIndex(self.index)
+                })
+                
+                return
+            }
+        }
         
         self.imageView.image = image
-//        fadeInHandler?.imagePresentedAtIndex(self.index)
+        fadeInHandler?.imagePresentedAtIndex(self.index)
     }
     
     func adjustImageViewForRotation() {
@@ -204,8 +200,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
             isAnimating == false else { return }
         
         isAnimating = true
-        
-        //CHECK FOR CRASHES HERE!!!!!!!!!!
         
         UIView.animateWithDuration(rotationAnimationDuration, animations: { () -> Void in
             
@@ -223,7 +217,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         isPortraitOnly = presentingViewController?.supportedInterfaceOrientations() == .Portrait ||
             UIApplication.sharedApplication().supportedInterfaceOrientationsForWindow(nil) == .Portrait
         
-        self.view.backgroundColor = UIColor.clearColor()
+        self.view.backgroundColor = UIColor.blackColor()
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -243,8 +237,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
-        
-        print("ROTATION")
         
         rotate(toBoundingSize: size, transitionCoordinator: coordinator)
     }
