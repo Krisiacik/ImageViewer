@@ -203,6 +203,8 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     
     func adjustImageViewForRotation() {
         
+        guard self.imageView.bounds != CGRect.zero else { return }
+        
         guard UIDevice.currentDevice().orientation.isFlat == false &&
             isAnimating == false else { return }
         
@@ -222,6 +224,13 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.blackColor()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.delegate?.imageViewControllerDidAppear(self)
+        print("CONTROLLER APPEARED INDEX \(self.index)")
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -299,11 +308,9 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
             if fabs(velocity.x) > fabs(velocity.y) {
                 
                 swipingToDismiss = .Horizontal
-                print("HORIZONTAL")
             }
             else {
                 swipingToDismiss = .Vertical
-                print("VERTICAL")
             }
         }
         
@@ -362,7 +369,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
             
             if finalVelocity < -thresholdVelocity {
                 
-                swipeTodismissTransition?.finishInteractiveTransition(latestTouchPointDirectionalComponent, targetOffset: targetOffset, escapeVelocity: finalVelocity) {  [weak self] in
+                swipeTodismissTransition?.finishInteractiveTransition(swipingToDismissInProgress, touchPoint: latestTouchPointDirectionalComponent, targetOffset: targetOffset, escapeVelocity: finalVelocity) {  [weak self] in
                     
                     self?.legacyIsSwiping = false
                     self?.swipingToDismiss = nil
@@ -378,7 +385,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
                 }
             }
             else {
-                swipeTodismissTransition?.finishInteractiveTransition(latestTouchPointDirectionalComponent, targetOffset: -targetOffset, escapeVelocity: finalVelocity) { [weak self] in
+                swipeTodismissTransition?.finishInteractiveTransition(swipingToDismissInProgress, touchPoint: latestTouchPointDirectionalComponent, targetOffset: -targetOffset, escapeVelocity: finalVelocity) { [weak self] in
                     
                     self?.legacyIsSwiping = false
                     self?.swipingToDismiss = nil

@@ -13,4 +13,6 @@ protocol ImageViewControllerDelegate: class {
     func imageViewController(controller: ImageViewController, didSwipeToDismissWithDistanceToEdge distance: CGFloat)
     
     func imageViewControllerDidSingleTap(controller: ImageViewController)
+    
+    func imageViewControllerDidAppear(controller: ImageViewController)
 }

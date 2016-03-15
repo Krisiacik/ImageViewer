@@ -394,6 +394,12 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
             
             })
     }
+    
+    func imageViewControllerDidAppear(controller: ImageViewController) {
+        
+        self.currentIndex = controller.index
+        self.landedPageAtIndexCompletion?(self.currentIndex)
+    }
 }
 
 public extension UIViewController {
