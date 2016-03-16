@@ -40,7 +40,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     private var dynamicTransparencyActive = false
     
     //LOCAL CONFIG
-    private let thresholdVelocity: CGFloat = 1000 // It works as a threshold.
+    private let thresholdVelocity: CGFloat = 500 // The speed of swipe needs to be at least this amount of pixels per second for the swipe to finish dismissal.
     private let rotationAnimationDuration = 0.2
     private let hideCloseButtonDuration    = 0.05
     private let zoomDuration = 0.2
