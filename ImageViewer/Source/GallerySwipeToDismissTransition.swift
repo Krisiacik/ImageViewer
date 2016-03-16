@@ -19,7 +19,7 @@ class GallerySwipeToDismissTransition {
     }
     
     func updateInteractiveTransition(horizontalOffset hOffset: CGFloat = 0, verticalOffset vOffset: CGFloat = 0) {
-
+        
         scrollView?.setContentOffset(CGPoint(x:  hOffset, y: vOffset), animated: false)
     }
     

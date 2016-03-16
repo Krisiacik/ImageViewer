@@ -34,7 +34,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     weak private var fadeInHandler: ImageFadeInHandler?
     let index: Int
     let showDisplacedImage: Bool
-    private var legacyIsSwiping = false
     private var swipingToDismiss: SwipeToDismiss?
     private var isAnimating = false
     private var dynamicTransparencyActive = false
@@ -51,7 +50,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     private let panGestureRecognizer = UIPanGestureRecognizer()
     
     //TRANSITIONS
-    private var swipeTodismissTransition: GallerySwipeToDismissTransition?
+    private var swipeToDismissTransition: GallerySwipeToDismissTransition?
     
     //LIFE CYCLE BLOCKS
     var showInitiationBlock: (Void -> Void)? //executed right before the image animation into its final position starts.
@@ -297,102 +296,154 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     
     func scrollViewDidSwipeToDismiss(recognizer: UIPanGestureRecognizer) {
  
-        guard self.imageView.image != nil else {  return } //a swipe gesture with empty scrollview doesn't make sense
+        guard imageView.image != nil else {  return } //a swipe gesture with empty scrollview doesn't make sense
         guard scrollView.zoomScale == scrollView.minimumZoomScale else {  return } //UX decision
         
-        let velocity = recognizer.velocityInView(self.view)
- 
-        if swipingToDismiss == nil {
-            
-            if fabs(velocity.x) > fabs(velocity.y) {
-                
-                swipingToDismiss = .Horizontal
-            }
-            else {
-                swipingToDismiss = .Vertical
-            }
-        }
+        let currentVelocity = recognizer.velocityInView(self.view)
+        let currentTouchPoint = recognizer.translationInView(view)
         
+        if swipingToDismiss == nil { swipingToDismiss = (fabs(currentVelocity.x) > fabs(currentVelocity.y)) ? .Horizontal : .Vertical }
         guard let swipingToDismissInProgress = swipingToDismiss else { return }
 
-        
         swipeToDismissInitiationBlock?()
         imageViewModel.displacedView.hidden = false
         dynamicTransparencyActive = true
-        
-        let latestTouchPoint = recognizer.translationInView(view)
+
         
         switch recognizer.state {
             
         case .Began:
-            
-            swipeTodismissTransition = GallerySwipeToDismissTransition(presentingViewController: self.presentingViewController, scrollView: self.scrollView)
+            swipeToDismissTransition = GallerySwipeToDismissTransition(presentingViewController: self.presentingViewController, scrollView: self.scrollView)
             
         case .Changed:
-
-            switch swipingToDismissInProgress {
-                
-            case .Horizontal:
-                
-                swipeTodismissTransition?.updateInteractiveTransition(horizontalOffset: -latestTouchPoint.x)
-                
-            case .Vertical:
-                
-                swipeTodismissTransition?.updateInteractiveTransition(verticalOffset: -latestTouchPoint.y)
-            }
+            self.handleSwipeToDismissInProgress(swipingToDismissInProgress, forTouchPoint: currentTouchPoint)
             
         case .Ended:
-            
-            let presentingViewController = self.presentingViewController
-            
-            //in points per second
-            var finalVelocity: CGFloat
-            var latestTouchPointDirectionalComponent: CGFloat
-            var targetOffset: CGFloat
-            
-            switch swipingToDismissInProgress {
-                
-            case .Horizontal:
-                
-                finalVelocity = recognizer.velocityInView(view).x
-                latestTouchPointDirectionalComponent = latestTouchPoint.x
-                targetOffset = (view.bounds.width / 2) + (imageView.bounds.width / 2)
-                
-            case .Vertical:
-                
-                finalVelocity = recognizer.velocityInView(view).y
-                latestTouchPointDirectionalComponent = latestTouchPoint.y
-                targetOffset = (view.bounds.height / 2) + (imageView.bounds.height / 2)
-            }
-            
-            if finalVelocity < -thresholdVelocity {
-                
-                swipeTodismissTransition?.finishInteractiveTransition(swipingToDismissInProgress, touchPoint: latestTouchPointDirectionalComponent, targetOffset: targetOffset, escapeVelocity: finalVelocity) {  [weak self] in
-                    
-                    self?.legacyIsSwiping = false
-                    self?.swipingToDismiss = nil
-                    presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
-                }
-            }
-            else if finalVelocity >= -thresholdVelocity && finalVelocity <= thresholdVelocity {
-                
-                swipeTodismissTransition?.cancelTransition() { [weak self] in
-                    self?.legacyIsSwiping = false
-                    self?.swipingToDismiss = nil
-                    
-                }
-            }
-            else {
-                swipeTodismissTransition?.finishInteractiveTransition(swipingToDismissInProgress, touchPoint: latestTouchPointDirectionalComponent, targetOffset: -targetOffset, escapeVelocity: finalVelocity) { [weak self] in
-                    
-                    self?.legacyIsSwiping = false
-                    self?.swipingToDismiss = nil
-                    presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
-                }
-            }
+            self.handleSwipeToDismissEnded(swipingToDismissInProgress, finalVelocity: currentVelocity, finalTouchPoint: currentTouchPoint)
             
         default:
             break
+        }
+    }
+    
+    
+    func handleSwipeToDismissInProgress(swipeOrientation: SwipeToDismiss, forTouchPoint touchPoint: CGPoint) {
+        
+        switch (swipeOrientation, index) {
+            
+        case (.Horizontal, 0):
+            
+             swipeToDismissTransition?.updateInteractiveTransition(horizontalOffset: min(0, -touchPoint.x))
+            
+        case (.Horizontal, self.imageViewModel.imageCount - 1):
+
+           swipeToDismissTransition?.updateInteractiveTransition(horizontalOffset: max(0, -touchPoint.x))
+            
+        case (.Vertical, _):
+            
+            swipeToDismissTransition?.updateInteractiveTransition(verticalOffset: -touchPoint.y)
+        
+        default: break
+            
+        }
+    }
+    
+    func handleSwipeToDismissEnded(swipeOrientation: SwipeToDismiss, finalVelocity velocity: CGPoint, finalTouchPoint touchPoint: CGPoint) {
+        
+        let presentingViewController = self.presentingViewController
+        
+        //in points per second
+        var finalVelocity: CGFloat
+        var latestTouchPointDirectionalComponent: CGFloat
+        var targetOffset: CGFloat
+        
+//        switch swipeOrientation {
+//            
+//        case .Horizontal:
+//            
+//            finalVelocity = velocity.x
+//            latestTouchPointDirectionalComponent = touchPoint.x
+//            targetOffset = (view.bounds.width / 2) + (imageView.bounds.width / 2)
+//            
+//        case .Vertical:
+//            
+//            finalVelocity = velocity.y
+//            latestTouchPointDirectionalComponent = touchPoint.y
+//            targetOffset = (view.bounds.height / 2) + (imageView.bounds.height / 2)
+//        }
+//        
+//        if finalVelocity < -thresholdVelocity {
+//            
+//            //guard self.index != 0 else { return } // this protects from case where a horizontal swipe gesture was started on the first image but the finger moved opposite direction eventually
+//            
+//            swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation, touchPoint: latestTouchPointDirectionalComponent, targetOffset: targetOffset, escapeVelocity: finalVelocity) {  [weak self] in
+//                
+//                self?.swipingToDismiss = nil
+//                presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
+//            }
+//        }
+//        else if finalVelocity >= -thresholdVelocity && finalVelocity <= thresholdVelocity {
+//            
+//            swipeToDismissTransition?.cancelTransition() { [weak self] in
+//                
+//                self?.swipingToDismiss = nil
+//                
+//            }
+//        }
+//        else {
+//            
+//            //guard self.index != self.imageViewModel.imageCount - 1 else { return } // this protects from case where a horizontal swipe gesture was started on the last image but the finger moved opposite direction eventually
+//            
+//            swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation, touchPoint: latestTouchPointDirectionalComponent, targetOffset: -targetOffset, escapeVelocity: finalVelocity) { [weak self] in
+//                
+//                self?.swipingToDismiss = nil
+//                presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
+//            }
+//        }
+//
+        print("FINAL VELOCITY: \(velocity)")
+        
+        let maxIndex = self.imageViewModel.imageCount - 1
+        
+        switch (swipeOrientation, index, velocity) {
+            
+//        case (.Horizontal, 0, _)        where velocity.x < -thresholdVelocity: break
+//        
+//        swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation, touchPoint: touchPoint.x, targetOffset: (view.bounds.width / 2) + (imageView.bounds.width / 2), escapeVelocity: velocity.x) {  [weak self] in
+//            
+//            self?.swipingToDismiss = nil
+//            presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
+//        }
+//            
+//        case (.Horizontal, maxIndex, _) where velocity.x < -thresholdVelocity: break
+            
+        case (.Vertical, _, _)        where velocity.y < -thresholdVelocity || thresholdVelocity < velocity.y: break
+        case (.Vertical, _, _)        where -thresholdVelocity <= velocity.y && velocity.y >= thresholdVelocity: break
+            
+        case (.Horizontal, 0, _) where velocity.x < thresholdVelocity: fallthrough
+            
+            
+        case (_, _, _) where velocity.x >= -thresholdVelocity && velocity.x <= thresholdVelocity: fallthrough
+        case (_, _, _) where velocity.y >= -thresholdVelocity && velocity.y <= thresholdVelocity:
+ 
+            print("CANCELLED")
+            swipeToDismissTransition?.cancelTransition() { [weak self] in self?.swipingToDismiss = nil }
+            
+            
+            
+            
+            
+            
+        case (.Horizontal, 0, _) where velocity.x > thresholdVelocity: fallthrough
+        case (.Horizontal, maxIndex, _) where fabs(velocity.x) > thresholdVelocity: fallthrough
+        default:
+            
+            print("SHOULD FINISH PROPERLY")
+            swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation, touchPoint: touchPoint.x, targetOffset: (view.bounds.width / 2) + (imageView.bounds.width / 2), escapeVelocity: velocity.x) {  [weak self] in
+                
+                self?.swipingToDismiss = nil
+                presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
+            }
         }
     }
     
