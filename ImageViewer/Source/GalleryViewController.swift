@@ -27,7 +27,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     private var galleryPagingMode = GalleryPagingMode.Standard
     var currentIndex: Int
     var previousIndex: Int
-    private var isHeaderFooterHidden = false
+    private var isDecorationViewsHidden = false
     private var isAnimating = false
     
     //LOCAL CONFIG
@@ -73,20 +73,21 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
             
             switch item {
                 
-            case .ImageDividerWidth(let width):     dividerWidth = Float(width)
-            case .SpinnerStyle(let style):          spinnerStyle = style
-            case .SpinnerColor(let color):          spinnerColor = color
-            case .CloseButton(let button):          closeButton = button
-            case .PagingMode(let mode):             galleryPagingMode = mode
-            case .HeaderViewLayout(let layout):     headerLayout = layout
-            case .FooterViewLayout(let layout):     footerLayout = layout
-            case .CloseLayout(let layout):          closeLayout = layout
-            case .StatusBarHidden(let hidden):      statusBarHidden = hidden
+            case .ImageDividerWidth(let width):             dividerWidth = Float(width)
+            case .SpinnerStyle(let style):                  spinnerStyle = style
+            case .SpinnerColor(let color):                  spinnerColor = color
+            case .CloseButton(let button):                  closeButton = button
+            case .PagingMode(let mode):                     galleryPagingMode = mode
+            case .HeaderViewLayout(let layout):             headerLayout = layout
+            case .FooterViewLayout(let layout):             footerLayout = layout
+            case .CloseLayout(let layout):                  closeLayout = layout
+            case .StatusBarHidden(let hidden):              statusBarHidden = hidden
+            case .HideDecorationViewsOnLaunch(let hidden):    isDecorationViewsHidden = hidden
             
             }
         }
         
-        self.presentTransition = GalleryPresentTransition(duration: presentTransitionDuration, displacedView: self.viewModel.displacedView)
+        self.presentTransition = GalleryPresentTransition(duration: presentTransitionDuration, displacedView: self.viewModel.displacedView , decorationViewsHidden: isDecorationViewsHidden)
         self.closeTransition = GalleryCloseTransition(duration: dismissTransitionDuration)
         
         super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(float: dividerWidth ?? 10)])
@@ -369,7 +370,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         
         self.view.backgroundColor = (distance == 0) ? UIColor.blackColor() : UIColor.clearColor()
         
-        if isHeaderFooterHidden == false {
+        if isDecorationViewsHidden == false {
             
             let alpha = 1 - distance * swipeToDismissFadeOutAccelerationFactor
             
@@ -381,9 +382,9 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     
     func imageViewControllerDidSingleTap(controller: ImageViewController) {
         
-        let alpha: CGFloat = (isHeaderFooterHidden) ? 1 : 0
+        let alpha: CGFloat = (isDecorationViewsHidden) ? 1 : 0
         
-        isHeaderFooterHidden = !isHeaderFooterHidden
+        isDecorationViewsHidden = !isDecorationViewsHidden
         
         UIView.animateWithDuration(toggleHeaderFooterAnimationDuration, animations: { [weak self] in
             

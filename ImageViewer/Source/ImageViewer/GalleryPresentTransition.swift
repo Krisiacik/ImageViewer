@@ -16,11 +16,13 @@ class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransitioning 
     var footerView: UIView?
     var closeView: UIView?
     var completion: (() -> Void)?
+    private let decorationViewsHidden: Bool
     
-    init(duration: NSTimeInterval, displacedView: UIView) {
+    init(duration: NSTimeInterval, displacedView: UIView , decorationViewsHidden: Bool) {
         
         self.duration = duration
         self.displacedView = displacedView
+        self.decorationViewsHidden = decorationViewsHidden
     }
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
@@ -94,11 +96,14 @@ class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransitioning 
                 self?.displacedView.hidden = false
                 
                 //unhide gallery views
-                UIView.animateWithDuration(0.2, animations: { [weak self] in
-                    self?.headerView?.alpha = 1.0
-                    self?.footerView?.alpha = 1.0
-                    self?.closeView?.alpha = 1.0
-                })
+                if self?.decorationViewsHidden == false {
+                    
+                    UIView.animateWithDuration(0.2, animations: { [weak self] in
+                        self?.headerView?.alpha = 1.0
+                        self?.footerView?.alpha = 1.0
+                        self?.closeView?.alpha = 1.0
+                        })
+                }
             })
     }
     

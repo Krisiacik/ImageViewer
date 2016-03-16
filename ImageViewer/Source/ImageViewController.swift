@@ -230,7 +230,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         super.viewDidAppear(animated)
         
         self.delegate?.imageViewControllerDidAppear(self)
-        print("CONTROLLER APPEARED INDEX \(self.index)")
     }
     
     override func viewDidDisappear(animated: Bool) {

@@ -27,6 +27,7 @@ public enum GalleryConfigurationItem {
     case HeaderViewLayout(HeaderLayout)
     case FooterViewLayout(FooterLayout)
     case StatusBarHidden(Bool)
+    case HideDecorationViewsOnLaunch(Bool)
 }
 
 func defaultGalleryConfiguration() -> GalleryConfiguration {
@@ -48,5 +49,7 @@ func defaultGalleryConfiguration() -> GalleryConfiguration {
     
     let statusBarHidden = GalleryConfigurationItem.StatusBarHidden(true)
     
-    return [dividerWidth, spinnerStyle, spinnerColor, closeButton, pagingMode, headerLayout, footerLayout, closeLayout, statusBarHidden]
+    let hideDecorationViews = GalleryConfigurationItem.HideDecorationViewsOnLaunch(true)
+    
+    return [dividerWidth, spinnerStyle, spinnerColor, closeButton, pagingMode, headerLayout, footerLayout, closeLayout, statusBarHidden, hideDecorationViews]
 }
