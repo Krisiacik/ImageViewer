@@ -101,7 +101,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         self.transitioningDelegate = self
         self.modalPresentationStyle = .Custom
         self.extendedLayoutIncludesOpaqueBars = true
-        self.applicationWindow!.windowLevel = (statusBarHidden) ? UIWindowLevelStatusBar + 1 : UIWindowLevelNormal
+        self.applicationWindow?.windowLevel = (statusBarHidden) ? UIWindowLevelStatusBar + 1 : UIWindowLevelNormal
         
         configurePagingCompletionBlocks()
         configureInitialImageController()

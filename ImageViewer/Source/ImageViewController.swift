@@ -328,7 +328,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         case .Began:
             
             swipeTodismissTransition = GallerySwipeToDismissTransition(presentingViewController: self.presentingViewController, scrollView: self.scrollView)
-            applicationWindow!.windowLevel = UIWindowLevelNormal
             
         case .Changed:
 
@@ -425,7 +424,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
                 completion?(finished)
                 if finished {
                     
-                    self.applicationWindow!.windowLevel = UIWindowLevelNormal
+                    self.applicationWindow?.windowLevel = UIWindowLevelNormal
                     
                     self.imageViewModel.displacedView.hidden = false
                     self.isAnimating = false
