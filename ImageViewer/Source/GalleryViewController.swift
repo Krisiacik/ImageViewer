@@ -101,6 +101,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         self.transitioningDelegate = self
         self.modalPresentationStyle = .Custom
         self.extendedLayoutIncludesOpaqueBars = true
+        self.applicationWindow!.windowLevel = (statusBarHidden) ? UIWindowLevelStatusBar + 1 : UIWindowLevelNormal
         
         configurePagingCompletionBlocks()
         configureInitialImageController()
@@ -208,11 +209,6 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         self.presentTransition.headerView = self.headerView
         self.presentTransition.footerView = self.footerView
         self.presentTransition.closeView = self.closeButton
-    }
-    
-    public override func prefersStatusBarHidden() -> Bool {
-        
-        return statusBarHidden
     }
     
     public override func viewDidLoad() {
@@ -361,7 +357,10 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     func innerClose() {
         
         self.modalTransitionStyle = .CrossDissolve
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismissViewControllerAnimated(true) {
+        
+            self.applicationWindow!.windowLevel = UIWindowLevelNormal
+        }
     }
     
     // MARK: - Image Controller Delegate
