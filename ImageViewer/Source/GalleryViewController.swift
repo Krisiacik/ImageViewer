@@ -21,7 +21,6 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     
     //DATA
     private let viewModel: GalleryViewModel
-    private var galleryDelegate = GalleryViewControllerDelegate()
     private var galleryDatasource: GalleryViewControllerDatasource!
     private let fadeInHandler = ImageFadeInHandler()
     private var galleryPagingMode = GalleryPagingMode.Standard
@@ -96,7 +95,6 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         
         //needs to be kept alive with strong reference
         self.galleryDatasource = GalleryViewControllerDatasource(imageControllerFactory: imageControllerFactory, viewModel: viewModel, galleryPagingMode: galleryPagingMode)
-        self.delegate = galleryDelegate
         self.dataSource = galleryDatasource
         
         self.transitioningDelegate = self
