@@ -37,6 +37,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     private var swipingToDismiss: SwipeToDismiss?
     private var isAnimating = false
     private var dynamicTransparencyActive = false
+    private var pagingMode: GalleryPagingMode = .Standard
     
     //LOCAL CONFIG
     private let thresholdVelocity: CGFloat = 500 // The speed of swipe needs to be at least this amount of pixels per second for the swipe to finish dismissal.
@@ -77,8 +78,9 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
                 
             case .SpinnerColor(let color):  activityIndicatorView.color = color
             case .SpinnerStyle(let style):  activityIndicatorView.activityIndicatorViewStyle = style
-            default: break
+            case .PagingMode(let mode):     pagingMode = mode
                 
+            default: break
             }
         }
         
@@ -432,19 +434,18 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         
-        //we only care about the pan gesture recognizer & if it has a valid case for "swipe to dismiss" gesture...
+        //we only care about the pan gesture recognizer
         guard gestureRecognizer == panGestureRecognizer else { return false }
         
         let velocity = panGestureRecognizer.velocityInView(panGestureRecognizer.view)
-        
+
         //if the vertical velocity (in both up and bottom direction) is faster then horizontal velocity..it is clearly a vertical swipe to dismiss so we allow it.
         guard fabs(velocity.y) < fabs(velocity.x) else { return true }
-        
-        
+
         //a special case for horizontal "swipe to dismiss" is when the gallery has carousel mode OFF, then it is possible to reach the beginning or the end of image set while paging. PAging will stop at index = 0 or at index.max. In this case we allow to jump out from the gallery also via horizontal swipe to dismiss.
         if (self.index == 0 && velocity.x > 0) || (self.index == self.imageViewModel.imageCount - 1 && velocity.x < 0) {
             
-            return true
+            return (pagingMode == .Standard)
         }
         
         return false
