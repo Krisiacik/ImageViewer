@@ -332,15 +332,15 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
             
         case (.Horizontal, 0):
             
-            swipeToDismissTransition?.updateInteractiveTransition(horizontalOffset: min(0, -touchPoint.x))
+            swipeToDismissTransition?.updateInteractiveTransition(horizontalOffset: min(0, -touchPoint.x)) //edge case horizontal first index - limits the swipe to dismiss to HORIZONTAL RIGHT direction.
             
         case (.Horizontal, self.imageViewModel.imageCount - 1):
             
-            swipeToDismissTransition?.updateInteractiveTransition(horizontalOffset: max(0, -touchPoint.x))
+            swipeToDismissTransition?.updateInteractiveTransition(horizontalOffset: max(0, -touchPoint.x)) //edge case horizontal last index - limits the swipe to dismiss to HORIZONTAL LEFT direction.
             
         case (.Vertical, _):
             
-            swipeToDismissTransition?.updateInteractiveTransition(verticalOffset: -touchPoint.y)
+            swipeToDismissTransition?.updateInteractiveTransition(verticalOffset: -touchPoint.y) //all the rest
             
         default: break
             
