@@ -259,23 +259,24 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
                 
             case .Center(let marginTop):
                 
+                header.autoresizingMask = [.FlexibleBottomMargin, .FlexibleLeftMargin, .FlexibleRightMargin]
                 header.center = self.view.boundsCenter
                 header.frame.origin.y = marginTop
                 
             case .PinBoth(let marginTop, let marginLeft,let marginRight):
                 
-                header.autoresizingMask = .FlexibleWidth
+                header.autoresizingMask = [.FlexibleBottomMargin, .FlexibleWidth]
                 header.frame.origin = CGPoint(x: marginLeft, y: marginTop)
                 header.bounds.size.width = self.view.bounds.width - marginLeft - marginRight
                 
             case .PinLeft(let marginTop, let marginLeft):
                 
-                header.autoresizingMask = .FlexibleRightMargin
+                header.autoresizingMask = [.FlexibleBottomMargin, .FlexibleRightMargin]
                 header.frame.origin = CGPoint(x: marginLeft, y: marginTop)
                 
             case .PinRight(let marginTop, let marginRight):
                 
-                header.autoresizingMask = .FlexibleLeftMargin
+                header.autoresizingMask = [.FlexibleBottomMargin, .FlexibleLeftMargin]
                 header.frame.origin = CGPoint(x: self.view.bounds.width - marginRight - header.bounds.width, y: marginTop)
             }
         }
@@ -289,25 +290,25 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
                 
             case .Center(let marginBottom):
                 
-                footer.autoresizingMask = .FlexibleTopMargin
+                footer.autoresizingMask = [.FlexibleTopMargin, .FlexibleLeftMargin, .FlexibleRightMargin]
                 footer.center = self.view.boundsCenter
                 footer.frame.origin.y = self.view.bounds.height - footer.bounds.height - marginBottom
                 
             case .PinBoth(let marginBottom, let marginLeft,let marginRight):
                 
-                footer.autoresizingMask = .FlexibleWidth
+                footer.autoresizingMask = [.FlexibleTopMargin, .FlexibleWidth]
                 footer.frame.origin = CGPoint(x: marginLeft, y: self.view.bounds.height - footer.bounds.height - marginBottom)
                 footer.frame.size.width = self.view.bounds.width - marginLeft - marginRight
                 
             case .PinLeft(let marginBottom, let marginLeft):
                 
-                footer.autoresizingMask = .FlexibleRightMargin
-                footer.frame.origin = CGPoint(x: marginLeft, y: self.view.bounds.height - footer.frame.height - marginBottom)
+                footer.autoresizingMask = [.FlexibleTopMargin, .FlexibleRightMargin]
+                footer.frame.origin = CGPoint(x: marginLeft, y: self.view.bounds.height - footer.bounds.height - marginBottom)
                 
             case .PinRight(let marginBottom, let marginRight):
                 
-                footer.autoresizingMask = .FlexibleLeftMargin
-                footer.frame.origin = CGPoint(x: self.view.bounds.width - marginRight - footer.bounds.width, y: marginBottom)
+                footer.autoresizingMask = [.FlexibleTopMargin, .FlexibleLeftMargin]
+                footer.frame.origin = CGPoint(x: self.view.bounds.width - marginRight - footer.bounds.width, y: self.view.bounds.height - footer.bounds.height - marginBottom)
             }
         }
     }
