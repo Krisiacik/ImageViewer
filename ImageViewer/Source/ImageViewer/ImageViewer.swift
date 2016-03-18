@@ -184,11 +184,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         imageView.frame = parentViewFrameInOurCoordinateSystem
         imageView.contentMode = .ScaleAspectFit
         view.addSubview(imageView)
-        
-        UIGraphicsBeginImageContextWithOptions(displacedView.bounds.size, true, UIScreen.mainScreen().scale)
-        displacedView.drawViewHierarchyInRect(displacedView.bounds, afterScreenUpdates: false)
-        imageView.image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
+        imageView.image = screenshotFromView(displacedView)
     }
     
     private func configureScrollView() {
@@ -279,13 +275,13 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         
         UIView.animateWithDuration(hideCloseButtonDuration, animations: { self.closeButton.alpha = 0.0 })
         
-        let aspectFitContentSize = self.aspectFitContentSize(forBoundingSize: rotationAdjustedBounds().size, contentSize: displacedView.frame.size)
+        let aspectFitSize = aspectFitContentSize(forBoundingSize: rotationAdjustedBounds().size, contentSize: displacedView.frame.size)
         UIView.animateWithDuration(showDuration, animations: { () -> Void in
             if isPortraitOnly() {
-                self.view.transform = self.rotationTransform()
+                self.view.transform = rotationTransform()
             }
-            self.view.bounds = self.rotationAdjustedBounds()
-            self.imageView.bounds = CGRect(origin: CGPointZero, size: aspectFitContentSize)
+            self.view.bounds = rotationAdjustedBounds()
+            self.imageView.bounds = CGRect(origin: CGPointZero, size: aspectFitSize)
             self.imageView.center = self.scrollView.center
             self.scrollView.contentSize = self.imageView.bounds.size
             self.scrollView.setZoomScale(1.0, animated: false)
@@ -293,7 +289,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             }) { (finished) -> Void in
                 if (finished) {
                     self.isAnimating = false
-                    self.scrollView.maximumZoomScale = self.maximumZoomScale(forBoundingSize: self.rotationAdjustedBounds().size, contentSize: self.imageView.bounds.size)
+                    self.scrollView.maximumZoomScale = self.maximumZoomScale(forBoundingSize: rotationAdjustedBounds().size, contentSize: self.imageView.bounds.size)
                     UIView.animateWithDuration(self.showCloseButtonDuration, animations: { self.closeButton.alpha = 1.0 })
                 }
         }
@@ -311,11 +307,11 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         overlayView.backgroundColor = UIColor.blackColor()
         
         UIView.animateWithDuration(duration, animations: {
-            self.view.transform = self.rotationTransform()
+            self.view.transform = rotationTransform()
             self.overlayView.alpha = 1.0
-            self.view.bounds = self.rotationAdjustedBounds()
-            let aspectFitContentSize = self.aspectFitContentSize(forBoundingSize: self.rotationAdjustedBounds().size, contentSize: self.configuration.imageSize)
-            self.imageView.bounds = CGRect(origin: CGPointZero, size: aspectFitContentSize)
+            self.view.bounds = rotationAdjustedBounds()
+            let aspectFitSize = aspectFitContentSize(forBoundingSize: rotationAdjustedBounds().size, contentSize: self.configuration.imageSize)
+            self.imageView.bounds = CGRect(origin: CGPointZero, size: aspectFitSize)
             self.imageView.center = self.rotationAdjustedCenter()
             self.scrollView.contentSize = self.imageView.bounds.size
             
@@ -334,7 +330,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
                     }
                     
                     self.isAnimating = false
-                    self.scrollView.maximumZoomScale = self.maximumZoomScale(forBoundingSize: self.rotationAdjustedBounds().size, contentSize: self.imageView.bounds.size)
+                    self.scrollView.maximumZoomScale = self.maximumZoomScale(forBoundingSize: rotationAdjustedBounds().size, contentSize: self.imageView.bounds.size)
                     UIView.animateWithDuration(self.showCloseButtonDuration, animations: { self.closeButton.alpha = 1.0 })
                     self.configureGestureRecognizers()
                     self.showCompletionBlock?()
@@ -435,11 +431,11 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         
         if (scrollView.zoomScale == 1.0 || scrollView.zoomScale > aspectFillScale) {
             
-            let zoomRect = self.zoomRect(ForScrollView: scrollView, scale: aspectFillScale, center: touchPoint)
+            let zoomingRect = zoomRect(ForScrollView: scrollView, scale: aspectFillScale, center: touchPoint)
             
             UIView.animateWithDuration(zoomDuration, animations: {
                 
-                self.scrollView.zoomToRect(zoomRect, animated: false)
+                self.scrollView.zoomToRect(zoomingRect, animated: false)
             })
         }
         else  {
@@ -524,45 +520,10 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     
     // MARK: - Utility
     
-    private func contentCenter(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGPoint {
-        
-        // When the zoom scale changes i.e. the image is zoomed in or out, the hypothetical center
-        // of content view changes too. But the default Apple implementation is keeping the last center
-        // value which doesn't make much sense. If the image ratio is not matching the screen 
-        // ratio, there will be some empty space horizontaly or verticaly. This needs to be calculated
-        // so that we can get the correct new center value. When these are added, edges of contentView
-        // are aligned in realtime and always aligned with corners of scrollview.
-        
-        let horizontalOffest = (boundingSize.width > contentSize.width) ? ((boundingSize.width - contentSize.width) * 0.5): 0.0
-        let verticalOffset = (boundingSize.height > contentSize.height) ? ((boundingSize.height - contentSize.height) * 0.5): 0.0
-        
-        return CGPoint(x: contentSize.width * 0.5 + horizontalOffest,  y: contentSize.height * 0.5 + verticalOffset)
-    }
-    
-    private func aspectFillZoomScale(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGFloat {
-        
-        let aspectFitContentSize = self.aspectFitContentSize(forBoundingSize: boundingSize, contentSize: contentSize)
-        return (boundingSize.width == aspectFitContentSize.width) ? (boundingSize.height / aspectFitContentSize.height): (boundingSize.width / aspectFitContentSize.width)
-    }
-    
-    private func aspectFitContentSize(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGSize {
-        
-        return AVMakeRectWithAspectRatioInsideRect(contentSize, CGRect(origin: CGPointZero, size: boundingSize)).size
-    }
-    
     private func maximumZoomScale(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGFloat {
         
         //we want to allow the image to always cover 4x the area of screen
         return min(boundingSize.width, boundingSize.height) / min(contentSize.width, contentSize.height) * 4
-    }
-    
-    private func rotationAdjustedBounds() -> CGRect {
-        guard let window = applicationWindow else { return CGRectZero }
-        guard isPortraitOnly() else {
-            return window.bounds
-        }
-        
-        return (UIDevice.currentDevice().orientation.isLandscape) ? CGRect(origin: CGPointZero, size: window.bounds.size.inverted()): window.bounds
     }
     
     private func rotationAdjustedCenter() -> CGPoint {
@@ -571,41 +532,5 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         }
         
         return (UIDevice.currentDevice().orientation.isLandscape) ? view.center.inverted() : view.center
-    }
-    
-    private func rotationTransform() -> CGAffineTransform {
-        guard isPortraitOnly() else {
-            return CGAffineTransformIdentity
-        }
-        
-        return CGAffineTransformMakeRotation(degreesToRadians(rotationAngleToMatchDeviceOrientation(UIDevice.currentDevice().orientation)))
-    }
-    
-    private func rotationAngleToMatchDeviceOrientation(orientation: UIDeviceOrientation) -> CGFloat {
-        
-        var desiredRotationAngle: CGFloat = 0
-        
-        switch orientation {
-            case .LandscapeLeft:                    desiredRotationAngle = 90
-            case .LandscapeRight:                   desiredRotationAngle = -90
-            case .PortraitUpsideDown:               desiredRotationAngle = 180
-            default:                                desiredRotationAngle = 0
-        }
-        
-        return desiredRotationAngle
-    }
-    
-    private func degreesToRadians(degree: CGFloat) -> CGFloat {
-        return CGFloat(M_PI) * degree / 180
-    }
-    
-    private func zoomRect(ForScrollView scrollView: UIScrollView, scale: CGFloat, center: CGPoint) -> CGRect {
-        
-        let width = scrollView.frame.size.width  / scale
-        let height = scrollView.frame.size.height / scale
-        let originX = center.x - (width / 2.0)
-        let originY = center.y - (height / 2.0)
-        
-        return CGRect(x: originX, y: originY, width: width, height: height)
     }
 }
