@@ -20,12 +20,15 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     }
     
     //DATA
-    private let viewModel: GalleryViewModel
+    private let imageProvider: ImageProvider
+    private let displacedView: UIView
+    private let imageCount: Int
+    private let startIndex: Int
+    
     private var galleryDatasource: GalleryViewControllerDatasource!
     private let fadeInHandler = ImageFadeInHandler()
     private var galleryPagingMode = GalleryPagingMode.Standard
     var currentIndex: Int
-    var previousIndex: Int
     private var isDecorationViewsHidden = false
     private var isAnimating = false
     
@@ -58,12 +61,20 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     
     // MARK: - VC Setup
     
-    public init(viewModel: GalleryViewModel, configuration: GalleryConfiguration = defaultGalleryConfiguration()) {
+    /*
+    convenience public init(imageProvider: ImageProvider, configuration: ImageViewerConfiguration, displacedView: UIView)  {
         
-        self.viewModel = viewModel
+    }
+    */
+    
+    public init(imageProvider: ImageProvider, displacedView: UIView, imageCount: Int ,startIndex: Int, configuration: GalleryConfiguration = defaultGalleryConfiguration()) {
+        
+        self.imageProvider = imageProvider
+        self.displacedView = displacedView
+        self.imageCount = imageCount
+        self.startIndex = startIndex
+        self.currentIndex = startIndex
         self.configuration = configuration
-        self.currentIndex = viewModel.startIndex
-        self.previousIndex = viewModel.startIndex
         
         var dividerWidth: Float?
         
@@ -80,28 +91,27 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
             case .FooterViewLayout(let layout):             footerLayout = layout
             case .CloseLayout(let layout):                  closeLayout = layout
             case .StatusBarHidden(let hidden):              statusBarHidden = hidden
-            case .HideDecorationViewsOnLaunch(let hidden):    isDecorationViewsHidden = hidden
+            case .HideDecorationViewsOnLaunch(let hidden):  isDecorationViewsHidden = hidden
             
             }
         }
         
-        self.presentTransition = GalleryPresentTransition(duration: presentTransitionDuration, displacedView: self.viewModel.displacedView , decorationViewsHidden: isDecorationViewsHidden)
+        self.presentTransition = GalleryPresentTransition(duration: presentTransitionDuration, displacedView: self.displacedView , decorationViewsHidden: isDecorationViewsHidden)
         self.closeTransition = GalleryCloseTransition(duration: dismissTransitionDuration)
         
         super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(float: dividerWidth ?? 10)])
         
-        self.imageControllerFactory = ImageViewControllerFactory(imageViewModel: viewModel, configuration: configuration, fadeInHandler: fadeInHandler, delegate: self)
+        self.imageControllerFactory = ImageViewControllerFactory(imageProvider: imageProvider, displacedView: displacedView, imageCount: imageCount, startIndex: startIndex, configuration: configuration, fadeInHandler: fadeInHandler, delegate: self)
         
         //needs to be kept alive with strong reference
-        self.galleryDatasource = GalleryViewControllerDatasource(imageControllerFactory: imageControllerFactory, viewModel: viewModel, galleryPagingMode: galleryPagingMode)
+        self.galleryDatasource = GalleryViewControllerDatasource(imageControllerFactory: imageControllerFactory, imageCount: imageCount, galleryPagingMode: galleryPagingMode)
         self.dataSource = galleryDatasource
         
         self.transitioningDelegate = self
         self.modalPresentationStyle = .Custom
         self.extendedLayoutIncludesOpaqueBars = true
         self.applicationWindow?.windowLevel = (statusBarHidden) ? UIWindowLevelStatusBar + 1 : UIWindowLevelNormal
-        
-        configurePagingCompletionBlocks()
+
         configureInitialImageController()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotate", name: UIDeviceOrientationDidChangeNotification, object: nil)
@@ -158,14 +168,9 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     
     // MARK: - Configuration
     
-    func configurePagingCompletionBlocks() {
-        
-        self.landedPageAtIndexCompletion = viewModel.landedPageAtIndexCompletion
-    }
-    
     func configureInitialImageController() {
         
-        let initialImageController = ImageViewController(imageViewModel: viewModel, configuration: configuration, imageIndex: viewModel.startIndex, showDisplacedImage: true, fadeInHandler: fadeInHandler, delegate: self)
+        let initialImageController = ImageViewController(imageProvider: imageProvider, configuration: configuration, imageCount: imageCount, displacedView: displacedView, startIndex: startIndex,  imageIndex: startIndex, showDisplacedImage: true, fadeInHandler: fadeInHandler, delegate: self)
         self.setViewControllers([initialImageController], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
         initialImageController.view.hidden = true
         
@@ -335,7 +340,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
             
             }) { [weak self] done in
               
-                if self?.currentIndex == self?.viewModel.startIndex {
+                if self?.currentIndex == self?.startIndex {
                     
                     self?.view.backgroundColor = UIColor.clearColor()
                     

@@ -30,7 +30,11 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     weak var delegate: ImageViewControllerDelegate?
     
     //MODEL & STATE
-    let imageViewModel: GalleryViewModel
+    private let imageProvider: ImageProvider
+    private let displacedView: UIView   
+    private let imageCount: Int
+    private let startIndex: Int
+    
     weak private var fadeInHandler: ImageFadeInHandler?
     let index: Int
     let showDisplacedImage: Bool
@@ -62,9 +66,12 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     var swipeToDismissCompletionBlock: (Void -> Void)? //executed as the last step for swipe to dismiss action.
     var dismissCompletionBlock: (Void -> Void)? //executed as the last step when the ImageViewer is dismissed (either via the close button, or swipe)
     
-    init(imageViewModel: GalleryViewModel, configuration: GalleryConfiguration, imageIndex: Int, showDisplacedImage: Bool, fadeInHandler: ImageFadeInHandler?, delegate: ImageViewControllerDelegate?) {
-        
-        self.imageViewModel = imageViewModel
+    init(imageProvider: ImageProvider, configuration: GalleryConfiguration, imageCount: Int, displacedView: UIView, startIndex: Int,  imageIndex: Int, showDisplacedImage: Bool, fadeInHandler: ImageFadeInHandler?, delegate: ImageViewControllerDelegate?) {
+
+        self.imageProvider = imageProvider
+        self.imageCount = imageCount
+        self.displacedView = displacedView
+        self.startIndex = startIndex
         self.index = imageIndex
         self.showDisplacedImage = showDisplacedImage
         self.fadeInHandler = fadeInHandler
@@ -115,10 +122,10 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         imageView.contentMode = UIViewContentMode.ScaleAspectFit
         
         if showDisplacedImage {
-            updateImageAndContentSize(imageViewModel.displacedImage)
+            updateImageAndContentSize(screenshotFromView(displacedView))
         }
         
-        imageViewModel.fetchImage(self.index) { [weak self] image in
+        self.fetchImage(self.index)  { [weak self] image in
             
             dispatch_async(dispatch_get_main_queue()) {
                 
@@ -126,6 +133,16 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
                     self?.updateImageAndContentSize(fullSizedImage)
                 }
             }
+        }
+    }
+    
+    func fetchImage(atIndex: Int, completion: UIImage? -> Void) {
+        
+        let backgroundQueue = dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)
+        
+        dispatch_async(backgroundQueue) {
+            
+            self.imageProvider.provideImage(atIndex: atIndex, completion: completion)
         }
     }
     
@@ -181,7 +198,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         
         if let handler = fadeInHandler where handler.wasPresented(self.index) == false {
             
-            if self.index != self.imageViewModel.startIndex {
+            if self.index != self.startIndex {
                 
                 activityIndicatorView.stopAnimating()
                 
@@ -308,7 +325,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         guard let swipingToDismissInProgress = swipingToDismiss else { return }
         
         swipeToDismissInitiationBlock?()
-        imageViewModel.displacedView.hidden = false
+        displacedView.hidden = false
         dynamicTransparencyActive = true
         
         
@@ -332,11 +349,11 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         
         switch (swipeOrientation, index) {
             
-        case (.Horizontal, 0) where self.imageViewModel.imageCount != 1:
+        case (.Horizontal, 0) where self.imageCount != 1:
             
             swipeToDismissTransition?.updateInteractiveTransition(horizontalOffset: min(0, -touchPoint.x)) //edge case horizontal first index - limits the swipe to dismiss to HORIZONTAL RIGHT direction.
             
-        case (.Horizontal, self.imageViewModel.imageCount - 1) where self.imageViewModel.imageCount != 1:
+        case (.Horizontal, self.imageCount - 1) where self.imageCount != 1:
             
             swipeToDismissTransition?.updateInteractiveTransition(horizontalOffset: max(0, -touchPoint.x)) //edge case horizontal last index - limits the swipe to dismiss to HORIZONTAL LEFT direction.
             
@@ -354,7 +371,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         
         let presentingViewController = self.presentingViewController
         
-        let maxIndex = self.imageViewModel.imageCount - 1
+        let maxIndex = self.imageCount - 1
         
         switch (swipeOrientation, index) {
             
@@ -400,7 +417,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         isAnimating = true
         closeButtonActionInitiationBlock?()
         
-        imageViewModel.displacedView.hidden = true
+        displacedView.hidden = true
         
         UIView.animateWithDuration(duration, animations: {
             self.scrollView.zoomScale = self.scrollView.minimumZoomScale
@@ -411,7 +428,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
             }
             
             //get position of displaced view in window
-            let displacedViewInWindowPosition = self.applicationWindow!.convertRect(self.imageViewModel.displacedView.bounds, fromView: self.imageViewModel.displacedView)
+            let displacedViewInWindowPosition = self.applicationWindow!.convertRect(self.displacedView.bounds, fromView: self.displacedView)
             //translate that to gallery view
             let displacedViewInOurCoordinateSystem = self.view.convertRect(displacedViewInWindowPosition, fromView: self.applicationWindow!)
             
@@ -423,7 +440,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
                     
                     self.applicationWindow?.windowLevel = UIWindowLevelNormal
                     
-                    self.imageViewModel.displacedView.hidden = false
+                    self.displacedView.hidden = false
                     self.isAnimating = false
                     
                     self.closeButtonActionCompletionBlock?()
@@ -443,7 +460,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         guard fabs(velocity.y) < fabs(velocity.x) else { return true }
 
         //a special case for horizontal "swipe to dismiss" is when the gallery has carousel mode OFF, then it is possible to reach the beginning or the end of image set while paging. PAging will stop at index = 0 or at index.max. In this case we allow to jump out from the gallery also via horizontal swipe to dismiss.
-        if (self.index == 0 && velocity.x > 0) || (self.index == self.imageViewModel.imageCount - 1 && velocity.x < 0) {
+        if (self.index == 0 && velocity.x > 0) || (self.index == self.imageCount - 1 && velocity.x < 0) {
             
             return (pagingMode == .Standard)
         }

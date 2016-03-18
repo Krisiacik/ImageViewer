@@ -21,7 +21,6 @@ class ViewController: UIViewController {
     @IBAction func showViewer(sender: UIView) {
         
         let poorManProvider = PoorManProvider()
-        let galleryViewModel = GalleryViewModel(imageProvider: poorManProvider, imageCount: images.count, displacedView: sender,  displacedViewIndex: sender.tag)
         
         let headerFrame = CGRect(origin: CGPoint.zero, size: CGSize(width: 200, height: 24))
         let headerView = CounterView(frame: headerFrame, currentIndex: sender.tag, count: images.count)
@@ -29,16 +28,15 @@ class ViewController: UIViewController {
 
         let footerFrame = CGRect(origin: CGPoint.zero, size: CGSize(width: 200, height: 24))
         let footerView = CounterView(frame: footerFrame, currentIndex: sender.tag, count: images.count)
-
         
-        galleryViewModel.landedPageAtIndexCompletion = {
+        let galleryViewController = GalleryViewController(imageProvider: poorManProvider, displacedView: sender, imageCount: images.count, startIndex: sender.tag)
+        galleryViewController.headerView = headerView
+        galleryViewController.footerView = footerView
+        
+        galleryViewController.landedPageAtIndexCompletion = {
             headerView.currentIndex = $0
             footerView.currentIndex = $0
         }
-        
-        let galleryViewController = GalleryViewController(viewModel: galleryViewModel)
-        galleryViewController.headerView = headerView
-        galleryViewController.footerView = footerView
         
         self.presentImageGallery(galleryViewController)
     }

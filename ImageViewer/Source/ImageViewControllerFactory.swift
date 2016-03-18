@@ -10,14 +10,21 @@ import UIKit
 
 class ImageViewControllerFactory {
     
-    var imageViewModel: GalleryViewModel
+    private let imageProvider: ImageProvider
+    private let displacedView: UIView
+    private let imageCount: Int
+    private let startIndex: Int
     var configuration: GalleryConfiguration
     var fadeInHandler: ImageFadeInHandler
     weak var delegate: ImageViewControllerDelegate?
     
-    init(imageViewModel: GalleryViewModel, configuration: GalleryConfiguration, fadeInHandler: ImageFadeInHandler, delegate: ImageViewControllerDelegate) {
+    init(imageProvider: ImageProvider, displacedView: UIView, imageCount: Int, startIndex: Int, configuration: GalleryConfiguration, fadeInHandler: ImageFadeInHandler, delegate: ImageViewControllerDelegate) {
         
-        self.imageViewModel = imageViewModel
+        self.imageProvider = imageProvider
+        self.displacedView = displacedView
+        self.imageCount = imageCount
+        self.startIndex = startIndex
+
         self.configuration = configuration
         self.fadeInHandler = fadeInHandler
         self.delegate = delegate
@@ -25,7 +32,7 @@ class ImageViewControllerFactory {
     
     func createImageViewController(imageIndex: Int) -> ImageViewController? {
       
-        return ImageViewController(imageViewModel: imageViewModel, configuration: configuration, imageIndex: imageIndex, showDisplacedImage: (imageIndex == self.imageViewModel.startIndex), fadeInHandler: fadeInHandler, delegate: delegate)
+        return ImageViewController(imageProvider: imageProvider,  configuration: configuration, imageCount: imageCount, displacedView: displacedView, startIndex: startIndex, imageIndex: imageIndex, showDisplacedImage: (imageIndex == self.startIndex), fadeInHandler: fadeInHandler, delegate: delegate)
     }
 }
 
