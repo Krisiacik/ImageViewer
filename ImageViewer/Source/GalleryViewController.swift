@@ -50,14 +50,14 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     private var statusBarHidden = true
     
     //TRANSITIONS
-    let presentTransition: GalleryPresentTransition
-    let closeTransition: GalleryCloseTransition
+    private let presentTransition: GalleryPresentTransition
+    private let closeTransition: GalleryCloseTransition
     
     //COMPLETION
-    var landedPageAtIndexCompletion: ((Int) -> Void)? //called everytime ANY animation stops in the page controller and a page at index is on screen
+    public var landedPageAtIndexCompletion: ((Int) -> Void)? //called everytime ANY animation stops in the page controller and a page at index is on screen
     
     //IMAGE VC FACTORY
-    var imageControllerFactory: ImageViewControllerFactory!
+    private var imageControllerFactory: ImageViewControllerFactory!
     
     // MARK: - VC Setup
     
