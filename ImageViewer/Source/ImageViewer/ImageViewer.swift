@@ -57,7 +57,7 @@ public struct CloseButtonAssets {
     public let normal: UIImage
     public let highlighted: UIImage?
     
-    init(normal: UIImage, highlighted: UIImage?) {
+    public init(normal: UIImage, highlighted: UIImage?) {
         
         self.normal = normal
         self.highlighted = highlighted
