@@ -15,7 +15,6 @@ public class GalleryViewModel {
     let imageCount: Int
     let startIndex: Int
     public var landedPageAtIndexCompletion: ((Int) -> Void)? //called everytime ANY animation stops in the page controller and a page at index is on screen
-    public var changedPageToIndexCompletion: ((Int) -> Void)? //called after any animation IF & ONLY there is a change in page index compared to before animations started
     
     var displacedImage: UIImage {
         

@@ -35,11 +35,6 @@ class ViewController: UIViewController {
             headerView.currentIndex = $0
             footerView.currentIndex = $0
         }
-        galleryViewModel.changedPageToIndexCompletion = {
-        
-            headerView.currentIndex = $0
-            footerView.currentIndex = $0
-        }
         
         let galleryViewController = GalleryViewController(viewModel: galleryViewModel)
         galleryViewController.headerView = headerView

@@ -52,7 +52,6 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     
     //COMPLETION
     var landedPageAtIndexCompletion: ((Int) -> Void)? //called everytime ANY animation stops in the page controller and a page at index is on screen
-    var changedPageToIndexCompletion: ((Int) -> Void)? //called after any animation IF & ONLY there is a change in page index compared to before animations started
     
     //IMAGE VC FACTORY
     var imageControllerFactory: ImageViewControllerFactory!
@@ -162,7 +161,6 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     func configurePagingCompletionBlocks() {
         
         self.landedPageAtIndexCompletion = viewModel.landedPageAtIndexCompletion
-        self.changedPageToIndexCompletion = viewModel.changedPageToIndexCompletion
     }
     
     func configureInitialImageController() {
