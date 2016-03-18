@@ -39,43 +39,6 @@ which overall gives us the illusion of the UI element returning to its original 
 
 */
 
-public extension UIViewController {
-    
-    public func presentImageViewer(imageViewer: ImageViewer, completion: (Void -> Void)? = {}) {
-        presentViewController(imageViewer, animated: true, completion: completion)
-    }
-}
-
-public protocol ImageProvider {
-    
-    func provideImage(completion: UIImage? -> Void)
-    func provideImage(atIndex index: Int, completion: UIImage? -> Void)
-}
-
-public struct CloseButtonAssets {
-    
-    public let normal: UIImage
-    public let highlighted: UIImage?
-    
-    public init(normal: UIImage, highlighted: UIImage?) {
-        
-        self.normal = normal
-        self.highlighted = highlighted
-    }
-}
-
-public struct ImageViewerConfiguration {
-    
-    public let imageSize: CGSize
-    public let closeButtonAssets: CloseButtonAssets
-    
-    public init(imageSize: CGSize, closeButtonAssets: CloseButtonAssets) {
-        
-        self.imageSize = imageSize
-        self.closeButtonAssets = closeButtonAssets
-    }
-}
-
 public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
     
     //UI
@@ -289,7 +252,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             }) { (finished) -> Void in
                 if (finished) {
                     self.isAnimating = false
-                    self.scrollView.maximumZoomScale = self.maximumZoomScale(forBoundingSize: rotationAdjustedBounds().size, contentSize: self.imageView.bounds.size)
+                    self.scrollView.maximumZoomScale = maximumZoomScale(forBoundingSize: rotationAdjustedBounds().size, contentSize: self.imageView.bounds.size)
                     UIView.animateWithDuration(self.showCloseButtonDuration, animations: { self.closeButton.alpha = 1.0 })
                 }
         }
@@ -312,7 +275,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             self.view.bounds = rotationAdjustedBounds()
             let aspectFitSize = aspectFitContentSize(forBoundingSize: rotationAdjustedBounds().size, contentSize: self.configuration.imageSize)
             self.imageView.bounds = CGRect(origin: CGPointZero, size: aspectFitSize)
-            self.imageView.center = self.rotationAdjustedCenter()
+            self.imageView.center = rotationAdjustedCenter(self.view)
             self.scrollView.contentSize = self.imageView.bounds.size
             
             }) { (finished) -> Void in
@@ -330,7 +293,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
                     }
                     
                     self.isAnimating = false
-                    self.scrollView.maximumZoomScale = self.maximumZoomScale(forBoundingSize: rotationAdjustedBounds().size, contentSize: self.imageView.bounds.size)
+                    self.scrollView.maximumZoomScale = maximumZoomScale(forBoundingSize: rotationAdjustedBounds().size, contentSize: self.imageView.bounds.size)
                     UIView.animateWithDuration(self.showCloseButtonDuration, animations: { self.closeButton.alpha = 1.0 })
                     self.configureGestureRecognizers()
                     self.showCompletionBlock?()
@@ -516,21 +479,5 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             let newY = CGFloat(closeButtonPadding) - abs(scrollView.contentOffset.y / distanceToEdge) * velocityMultiplier
             closeButton.frame = CGRect(origin: CGPoint(x: closeButton.frame.origin.x, y: newY), size: closeButton.frame.size)
         }
-    }
-    
-    // MARK: - Utility
-    
-    private func maximumZoomScale(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGFloat {
-        
-        //we want to allow the image to always cover 4x the area of screen
-        return min(boundingSize.width, boundingSize.height) / min(contentSize.width, contentSize.height) * 4
-    }
-    
-    private func rotationAdjustedCenter() -> CGPoint {
-        guard isPortraitOnly() else {
-            return view.center
-        }
-        
-        return (UIDevice.currentDevice().orientation.isLandscape) ? view.center.inverted() : view.center
     }
 }

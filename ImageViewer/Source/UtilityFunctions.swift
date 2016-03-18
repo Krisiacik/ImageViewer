@@ -99,3 +99,18 @@ func isPortraitOnly() -> Bool {
     return UIApplication.sharedApplication().supportedInterfaceOrientationsForWindow(nil) == .Portrait
 }
 
+func maximumZoomScale(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGFloat {
+    
+    //we want to allow the image to always cover 4x the area of screen
+    return min(boundingSize.width, boundingSize.height) / min(contentSize.width, contentSize.height) * 4
+}
+
+func rotationAdjustedCenter(view: UIView) -> CGPoint {
+    guard isPortraitOnly() else {
+        return view.center
+    }
+    
+    return (UIDevice.currentDevice().orientation.isLandscape) ? view.center.inverted() : view.center
+}
+
+
