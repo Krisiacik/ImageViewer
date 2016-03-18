@@ -76,7 +76,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         self.currentIndex = startIndex
         self.configuration = configuration
         
-        var dividerWidth: Float?
+        var dividerWidth: Float = 10
         
         for item in configuration {
             
@@ -99,7 +99,7 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         self.presentTransition = GalleryPresentTransition(duration: presentTransitionDuration, displacedView: self.displacedView , decorationViewsHidden: isDecorationViewsHidden)
         self.closeTransition = GalleryCloseTransition(duration: dismissTransitionDuration)
         
-        super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(float: dividerWidth ?? 10)])
+        super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(float: dividerWidth)])
         
         self.imageControllerFactory = ImageViewControllerFactory(imageProvider: imageProvider, displacedView: displacedView, imageCount: imageCount, startIndex: startIndex, configuration: configuration, fadeInHandler: fadeInHandler, delegate: self)
         
