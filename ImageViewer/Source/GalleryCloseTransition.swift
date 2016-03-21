@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GalleryCloseTransition: NSObject, UIViewControllerAnimatedTransitioning {
+final class GalleryCloseTransition: NSObject, UIViewControllerAnimatedTransitioning {
     
     private let duration: NSTimeInterval
     

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ImageViewControllerFactory {
+final class ImageViewControllerFactory {
     
     private let imageProvider: ImageProvider
     private let displacedView: UIView

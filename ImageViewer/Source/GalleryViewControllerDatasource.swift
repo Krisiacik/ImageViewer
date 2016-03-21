@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GalleryViewControllerDatasource: NSObject, UIPageViewControllerDataSource {
+final class GalleryViewControllerDatasource: NSObject, UIPageViewControllerDataSource {
     
     private let imageControllerFactory: ImageViewControllerFactory
     private let imageCount: Int

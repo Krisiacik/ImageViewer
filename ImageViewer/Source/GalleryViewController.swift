@@ -9,7 +9,7 @@
 import UIKit
 
 
-public class GalleryViewController : UIPageViewController, UIViewControllerTransitioningDelegate, ImageViewControllerDelegate  {
+final public class GalleryViewController : UIPageViewController, UIViewControllerTransitioningDelegate, ImageViewControllerDelegate  {
     
     //UI
     private var closeButton: UIButton?
@@ -148,12 +148,12 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         
         let overlayView = applyOverlayView()
         
-        UIView.animateWithDuration(rotationAnimationDuration, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { () -> Void in
+        UIView.animateWithDuration(rotationAnimationDuration, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { [weak self] () -> Void in
 
-            self.view.transform = rotationTransform()
-            self.view.bounds = rotationAdjustedBounds()
-            self.view.setNeedsLayout()
-            self.view.layoutIfNeeded()
+            self?.view.transform = rotationTransform()
+            self?.view.bounds = rotationAdjustedBounds()
+            self?.view.setNeedsLayout()
+            self?.view.layoutIfNeeded()
             
             })
             { [weak self] finished  in
@@ -404,12 +404,5 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         
         self.currentIndex = controller.index
         self.landedPageAtIndexCompletion?(self.currentIndex)
-    }
-}
-
-public extension UIViewController {
-    
-    public func presentImageGallery(gallery: GalleryViewController, completion: (Void -> Void)? = {}) {
-        presentViewController(gallery, animated: true, completion: completion)
     }
 }

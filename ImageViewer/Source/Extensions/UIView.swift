@@ -11,6 +11,7 @@ import UIKit
 extension UIView {
     
     var boundsCenter: CGPoint {
+        
         return CGPoint(x: self.bounds.width / 2, y: self.bounds.height / 2)
     }
 }

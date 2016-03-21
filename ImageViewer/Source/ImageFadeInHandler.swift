@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ImageFadeInHandler {
+final class ImageFadeInHandler {
     
     var presentedImages:[Int] = []
     

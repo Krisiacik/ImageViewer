@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransitioning {
+final class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransitioning {
     
     private let duration: NSTimeInterval
     private let displacedView: UIView

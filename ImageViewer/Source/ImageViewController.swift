@@ -15,7 +15,7 @@ enum SwipeToDismiss {
     case Vertical
 }
 
-class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate {
+final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate {
     
     //UI
     private let scrollView = UIScrollView()
@@ -193,9 +193,9 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
                 
                 activityIndicatorView.stopAnimating()
                 
-                UIView.transitionWithView(self.scrollView, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                UIView.transitionWithView(self.scrollView, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { [weak self] () -> Void in
                     
-                    self.imageView.image = image
+                    self?.imageView.image = image
                     
                     }, completion: { finished in
                         
@@ -214,15 +214,17 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         
         guard self.imageView.bounds != CGRect.zero else { return }
         
+        let imageViewBounds = self.imageView.bounds
+        
         guard UIDevice.currentDevice().orientation.isFlat == false &&
             isAnimating == false else { return }
         
         isAnimating = true
         
-        UIView.animateWithDuration(rotationAnimationDuration, animations: { () -> Void in
+        UIView.animateWithDuration(rotationAnimationDuration, animations: { [weak self] () -> Void in
             
-            self.imageView.bounds.size = aspectFitContentSize(forBoundingSize: rotationAdjustedBounds().size, contentSize: self.imageView.bounds.size)
-            self.scrollView.zoomScale = 1.0
+            self?.imageView.bounds.size = aspectFitContentSize(forBoundingSize: rotationAdjustedBounds().size, contentSize: imageViewBounds.size)
+            self?.scrollView.zoomScale = 1.0
             }) { [weak self] finished in
                 
                 self?.isAnimating = false
@@ -432,14 +434,16 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
             
             self.imageView.frame = displacedViewInOurCoordinateSystem
             
-            }) { (finished) -> Void in
+            }) { [weak self] finished in
+                
                 completion?(finished)
+                
                 if finished {
                     
-                    self.applicationWindow?.windowLevel = UIWindowLevelNormal
+                    self?.applicationWindow?.windowLevel = UIWindowLevelNormal
                     
-                    self.displacedView.hidden = false
-                    self.isAnimating = false
+                    self?.displacedView.hidden = false
+                    self?.isAnimating = false
                 }
         }
     }
