@@ -10,9 +10,9 @@ import UIKit
 
 class GalleryViewControllerDatasource: NSObject, UIPageViewControllerDataSource {
     
-    let imageControllerFactory: ImageViewControllerFactory
-    let imageCount: Int
-    let galleryPagingMode: GalleryPagingMode
+    private let imageControllerFactory: ImageViewControllerFactory
+    private let imageCount: Int
+    private let galleryPagingMode: GalleryPagingMode
     
     init(imageControllerFactory: ImageViewControllerFactory, imageCount: Int, galleryPagingMode: GalleryPagingMode) {
         

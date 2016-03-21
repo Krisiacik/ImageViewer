@@ -10,8 +10,8 @@ import UIKit
 
 class GallerySwipeToDismissTransition {
     
-    weak var presentingViewController: UIViewController?
-    weak var scrollView : UIScrollView?
+    private weak var presentingViewController: UIViewController?
+    private weak var scrollView : UIScrollView?
     
     init(presentingViewController: UIViewController?, scrollView: UIScrollView?) {
         

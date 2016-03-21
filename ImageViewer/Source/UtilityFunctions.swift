@@ -10,18 +10,18 @@ import UIKit
 import AVFoundation
 
 //returns a size that aspect-fits into the bounding size. Example -> We have some view of certain size and the question is, what would have to be its size, so that it would fit it into some rect of some size ..given we wuold want to keep the content rects aspect ratio.
-public func aspectFitContentSize(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGSize {
+func aspectFitContentSize(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGSize {
     
     return AVMakeRectWithAspectRatioInsideRect(contentSize, CGRect(origin: CGPointZero, size: boundingSize)).size
 }
 
-public func aspectFillZoomScale(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGFloat {
+func aspectFillZoomScale(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGFloat {
     
     let aspectFitSize = aspectFitContentSize(forBoundingSize: boundingSize, contentSize: contentSize)
     return (boundingSize.width == aspectFitSize.width) ? (boundingSize.height / aspectFitSize.height): (boundingSize.width / aspectFitSize.width)
 }
 
-public func contentCenter(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGPoint {
+func contentCenter(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGPoint {
     
     // When the zoom scale changes i.e. the image is zoomed in or out, the hypothetical center
     // of content view changes too. But the default Apple implementation is keeping the last center
@@ -36,7 +36,7 @@ public func contentCenter(forBoundingSize boundingSize: CGSize, contentSize: CGS
     return CGPoint(x: contentSize.width * 0.5 + horizontalOffest,  y: contentSize.height * 0.5 + verticalOffset)
 }
 
-public func zoomRect(ForScrollView scrollView: UIScrollView, scale: CGFloat, center: CGPoint) -> CGRect {
+func zoomRect(ForScrollView scrollView: UIScrollView, scale: CGFloat, center: CGPoint) -> CGRect {
     
     let width = scrollView.frame.size.width  / scale
     let height = scrollView.frame.size.height / scale

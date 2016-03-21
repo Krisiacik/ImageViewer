@@ -14,9 +14,9 @@ class ImageViewControllerFactory {
     private let displacedView: UIView
     private let imageCount: Int
     private let startIndex: Int
-    var configuration: GalleryConfiguration
-    var fadeInHandler: ImageFadeInHandler
-    weak var delegate: ImageViewControllerDelegate?
+    private var configuration: GalleryConfiguration
+    private var fadeInHandler: ImageFadeInHandler
+    private weak var delegate: ImageViewControllerDelegate?
     
     init(imageProvider: ImageProvider, displacedView: UIView, imageCount: Int, startIndex: Int, configuration: GalleryConfiguration, fadeInHandler: ImageFadeInHandler, delegate: ImageViewControllerDelegate) {
         

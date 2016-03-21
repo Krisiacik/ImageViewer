@@ -11,7 +11,6 @@ import UIKit
 class GalleryCloseTransition: NSObject, UIViewControllerAnimatedTransitioning {
     
     private let duration: NSTimeInterval
-    var completion: (() -> Void)?
     
     init(duration: NSTimeInterval) {
         

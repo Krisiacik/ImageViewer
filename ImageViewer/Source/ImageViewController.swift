@@ -37,7 +37,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     
     weak private var fadeInHandler: ImageFadeInHandler?
     let index: Int
-    let showDisplacedImage: Bool
+    private let showDisplacedImage: Bool
     private var swipingToDismiss: SwipeToDismiss?
     private var isAnimating = false
     private var dynamicTransparencyActive = false
