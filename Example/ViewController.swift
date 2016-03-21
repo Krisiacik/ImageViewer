@@ -49,9 +49,12 @@ class ViewController: UIViewController {
         }
         
         
-        galleryViewController.landedPageAtIndexCompletion = {
-            headerView.currentIndex = $0
-            footerView.currentIndex = $0
+        galleryViewController.landedPageAtIndexCompletion = { index in
+            
+            print("LANDED AT INDEX: \(index)")
+            
+            headerView.currentIndex = index
+            footerView.currentIndex = index
         }
         
         self.presentImageGallery(galleryViewController)
