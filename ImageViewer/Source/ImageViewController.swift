@@ -57,15 +57,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     //TRANSITIONS
     private var swipeToDismissTransition: GallerySwipeToDismissTransition?
     
-    //LIFE CYCLE BLOCKS
-    var showInitiationBlock: (Void -> Void)? //executed right before the image animation into its final position starts.
-    var showCompletionBlock: (Void -> Void)? //executed as the last step after all the show animations.
-    var closeButtonActionInitiationBlock: (Void -> Void)? //executed as the first step before the button's close action starts.
-    var closeButtonActionCompletionBlock: (Void -> Void)? //executed as the last step for close button's close action.
-    var swipeToDismissInitiationBlock: (Void -> Void)? //executed as the first step for swipe to dismiss action.
-    var swipeToDismissCompletionBlock: (Void -> Void)? //executed as the last step for swipe to dismiss action.
-    var dismissCompletionBlock: (Void -> Void)? //executed as the last step when the ImageViewer is dismissed (either via the close button, or swipe)
-    
     init(imageProvider: ImageProvider, configuration: GalleryConfiguration, imageCount: Int, displacedView: UIView, startIndex: Int,  imageIndex: Int, showDisplacedImage: Bool, fadeInHandler: ImageFadeInHandler?, delegate: ImageViewControllerDelegate?) {
 
         self.imageProvider = imageProvider
@@ -324,7 +315,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         if swipingToDismiss == nil { swipingToDismiss = (fabs(currentVelocity.x) > fabs(currentVelocity.y)) ? .Horizontal : .Vertical }
         guard let swipingToDismissInProgress = swipingToDismiss else { return }
         
-        swipeToDismissInitiationBlock?()
         displacedView.hidden = false
         dynamicTransparencyActive = true
         
@@ -370,6 +360,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     func handleSwipeToDismissEnded(swipeOrientation: SwipeToDismiss, finalVelocity velocity: CGPoint, finalTouchPoint touchPoint: CGPoint) {
         
         let presentingViewController = self.presentingViewController
+        let parentViewController = self.parentViewController as? GalleryViewController
         
         let maxIndex = self.imageCount - 1
         
@@ -379,6 +370,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
             
             swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation, touchPoint: touchPoint.y, targetOffset: (view.bounds.height / 2) + (imageView.bounds.height / 2), escapeVelocity: velocity.y) {  [weak self] in
                 self?.swipingToDismiss = nil
+                parentViewController?.swipedToDismissCompletion?()
                 presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
             }
             
@@ -386,6 +378,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
             
             swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation, touchPoint: touchPoint.y, targetOffset: -(view.bounds.height / 2) - (imageView.bounds.height / 2), escapeVelocity: velocity.y) {  [weak self] in
                 self?.swipingToDismiss = nil
+                parentViewController?.swipedToDismissCompletion?()
                 presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
             }
             
@@ -393,6 +386,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
             
             swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation, touchPoint: touchPoint.x, targetOffset: -(view.bounds.width / 2) - (imageView.bounds.width / 2), escapeVelocity: velocity.x) {  [weak self] in
                 self?.swipingToDismiss = nil
+                parentViewController?.swipedToDismissCompletion?()
                 presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
             }
             
@@ -400,6 +394,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
             
             swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation, touchPoint: touchPoint.x, targetOffset: (view.bounds.width / 2) + (imageView.bounds.width / 2), escapeVelocity: velocity.x) {  [weak self] in
                 self?.swipingToDismiss = nil
+                parentViewController?.swipedToDismissCompletion?()
                 presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
             }
             
@@ -415,7 +410,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         
         guard (self.isAnimating == false) else { return }
         isAnimating = true
-        closeButtonActionInitiationBlock?()
         
         displacedView.hidden = true
         
@@ -442,9 +436,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
                     
                     self.displacedView.hidden = false
                     self.isAnimating = false
-                    
-                    self.closeButtonActionCompletionBlock?()
-                    self.dismissCompletionBlock?()
                 }
         }
     }

@@ -33,6 +33,22 @@ class ViewController: UIViewController {
         galleryViewController.headerView = headerView
         galleryViewController.footerView = footerView
         
+        galleryViewController.launchedCompletion = {
+        
+            print("LAUNCHED")
+        }
+
+        galleryViewController.closedCompletion = {
+            
+            print("CLOSED")
+        }
+        
+        galleryViewController.swipedToDismissCompletion = {
+            
+            print("SWIPE-DISMISSED")
+        }
+        
+        
         galleryViewController.landedPageAtIndexCompletion = {
             headerView.currentIndex = $0
             footerView.currentIndex = $0

@@ -54,18 +54,15 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
     private let closeTransition: GalleryCloseTransition
     
     //COMPLETION
+    public var launchedCompletion: (() -> Void)?
     public var landedPageAtIndexCompletion: ((Int) -> Void)? //called everytime ANY animation stops in the page controller and a page at index is on screen
+    public var closedCompletion: (() -> Void)?
+    public var swipedToDismissCompletion: (() -> Void)?
     
     //IMAGE VC FACTORY
     private var imageControllerFactory: ImageViewControllerFactory!
     
     // MARK: - VC Setup
-    
-    /*
-    convenience public init(imageProvider: ImageProvider, configuration: ImageViewerConfiguration, displacedView: UIView)  {
-        
-    }
-    */
     
     public init(imageProvider: ImageProvider, displacedView: UIView, imageCount: Int ,startIndex: Int, configuration: GalleryConfiguration = defaultGalleryConfiguration()) {
         
@@ -174,8 +171,10 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         self.setViewControllers([initialImageController], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
         initialImageController.view.hidden = true
         
-        self.presentTransition.completion = {
+        self.presentTransition.completion = { [weak self] in
             initialImageController.view.hidden = false
+            
+            self?.launchedCompletion?()
         }
     }
     
@@ -366,6 +365,8 @@ public class GalleryViewController : UIPageViewController, UIViewControllerTrans
         
             self.applicationWindow!.windowLevel = UIWindowLevelNormal
         }
+        
+        closedCompletion?()
     }
     
     // MARK: - Image Controller Delegate
