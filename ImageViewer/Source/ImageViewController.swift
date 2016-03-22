@@ -48,6 +48,9 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
     private let rotationAnimationDuration = 0.2
     private let hideCloseButtonDuration    = 0.05
     private let zoomDuration = 0.2
+    private let itemContentSize = CGSize(width: 100, height: 100)
+    private let minimumZoomScale: CGFloat = 1
+    private let maximumZoomScale: CGFloat = 4
     
     //INTERACTIONS
     private let singleTapRecognizer = UITapGestureRecognizer()
@@ -82,7 +85,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
             }
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "adjustImageViewForRotation", name: UIDeviceOrientationDidChangeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ImageViewController.adjustImageViewForRotation), name: UIDeviceOrientationDidChangeNotification, object: nil)
         
         self.view.backgroundColor = UIColor.clearColor()
         blackOverlayView.backgroundColor = UIColor.blackColor()
@@ -142,28 +145,28 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
         scrollView.delegate = self
-        scrollView.decelerationRate = 0.5
+        scrollView.decelerationRate = UIScrollViewDecelerationRateFast
         scrollView.contentInset = UIEdgeInsetsZero
         scrollView.contentOffset = CGPointZero
-        scrollView.contentSize = CGSize(width: 100, height: 100) //FIX THIS
-        scrollView.minimumZoomScale = 1
-        scrollView.maximumZoomScale = 4
+        scrollView.contentSize = itemContentSize
+        scrollView.minimumZoomScale = minimumZoomScale
+        scrollView.maximumZoomScale = maximumZoomScale
         scrollView.addObserver(self, forKeyPath: "contentOffset", options: NSKeyValueObservingOptions.New, context: nil)
     }
     
     func configureGestureRecognizers() {
         
-        singleTapRecognizer.addTarget(self, action: "scrollViewDidSingleTap:")
+        singleTapRecognizer.addTarget(self, action: #selector(ImageViewController.scrollViewDidSingleTap(_:)))
         singleTapRecognizer.numberOfTapsRequired = 1
         scrollView.addGestureRecognizer(singleTapRecognizer)
         
-        doubleTapRecognizer.addTarget(self, action: "scrollViewDidDoubleTap:")
+        doubleTapRecognizer.addTarget(self, action: #selector(ImageViewController.scrollViewDidDoubleTap(_:)))
         doubleTapRecognizer.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(doubleTapRecognizer)
         
         singleTapRecognizer.requireGestureRecognizerToFail(doubleTapRecognizer)
         
-        panGestureRecognizer.addTarget(self, action: "scrollViewDidSwipeToDismiss:")
+        panGestureRecognizer.addTarget(self, action: #selector(ImageViewController.scrollViewDidSwipeToDismiss(_:)))
         panGestureRecognizer.delegate = self
         view.addGestureRecognizer(panGestureRecognizer)
     }
@@ -180,7 +183,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         
         if imageView.image == nil {
             
-            scrollView.zoomScale = 1
+            scrollView.zoomScale = minimumZoomScale
             let aspectFitSize = aspectFitContentSize(forBoundingSize: rotationAdjustedBounds().size, contentSize: image.size)
             imageView.frame.size = aspectFitSize
             self.scrollView.contentSize = aspectFitSize
@@ -199,7 +202,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
                     
                     }, completion: { finished in
                         
-                        handler.imagePresentedAtIndex(self.index)
+                        handler.addPresentedImageIndex(self.index)
                 })
                 
                 return
@@ -207,7 +210,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         }
         
         self.imageView.image = image
-        fadeInHandler?.imagePresentedAtIndex(self.index)
+        fadeInHandler?.addPresentedImageIndex(self.index)
     }
     
     func adjustImageViewForRotation() {
@@ -224,7 +227,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         UIView.animateWithDuration(rotationAnimationDuration, animations: { [weak self] () -> Void in
             
             self?.imageView.bounds.size = aspectFitContentSize(forBoundingSize: rotationAdjustedBounds().size, contentSize: imageViewBounds.size)
-            self?.scrollView.zoomScale = 1.0
+            self?.scrollView.zoomScale = self!.minimumZoomScale
             }) { [weak self] finished in
                 
                 self?.isAnimating = false
@@ -246,7 +249,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         
-        self.scrollView.zoomScale = 1.0
+        self.scrollView.zoomScale = minimumZoomScale
     }
     
     override func viewDidLayoutSubviews() {
@@ -271,7 +274,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
             if let imageView = self?.imageView, _ = imageView.image, scrollView = self?.scrollView {
                 
                 imageView.bounds.size = aspectFitContentSize(forBoundingSize: boundingSize, contentSize: imageView.bounds.size)
-                scrollView.zoomScale = 1
+                scrollView.zoomScale = self!.minimumZoomScale
             }
             }, completion: nil)
     }

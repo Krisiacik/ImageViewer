@@ -106,9 +106,8 @@ func maximumZoomScale(forBoundingSize boundingSize: CGSize, contentSize: CGSize)
 }
 
 func rotationAdjustedCenter(view: UIView) -> CGPoint {
-    guard isPortraitOnly() else {
-        return view.center
-    }
+    
+    guard isPortraitOnly() else { return view.center }
     
     return (UIDevice.currentDevice().orientation.isLandscape) ? view.center.inverted() : view.center
 }

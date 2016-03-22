@@ -132,11 +132,11 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     
     private func configureGestureRecognizers() {
         
-        doubleTapRecognizer.addTarget(self, action: "scrollViewDidDoubleTap:")
+        doubleTapRecognizer.addTarget(self, action: #selector(ImageViewer.scrollViewDidDoubleTap(_:)))
         doubleTapRecognizer.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(doubleTapRecognizer)
         
-        panGestureRecognizer.addTarget(self, action: "scrollViewDidPan:")
+        panGestureRecognizer.addTarget(self, action: #selector(ImageViewer.scrollViewDidPan(_:)))
         view.addGestureRecognizer(panGestureRecognizer)
     }
     
@@ -203,7 +203,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         view.addSubview(closeButton)
         
         scrollView.delegate = self
-        closeButton.addTarget(self, action: "close:", forControlEvents: .TouchUpInside)
+        closeButton.addTarget(self, action: #selector(ImageViewer.close(_:)), forControlEvents: .TouchUpInside)
     }
     
     public override func viewDidLoad() {
@@ -283,7 +283,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
                 
                 if finished {
                     if isPortraitOnly() {
-                        NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotate", name: UIDeviceOrientationDidChangeNotification, object: nil)
+                        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ImageViewer.rotate), name: UIDeviceOrientationDidChangeNotification, object: nil)
                     }
                     self.applicationWindow!.windowLevel = UIWindowLevelStatusBar + 1
 

@@ -10,9 +10,9 @@ import Foundation
 
 final class ImageFadeInHandler {
     
-    var presentedImages:[Int] = []
+    private var presentedImages:[Int] = []
     
-    func imagePresentedAtIndex(index: Int) {
+    func addPresentedImageIndex(index: Int) {
         
        presentedImages.append(index)
     }
