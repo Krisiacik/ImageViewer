@@ -71,19 +71,46 @@ Carthage:
 github "MailOnline/ImageViewer"
 ```
 
-#### Usage
-
+#### Gallery Usage
 
 ```swift
 
-let imageProvider: ImageProvider = ... 
+let imageProvider = SomeImageProvider()
 
-let buttonConfiguration = ButtonStateAssets(normalImage:UIImage(named: "normalImage"), highlightedImage:UIImage(named: "highlightedImage"))
-let configuration = ImageViewerConfiguration(imageSize: size, closeButtonAssets: buttonConfiguration)
+let frame = CGRect(x: 0, y: 0, width: 200, height: 24)
+let headerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: images.count)
+let footerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: images.count)
 
-let imageViewer = ImageViewer(imageProvider: imageProvider, configuration: configuration, displacedView: displacedView)
+let galleryViewController = GalleryViewController(imageProvider: imageProvider, displacedView: displacedView, imageCount: images.count, startIndex: displacedView.tag)
+galleryViewController.headerView = headerView
+galleryViewController.footerView = footerView
 
-viewController.presentImageViewer(imageViewer)
+galleryViewController.launchedCompletion = { print("LAUNCHED") }
+galleryViewController.closedCompletion = { print("CLOSED") }
+galleryViewController.swipedToDismissCompletion = { print("SWIPE-DISMISSED") }
+
+galleryViewController.landedPageAtIndexCompletion = { index in
+
+print("LANDED AT INDEX: \(index)")
+
+headerView.currentIndex = index
+footerView.currentIndex = index
+}
+
+self.presentImageGallery(galleryViewController)
+
+```
+#### Single Image Usage
+
+```swift
+
+let imageProvider = SomeImageProvider()
+let buttonAssets = CloseButtonAssets(normal: UIImage(named:"close_normal")!, highlighted: UIImage(named: "close_highlighted"))
+let configuration = ImageViewerConfiguration(imageSize: CGSize(width: 10, height: 10), closeButtonAssets: buttonAssets)
+
+let imageViewer = ImageViewer(imageProvider: imageProvider, configuration: configuration, displacedView: sender)
+self.presentImageViewer(imageViewer)
+
 ```
 
 * `imageProvider`: An object that is able to provide an image via a callback `UIImage? -> Void`.
@@ -103,6 +130,7 @@ viewController.presentImageViewer(imageViewer)
 - [ ] UI Testing
 - [X] Expand the ImageViewer to a Gallery
 - [ ] Consider UIVisualEffectView for the Close button as default option 
+- [ ] Consider a global thumbnail view in a grid like fashion sitting on top of images for quick jump to images.
 
 #### Caveats
 

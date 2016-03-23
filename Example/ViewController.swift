@@ -18,28 +18,25 @@ class ViewController: UIViewController {
         super.viewDidLoad()
     }
     
-
     @IBAction func showSingleImageViewer(sender: UIButton) {
         
-        let poorManProvider = PoorManProvider()
+        let imageProvider = SomeImageProvider()
         let buttonAssets = CloseButtonAssets(normal: UIImage(named:"close_normal")!, highlighted: UIImage(named: "close_highlighted"))
         let configuration = ImageViewerConfiguration(imageSize: CGSize(width: 10, height: 10), closeButtonAssets: buttonAssets)
         
-        let imageViewer = ImageViewer(imageProvider: poorManProvider, configuration: configuration, displacedView: sender)
-        
+        let imageViewer = ImageViewer(imageProvider: imageProvider, configuration: configuration, displacedView: sender)
         self.presentImageViewer(imageViewer)
     }
-
     
-    @IBAction func showViewer(sender: UIView) {
+    @IBAction func showGalleryImageViewer(displacedView: UIView) {
         
-        let poorManProvider = PoorManProvider()
+        let imageProvider = SomeImageProvider()
         
         let frame = CGRect(x: 0, y: 0, width: 200, height: 24)
-        let headerView = CounterView(frame: frame, currentIndex: sender.tag, count: images.count)
-        let footerView = CounterView(frame: frame, currentIndex: sender.tag, count: images.count)
+        let headerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: images.count)
+        let footerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: images.count)
         
-        let galleryViewController = GalleryViewController(imageProvider: poorManProvider, displacedView: sender, imageCount: images.count, startIndex: sender.tag)
+        let galleryViewController = GalleryViewController(imageProvider: imageProvider, displacedView: displacedView, imageCount: images.count, startIndex: displacedView.tag)
         galleryViewController.headerView = headerView
         galleryViewController.footerView = footerView
         
@@ -59,7 +56,7 @@ class ViewController: UIViewController {
     }
 }
 
-class PoorManProvider: ImageProvider {
+class SomeImageProvider: ImageProvider {
     
     func provideImage(completion: UIImage? -> Void) {
         completion(UIImage(named: "image_big"))
