@@ -18,37 +18,35 @@ class ViewController: UIViewController {
         super.viewDidLoad()
     }
     
+
+    @IBAction func showSingleImageViewer(sender: UIButton) {
+        
+        let poorManProvider = PoorManProvider()
+        let buttonAssets = CloseButtonAssets(normal: UIImage(named:"close_normal")!, highlighted: UIImage(named: "close_highlighted"))
+        let configuration = ImageViewerConfiguration(imageSize: CGSize(width: 10, height: 10), closeButtonAssets: buttonAssets)
+        
+        let imageViewer = ImageViewer(imageProvider: poorManProvider, configuration: configuration, displacedView: sender)
+        
+        self.presentImageViewer(imageViewer)
+    }
+
+    
     @IBAction func showViewer(sender: UIView) {
         
         let poorManProvider = PoorManProvider()
         
-        let headerFrame = CGRect(origin: CGPoint.zero, size: CGSize(width: 200, height: 24))
-        let headerView = CounterView(frame: headerFrame, currentIndex: sender.tag, count: images.count)
-
-
-        let footerFrame = CGRect(origin: CGPoint.zero, size: CGSize(width: 200, height: 24))
-        let footerView = CounterView(frame: footerFrame, currentIndex: sender.tag, count: images.count)
+        let frame = CGRect(x: 0, y: 0, width: 200, height: 24)
+        let headerView = CounterView(frame: frame, currentIndex: sender.tag, count: images.count)
+        let footerView = CounterView(frame: frame, currentIndex: sender.tag, count: images.count)
         
         let galleryViewController = GalleryViewController(imageProvider: poorManProvider, displacedView: sender, imageCount: images.count, startIndex: sender.tag)
         galleryViewController.headerView = headerView
         galleryViewController.footerView = footerView
         
-        galleryViewController.launchedCompletion = {
-        
-            print("LAUNCHED")
-        }
+        galleryViewController.launchedCompletion = { print("LAUNCHED") }
+        galleryViewController.closedCompletion = { print("CLOSED") }
+        galleryViewController.swipedToDismissCompletion = { print("SWIPE-DISMISSED") }
 
-        galleryViewController.closedCompletion = {
-            
-            print("CLOSED")
-        }
-        
-        galleryViewController.swipedToDismissCompletion = {
-            
-            print("SWIPE-DISMISSED")
-        }
-        
-        
         galleryViewController.landedPageAtIndexCompletion = { index in
             
             print("LANDED AT INDEX: \(index)")
@@ -68,7 +66,6 @@ class PoorManProvider: ImageProvider {
     }
     
     func provideImage(atIndex index: Int, completion: UIImage? -> Void) {
-        
         completion(images[index])
     }
 }
