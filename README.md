@@ -7,8 +7,8 @@
 [![Platforms iOS](https://img.shields.io/badge/Platforms-iOS-lightgray.svg?style=flat)](https://developer.apple.com/swift/)
 [![License MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat)](https://opensource.org/licenses/MIT)
 
-ImageViewer 2.0 represents a major update to our single image cappable 1.2 image viewer. Version 2 brings multiple image support in a carousel-like scrollable gallery presentation. We delivered some improvements to which we committed in our version 1.x roadmap.
-Showing multiple images raised overall complexity but also provided an opportunity to add new features around the content-rich visual presentation. 
+ImageViewer 2.0 represents a major update to our single-image cappable ImageViewer 1.2. Version 2 brings multiple image support in a carousel-like scrollable gallery fashion. We delivered some of the improvements to which we committed in our version 1.x roadmap.
+Showing multiple images raised overall complexity but also provided us with an opportunity to add new features around the content-rich visual presentation. 
 
 Besides keeping all the features from version 1.2 below, here is a complete list of additions in 2.0:
 
@@ -16,37 +16,37 @@ Besides keeping all the features from version 1.2 below, here is a complete list
 #### 2.0
 
 * `Multiple Images`: Show as many images as you want in a single run.
-* `Intelligent memory handling`: Thanks to behind the scenes used `UIPageViewController`'s datasource handling, you will never experience a memory warning caused by this component. The underlying view controllers that support detail image manipulation are loaded lazily and there is never more than 4-5 of them occupying memory space.
-* `Asynchronous background thread image loading`: In viewer 1.2 you had to designate an object that conformed to our ImageProvider protocol, the viewer would then ask your object to provide an image. This protocol is now expanded with a second fucntion to ask for image at a particular index. We now guarantee that the process will not block the main thread and thus the UI.   
+* `Intelligent memory handling`: Thanks to behind the scenes used `UIPageViewController`'s datasource handling, you will never experience memory warnings caused by this component. The underlying view controllers that support detail image manipulation are loaded lazily and there is never more than 4-5 of them occupying precious memory space.
+* `Asynchronous background thread image loading`: In ImageViewer 1.2 you had to designate an object that conformed to our ImageProvider protocol, the viewer would then ask your object to provide an image. This protocol is now expanded with a second function to ask for image at a particular index. We now guarantee that the process will not block the main thread and thus the UI.   
 * `Completions blocks`: To be able to hook up onto the presentation lifecycle - i.e. launch, image landing, close & swipe to dismiss states - we provide convenient completion blocks. These are exposed as optional properties and are not part of designated initializer.
-* `Decoration views`: You can now set your own close button implementation. Additionaly the viewer has a concept of header and footer views. These are both opaque from viewer's perspective, they can be any UIView subclass.'Both are exposed as optional properties. They are global from the perspective of viewer's view hierarchy and sit on top of individual images. see our built-in project example using a simple image counter being as a centered header view. 
+* `Decoration views`: You can now set your own Close button implementation. Additionally the viewer has a concept of header and footer views. These are both opaque from viewer's perspective, they can be any UIView subclass. Both are exposed as optional properties. They are global from perspective of viewer's view hierarchy and sit on top of individual images. See our built-in project example using a simple image counter being as a centered header view. 
 * `Decoration views hiding`: Single tap the viewer's area to show/hide all decoration views.
 * `Expanded configuration options`: We have expanded the list of visual related options that are now configurable.
 * `Config option - Paging Mode`: Set the viewer to either go from first to last image or work in a carousel mode in an infinite loop.
 * `Config option - Decoration Views pinning`: You can chose what kind of layout behaviour serves your needs best. Close button, header view & footer can all be pinned to left or right side or kept in the center.
-* `Config option - Spine Width`: Set the with of the spine that separates images from each other.
+* `Config option - Spine Width`: Set the width of the spine that separates images from each other.
 * `Config option - Status Bar Hiding`: You can set the status bar to be hidden while the gallery is running.
 * `Config option - Decoration Views Hiding`: You can set the decoration views to be hidden on start.
 * `Config option - Spinner customization`: We are showing an activity indicator while the image is loading. You can set its style and color.
 * `Horizontal swipe to dismiss`: If you run the viewer in Standard (non-carousel) mode, once you reach the beginning or the end of image collection, the next horizontal swipe will dismiss the whole viewer. This gesture is interactive and cancelable.
-* `Image displacement`: Displacement still works, we now also keep track of the displaced image index, that means if you page back and forth through images, and you page to the originaly diplaced image, tapping the close button will return the image to its position in parent view. Closing with any other image uses the standard cross-dissolve transition.
-* `Host app rotation support`: Previously, we handled rotations separately from the host app. We kept this meaning you still can get rotations for a portrait only app, but now we also support being hosted by an app that has rotations enabled globaly.
-* `Butter smooth & super fast rotation re-layout with correct anchor points`: All the views in a view hierarchy folow the most logical paths when resizing (because of rotation), images rotate around their natural centers all thanks to the magic of manual layout. (Sorry auto-layout engine, you are a bit slow on 4S) 
-* `Transition to current rotated state`: Tapping any image in your parent view wil launch the viewer in a rotated state and displace the image while rotating it to its desired position at the same time. (We couldn't resist :)) 
+* `Image displacement`: Displacement still works, we now also keep track of the displaced image index, that means if you page back and forth through images, and you page to the originally displaced image, tapping the close button will return the image to its position in parent view. Closing with any other image uses the standard cross-dissolve transition.
+* `Host app rotation support`: Previously, we handled rotations separately from the host app. We kept this meaning you still can get rotations for a portrait only app, but now we also support being hosted by an app that has rotations enabled globally.
+* `Butter smooth & super fast rotation re-layout with correct anchor points`: All the views in a view hierarchy follow the most logical paths when resizing (because of rotation), images rotate around their natural centers all thanks to the magic of manual layout. (Sorry auto-layout engine, you are a bit slow on 4S) 
+* `Transition to current rotated state`: Tapping any image in your parent view will launch the viewer in a rotated state and displace the image while rotating it to its desired position at the same time. (We couldn't resist :)) 
 
 #### 1.2
 
-* `Displace image`: The image you tap will visualy dettach from it's parrent view and will become part of full screen presentation.'  In our context, you can imagine an image as part of an article and when it's tapped, the image is animated into fullscreen.
+* `Displace image`: The image you tap will visually detach from its parrent view and will become part of full screen presentation.'  In our context, you can imagine an image as part of an article and when it's tapped, the image is animated into full screen.
 * `Double tap to zoom`: Double tapping the image will toggle between Aspect Fit and Aspect Fill zoom scale.
 * `Focused zoom`: When you double tap an image that is aspect Fit, it will zoom in specifically focusing into the tap area.'
 * `Manual zooming`: Use the well know two finger gesture to zoom in and out.
 * `Swipe to dismiss`: Close the viewer by vertically swiping and "throwing" the image away.
-* `Rotation support`: Image viewer supports rotation regardless of rotation support in the host app. 
+* `Rotation support`: ImageViewer 1.2 supports rotation regardless of rotation support in the host app. 
 
 
 #### Upgrade path
 
-Regardless of how you set up imageViewer as a dependency (fixed to a particular commit, version 1.2 or the tip of master) you don't need to do anything to keep it working as before. We have implemented the new functionality with a set of new classes and the overlap between 1.2 and 2.0 versions (from public API's perspective) is minimal.
+Regardless of how you set up ImageViewer as a dependency (fixed to a particular commit, version 1.2 or the tip of master) you don't need to do anything to keep it working as before. We have implemented the new functionality with a set of new classes and the overlap between 1.2 and 2.0 versions (from public API's perspective) is minimal.
 To expand and use the gallery functionality, you will have to write a few line of code though.
 
 
