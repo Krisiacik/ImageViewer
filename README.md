@@ -84,6 +84,8 @@ self.presentImageViewer(imageViewer)
 * `displacedView`: The view that is about to be displayed in fullscreen. 
 
 
+#### Whats' NEW
+
 Besides keeping all the features from version 1.2 below, here is a complete list of additions in 2.0:
 
 #### 2.0
