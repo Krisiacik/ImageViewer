@@ -8,6 +8,7 @@
 
 import UIKit
 
+// allows very loose coupling of the image source and the gallery. You make whatever object conform to this protocol and pass a reference to youur object to the viewer. the viwer will at convenient times ask this object for an image (at index).
 public protocol ImageProvider {
     
     func provideImage(completion: UIImage? -> Void)

@@ -13,8 +13,8 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     
     // UI
     private var closeButton: UIButton?
-    public var headerView: UIView?
-    public var footerView: UIView?
+    public var headerView: UIView? // You can set any UIView subclass here. If set, it will be integrated into view hierachy and laid out following either the default pinning settings or settings from a custom configuration.
+    public var footerView: UIView? // Behaves the same way as header view above, the only difference is this one is pinned to the bottom.
     private var applicationWindow: UIWindow? {
         return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 }
     }
@@ -54,10 +54,10 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     private let closeTransition: GalleryCloseTransition
     
     // COMPLETION
-    public var launchedCompletion: (() -> Void)?
-    public var landedPageAtIndexCompletion: ((Int) -> Void)? //called everytime ANY animation stops in the page controller and a page at index is on screen
-    public var closedCompletion: (() -> Void)?
-    public var swipedToDismissCompletion: (() -> Void)?
+    public var launchedCompletion: (() -> Void)? // If set ,the block is executed right after the initial launc hanimations finish.
+    public var landedPageAtIndexCompletion: ((Int) -> Void)? // If set, called everytime ANY animation stops in the page controller stops and the viewer passes a page index of the page that is currently on screen
+    public var closedCompletion: (() -> Void)? // If set, launched after all animations finish when the close button is pressed.
+    public var swipedToDismissCompletion: (() -> Void)? // If set, launched after all animations finish when the swipe-to-dismiss (applies to all directions and cases) gesture is used.
     
     // IMAGE VC FACTORY
     private var imageControllerFactory: ImageViewControllerFactory!
