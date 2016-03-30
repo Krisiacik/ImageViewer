@@ -35,5 +35,3 @@ final class ImageViewControllerFactory {
         return ImageViewController(imageProvider: imageProvider,  configuration: configuration, imageCount: imageCount, displacedView: displacedView, startIndex: startIndex, imageIndex: imageIndex, showDisplacedImage: (imageIndex == self.startIndex), fadeInHandler: fadeInHandler, delegate: delegate)
     }
 }
-
-

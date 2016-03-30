@@ -30,7 +30,7 @@ final class GalleryCloseTransition: NSObject, UIViewControllerAnimatedTransition
         
         UIView.animateWithDuration(self.duration, delay: 0, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
             
-            //transition the frontend to full clear
+            /// Transition the frontend to full clear
             fromViewController.view.alpha = 1.0
             
             }) { finished in

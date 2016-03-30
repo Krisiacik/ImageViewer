@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class ImageViewerSwipeToDismissTransition: NSObject, UIViewControllerAnimatedTransitioning {
+final class ImageViewerSwipeToDismissTransition: NSObject, UIViewControllerAnimatedTransitioning {
     
     private var verticalTouchPoint: CGFloat = 0
     private var targetOffset: CGFloat = 0

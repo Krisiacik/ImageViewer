@@ -41,7 +41,7 @@ which overall gives us the illusion of the UI element returning to its original 
 
 public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
     
-    // UI
+    /// UI
     private var scrollView: UIScrollView!
     private var overlayView: UIView!
     private var closeButton: UIButton!
@@ -52,7 +52,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 }
     }
     
-    // LOCAL STATE
+    /// LOCAL STATE
     private var parentViewFrameInOurCoordinateSystem = CGRectZero
     private var isAnimating = false
     private var shouldRotate = false
@@ -60,7 +60,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     private var dynamicTransparencyActive = false
     private let imageProvider: ImageProvider
     
-    // LOCAL CONFIG
+    /// LOCAL CONFIG
     private let configuration: ImageViewerConfiguration
     private var initialCloseButtonOrigin = CGPointZero
     private var closeButtonSize = CGSize(width: 50, height: 50)
@@ -72,21 +72,29 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     private let zoomDuration               = 0.2
     private let thresholdVelocity: CGFloat = 1000 // It works as a threshold.
 
-    // TRANSITIONS
+    /// TRANSITIONS
     private let presentTransition: ImageViewerPresentTransition
     private let dismissTransition: ImageViewerDismissTransition
     private let swipeToDismissTransition: ImageViewerSwipeToDismissTransition
     
-    // LIFE CYCLE BLOCKS
-    public var showInitiationBlock: (Void -> Void)? //executed right before the image animation into its final position starts.
-    public var showCompletionBlock: (Void -> Void)? //executed as the last step after all the show animations.
-    public var closeButtonActionInitiationBlock: (Void -> Void)? //executed as the first step before the button's close action starts.
-    public var closeButtonActionCompletionBlock: (Void -> Void)? //executed as the last step for close button's close action.
-    public var swipeToDismissInitiationBlock: (Void -> Void)? //executed as the first step for swipe to dismiss action.
-    public var swipeToDismissCompletionBlock: (Void -> Void)? //executed as the last step for swipe to dismiss action.
-    public var dismissCompletionBlock: (Void -> Void)? //executed as the last step when the ImageViewer is dismissed (either via the close button, or swipe)
+    /// LIFE CYCLE BLOCKS
     
-    // INTERACTIONS
+    /// Executed right before the image animation into its final position starts.
+    public var showInitiationBlock: (Void -> Void)?
+    /// Executed as the last step after all the show animations.
+    public var showCompletionBlock: (Void -> Void)?
+    /// Executed as the first step before the button's close action starts.
+    public var closeButtonActionInitiationBlock: (Void -> Void)?
+    /// Executed as the last step for close button's close action.
+    public var closeButtonActionCompletionBlock: (Void -> Void)?
+    /// Executed as the first step for swipe to dismiss action.
+    public var swipeToDismissInitiationBlock: (Void -> Void)?
+    /// Executed as the last step for swipe to dismiss action.
+    public var swipeToDismissCompletionBlock: (Void -> Void)?
+    /// Executed as the last step when the ImageViewer is dismissed (either via the close button, or swipe)
+    public var dismissCompletionBlock: (Void -> Void)?
+    
+    /// INTERACTIONS
     private let doubleTapRecognizer = UITapGestureRecognizer()
     private let panGestureRecognizer = UIPanGestureRecognizer()
     
@@ -336,11 +344,11 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     
     func swipeToDismissAnimation(withVerticalTouchPoint verticalTouchPoint: CGFloat,  targetOffset: CGFloat, verticalVelocity: CGFloat, completion: ((Bool) -> Void)?) {
         
-        // in units of "vertical velocity". for example if we have a vertical velocity of 50 units (which are points really) per second
-        // and the distance to travel is 175 units, then our spring velocity is 3.5. I.e. we will travel 3.5 units in 1 second.
+        /// In units of "vertical velocity". for example if we have a vertical velocity of 50 units (which are points really) per second
+        /// and the distance to travel is 175 units, then our spring velocity is 3.5. I.e. we will travel 3.5 units in 1 second.
         let springVelocity = fabs(verticalVelocity / (targetOffset - verticalTouchPoint))
         
-        // how much time it will take to travel the remaining distance given the above speed.
+        /// How much time it will take to travel the remaining distance given the above speed.
         let expectedDuration = NSTimeInterval( fabs(targetOffset - verticalTouchPoint) / fabs(verticalVelocity))
         
         UIView.animateWithDuration(expectedDuration, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: springVelocity, options: UIViewAnimationOptions.CurveLinear, animations: { () -> Void in
@@ -434,7 +442,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             
         case .Ended:
             
-            // in points per second
+            /// In points per second
             let verticalVelocity = recognizer.velocityInView(view).y
             
             if verticalVelocity < -thresholdVelocity {

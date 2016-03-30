@@ -13,14 +13,14 @@ public typealias MarginRight = CGFloat
 public typealias MarginTop = CGFloat
 public typealias MarginBottom = CGFloat
 
-// represents possible layouts for the close button
+/// Represents possible layouts for the close button
 public enum CloseButtonLayout {
     
     case PinLeft(MarginTop, MarginLeft)
     case PinRight(MarginTop, MarginRight)
 }
 
-// represents various possible layouts for the header
+/// Represents various possible layouts for the header
 public enum HeaderLayout {
     
     case PinLeft(MarginTop, MarginLeft)
@@ -29,7 +29,7 @@ public enum HeaderLayout {
     case Center(MarginTop)
 }
 
-// represents various possible layouts for the footer
+/// Represents various possible layouts for the footer
 public enum FooterLayout {
     
     case PinLeft(MarginBottom, MarginLeft)

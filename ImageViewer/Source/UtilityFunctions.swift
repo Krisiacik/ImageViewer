@@ -9,7 +9,9 @@
 import UIKit
 import AVFoundation
 
-// returns a size that aspect-fits into the bounding size. Example -> We have some view of certain size and the question is, what would have to be its size, so that it would fit it into some rect of some size ..given we wuold want to keep the content rects aspect ratio.
+/// returns a size that aspect-fits into the bounding size. Example -> We have some view of 
+/// certain size and the question is, what would have to be its size, so that it would fit 
+/// it into some rect of some size ..given we wuold want to keep the content rects aspect ratio.
 func aspectFitContentSize(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGSize {
     
     return AVMakeRectWithAspectRatioInsideRect(contentSize, CGRect(origin: CGPointZero, size: boundingSize)).size
@@ -23,12 +25,12 @@ func aspectFillZoomScale(forBoundingSize boundingSize: CGSize, contentSize: CGSi
 
 func contentCenter(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGPoint {
     
-    // When the zoom scale changes i.e. the image is zoomed in or out, the hypothetical center
-    // of content view changes too. But the default Apple implementation is keeping the last center
-    // value which doesn't make much sense. If the image ratio is not matching the screen
-    // ratio, there will be some empty space horizontaly or verticaly. This needs to be calculated
-    // so that we can get the correct new center value. When these are added, edges of contentView
-    // are aligned in realtime and always aligned with corners of scrollview.
+    /// When the zoom scale changes i.e. the image is zoomed in or out, the hypothetical center
+    /// of content view changes too. But the default Apple implementation is keeping the last center
+    /// value which doesn't make much sense. If the image ratio is not matching the screen
+    /// ratio, there will be some empty space horizontaly or verticaly. This needs to be calculated
+    /// so that we can get the correct new center value. When these are added, edges of contentView
+    /// are aligned in realtime and always aligned with corners of scrollview.
     
     let horizontalOffest = (boundingSize.width > contentSize.width) ? ((boundingSize.width - contentSize.width) * 0.5): 0.0
     let verticalOffset = (boundingSize.height > contentSize.height) ? ((boundingSize.height - contentSize.height) * 0.5): 0.0
@@ -101,7 +103,7 @@ func isPortraitOnly() -> Bool {
 
 func maximumZoomScale(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGFloat {
     
-    // we want to allow the image to always cover 4x the area of screen
+    /// we want to allow the image to always cover 4x the area of screen
     return min(boundingSize.width, boundingSize.height) / min(contentSize.width, contentSize.height) * 4
 }
 
@@ -111,5 +113,3 @@ func rotationAdjustedCenter(view: UIView) -> CGPoint {
     
     return (UIDevice.currentDevice().orientation.isLandscape) ? view.center.inverted() : view.center
 }
-
-

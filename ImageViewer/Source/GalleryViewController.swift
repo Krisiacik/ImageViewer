@@ -8,18 +8,20 @@
 
 import UIKit
 
-
 final public class GalleryViewController : UIPageViewController, UIViewControllerTransitioningDelegate, ImageViewControllerDelegate  {
     
-    // UI
+    /// UI
     private var closeButton: UIButton?
-    public var headerView: UIView? // You can set any UIView subclass here. If set, it will be integrated into view hierachy and laid out following either the default pinning settings or settings from a custom configuration.
-    public var footerView: UIView? // Behaves the same way as header view above, the only difference is this one is pinned to the bottom.
+    /// You can set any UIView subclass here. If set, it will be integrated into view hierachy and laid out 
+    /// following either the default pinning settings or settings from a custom configuration.
+    public var headerView: UIView?
+    /// Behaves the same way as header view above, the only difference is this one is pinned to the bottom.
+    public var footerView: UIView?
     private var applicationWindow: UIWindow? {
         return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 }
     }
     
-    // DATA
+    /// DATA
     private let imageProvider: ImageProvider
     private let displacedView: UIView
     private let imageCount: Int
@@ -32,7 +34,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     private var isDecorationViewsHidden = false
     private var isAnimating = false
     
-    // LOCAL CONFIG
+    /// LOCAL CONFIG
     private let configuration: GalleryConfiguration
     private var spinnerColor = UIColor.whiteColor()
     private var spinnerStyle = UIActivityIndicatorViewStyle.White
@@ -49,17 +51,21 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     private var footerLayout = FooterLayout.Center(25)
     private var statusBarHidden = true
     
-    // TRANSITIONS
+    /// TRANSITIONS
     private let presentTransition: GalleryPresentTransition
     private let closeTransition: GalleryCloseTransition
     
-    // COMPLETION
-    public var launchedCompletion: (() -> Void)? // If set ,the block is executed right after the initial launc hanimations finish.
-    public var landedPageAtIndexCompletion: ((Int) -> Void)? // If set, called everytime ANY animation stops in the page controller stops and the viewer passes a page index of the page that is currently on screen
-    public var closedCompletion: (() -> Void)? // If set, launched after all animations finish when the close button is pressed.
-    public var swipedToDismissCompletion: (() -> Void)? // If set, launched after all animations finish when the swipe-to-dismiss (applies to all directions and cases) gesture is used.
+    /// COMPLETION
+    /// If set ,the block is executed right after the initial launc hanimations finish.
+    public var launchedCompletion: (() -> Void)?
+    /// If set, called everytime ANY animation stops in the page controller stops and the viewer passes a page index of the page that is currently on screen
+    public var landedPageAtIndexCompletion: ((Int) -> Void)?
+    /// If set, launched after all animations finish when the close button is pressed.
+    public var closedCompletion: (() -> Void)?
+    /// If set, launched after all animations finish when the swipe-to-dismiss (applies to all directions and cases) gesture is used.
+    public var swipedToDismissCompletion: (() -> Void)?
     
-    // IMAGE VC FACTORY
+    /// IMAGE VC FACTORY
     private var imageControllerFactory: ImageViewControllerFactory!
     
     // MARK: - VC Setup
@@ -100,7 +106,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
         
         self.imageControllerFactory = ImageViewControllerFactory(imageProvider: imageProvider, displacedView: displacedView, imageCount: imageCount, startIndex: startIndex, configuration: configuration, fadeInHandler: fadeInHandler, delegate: self)
         
-        // needs to be kept alive with strong reference
+        /// Needs to be kept alive with strong reference
         self.galleryDatasource = GalleryViewControllerDatasource(imageControllerFactory: imageControllerFactory, imageCount: imageCount, galleryPagingMode: galleryPagingMode)
         self.dataSource = galleryDatasource
         
@@ -139,7 +145,11 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     
     func rotate() {
         
-        guard isPortraitOnly() else { return } //if the app supports rotation on global level, we don't need to rotate here manually because the rotation of keyWindow will rotate all app's content with it via affine transform and from the perspective of the gallery it is just a simple relayout. Allowing access to remaining code only makes sense if the app is portrait only but we still want to support rotation inside the gallery.
+        /// If the app supports rotation on global level, we don't need to rotate here manually because the rotation
+        /// of key Window will rotate all app's content with it via affine transform and from the perspective of the
+        /// gallery it is just a simple relayout. Allowing access to remaining code only makes sense if the app is 
+        /// portrait only but we still want to support rotation inside the gallery.
+        guard isPortraitOnly() else { return }
         
         guard UIDevice.currentDevice().orientation.isFlat == false &&
             isAnimating == false else { return }
