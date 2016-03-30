@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-//returns a size that aspect-fits into the bounding size. Example -> We have some view of certain size and the question is, what would have to be its size, so that it would fit it into some rect of some size ..given we wuold want to keep the content rects aspect ratio.
+// returns a size that aspect-fits into the bounding size. Example -> We have some view of certain size and the question is, what would have to be its size, so that it would fit it into some rect of some size ..given we wuold want to keep the content rects aspect ratio.
 func aspectFitContentSize(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGSize {
     
     return AVMakeRectWithAspectRatioInsideRect(contentSize, CGRect(origin: CGPointZero, size: boundingSize)).size
@@ -101,7 +101,7 @@ func isPortraitOnly() -> Bool {
 
 func maximumZoomScale(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGFloat {
     
-    //we want to allow the image to always cover 4x the area of screen
+    // we want to allow the image to always cover 4x the area of screen
     return min(boundingSize.width, boundingSize.height) / min(contentSize.width, contentSize.height) * 4
 }
 

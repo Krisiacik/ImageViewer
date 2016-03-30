@@ -29,7 +29,7 @@ final class GallerySwipeToDismissTransition {
         // and the distance to travel is 175 units, then our spring velocity is 3.5. I.e. we will travel 3.5 units in 1 second.
         let springVelocity = fabs(escapeVelocity / (targetOffset - touchPoint))
         
-        //how much time it will take to travel the remaining distance given the above speed.
+        // how much time it will take to travel the remaining distance given the above speed.
         let expectedDuration = NSTimeInterval( fabs(targetOffset - touchPoint) / fabs(escapeVelocity))
 
         UIView.animateWithDuration(expectedDuration * 0.65, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: springVelocity, options: UIViewAnimationOptions.CurveLinear, animations: { () -> Void in

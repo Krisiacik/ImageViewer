@@ -11,7 +11,7 @@ import UIKit
 
 final public class GalleryViewController : UIPageViewController, UIViewControllerTransitioningDelegate, ImageViewControllerDelegate  {
     
-    //UI
+    // UI
     private var closeButton: UIButton?
     public var headerView: UIView?
     public var footerView: UIView?
@@ -19,7 +19,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
         return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 }
     }
     
-    //DATA
+    // DATA
     private let imageProvider: ImageProvider
     private let displacedView: UIView
     private let imageCount: Int
@@ -32,7 +32,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     private var isDecorationViewsHidden = false
     private var isAnimating = false
     
-    //LOCAL CONFIG
+    // LOCAL CONFIG
     private let configuration: GalleryConfiguration
     private var spinnerColor = UIColor.whiteColor()
     private var spinnerStyle = UIActivityIndicatorViewStyle.White
@@ -49,17 +49,17 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     private var footerLayout = FooterLayout.Center(25)
     private var statusBarHidden = true
     
-    //TRANSITIONS
+    // TRANSITIONS
     private let presentTransition: GalleryPresentTransition
     private let closeTransition: GalleryCloseTransition
     
-    //COMPLETION
+    // COMPLETION
     public var launchedCompletion: (() -> Void)?
     public var landedPageAtIndexCompletion: ((Int) -> Void)? //called everytime ANY animation stops in the page controller and a page at index is on screen
     public var closedCompletion: (() -> Void)?
     public var swipedToDismissCompletion: (() -> Void)?
     
-    //IMAGE VC FACTORY
+    // IMAGE VC FACTORY
     private var imageControllerFactory: ImageViewControllerFactory!
     
     // MARK: - VC Setup
@@ -100,7 +100,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
         
         self.imageControllerFactory = ImageViewControllerFactory(imageProvider: imageProvider, displacedView: displacedView, imageCount: imageCount, startIndex: startIndex, configuration: configuration, fadeInHandler: fadeInHandler, delegate: self)
         
-        //needs to be kept alive with strong reference
+        // needs to be kept alive with strong reference
         self.galleryDatasource = GalleryViewControllerDatasource(imageControllerFactory: imageControllerFactory, imageCount: imageCount, galleryPagingMode: galleryPagingMode)
         self.dataSource = galleryDatasource
         
