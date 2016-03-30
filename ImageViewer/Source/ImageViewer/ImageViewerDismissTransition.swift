@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ImageViewerDismissTransition: NSObject, UIViewControllerAnimatedTransitioning {
+final class ImageViewerDismissTransition: NSObject, UIViewControllerAnimatedTransitioning {
     
     private let duration: NSTimeInterval
     

@@ -8,40 +8,71 @@
 
 import UIKit
 
-class PoorManProvider: ImageProvider {
+class ViewController: UIViewController {
+    
+    @IBOutlet weak var forestImageView: UIImageView!
+    
+    private var imagePreviewer: ImageViewer!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    @IBAction func showSingleImageViewer(sender: UIButton) {
+        
+        let imageProvider = SomeImageProvider()
+        let buttonAssets = CloseButtonAssets(normal: UIImage(named:"close_normal")!, highlighted: UIImage(named: "close_highlighted"))
+        let configuration = ImageViewerConfiguration(imageSize: CGSize(width: 10, height: 10), closeButtonAssets: buttonAssets)
+        
+        let imageViewer = ImageViewer(imageProvider: imageProvider, configuration: configuration, displacedView: sender)
+        self.presentImageViewer(imageViewer)
+    }
+    
+    @IBAction func showGalleryImageViewer(displacedView: UIView) {
+        
+        let imageProvider = SomeImageProvider()
+        
+        let frame = CGRect(x: 0, y: 0, width: 200, height: 24)
+        let headerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: images.count)
+        let footerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: images.count)
+        
+        let galleryViewController = GalleryViewController(imageProvider: imageProvider, displacedView: displacedView, imageCount: images.count, startIndex: displacedView.tag)
+        galleryViewController.headerView = headerView
+        galleryViewController.footerView = footerView
+        
+        galleryViewController.launchedCompletion = { print("LAUNCHED") }
+        galleryViewController.closedCompletion = { print("CLOSED") }
+        galleryViewController.swipedToDismissCompletion = { print("SWIPE-DISMISSED") }
+
+        galleryViewController.landedPageAtIndexCompletion = { index in
+            
+            print("LANDED AT INDEX: \(index)")
+            
+            headerView.currentIndex = index
+            footerView.currentIndex = index
+        }
+        
+        self.presentImageGallery(galleryViewController)
+    }
+}
+
+class SomeImageProvider: ImageProvider {
     
     func provideImage(completion: UIImage? -> Void) {
         completion(UIImage(named: "image_big"))
     }
-}
-
-class ViewController: UIViewController {
-
-    @IBOutlet weak var forestImageView: UIImageView!
     
-    private var imagePreviewer: ImageViewer!
-        
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return [.Portrait]
-    }
-    
-    @IBAction func showViewer(sender: AnyObject) {
-        
-        guard let view = sender as? UIView else { return }
-        
-        let provider = PoorManProvider()
-        
-        let size = CGSize(width: 1920, height: 1080)
-        
-        let buttonsAssets = CloseButtonAssets(normal: UIImage(named: "close_normal")!, highlighted: UIImage(named: "close_highlighted")!)
-        
-        let configuration = ImageViewerConfiguration(imageSize: size, closeButtonAssets: buttonsAssets)
-        self.imagePreviewer = ImageViewer(imageProvider: provider, configuration: configuration, displacedView: view)
-        self.presentImageViewer(self.imagePreviewer)
+    func provideImage(atIndex index: Int, completion: UIImage? -> Void) {
+        completion(images[index])
     }
 }
 
+let images = [
+    UIImage(named: "0"),
+    UIImage(named: "1"),
+    UIImage(named: "2"),
+    UIImage(named: "3"),
+    UIImage(named: "4"),
+    UIImage(named: "5"),
+    UIImage(named: "6"),
+    UIImage(named: "7")]
