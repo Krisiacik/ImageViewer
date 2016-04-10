@@ -96,6 +96,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     
     /// INTERACTIONS
     private let doubleTapRecognizer = UITapGestureRecognizer()
+    private let singleTapRecognizer = UITapGestureRecognizer()
     private let panGestureRecognizer = UIPanGestureRecognizer()
     
     // MARK: - Deinit
@@ -143,6 +144,11 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         doubleTapRecognizer.addTarget(self, action: #selector(ImageViewer.scrollViewDidDoubleTap(_:)))
         doubleTapRecognizer.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(doubleTapRecognizer)
+        
+        
+        singleTapRecognizer.addTarget(self, action: #selector(ImageViewer.scrollViewDidSingleTap(_:)))
+        singleTapRecognizer.numberOfTapsRequired = 1
+        scrollView.addGestureRecognizer(singleTapRecognizer)
         
         panGestureRecognizer.addTarget(self, action: #selector(ImageViewer.scrollViewDidPan(_:)))
         view.addGestureRecognizer(panGestureRecognizer)
@@ -417,6 +423,10 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         }
     }
     
+    func scrollViewDidSingleTap(recognizer: UITapGestureRecognizer) {
+        self.close(recognizer)
+    }
+    
     func scrollViewDidPan(recognizer: UIPanGestureRecognizer) {
         
         guard scrollView.zoomScale == scrollView.minimumZoomScale else { return }
@@ -454,6 +464,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             }
             else {
                 swipeToDismissTransition.setParameters(latestTouchPoint.y, targetOffset: targetOffsetToReachBottom, verticalVelocity: verticalVelocity)
+                presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
             }
             
         default:
