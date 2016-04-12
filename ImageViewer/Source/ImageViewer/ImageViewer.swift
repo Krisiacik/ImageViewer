@@ -445,8 +445,9 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             /// In points per second
             let verticalVelocity = recognizer.velocityInView(view).y
             
-            if verticalVelocity < -thresholdVelocity {
-                swipeToDismissTransition.setParameters(latestTouchPoint.y, targetOffset: targetOffsetToReachTop, verticalVelocity: verticalVelocity)
+            if abs(verticalVelocity) - thresholdVelocity > 0 {
+                let targetOffset = verticalVelocity < 0 ? targetOffsetToReachTop : targetOffsetToReachBottom
+                swipeToDismissTransition.setParameters(latestTouchPoint.y, targetOffset: targetOffset, verticalVelocity: verticalVelocity)
                 presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
             }
             else if verticalVelocity >= -thresholdVelocity && verticalVelocity <= thresholdVelocity {
