@@ -148,6 +148,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         
         singleTapRecognizer.addTarget(self, action: #selector(ImageViewer.scrollViewDidSingleTap(_:)))
         singleTapRecognizer.numberOfTapsRequired = 1
+        singleTapRecognizer.requireGestureRecognizerToFail(doubleTapRecognizer)
         scrollView.addGestureRecognizer(singleTapRecognizer)
         
         panGestureRecognizer.addTarget(self, action: #selector(ImageViewer.scrollViewDidPan(_:)))
