@@ -412,5 +412,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
         
         self.currentIndex = controller.index
         self.landedPageAtIndexCompletion?(self.currentIndex)
+        self.headerView?.sizeToFit()
+        self.footerView?.sizeToFit()
     }
 }
