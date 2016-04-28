@@ -380,7 +380,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     func postAnimationClose(completion: (() -> Void)?) {
         
         self.modalTransitionStyle = .CrossDissolve
-        self.dismissViewControllerAnimated(true) {
+        self.dismissViewControllerAnimated(false) {
             
             self.applicationWindow!.windowLevel = UIWindowLevelNormal
             completion?()
