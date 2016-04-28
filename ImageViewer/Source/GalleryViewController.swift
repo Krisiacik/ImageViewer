@@ -383,9 +383,8 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
         self.dismissViewControllerAnimated(true) {
             
             self.applicationWindow!.windowLevel = UIWindowLevelNormal
+            completion?()
         }
-        
-        completion?()
     }
     
     // MARK: - Image Controller Delegate
