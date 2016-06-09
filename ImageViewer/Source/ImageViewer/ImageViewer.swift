@@ -42,11 +42,10 @@ import AVFoundation
 public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
     
     /// UI
-    private var scrollView: UIScrollView!
-    private var overlayView: UIView!
-    private var closeButton: UIButton!
+    private var scrollView = UIScrollView()
+    private var overlayView = UIView()
+    private var closeButton = UIButton()
     private var imageView = UIImageView()
-    
     private let displacedView: UIView
     private var applicationWindow: UIWindow? {
         return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 }
@@ -71,7 +70,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     private let hideCloseButtonDuration    = 0.05
     private let zoomDuration               = 0.2
     private let thresholdVelocity: CGFloat = 1000 // Based on UX experiments
-    private let cutOffVelocity: CGFloat = 1000000 // we need some sufficiently large number, nobody can swipe faster then that
+    private let cutOffVelocity: CGFloat = 1000000 // we simply need some sufficiently large number, nobody can swipe faster than that
     /// TRANSITIONS
     private let presentTransition: ImageViewerPresentTransition
     private let dismissTransition: ImageViewerDismissTransition
@@ -101,6 +100,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     // MARK: - Deinit
     
     deinit {
+        
         scrollView.removeObserver(self, forKeyPath: "contentOffset")
     }
     
@@ -121,6 +121,11 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         transitioningDelegate = self
         modalPresentationStyle = .Custom
         extendedLayoutIncludesOpaqueBars = true
+        
+        overlayView.autoresizingMask = [.None]
+        configureCloseButton()
+        configureImageView()
+        configureScrollView()
     }
     
     public required init?(coder aDecoder: NSCoder) {
@@ -136,6 +141,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         closeButton.setImage(closeButtonAssets.normal, forState: UIControlState.Normal)
         closeButton.setImage(closeButtonAssets.highlighted, forState: UIControlState.Highlighted)
         closeButton.alpha = 0.0
+        closeButton.addTarget(self, action: #selector(ImageViewer.close(_:)), forControlEvents: .TouchUpInside)
     }
     
     private func configureGestureRecognizers() {
@@ -154,21 +160,36 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         
         imageView.frame = parentViewFrameInOurCoordinateSystem
         imageView.contentMode = .ScaleAspectFit
-        view.addSubview(imageView)
         imageView.image = screenshotFromView(displacedView)
     }
     
     private func configureScrollView() {
         
+        scrollView.addObserver(self, forKeyPath: "contentOffset", options: NSKeyValueObservingOptions.New, context: nil)
+        scrollView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         scrollView.decelerationRate = 0.5
         scrollView.contentInset = UIEdgeInsetsZero
         scrollView.contentOffset = CGPointZero
         scrollView.contentSize = imageView.frame.size
         scrollView.minimumZoomScale = 1
-        scrollView.addObserver(self, forKeyPath: "contentOffset", options: NSKeyValueObservingOptions.New, context: nil)
+        scrollView.delegate = self
+    }
+    
+    func createViewHierarchy() {
+
+        view.addSubview(overlayView)
+        view.addSubview(imageView)
+        view.addSubview(scrollView)
+        view.addSubview(closeButton)
     }
     
     // MARK: - View Lifecycle
+    
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        createViewHierarchy()
+    }
     
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
@@ -194,32 +215,6 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             shouldRotate = false
             rotate()
         }
-    }
-    
-    public override func loadView() {
-        super.loadView()
-        
-        scrollView = UIScrollView(frame: CGRectZero)
-        overlayView = UIView(frame: CGRectZero)
-        closeButton = UIButton(frame: CGRectZero)
-        
-        scrollView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        overlayView.autoresizingMask = [.None]
-        
-        view.addSubview(overlayView)
-        view.addSubview(scrollView)
-        view.addSubview(closeButton)
-        
-        scrollView.delegate = self
-        closeButton.addTarget(self, action: #selector(ImageViewer.close(_:)), forControlEvents: .TouchUpInside)
-    }
-    
-    public override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        configureCloseButton()
-        configureImageView()
-        configureScrollView()
     }
     
     // MARK: - Transitioning Delegate
