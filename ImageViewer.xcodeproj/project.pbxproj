@@ -57,6 +57,8 @@
 		EBA90E441C875225000AA697 /* ImageFadeInHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA90E421C875225000AA697 /* ImageFadeInHandler.swift */; };
 		EBB390031C8C692800CE1F71 /* ImageViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB390021C8C692800CE1F71 /* ImageViewControllerFactory.swift */; };
 		EBB390041C8C692800CE1F71 /* ImageViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB390021C8C692800CE1F71 /* ImageViewControllerFactory.swift */; };
+		EBDC60B51D195E5900597F29 /* GalleryViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDC60B41D195E5900597F29 /* GalleryViewFactory.swift */; };
+		EBDC60B61D195EAB00597F29 /* GalleryViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDC60B41D195E5900597F29 /* GalleryViewFactory.swift */; };
 		EBEBEF941C84665B008C1E58 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEBEF931C84665B008C1E58 /* ImageViewController.swift */; };
 		EBEBEF961C846847008C1E58 /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEBEF951C846847008C1E58 /* GalleryViewController.swift */; };
 /* End PBXBuildFile section */
@@ -95,6 +97,7 @@
 		EBA90E3E1C8729E2000AA697 /* GalleryPresentTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GalleryPresentTransition.swift; path = ImageViewer/GalleryPresentTransition.swift; sourceTree = "<group>"; };
 		EBA90E421C875225000AA697 /* ImageFadeInHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageFadeInHandler.swift; sourceTree = "<group>"; };
 		EBB390021C8C692800CE1F71 /* ImageViewControllerFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewControllerFactory.swift; sourceTree = "<group>"; };
+		EBDC60B41D195E5900597F29 /* GalleryViewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryViewFactory.swift; sourceTree = "<group>"; };
 		EBEBEF931C84665B008C1E58 /* ImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		EBEBEF951C846847008C1E58 /* GalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -230,6 +233,7 @@
 			isa = PBXGroup;
 			children = (
 				EBEBEF951C846847008C1E58 /* GalleryViewController.swift */,
+				EBDC60B41D195E5900597F29 /* GalleryViewFactory.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -470,6 +474,7 @@
 				4CB66CD51C18772B002DB91F /* ImageViewerDismissTransition.swift in Sources */,
 				EB4DEBC11C84A8B400D5F897 /* UtilityFunctions.swift in Sources */,
 				EBA0A9531C89C653005B8DD3 /* GalleryConfiguration.swift in Sources */,
+				EBDC60B61D195EAB00597F29 /* GalleryViewFactory.swift in Sources */,
 				EB40C3731C9C5BF1004EA215 /* UIViewController.swift in Sources */,
 				EB5253F41C8DCE9800EAA4A4 /* CounterView.swift in Sources */,
 				C7897CF41C1356C6006447FB /* ImageViewer.swift in Sources */,
@@ -500,6 +505,7 @@
 				4CD1C49D1C16FF64008D5F84 /* CGPoint.swift in Sources */,
 				EB243F921C889F88006DEF58 /* GallerySwipeToDismissTransition.swift in Sources */,
 				4CB66CD91C187F9C002DB91F /* ImageViewerSwipeToDismissTransition.swift in Sources */,
+				EBDC60B51D195E5900597F29 /* GalleryViewFactory.swift in Sources */,
 				EBA90E401C8729E2000AA697 /* GalleryPresentTransition.swift in Sources */,
 				EB40C3781C9C5C48004EA215 /* ImageProvider.swift in Sources */,
 				EB40C37E1C9C5E25004EA215 /* ImageViewerConfiguration.swift in Sources */,

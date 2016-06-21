@@ -11,7 +11,7 @@ import UIKit
 final public class GalleryViewController : UIPageViewController, UIViewControllerTransitioningDelegate, ImageViewControllerDelegate  {
     
     /// UI
-    private var closeButton: UIButton?
+    private var closeButton: UIButton? = makeCloseButton()
     /// You can set any UIView subclass here. If set, it will be integrated into view hierachy and laid out 
     /// following either the default pinning settings or settings from a custom configuration.
     public var headerView: UIView?
@@ -31,7 +31,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     private let fadeInHandler = ImageFadeInHandler()
     private var galleryPagingMode = GalleryPagingMode.Standard
     var currentIndex: Int
-    private var isDecorationViewsHidden = false
+    private var decorationViewsHidden = true
     private var isAnimating = false
     
     /// LOCAL CONFIG
@@ -45,7 +45,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     private let toggleHeaderFooterAnimationDuration = 0.15
     private let closeAnimationDuration = 0.2
     private let rotationAnimationDuration = 0.2
-    private var closeLayout = CloseButtonLayout.PinRight(25, 16)
+    private var closeLayout = CloseButtonLayout.PinRight(8, 16)
     private var headerLayout = HeaderLayout.Center(25)
     private var footerLayout = FooterLayout.Center(25)
     private var dividerWidth: Float = 10
@@ -72,7 +72,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     
     // MARK: - VC Setup
     
-    public init(imageProvider: ImageProvider, displacedView: UIView, imageCount: Int ,startIndex: Int, configuration: GalleryConfiguration = defaultGalleryConfiguration()) {
+    public init(imageProvider: ImageProvider, displacedView: UIView, imageCount: Int ,startIndex: Int, configuration: GalleryConfiguration = []) {
         
         self.imageProvider = imageProvider
         self.displacedView = displacedView
@@ -87,18 +87,26 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
             case .ImageDividerWidth(let width):             dividerWidth = Float(width)
             case .SpinnerStyle(let style):                  spinnerStyle = style
             case .SpinnerColor(let color):                  spinnerColor = color
-            case .CloseButton(let button):                  closeButton = button
             case .PagingMode(let mode):                     galleryPagingMode = mode
             case .HeaderViewLayout(let layout):             headerLayout = layout
             case .FooterViewLayout(let layout):             footerLayout = layout
             case .CloseLayout(let layout):                  closeLayout = layout
             case .StatusBarHidden(let hidden):              statusBarHidden = hidden
-            case .HideDecorationViewsOnLaunch(let hidden):  isDecorationViewsHidden = hidden
+            case .HideDecorationViewsOnLaunch(let hidden):  decorationViewsHidden = hidden
+    
+            case .CloseButtonMode(let closeButtonMode):
+               
+                switch closeButtonMode {
+                    
+                case .None:                 closeButton = nil
+                case .BuiltIn:              break
+                case .Custom(let button):   closeButton = button
                 
+                }
             }
         }
         
-        self.presentTransition = GalleryPresentTransition(duration: presentTransitionDuration, displacedView: self.displacedView , decorationViewsHidden: isDecorationViewsHidden)
+        self.presentTransition = GalleryPresentTransition(duration: presentTransitionDuration, displacedView: self.displacedView , decorationViewsHidden: decorationViewsHidden)
         self.closeTransition = GalleryCloseTransition(duration: dismissTransitionDuration)
         
         super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(float: dividerWidth)])
@@ -390,7 +398,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
         
         self.view.backgroundColor = (distance == 0) ? UIColor.blackColor() : UIColor.clearColor()
         
-        if isDecorationViewsHidden == false {
+        if decorationViewsHidden == false {
             
             let alpha = 1 - distance * swipeToDismissFadeOutAccelerationFactor
             
@@ -402,9 +410,9 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     
     func imageViewControllerDidSingleTap(controller: ImageViewController) {
         
-        let alpha: CGFloat = (isDecorationViewsHidden) ? 1 : 0
+        let alpha: CGFloat = (decorationViewsHidden) ? 1 : 0
         
-        isDecorationViewsHidden = !isDecorationViewsHidden
+        decorationViewsHidden = !decorationViewsHidden
         
         UIView.animateWithDuration(toggleHeaderFooterAnimationDuration, animations: { [weak self] in
             
