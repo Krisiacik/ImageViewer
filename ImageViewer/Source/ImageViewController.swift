@@ -416,7 +416,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         }
     }
     
-    func closeAnimation(duration: NSTimeInterval, completion: ((Bool) -> Void)?) {
+    func animateDisplacedImageToOriginalPosition(duration: NSTimeInterval, completion: ((Bool) -> Void)?) {
         
         guard (self.isAnimating == false) else { return }
         isAnimating = true

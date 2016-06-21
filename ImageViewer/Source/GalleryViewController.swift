@@ -42,7 +42,8 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     private let closeButtonPadding: CGFloat = 8.0
     private let headerViewMarginTop: CGFloat = 20
     private let swipeToDismissFadeOutAccelerationFactor: CGFloat = 6
-    private let toggleHeaderFooterAnimationDuration = 0.15
+    private let decorationViewsVisibilityAnimationDuration = 0.15
+    private let decorationViewsDismissAnimationDuration = 0.1
     private let closeAnimationDuration = 0.2
     private let rotationAnimationDuration = 0.2
     private var closeLayout = CloseButtonLayout.PinRight(8, 16)
@@ -197,7 +198,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     
     private func configureCloseButton() {
         
-        closeButton?.addTarget(self, action: #selector(GalleryViewController.interactiveClose), forControlEvents: .TouchUpInside)
+        closeButton?.addTarget(self, action: #selector(GalleryViewController.closeInteractively), forControlEvents: .TouchUpInside)
     }
     
     func createViewHierarchy() {
@@ -328,7 +329,6 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
             
             footer.autoresizingMask = [.FlexibleTopMargin, .FlexibleLeftMargin]
             footer.frame.origin = CGPoint(x: self.view.bounds.width - marginRight - footer.bounds.width, y: self.view.bounds.height - footer.bounds.height - marginBottom)
-            
         }
     }
     
@@ -344,48 +344,53 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     
     // MARK: - Actions
     
+    /// Invoked when closed programatically
     public func close() {
     
-        closeWithAnimation(programaticallyClosedCompletion)
+        closeDecorationViews(programaticallyClosedCompletion)
     }
     
-    func interactiveClose() {
+    /// Invoked when closed via close button
+    func closeInteractively() {
         
-        closeWithAnimation(closedCompletion)
+        closeDecorationViews(closedCompletion)
      }
     
-    func closeWithAnimation(completion: (() -> Void)?) {
+    func closeDecorationViews(completion: (() -> Void)?) {
         
-        UIView.animateWithDuration(0.1, animations: { [weak self] in
+        UIView.animateWithDuration(decorationViewsDismissAnimationDuration, animations: { [weak self] in
             
             self?.headerView?.alpha = 0.0
             self?.footerView?.alpha = 0.0
             self?.closeButton?.alpha = 0.0
             
-        }) { [weak self] done in
-            
-            if self?.currentIndex == self?.startIndex {
+            }, completion: { [weak self] done in
+               
+                let isPagedToDisplacedImage = (self?.currentIndex == self?.startIndex)
                 
-                self?.view.backgroundColor = UIColor.clearColor()
-                
-                if let imageController = self?.viewControllers?.first as? ImageViewController {
+                switch isPagedToDisplacedImage {
                     
-                    imageController.closeAnimation(self?.closeAnimationDuration ?? 0.2, completion: { [weak self] finished in
+                case true: /// We use the reverse-displacement animation ie. image returns back to its original position in parent view. (Not to be confused with swipe-to-dismiss animation.)
+                    
+                    if let imageController = self?.viewControllers?.first as? ImageViewController {
                         
-                        self?.postAnimationClose(completion)
-                        })
+                        imageController.animateDisplacedImageToOriginalPosition(self?.closeAnimationDuration ?? 0.2, completion: { [weak self] finished in
+                            
+                            self?.closeGallery(false, completion: completion)
+                            })
+                    }
+                    
+                case false: /// We use cross-disolve animation
+                    
+                    self?.closeGallery(true, completion: completion)
                 }
-            }
-            else {
-                self?.postAnimationClose(completion)
-            }
-        }
+            })
     }
     
-    func postAnimationClose(completion: (() -> Void)?) {
+    func closeGallery(animated: Bool, completion: (() -> Void)?) {
         
         self.modalTransitionStyle = .CrossDissolve
-        self.dismissViewControllerAnimated(false) {
+        self.dismissViewControllerAnimated(animated) {
             
             self.applicationWindow!.windowLevel = UIWindowLevelNormal
             completion?()
@@ -414,7 +419,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
         
         decorationViewsHidden = !decorationViewsHidden
         
-        UIView.animateWithDuration(toggleHeaderFooterAnimationDuration, animations: { [weak self] in
+        UIView.animateWithDuration(decorationViewsVisibilityAnimationDuration, animations: { [weak self] in
             
             self?.headerView?.alpha = alpha
             self?.footerView?.alpha = alpha
