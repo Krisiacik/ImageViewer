@@ -35,7 +35,6 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     private var isAnimating = false
     
     /// LOCAL CONFIG
-    private let configuration: GalleryConfiguration
     private var spinnerColor = UIColor.whiteColor()
     private var spinnerStyle = UIActivityIndicatorViewStyle.White
     private let presentTransitionDuration = 0.25
@@ -56,7 +55,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     private let closeTransition: GalleryCloseTransition
     
     /// COMPLETION
-    /// If set ,the block is executed right after the initial launc hanimations finish.
+    /// If set ,the block is executed right after the initial launch animations finish.
     public var launchedCompletion: (() -> Void)?
     /// If set, called everytime ANY animation stops in the page controller stops and the viewer passes a page index of the page that is currently on screen
     public var landedPageAtIndexCompletion: ((Int) -> Void)?
@@ -79,9 +78,6 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
         self.imageCount = imageCount
         self.startIndex = startIndex
         self.currentIndex = startIndex
-        self.configuration = configuration
-        
-        var dividerWidth: Float = 10
         
         for item in configuration {
             
@@ -117,7 +113,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
         self.extendedLayoutIncludesOpaqueBars = true
         self.applicationWindow?.windowLevel = (statusBarHidden) ? UIWindowLevelStatusBar + 1 : UIWindowLevelNormal
         
-        configureInitialImageController()
+        configureInitialImageController(configuration)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(GalleryViewController.rotate), name: UIDeviceOrientationDidChangeNotification, object: nil)
         
@@ -177,7 +173,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     
     // MARK: - Configuration
     
-    func configureInitialImageController() {
+    func configureInitialImageController(configuration: GalleryConfiguration) {
         
         let initialImageController = ImageViewController(imageProvider: imageProvider, configuration: configuration, imageCount: imageCount, displacedView: displacedView, startIndex: startIndex,  imageIndex: startIndex, showDisplacedImage: true, fadeInHandler: fadeInHandler, delegate: self)
         self.setViewControllers([initialImageController], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
