@@ -20,7 +20,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
     private let scrollView = UIScrollView()
     private let imageView = UIImageView()
     let blackOverlayView = UIView()
-    private let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .White)
+    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .White)
     var applicationWindow: UIWindow? {
         return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 }
     }
@@ -76,8 +76,8 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
             
             switch configurationItem {
                 
-            case .SpinnerColor(let color):  activityIndicatorView.color = color
-            case .SpinnerStyle(let style):  activityIndicatorView.activityIndicatorViewStyle = style
+            case .SpinnerColor(let color):  spinner.color = color
+            case .SpinnerStyle(let style):  spinner.activityIndicatorViewStyle = style
             case .PagingMode(let mode):     pagingMode = mode
                 
             default: break
@@ -91,8 +91,8 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         self.view.addSubview(blackOverlayView)
         self.modalPresentationStyle = .Custom
         
-        activityIndicatorView.startAnimating()
-        self.view.addSubview(activityIndicatorView)
+        spinner.startAnimating()
+        self.view.addSubview(spinner)
         
         configureImageView()
         configureScrollView()
@@ -178,7 +178,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
     
     func updateImageAndContentSize(image: UIImage) {
         
-        activityIndicatorView.stopAnimating()
+        spinner.stopAnimating()
         
         if imageView.image == nil {
             
@@ -193,7 +193,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
             
             if self.index != self.startIndex {
                 
-                activityIndicatorView.stopAnimating()
+                spinner.stopAnimating()
                 
                 UIView.transitionWithView(self.scrollView, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { [weak self] () -> Void in
                     
@@ -257,7 +257,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         scrollView.frame = self.view.bounds
         blackOverlayView.frame = self.view.bounds
         imageView.center = scrollView.boundsCenter
-        activityIndicatorView.center = self.view.boundsCenter
+        spinner.center = self.view.boundsCenter
     }
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {

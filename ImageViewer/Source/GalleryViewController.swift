@@ -35,8 +35,6 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     private var isAnimating = false
     
     /// LOCAL CONFIG
-    private var spinnerColor = UIColor.whiteColor()
-    private var spinnerStyle = UIActivityIndicatorViewStyle.White
     private let presentTransitionDuration = 0.25
     private let dismissTransitionDuration = 1.00
     private let closeButtonPadding: CGFloat = 8.0
@@ -86,8 +84,6 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
             switch item {
                 
             case .ImageDividerWidth(let width):             dividerWidth = Float(width)
-            case .SpinnerStyle(let style):                  spinnerStyle = style
-            case .SpinnerColor(let color):                  spinnerColor = color
             case .PagingMode(let mode):                     galleryPagingMode = mode
             case .HeaderViewLayout(let layout):             headerLayout = layout
             case .FooterViewLayout(let layout):             footerLayout = layout
@@ -104,6 +100,9 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
                 case .Custom(let button):   closeButton = button
                 
                 }
+            
+            default: break
+            
             }
         }
         
