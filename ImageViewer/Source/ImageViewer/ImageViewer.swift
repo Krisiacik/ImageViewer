@@ -57,7 +57,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     private var shouldRotate = false
     private var isSwipingToDismiss = false
     private var dynamicTransparencyActive = false
-    private let imageProvider: ImageProvider
+    private let imageProvider: GalleryViewControllerDatasource
     
     /// LOCAL CONFIG
     private let configuration: ImageViewerConfiguration
@@ -106,7 +106,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
     
     // MARK: - Initializers
     
-    public init(imageProvider: ImageProvider, configuration: ImageViewerConfiguration, displacedView: UIView) {
+    public init(imageProvider: GalleryViewControllerDatasource, configuration: ImageViewerConfiguration, displacedView: UIView) {
         
         self.imageProvider = imageProvider
         self.configuration = configuration

@@ -20,7 +20,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     private var applicationWindow: UIWindow? { return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 } }
     
     /// DATA
-    private let imageProvider: ImageProvider
+    private let imageProvider: GalleryViewControllerDatasource
     private let displacedView: UIView
     private let imageCount: Int
     private let startIndex: Int
@@ -69,7 +69,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     
     // MARK: - VC Setup
     
-    public init(imageProvider: ImageProvider, displacedView: UIView, imageCount: Int ,startIndex: Int, configuration: GalleryConfiguration = []) {
+    public init(imageProvider: GalleryViewControllerDatasource, displacedView: UIView, imageCount: Int ,startIndex: Int, configuration: GalleryConfiguration = []) {
         
         self.imageProvider = imageProvider
         self.displacedView = displacedView

@@ -1,5 +1,5 @@
 //
-//  GaleryViewControllerDatasource.swift
+//  GalleryViewControllerPagingDatasource.swift
 //  ImageViewer
 //
 //  Created by Kristian Angyal on 01/03/2016.

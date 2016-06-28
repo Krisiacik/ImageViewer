@@ -1,5 +1,5 @@
 //
-//  ImageProvider.swift
+//  GalleryViewControllerDatasource.swift
 //  ImageViewer
 //
 //  Created by Kristian Angyal on 18/03/2016.
@@ -8,9 +8,15 @@
 
 import UIKit
 
-// allows very loose coupling of the image source and the gallery. You make whatever object conform to this protocol and pass a reference to youur object to the viewer. the viwer will at convenient times ask this object for an image (at index).
-public protocol ImageProvider {
+enum GalleryItem {
     
-    func provideImage(completion: UIImage? -> Void)
-    func provideImage(atIndex index: Int, completion: UIImage? -> Void)
+    case Image(UIImage)
+    case Video(NSURL)
+}
+
+public protocol GalleryViewControllerDatasource {
+    
+    func numberOfItemsInGalery(gallery: GalleryViewController) -> Int
+    func provideDisplacementItem(atIndex index: Int, completion: UIImageView? -> Void)
+    func provideGalleryItem(atIndex index: Int, completion: UIImage? -> Void)
 }

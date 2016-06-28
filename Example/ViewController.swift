@@ -20,7 +20,7 @@ class ViewController: UIViewController {
     
     @IBAction func showSingleImageViewer(sender: UIButton) {
         
-        let imageProvider = SomeImageProvider()
+        let imageProvider = SomeGalleryViewControllerDatasource()
         let buttonAssets = CloseButtonAssets(normal: UIImage(named:"close_normal")!, highlighted: UIImage(named: "close_highlighted"))
         let configuration = ImageViewerConfiguration(imageSize: CGSize(width: 10, height: 10), closeButtonAssets: buttonAssets)
         
@@ -30,7 +30,7 @@ class ViewController: UIViewController {
     
     @IBAction func showGalleryImageViewer(displacedView: UIView) {
         
-        let imageProvider = SomeImageProvider()
+        let imageProvider = SomeGalleryViewControllerDatasource()
         
         let frame = CGRect(x: 0, y: 0, width: 200, height: 24)
         let headerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: images.count)
@@ -56,7 +56,7 @@ class ViewController: UIViewController {
     }
 }
 
-class SomeImageProvider: ImageProvider {
+class SomeGalleryViewControllerDatasource: GalleryViewControllerDatasource {
     
     func provideImage(completion: UIImage? -> Void) {
         completion(UIImage(named: "image_big"))

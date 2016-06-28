@@ -29,7 +29,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
     weak var delegate: ImageViewControllerDelegate?
     
     /// MODEL & STATE
-    private let imageProvider: ImageProvider
+    private let imageProvider: GalleryViewControllerDatasource
     private let displacedView: UIView   
     private let imageCount: Int
     private let startIndex: Int
@@ -59,7 +59,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
     // TRANSITIONS
     private var swipeToDismissTransition: GallerySwipeToDismissTransition?
     
-    init(imageProvider: ImageProvider, configuration: GalleryConfiguration, imageCount: Int, displacedView: UIView, startIndex: Int,  imageIndex: Int, showDisplacedImage: Bool, fadeInHandler: ImageFadeInHandler?, delegate: ImageViewControllerDelegate?) {
+    init(imageProvider: GalleryViewControllerDatasource, configuration: GalleryConfiguration, imageCount: Int, displacedView: UIView, startIndex: Int,  imageIndex: Int, showDisplacedImage: Bool, fadeInHandler: ImageFadeInHandler?, delegate: ImageViewControllerDelegate?) {
 
         self.imageProvider = imageProvider
         self.imageCount = imageCount
