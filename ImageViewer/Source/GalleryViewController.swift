@@ -12,27 +12,30 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     
     /// UI
     private var closeButton: UIButton? = makeCloseButton()
-    /// You can set any UIView subclass here. If set, it will be integrated into view hierachy and laid out 
+    /// You can set any UIView subclass here. If set, it will be put into view hierachy and laid out
     /// following either the default pinning settings or settings from a custom configuration.
     public var headerView: UIView?
     /// Behaves the same way as header view above, the only difference is this one is pinned to the bottom.
     public var footerView: UIView?
+
+    private let displacedView: UIView
+
     private var applicationWindow: UIWindow? { return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 } }
     
     /// DATA
-    private let imageProvider: GalleryViewControllerDatasource
-    private let displacedView: UIView
     private let imageCount: Int
     private let startIndex: Int
-    
-    private var galleryDatasource: GalleryViewControllerPagingDatasource!
-    private let fadeInHandler = ImageFadeInHandler()
-    private var galleryPagingMode = GalleryPagingMode.Standard
     var currentIndex: Int
-    private var decorationViewsHidden = true
-    private var isAnimating = false
+
+    //DATASOURCE
+    private let itemDatasource: GalleryDatasource
+    private var pagingDatasource: GalleryViewControllerPagingDatasource!
+    private let fadeInHandler = ImageFadeInHandler()
     
     /// LOCAL CONFIG
+    private var galleryPagingMode = GalleryPagingMode.Standard
+    private var isAnimating = false
+    private var decorationViewsHidden = true
     private let presentTransitionDuration = 0.25
     private let dismissTransitionDuration = 1.00
     private let closeButtonPadding: CGFloat = 8.0
@@ -69,12 +72,12 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     
     // MARK: - VC Setup
     
-    public init(imageProvider: GalleryViewControllerDatasource, displacedView: UIView, imageCount: Int ,startIndex: Int, configuration: GalleryConfiguration = []) {
+    public init(datasource: GalleryDatasource,configuration: GalleryConfiguration = []) {
         
-        self.imageProvider = imageProvider
-        self.displacedView = displacedView
-        self.imageCount = imageCount
-        self.startIndex = startIndex
+        self.itemDatasource = datasource
+        self.displacedView = UIView()
+        self.imageCount = datasource.numberOfItemsInGalery()
+        self.startIndex = datasource.startingIndex()
         self.currentIndex = startIndex
         
         for item in configuration {
@@ -104,17 +107,29 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
             }
         }
         
-        self.presentTransition = GalleryPresentTransition(duration: presentTransitionDuration, displacedView: self.displacedView , decorationViewsHidden: decorationViewsHidden)
+        self.presentTransition = GalleryPresentTransition(duration: presentTransitionDuration,
+                                                          displacedView: self.displacedView ,
+                                                          decorationViewsHidden: decorationViewsHidden)
+        
         self.closeTransition = GalleryCloseTransition(duration: dismissTransitionDuration)
         
-        super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(float: dividerWidth)])
+        super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll,
+                   navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal,
+                   options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(float: dividerWidth)])
         
-        self.imageControllerFactory = ImageViewControllerFactory(imageProvider: imageProvider, displacedView: displacedView, imageCount: imageCount, startIndex: startIndex, configuration: configuration, fadeInHandler: fadeInHandler, delegate: self)
+        self.imageControllerFactory = ImageViewControllerFactory(imageProvider: datasource,
+                                                                 displacedView: displacedView,
+                                                                 imageCount: imageCount,
+                                                                 startIndex: startIndex,
+                                                                 configuration: configuration,
+                                                                 fadeInHandler: fadeInHandler,
+                                                                 delegate: self)
         
         /// Needs to be kept alive with strong reference
-        self.galleryDatasource = GalleryViewControllerPagingDatasource(imageControllerFactory: imageControllerFactory, imageCount: imageCount, galleryPagingMode: galleryPagingMode)
-        self.dataSource = galleryDatasource
-        
+        self.pagingDatasource = GalleryViewControllerPagingDatasource(imageControllerFactory: imageControllerFactory,
+                                                                      imageCount: imageCount,
+                                                                      galleryPagingMode: galleryPagingMode)
+        self.dataSource = pagingDatasource
         self.transitioningDelegate = self
         self.modalPresentationStyle = .Custom
         self.extendedLayoutIncludesOpaqueBars = true
@@ -182,7 +197,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     
     func configureInitialImageController(configuration: GalleryConfiguration) {
         
-        let initialImageController = ImageViewController(imageProvider: imageProvider, configuration: configuration, imageCount: imageCount, displacedView: displacedView, startIndex: startIndex,  imageIndex: startIndex, showDisplacedImage: true, fadeInHandler: fadeInHandler, delegate: self)
+        let initialImageController = ImageViewController(imageProvider: itemDatasource, configuration: configuration, imageCount: imageCount, displacedView: displacedView, startIndex: startIndex,  imageIndex: startIndex, showDisplacedImage: true, fadeInHandler: fadeInHandler, delegate: self)
         self.setViewControllers([initialImageController], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
         initialImageController.view.hidden = true
         

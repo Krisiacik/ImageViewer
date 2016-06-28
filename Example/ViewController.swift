@@ -18,9 +18,13 @@ let images = [
     UIImage(named: "6"),
     UIImage(named: "7")]
 
-class GalleryItemProvider: GalleryViewControllerDatasource {
+class GalleryItemProvider: GalleryDatasource {
     
-    func numberOfItemsInGalery(gallery: GalleryViewController) -> Int {
+    func startingIndex() -> Int {
+        return 0
+    }
+    
+    func numberOfItemsInGalery() -> Int {
         
         return images.count
     }
@@ -52,7 +56,7 @@ class ViewController: UIViewController {
         let headerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: images.count)
         let footerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: images.count)
         
-        let galleryViewController = GalleryViewController(imageProvider: imageProvider, displacedView: displacedView, imageCount: images.count, startIndex: displacedView.tag)
+        let galleryViewController = GalleryViewController(datasource: imageProvider)
         galleryViewController.headerView = headerView
         galleryViewController.footerView = footerView
         

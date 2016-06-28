@@ -1,5 +1,5 @@
 //
-//  GalleryViewControllerDatasource.swift
+//  GalleryDatasource.swift
 //  ImageViewer
 //
 //  Created by Kristian Angyal on 18/03/2016.
@@ -14,9 +14,10 @@ public enum GalleryItem {
     case Video(NSURL)
 }
 
-public protocol GalleryViewControllerDatasource {
+public protocol GalleryDatasource {
     
-    func numberOfItemsInGalery(gallery: GalleryViewController) -> Int
+    func numberOfItemsInGalery() -> Int
+    func startingIndex() -> Int
     func provideDisplacementItem(atIndex index: Int, completion: UIImageView? -> Void)
     func provideGalleryItem(atIndex index: Int, completion: GalleryItem -> Void)
 }
