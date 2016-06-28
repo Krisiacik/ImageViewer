@@ -17,9 +17,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     public var headerView: UIView?
     /// Behaves the same way as header view above, the only difference is this one is pinned to the bottom.
     public var footerView: UIView?
-    private var applicationWindow: UIWindow? {
-        return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 }
-    }
+    private var applicationWindow: UIWindow? { return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 } }
     
     /// DATA
     private let imageProvider: ImageProvider
@@ -27,7 +25,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     private let imageCount: Int
     private let startIndex: Int
     
-    private var galleryDatasource: GalleryViewControllerDatasource!
+    private var galleryDatasource: GalleryViewControllerPagingDatasource!
     private let fadeInHandler = ImageFadeInHandler()
     private var galleryPagingMode = GalleryPagingMode.Standard
     var currentIndex: Int
@@ -114,7 +112,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
         self.imageControllerFactory = ImageViewControllerFactory(imageProvider: imageProvider, displacedView: displacedView, imageCount: imageCount, startIndex: startIndex, configuration: configuration, fadeInHandler: fadeInHandler, delegate: self)
         
         /// Needs to be kept alive with strong reference
-        self.galleryDatasource = GalleryViewControllerDatasource(imageControllerFactory: imageControllerFactory, imageCount: imageCount, galleryPagingMode: galleryPagingMode)
+        self.galleryDatasource = GalleryViewControllerPagingDatasource(imageControllerFactory: imageControllerFactory, imageCount: imageCount, galleryPagingMode: galleryPagingMode)
         self.dataSource = galleryDatasource
         
         self.transitioningDelegate = self
