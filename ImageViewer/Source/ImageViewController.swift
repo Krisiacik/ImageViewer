@@ -118,24 +118,32 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
             updateImageAndContentSize(screenshotFromView(displacedView))
         }
         
-        self.fetchImage(self.index)  { [weak self] image in
+        self.fetchImage(self.index)  { [weak self] item in
             
             dispatch_async(dispatch_get_main_queue()) {
                 
-                if let fullSizedImage = image {
-                    self?.updateImageAndContentSize(fullSizedImage)
+                switch item {
+                    
+                case .Image(let image):
+
+                        self?.updateImageAndContentSize(image)
+                    
+                default: break
                 }
             }
         }
     }
     
-    func fetchImage(atIndex: Int, completion: UIImage? -> Void) {
+    func fetchImage(atIndex: Int, completion: GalleryItem -> Void) {
         
         let backgroundQueue = dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)
         
-        dispatch_async(backgroundQueue) {
+        dispatch_async(backgroundQueue) { [weak self] in
             
-            self.imageProvider.provideImage(atIndex: atIndex, completion: completion)
+            if let index = self?.index, provider = self?.imageProvider {
+                
+                provider.provideGalleryItem(atIndex: index, completion: completion)
+            }
         }
     }
     

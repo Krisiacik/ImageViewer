@@ -8,29 +8,45 @@
 
 import UIKit
 
+let images = [
+    UIImage(named: "0"),
+    UIImage(named: "1"),
+    UIImage(named: "2"),
+    UIImage(named: "3"),
+    UIImage(named: "4"),
+    UIImage(named: "5"),
+    UIImage(named: "6"),
+    UIImage(named: "7")]
+
+class GalleryItemProvider: GalleryViewControllerDatasource {
+    
+    func numberOfItemsInGalery(gallery: GalleryViewController) -> Int {
+        
+        return images.count
+    }
+    
+    func provideDisplacementItem(atIndex index: Int, completion: UIImageView? -> Void) {
+        
+        completion(nil)
+    }
+    
+    func provideGalleryItem(atIndex index: Int, completion: GalleryItem -> Void) {
+        
+        completion(GalleryItem.Image(images[index]!))
+    }
+}
+
 class ViewController: UIViewController {
     
     @IBOutlet weak var forestImageView: UIImageView!
-    
-    private var imagePreviewer: ImageViewer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
-    @IBAction func showSingleImageViewer(sender: UIButton) {
-        
-        let imageProvider = SomeGalleryViewControllerDatasource()
-        let buttonAssets = CloseButtonAssets(normal: UIImage(named:"close_normal")!, highlighted: UIImage(named: "close_highlighted"))
-        let configuration = ImageViewerConfiguration(imageSize: CGSize(width: 10, height: 10), closeButtonAssets: buttonAssets)
-        
-        let imageViewer = ImageViewer(imageProvider: imageProvider, configuration: configuration, displacedView: sender)
-        self.presentImageViewer(imageViewer)
-    }
-    
     @IBAction func showGalleryImageViewer(displacedView: UIView) {
         
-        let imageProvider = SomeGalleryViewControllerDatasource()
+        let imageProvider = GalleryItemProvider()
         
         let frame = CGRect(x: 0, y: 0, width: 200, height: 24)
         let headerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: images.count)
@@ -56,23 +72,3 @@ class ViewController: UIViewController {
     }
 }
 
-class SomeGalleryViewControllerDatasource: GalleryViewControllerDatasource {
-    
-    func provideImage(completion: UIImage? -> Void) {
-        completion(UIImage(named: "image_big"))
-    }
-    
-    func provideImage(atIndex index: Int, completion: UIImage? -> Void) {
-        completion(images[index])
-    }
-}
-
-let images = [
-    UIImage(named: "0"),
-    UIImage(named: "1"),
-    UIImage(named: "2"),
-    UIImage(named: "3"),
-    UIImage(named: "4"),
-    UIImage(named: "5"),
-    UIImage(named: "6"),
-    UIImage(named: "7")]

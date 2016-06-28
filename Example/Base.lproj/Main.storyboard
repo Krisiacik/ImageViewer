@@ -18,75 +18,56 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Asb-C9-sGn">
-                                <rect key="frame" x="20" y="141" width="86" height="54"/>
+                                <rect key="frame" x="20" y="61" width="86" height="54"/>
                                 <state key="normal" backgroundImage="0"/>
                                 <connections>
                                     <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qGK-lk-XgN"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vjF-Ww-f3O">
-                                <rect key="frame" x="20" y="203" width="68" height="38"/>
+                                <rect key="frame" x="20" y="130" width="68" height="38"/>
                                 <state key="normal" backgroundImage="1"/>
                                 <connections>
                                     <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="p3L-rK-q6l"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ybD-W4-tqi">
-                                <rect key="frame" x="20" y="249" width="105" height="78"/>
+                                <rect key="frame" x="20" y="186" width="105" height="78"/>
                                 <state key="normal" backgroundImage="2"/>
                                 <connections>
                                     <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="enQ-Ci-Y34"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZtP-5M-x0L">
-                                <rect key="frame" x="20" y="335" width="163" height="108"/>
+                                <rect key="frame" x="20" y="287" width="163" height="108"/>
                                 <state key="normal" backgroundImage="4"/>
                                 <connections>
                                     <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="a7r-FT-uUm"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="6" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bne-tn-gLP">
-                                <rect key="frame" x="189" y="393" width="68" height="50"/>
+                                <rect key="frame" x="191" y="329" width="68" height="50"/>
                                 <state key="normal" backgroundImage="6"/>
                                 <connections>
                                     <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GGP-zD-vjj"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="7" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UDT-vb-Md5">
-                                <rect key="frame" x="139" y="160" width="118" height="167"/>
+                                <rect key="frame" x="139" y="56" width="118" height="167"/>
                                 <state key="normal" backgroundImage="7"/>
                                 <connections>
                                     <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7kw-yy-QHA"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CJl-WL-vk9">
-                                <rect key="frame" x="189" y="356" width="47" height="29"/>
+                                <rect key="frame" x="175" y="235" width="47" height="29"/>
                                 <state key="normal" backgroundImage="3"/>
                                 <connections>
                                     <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ouv-ci-sRd"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Single Image" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Pa-eG-yKR">
-                                <rect key="frame" x="20" y="20" width="99" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Gallery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e2Q-nC-lSR">
-                                <rect key="frame" x="20" y="112" width="54" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WRv-58-cYl">
-                                <rect key="frame" x="20" y="51" width="86" height="48"/>
-                                <state key="normal" backgroundImage="image_small"/>
-                                <connections>
-                                    <action selector="showSingleImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kdW-lW-YeZ"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fd6-Vz-POJ">
-                                <rect key="frame" x="35" y="445" width="201" height="83"/>
+                                <rect key="frame" x="40" y="413" width="201" height="83"/>
                                 <state key="normal" backgroundImage="5"/>
                                 <connections>
                                     <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1YS-ou-fMt"/>
@@ -110,6 +91,5 @@
         <image name="5" width="618" height="257"/>
         <image name="6" width="600" height="437"/>
         <image name="7" width="1024" height="1448"/>
-        <image name="image_small" width="256" height="144"/>
     </resources>
 </document>

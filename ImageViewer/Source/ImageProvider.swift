@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum GalleryItem {
+public enum GalleryItem {
     
     case Image(UIImage)
     case Video(NSURL)
@@ -18,5 +18,5 @@ public protocol GalleryViewControllerDatasource {
     
     func numberOfItemsInGalery(gallery: GalleryViewController) -> Int
     func provideDisplacementItem(atIndex index: Int, completion: UIImageView? -> Void)
-    func provideGalleryItem(atIndex index: Int, completion: UIImage? -> Void)
+    func provideGalleryItem(atIndex index: Int, completion: GalleryItem -> Void)
 }
