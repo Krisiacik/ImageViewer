@@ -15,27 +15,27 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     /// You can set any UIView subclass here. If set, it will be put into view hierachy and laid out
     /// following either the default pinning settings or settings from a custom configuration.
     public var headerView: UIView?
-    /// Behaves the same way as header view above, the only difference is this one is pinned to the bottom.
+    /// Behaves the same way as headerView above, the only difference is this one is pinned to the bottom.
     public var footerView: UIView?
-
     private let displacedView: UIView
-
     private var applicationWindow: UIWindow? { return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 } }
     
-    /// DATA
-    private let imageCount: Int
-    private let startIndex: Int
+    ///LOCAL STATE
+    ///represents the current page index
     var currentIndex: Int
+    private let imageCount: Int
+    private var isAnimating = false
+    private var decorationViewsHidden = true
 
-    //DATASOURCE
-    private let itemDatasource: GalleryDatasource
+    //DATASOURCES
+    private let itemDatasource: GalleryItemsDatasource
+    private var displacedViewsDatasource: GalleryDisplacedViewsDatasource?
     private var pagingDatasource: GalleryViewControllerPagingDatasource!
     private let fadeInHandler = ImageFadeInHandler()
     
     /// LOCAL CONFIG
+    private let startIndex: Int
     private var galleryPagingMode = GalleryPagingMode.Standard
-    private var isAnimating = false
-    private var decorationViewsHidden = true
     private let presentTransitionDuration = 0.25
     private let dismissTransitionDuration = 1.00
     private let closeButtonPadding: CGFloat = 8.0
@@ -55,7 +55,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     private let presentTransition: GalleryPresentTransition
     private let closeTransition: GalleryCloseTransition
     
-    /// COMPLETION
+    /// COMPLETION BLOCKS
     /// If set ,the block is executed right after the initial launch animations finish.
     public var launchedCompletion: (() -> Void)?
     /// If set, called everytime ANY animation stops in the page controller stops and the viewer passes a page index of the page that is currently on screen
@@ -72,12 +72,13 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     
     // MARK: - VC Setup
     
-    public init(datasource: GalleryDatasource,configuration: GalleryConfiguration = []) {
+    public init(startIndex: Int, itemsDatasource: GalleryItemsDatasource, displacedViewsDatasource: GalleryDisplacedViewsDatasource? = nil, configuration: GalleryConfiguration = []) {
         
-        self.itemDatasource = datasource
+        self.startIndex = startIndex
+        self.itemDatasource = itemsDatasource
+        self.displacedViewsDatasource = displacedViewsDatasource
         self.displacedView = UIView()
-        self.imageCount = datasource.numberOfItemsInGalery()
-        self.startIndex = datasource.startingIndex()
+        self.imageCount = itemDatasource.numberOfItemsInGalery()
         self.currentIndex = startIndex
         
         for item in configuration {
@@ -117,13 +118,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
                    navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal,
                    options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(float: dividerWidth)])
         
-        self.imageControllerFactory = ImageViewControllerFactory(imageProvider: datasource,
-                                                                 displacedView: displacedView,
-                                                                 imageCount: imageCount,
-                                                                 startIndex: startIndex,
-                                                                 configuration: configuration,
-                                                                 fadeInHandler: fadeInHandler,
-                                                                 delegate: self)
+        self.imageControllerFactory = ImageViewControllerFactory(itemsDatasource: itemsDatasource, displacedViewsDatasource: displacedViewsDatasource, startIndex: startIndex, configuration: configuration, fadeInHandler: fadeInHandler, delegate: self)
         
         /// Needs to be kept alive with strong reference
         self.pagingDatasource = GalleryViewControllerPagingDatasource(imageControllerFactory: imageControllerFactory,
@@ -197,7 +192,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     
     func configureInitialImageController(configuration: GalleryConfiguration) {
         
-        let initialImageController = ImageViewController(imageProvider: itemDatasource, configuration: configuration, imageCount: imageCount, displacedView: displacedView, startIndex: startIndex,  imageIndex: startIndex, showDisplacedImage: true, fadeInHandler: fadeInHandler, delegate: self)
+        let initialImageController = ImageViewController(itemsDatasource: itemDatasource, displacedViewsDatasource: displacedViewsDatasource, configuration: configuration, startIndex: startIndex, imageIndex: startIndex, fadeInHandler: fadeInHandler, delegate: self)
         self.setViewControllers([initialImageController], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
         initialImageController.view.hidden = true
         

@@ -17,79 +17,109 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Asb-C9-sGn">
-                                <rect key="frame" x="20" y="61" width="86" height="54"/>
-                                <state key="normal" backgroundImage="0"/>
+                            <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="coc-LS-cRe">
+                                <rect key="frame" x="20" y="28" width="151" height="102"/>
+                                <gestureRecognizers/>
                                 <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qGK-lk-XgN"/>
+                                    <outletCollection property="gestureRecognizers" destination="h9I-JF-Rww" appends="YES" id="tPJ-ea-NiZ"/>
                                 </connections>
-                            </button>
-                            <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vjF-Ww-f3O">
-                                <rect key="frame" x="20" y="130" width="68" height="38"/>
-                                <state key="normal" backgroundImage="1"/>
+                            </imageView>
+                            <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="2" translatesAutoresizingMaskIntoConstraints="NO" id="272-lL-lW4">
+                                <rect key="frame" x="20" y="138" width="119" height="73"/>
+                                <gestureRecognizers/>
                                 <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="p3L-rK-q6l"/>
+                                    <outletCollection property="gestureRecognizers" destination="6Yc-Go-O7y" appends="YES" id="k8W-fX-166"/>
                                 </connections>
-                            </button>
-                            <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ybD-W4-tqi">
-                                <rect key="frame" x="20" y="186" width="105" height="78"/>
-                                <state key="normal" backgroundImage="2"/>
+                            </imageView>
+                            <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="1" translatesAutoresizingMaskIntoConstraints="NO" id="fu6-tO-ZRV">
+                                <rect key="frame" x="179" y="28" width="87" height="102"/>
+                                <gestureRecognizers/>
                                 <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="enQ-Ci-Y34"/>
+                                    <outletCollection property="gestureRecognizers" destination="Ebd-lu-qUf" appends="YES" id="Mdn-0O-G4U"/>
                                 </connections>
-                            </button>
-                            <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZtP-5M-x0L">
-                                <rect key="frame" x="20" y="287" width="163" height="108"/>
-                                <state key="normal" backgroundImage="4"/>
+                            </imageView>
+                            <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="3" translatesAutoresizingMaskIntoConstraints="NO" id="9Vs-Br-5DO">
+                                <rect key="frame" x="147" y="138" width="119" height="116"/>
+                                <gestureRecognizers/>
                                 <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="a7r-FT-uUm"/>
+                                    <outletCollection property="gestureRecognizers" destination="faR-GY-t9j" appends="YES" id="yh6-f9-OHm"/>
                                 </connections>
-                            </button>
-                            <button opaque="NO" tag="6" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bne-tn-gLP">
-                                <rect key="frame" x="191" y="329" width="68" height="50"/>
-                                <state key="normal" backgroundImage="6"/>
+                            </imageView>
+                            <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="4" translatesAutoresizingMaskIntoConstraints="NO" id="JMP-xp-mLE">
+                                <rect key="frame" x="20" y="219" width="119" height="155"/>
+                                <gestureRecognizers/>
                                 <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GGP-zD-vjj"/>
+                                    <outletCollection property="gestureRecognizers" destination="w1U-pI-YqF" appends="YES" id="qql-HT-p6Z"/>
                                 </connections>
-                            </button>
-                            <button opaque="NO" tag="7" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UDT-vb-Md5">
-                                <rect key="frame" x="139" y="56" width="118" height="167"/>
-                                <state key="normal" backgroundImage="7"/>
+                            </imageView>
+                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="6" translatesAutoresizingMaskIntoConstraints="NO" id="FkF-T8-MIe">
+                                <rect key="frame" x="20" y="382" width="246" height="118"/>
+                                <gestureRecognizers/>
                                 <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7kw-yy-QHA"/>
+                                    <outletCollection property="gestureRecognizers" destination="cne-OG-4Wh" appends="YES" id="enf-Mz-oX3"/>
                                 </connections>
-                            </button>
-                            <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CJl-WL-vk9">
-                                <rect key="frame" x="175" y="235" width="47" height="29"/>
-                                <state key="normal" backgroundImage="3"/>
+                            </imageView>
+                            <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="5" translatesAutoresizingMaskIntoConstraints="NO" id="e0P-yL-Aev">
+                                <rect key="frame" x="147" y="263" width="119" height="111"/>
+                                <gestureRecognizers/>
                                 <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ouv-ci-sRd"/>
+                                    <outletCollection property="gestureRecognizers" destination="h6H-cT-tFW" appends="YES" id="Ej4-1B-ItL"/>
                                 </connections>
-                            </button>
-                            <button opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fd6-Vz-POJ">
-                                <rect key="frame" x="40" y="413" width="201" height="83"/>
-                                <state key="normal" backgroundImage="5"/>
-                                <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1YS-ou-fMt"/>
-                                </connections>
-                            </button>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outletCollection property="images" destination="FkF-T8-MIe" collectionClass="NSMutableArray" id="XRN-BB-LkU"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="h9I-JF-Rww">
+                    <connections>
+                        <action selector="tapped:" destination="BYZ-38-t0r" id="Blm-Ym-cPv"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="Ebd-lu-qUf">
+                    <connections>
+                        <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="rhc-d3-fEV"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="6Yc-Go-O7y">
+                    <connections>
+                        <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="am1-tG-gcR"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="faR-GY-t9j">
+                    <connections>
+                        <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="w2G-fK-e1Y"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="w1U-pI-YqF">
+                    <connections>
+                        <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="54T-8F-yMS"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="h6H-cT-tFW">
+                    <connections>
+                        <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="qmM-b7-BBL"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="cne-OG-4Wh">
+                    <connections>
+                        <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="GHf-5v-Bdr"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-182" y="109"/>
+            <point key="canvasLocation" x="-277" y="191"/>
         </scene>
     </scenes>
     <resources>
-        <image name="0" width="1920" height="1200"/>
-        <image name="1" width="1366" height="768"/>
-        <image name="2" width="500" height="374"/>
-        <image name="3" width="1680" height="1050"/>
-        <image name="4" width="1024" height="681"/>
-        <image name="5" width="618" height="257"/>
-        <image name="6" width="600" height="437"/>
-        <image name="7" width="1024" height="1448"/>
+        <image name="0" width="540" height="960"/>
+        <image name="1" width="683" height="384"/>
+        <image name="2" width="250" height="187"/>
+        <image name="3" width="320" height="568"/>
+        <image name="4" width="512" height="340"/>
+        <image name="5" width="309" height="128"/>
+        <image name="6" width="300" height="218"/>
     </resources>
 </document>

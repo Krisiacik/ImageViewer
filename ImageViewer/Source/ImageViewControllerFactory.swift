@@ -10,28 +10,25 @@ import UIKit
 
 final class ImageViewControllerFactory {
     
-    private let imageProvider: GalleryDatasource
-    private let displacedView: UIView
-    private let imageCount: Int
+    private let itemsDatasource: GalleryItemsDatasource
+    private var displacedViewsDatasource: GalleryDisplacedViewsDatasource?
     private let startIndex: Int
     private var configuration: GalleryConfiguration
     private var fadeInHandler: ImageFadeInHandler
     private weak var delegate: ImageViewControllerDelegate?
     
-    init(imageProvider: GalleryDatasource, displacedView: UIView, imageCount: Int, startIndex: Int, configuration: GalleryConfiguration, fadeInHandler: ImageFadeInHandler, delegate: ImageViewControllerDelegate) {
+    init(itemsDatasource: GalleryItemsDatasource, displacedViewsDatasource: GalleryDisplacedViewsDatasource?, startIndex: Int, configuration: GalleryConfiguration, fadeInHandler: ImageFadeInHandler, delegate: ImageViewControllerDelegate) {
         
-        self.imageProvider = imageProvider
-        self.displacedView = displacedView
-        self.imageCount = imageCount
+        self.itemsDatasource = itemsDatasource
+        self.displacedViewsDatasource = displacedViewsDatasource
         self.startIndex = startIndex
-
         self.configuration = configuration
         self.fadeInHandler = fadeInHandler
         self.delegate = delegate
     }
     
     func createImageViewController(imageIndex: Int) -> ImageViewController? {
-      
-        return ImageViewController(imageProvider: imageProvider,  configuration: configuration, imageCount: imageCount, displacedView: displacedView, startIndex: startIndex, imageIndex: imageIndex, showDisplacedImage: (imageIndex == self.startIndex), fadeInHandler: fadeInHandler, delegate: delegate)
+        
+        return ImageViewController(itemsDatasource: itemsDatasource, displacedViewsDatasource: displacedViewsDatasource, configuration: configuration, startIndex: startIndex, imageIndex: imageIndex, fadeInHandler: fadeInHandler, delegate: delegate)
     }
 }

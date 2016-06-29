@@ -14,10 +14,13 @@ public enum GalleryItem {
     case Video(NSURL)
 }
 
-public protocol GalleryDatasource {
+public protocol GalleryItemsDatasource {
     
     func numberOfItemsInGalery() -> Int
-    func startingIndex() -> Int
-    func provideDisplacementItem(atIndex index: Int, completion: UIImageView? -> Void)
     func provideGalleryItem(atIndex index: Int, completion: GalleryItem -> Void)
+}
+
+public protocol GalleryDisplacedViewsDatasource {
+
+    func provideDisplacementItem(atIndex index: Int, completion: UIView? -> Void)
 }

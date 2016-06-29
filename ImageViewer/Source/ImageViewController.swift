@@ -29,8 +29,8 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
     weak var delegate: ImageViewControllerDelegate?
     
     /// MODEL & STATE
-    private let imageProvider: GalleryDatasource
-    private let displacedView: UIView   
+    private let itemsDatasource: GalleryItemsDatasource
+    private var displacedViewsDatasource: GalleryDisplacedViewsDatasource?
     private let imageCount: Int
     private let startIndex: Int
     
@@ -59,14 +59,14 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
     // TRANSITIONS
     private var swipeToDismissTransition: GallerySwipeToDismissTransition?
     
-    init(imageProvider: GalleryDatasource, configuration: GalleryConfiguration, imageCount: Int, displacedView: UIView, startIndex: Int,  imageIndex: Int, showDisplacedImage: Bool, fadeInHandler: ImageFadeInHandler?, delegate: ImageViewControllerDelegate?) {
-
-        self.imageProvider = imageProvider
-        self.imageCount = imageCount
-        self.displacedView = displacedView
+    init(itemsDatasource: GalleryItemsDatasource, displacedViewsDatasource: GalleryDisplacedViewsDatasource?, configuration: GalleryConfiguration, startIndex: Int,  imageIndex: Int, fadeInHandler: ImageFadeInHandler?, delegate: ImageViewControllerDelegate?) {
+        
+        self.itemsDatasource = itemsDatasource
+        self.imageCount = itemsDatasource.numberOfItemsInGalery()
+        self.displacedViewsDatasource = displacedViewsDatasource
         self.startIndex = startIndex
         self.index = imageIndex
-        self.showDisplacedImage = showDisplacedImage
+        self.showDisplacedImage = true
         self.fadeInHandler = fadeInHandler
         self.delegate = delegate
         
@@ -115,7 +115,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         imageView.contentMode = UIViewContentMode.ScaleAspectFit
         
         if showDisplacedImage {
-            updateImageAndContentSize(screenshotFromView(displacedView))
+            //updateImageAndContentSize(screenshotFromView(displacedView))
         }
         
         self.fetchImage(self.index)  { [weak self] item in
@@ -140,7 +140,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         
         dispatch_async(backgroundQueue) { [weak self] in
             
-            if let index = self?.index, provider = self?.imageProvider {
+            if let index = self?.index, provider = self?.itemsDatasource {
                 
                 provider.provideGalleryItem(atIndex: index, completion: completion)
             }
@@ -327,7 +327,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         if swipingToDismiss == nil { swipingToDismiss = (fabs(currentVelocity.x) > fabs(currentVelocity.y)) ? .Horizontal : .Vertical }
         guard let swipingToDismissInProgress = swipingToDismiss else { return }
         
-        displacedView.hidden = false
+        //displacedView.hidden = false
         dynamicTransparencyActive = true
         
         
@@ -429,7 +429,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         guard (self.isAnimating == false) else { return }
         isAnimating = true
         
-        displacedView.hidden = true
+        //displacedView.hidden = true
         
         UIView.animateWithDuration(duration, animations: {
             self.scrollView.zoomScale = self.scrollView.minimumZoomScale
@@ -440,11 +440,11 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
             }
             
             /// Get position of displaced view in window
-            let displacedViewInWindowPosition = self.applicationWindow!.convertRect(self.displacedView.bounds, fromView: self.displacedView)
+            //let displacedViewInWindowPosition = self.applicationWindow!.convertRect(self.displacedView.bounds, fromView: self.displacedView)
             /// Translate that to gallery view
-            let displacedViewInOurCoordinateSystem = self.view.convertRect(displacedViewInWindowPosition, fromView: self.applicationWindow!)
+            //let displacedViewInOurCoordinateSystem = self.view.convertRect(displacedViewInWindowPosition, fromView: self.applicationWindow!)
             
-            self.imageView.frame = displacedViewInOurCoordinateSystem
+            //self.imageView.frame = displacedViewInOurCoordinateSystem
             
             }) { [weak self] finished in
                 
@@ -454,7 +454,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
                     
                     self?.applicationWindow?.windowLevel = UIWindowLevelNormal
                     
-                    self?.displacedView.hidden = false
+                    //self?.displacedView.hidden = false
                     self?.isAnimating = false
                 }
         }
