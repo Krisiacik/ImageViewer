@@ -14,28 +14,33 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
     
     @IBAction func showGalleryImageViewer(sender: UITapGestureRecognizer) {
         
-        guard let displacedView = sender.view as? UIImageView else { return }
-        guard let currentIndex = images.indexOf(displacedView) else { return }
-        
-        let frame = CGRect(x: 0, y: 0, width: 200, height: 24)
-        let headerView = CounterView(frame: frame, currentIndex: currentIndex, count: images.count)
-        let footerView = CounterView(frame: frame, currentIndex: currentIndex, count: images.count)
-        
-        let galleryViewController = GalleryViewController(startIndex: images.indexOf(displacedView) ?? 0, itemsDatasource: self, displacedViewsDatasource: self)
-        galleryViewController.headerView = headerView
-        galleryViewController.footerView = footerView
-        
-        galleryViewController.launchedCompletion = { print("LAUNCHED") }
-        galleryViewController.closedCompletion = { print("CLOSED") }
-        galleryViewController.swipedToDismissCompletion = { print("SWIPE-DISMISSED") }
-        
-        galleryViewController.landedPageAtIndexCompletion = { index in
-            
-            print("LANDED AT INDEX: \(index)")
-            
-            headerView.currentIndex = index
-            footerView.currentIndex = index
+        guard let displacedView = sender.view as? UIImageView else {
+            return
         }
+        guard let currentIndex = images.indexOf(displacedView) else {
+            return
+        }
+        
+        
+//        let frame = CGRect(x: 0, y: 0, width: 200, height: 24)
+//        let headerView = CounterView(frame: frame, currentIndex: currentIndex, count: images.count)
+//        let footerView = CounterView(frame: frame, currentIndex: currentIndex, count: images.count)
+        
+        let galleryViewController = NewGalleryViewController(startIndex: images.indexOf(displacedView) ?? 0, itemsDatasource: self, displacedViewsDatasource: self)
+//        galleryViewController.headerView = headerView
+//        galleryViewController.footerView = footerView
+//        
+//        galleryViewController.launchedCompletion = { print("LAUNCHED") }
+//        galleryViewController.closedCompletion = { print("CLOSED") }
+//        galleryViewController.swipedToDismissCompletion = { print("SWIPE-DISMISSED") }
+//        
+//        galleryViewController.landedPageAtIndexCompletion = { index in
+//            
+//            print("LANDED AT INDEX: \(index)")
+//            
+//            headerView.currentIndex = index
+//            footerView.currentIndex = index
+//        }
         
         self.presentImageGallery(galleryViewController)
     }

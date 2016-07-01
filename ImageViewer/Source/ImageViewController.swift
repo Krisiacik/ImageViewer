@@ -243,8 +243,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.view.backgroundColor = UIColor.blackColor()
+
     }
     
     override func viewDidAppear(animated: Bool) {

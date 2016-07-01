@@ -12,6 +12,12 @@ import AVFoundation
 /// returns a size that aspect-fits into the bounding size. Example -> We have some view of 
 /// certain size and the question is, what would have to be its size, so that it would fit 
 /// it into some rect of some size ..given we wuold want to keep the content rects aspect ratio.
+
+func aspectFitSize(forContentOfSize contentSize: CGSize, inBounds bounds: CGSize) -> CGSize {
+    
+    return AVMakeRectWithAspectRatioInsideRect(contentSize, CGRect(origin: CGPointZero, size: bounds)).size
+}
+
 func aspectFitContentSize(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGSize {
     
     return AVMakeRectWithAspectRatioInsideRect(contentSize, CGRect(origin: CGPointZero, size: boundingSize)).size
@@ -52,7 +58,7 @@ func screenshotFromView(view: UIView) -> UIImage {
     
     let image: UIImage
     
-    UIGraphicsBeginImageContextWithOptions(view.bounds.size, true, UIScreen.mainScreen().scale)
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, UIScreen.mainScreen().scale)
     view.drawViewHierarchyInRect(view.bounds, afterScreenUpdates: false)
     image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()

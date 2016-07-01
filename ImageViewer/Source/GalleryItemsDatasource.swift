@@ -8,11 +8,6 @@
 
 import UIKit
 
-public enum GalleryItem {
-    
-    case Image(UIImage)
-    case Video(NSURL)
-}
 
 public protocol GalleryItemsDatasource {
     
@@ -20,7 +15,3 @@ public protocol GalleryItemsDatasource {
     func provideGalleryItem(atIndex index: Int, completion: GalleryItem -> Void)
 }
 
-public protocol GalleryDisplacedViewsDatasource {
-
-    func provideDisplacementItem(atIndex index: Int, completion: UIView? -> Void)
-}
