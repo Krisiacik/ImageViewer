@@ -27,7 +27,7 @@ final class ImageViewerPresentTransition: NSObject, UIViewControllerAnimatedTran
         toViewController.view.frame = UIScreen.mainScreen().bounds
         container?.addSubview(toViewController.view)
         
-        if let imageViewer = toViewController as? ImageViewer {
+        if let imageViewer = toViewController as? ImageViewerController {
             imageViewer.showAnimation(duration, completion: {(finished) -> Void in
                 transitionContext.completeTransition(finished)
             })

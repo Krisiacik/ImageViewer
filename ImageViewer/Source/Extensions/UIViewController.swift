@@ -10,7 +10,7 @@ import UIKit
 
 public extension UIViewController {
     
-    public func presentImageViewer(imageViewer: ImageViewer, completion: (Void -> Void)? = {}) {
+    public func presentImageViewer(imageViewer: ImageViewerController, completion: (Void -> Void)? = {}) {
         
         presentViewController(imageViewer, animated: true, completion: completion)
     }
