@@ -28,7 +28,7 @@ final class ImageViewerSwipeToDismissTransition: NSObject, UIViewControllerAnima
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
         let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)!
         
-        if let imageViewer = fromViewController as? ImageViewer {
+        if let imageViewer = fromViewController as? ImageViewerController {
             imageViewer.swipeToDismissAnimation(withVerticalTouchPoint: verticalTouchPoint,
                 targetOffset: targetOffset,
                 verticalVelocity: verticalVelocity,

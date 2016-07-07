@@ -39,7 +39,7 @@ import AVFoundation
  
  */
 
-public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
+public final class ImageViewerController: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
     
     /// UI
     private var scrollView = UIScrollView()
@@ -141,16 +141,16 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
         closeButton.setImage(closeButtonAssets.normal, forState: UIControlState.Normal)
         closeButton.setImage(closeButtonAssets.highlighted, forState: UIControlState.Highlighted)
         closeButton.alpha = 0.0
-        closeButton.addTarget(self, action: #selector(ImageViewer.close(_:)), forControlEvents: .TouchUpInside)
+        closeButton.addTarget(self, action: #selector(ImageViewerController.close(_:)), forControlEvents: .TouchUpInside)
     }
     
     private func configureGestureRecognizers() {
         
-        doubleTapRecognizer.addTarget(self, action: #selector(ImageViewer.scrollViewDidDoubleTap(_:)))
+        doubleTapRecognizer.addTarget(self, action: #selector(ImageViewerController.scrollViewDidDoubleTap(_:)))
         doubleTapRecognizer.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(doubleTapRecognizer)
         
-        panGestureRecognizer.addTarget(self, action: #selector(ImageViewer.scrollViewDidPan(_:)))
+        panGestureRecognizer.addTarget(self, action: #selector(ImageViewerController.scrollViewDidPan(_:)))
         view.addGestureRecognizer(panGestureRecognizer)
     }
     
@@ -286,7 +286,7 @@ public final class ImageViewer: UIViewController, UIScrollViewDelegate, UIViewCo
             
             if finished {
                 if isPortraitOnly() {
-                    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ImageViewer.rotate), name: UIDeviceOrientationDidChangeNotification, object: nil)
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ImageViewerController.rotate), name: UIDeviceOrientationDidChangeNotification, object: nil)
                 }
                 self.applicationWindow!.windowLevel = UIWindowLevelStatusBar + 1
                 

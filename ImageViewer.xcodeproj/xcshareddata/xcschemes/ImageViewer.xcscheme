@@ -28,7 +28,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "EB1CEC121C84A4EE00BB27B8"
+               BuildableName = "ImageViewerTests.xctest"
+               BlueprintName = "ImageViewerTests"
+               ReferencedContainer = "container:ImageViewer.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "C7DABE471C12245B00F5BD7B"
+            BuildableName = "ImageViewer.framework"
+            BlueprintName = "ImageViewer"
+            ReferencedContainer = "container:ImageViewer.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
