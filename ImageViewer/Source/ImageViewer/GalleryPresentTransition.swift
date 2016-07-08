@@ -15,6 +15,7 @@ final class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransiti
     var headerView: UIView?
     var footerView: UIView?
     var closeView: UIView?
+    var seeAllView: UIView?
     var completion: (() -> Void)?
     private let decorationViewsHidden: Bool
     
@@ -60,7 +61,7 @@ final class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransiti
         headerView?.alpha = 0.0
         footerView?.alpha = 0.0
         closeView?.alpha = 0.0
-        
+        seeAllView?.alpha = 0.0
         /// Translate coordinates of displaced view into our coordinate system (which is now the transition container view) so that we match the animation start position on device screen level
         let origin = transitionContainerView.convertPoint(CGPoint.zero, fromView: displacedView)
         
@@ -102,6 +103,7 @@ final class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransiti
                         self?.headerView?.alpha = 1.0
                         self?.footerView?.alpha = 1.0
                         self?.closeView?.alpha = 1.0
+                        self?.seeAllView?.alpha = 1.0
                         })
                 }
             })

@@ -19,8 +19,6 @@ final class GalleryViewControllerDatasource: NSObject, UIPageViewControllerDataS
         self.imageControllerFactory = imageControllerFactory
         self.imageCount = imageCount
         self.galleryPagingMode =  (imageCount > 1) ? galleryPagingMode : GalleryPagingMode.Standard
-        
-        UIDevice.currentDevice().orientation
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {

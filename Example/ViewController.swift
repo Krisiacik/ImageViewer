@@ -10,10 +10,34 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    @IBOutlet weak var forestImageView: UIImageView!
-    
-    private var imagePreviewer: ImageViewerController!
-    
+    @IBOutlet weak var panoramaImageView: UIImageView!
+    @IBOutlet weak var giraffeImageView: UIImageView!
+
+    class SomeImageProvider: ImageProvider {
+
+        let images = [
+            UIImage(named: "0"),
+            UIImage(named: "1"),
+            UIImage(named: "2"),
+            UIImage(named: "3"),
+            UIImage(named: "4"),
+            UIImage(named: "5"),
+            UIImage(named: "6"),
+            UIImage(named: "7")]
+
+        var imageCount: Int {
+            return images.count
+        }
+
+        func provideImage(completion: UIImage? -> Void) {
+            completion(UIImage(named: "image_big"))
+        }
+
+        func provideImage(atIndex index: Int, completion: UIImage? -> Void) {
+            completion(images[index])
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -31,12 +55,12 @@ class ViewController: UIViewController {
     @IBAction func showGalleryImageViewer(displacedView: UIView) {
         
         let imageProvider = SomeImageProvider()
-        
         let frame = CGRect(x: 0, y: 0, width: 200, height: 24)
-        let headerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: images.count)
-        let footerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: images.count)
-        
-        let galleryViewController = GalleryViewController(imageProvider: imageProvider, displacedView: displacedView, imageCount: images.count, startIndex: displacedView.tag)
+        let headerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: imageProvider.imageCount)
+        let footerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: imageProvider.imageCount)
+
+        let galleryViewController = GalleryViewController(imageProvider: imageProvider, displacedView: displacedView, imageCount: imageProvider.imageCount, startIndex: displacedView.tag)
+
         galleryViewController.headerView = headerView
         galleryViewController.footerView = footerView
         
@@ -55,24 +79,3 @@ class ViewController: UIViewController {
         self.presentImageGallery(galleryViewController)
     }
 }
-
-class SomeImageProvider: ImageProvider {
-    
-    func provideImage(completion: UIImage? -> Void) {
-        completion(UIImage(named: "image_big"))
-    }
-    
-    func provideImage(atIndex index: Int, completion: UIImage? -> Void) {
-        completion(images[index])
-    }
-}
-
-let images = [
-    UIImage(named: "0"),
-    UIImage(named: "1"),
-    UIImage(named: "2"),
-    UIImage(named: "3"),
-    UIImage(named: "4"),
-    UIImage(named: "5"),
-    UIImage(named: "6"),
-    UIImage(named: "7")]
