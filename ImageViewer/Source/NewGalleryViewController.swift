@@ -11,7 +11,7 @@ import UIKit
 public class NewGalleryViewController: UIPageViewController {
 
     //VIEWS
-    let overlayView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
+    let overlayView = UIVisualEffectView(effect: nil)
     
     /// CONFIGURATION
     private var spineDividerWidth: Float = 10
@@ -21,7 +21,6 @@ public class NewGalleryViewController: UIPageViewController {
         super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll,
                    navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal,
                    options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(float: spineDividerWidth)])
-        
         
         configureInitialImageController(itemsDatasource, displacedViewsDatasource: displacedViewsDatasource, configuration: configuration)
     }
@@ -47,7 +46,7 @@ public class NewGalleryViewController: UIPageViewController {
         view.addSubview(overlayView)
         view.sendSubviewToBack(overlayView)
         
-        overlayView.alpha = 0
+        overlayView.contentView.alpha = 0
         overlayView.contentView.backgroundColor = UIColor.blackColor()
         
         let transparencySCrubber = UISlider(frame: CGRect(origin: CGPoint(x: 20, y: 200), size: CGSize(width: 250, height: 40)))
@@ -56,6 +55,17 @@ public class NewGalleryViewController: UIPageViewController {
         transparencySCrubber.value = 0
         transparencySCrubber.addTarget(self, action: #selector(transparencyValueChanged), forControlEvents: UIControlEvents.ValueChanged)
         view.addSubview(transparencySCrubber)
+    }
+
+    public override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        overlayView.layer.speed = 0
+
+        UIView.animateWithDuration(1) { 
+
+            self.overlayView.effect = UIBlurEffect(style: .Light)
+        }
     }
     
     public override func viewDidLayoutSubviews() {
@@ -73,12 +83,12 @@ public class NewGalleryViewController: UIPageViewController {
         let blurAlpha = CGFloat(blurScopedValue / blurRange)
         
         let contentMin:Float = 0
-        let contentMax: Float = 1000
+        let contentMax: Float = 800
         let contentScope = max(min(sender.value, contentMax), contentMin) - contentMin
         let contentRange = contentMax - contentMin
         let contentAlpha = CGFloat(contentScope / contentRange)
 
-        overlayView.alpha = blurAlpha
+        overlayView.layer.timeOffset = CFTimeInterval(blurAlpha / 2)
         overlayView.contentView.alpha = contentAlpha
 
     }
