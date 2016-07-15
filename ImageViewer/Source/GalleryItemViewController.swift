@@ -9,9 +9,12 @@
 import UIKit
 
 class GalleryItemViewController: UIViewController {
-    
-    init(itemsDatasource: GalleryItemsDatasource, displacedViewsDatasource: GalleryDisplacedViewsDatasource?, configuration: GalleryConfiguration) {
-        
+
+    let index: Int
+
+    init(index: Int, itemsDatasource: GalleryItemsDatasource, displacedViewsDatasource: GalleryDisplacedViewsDatasource?, configuration: GalleryConfiguration) {
+
+        self.index = index
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -23,6 +26,6 @@ class GalleryItemViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        view.backgroundColor = UIColor.redColor()
+        view.backgroundColor = UIColor.redColor()
     }
 }
