@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GalleryItemViewController: UIViewController {
+class ItemViewController: UIViewController {
 
     let index: Int
 
@@ -26,6 +26,11 @@ class GalleryItemViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor.redColor()
+        view.backgroundColor = UIColor.redColor().colorWithAlphaComponent(0.2)
+
+        let smallView = UIView(frame: CGRect(origin: CGPoint(x: 100, y: 100), size: CGSize(width: 20, height: 20)))
+        smallView.backgroundColor = UIColor.yellowColor()
+
+        self.view.addSubview(smallView)
     }
 }
