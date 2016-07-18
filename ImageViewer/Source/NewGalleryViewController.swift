@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class NewGalleryViewController: UIPageViewController {
+public class NewGalleryViewController: UIPageViewController, ItemControllerDelegate {
 
     //VIEWS
     private let blurView = BlurView()
@@ -65,12 +65,15 @@ public class NewGalleryViewController: UIPageViewController {
                    navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal,
                    options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(float: spineDividerWidth)])
 
+        pagingDatasource.itemControllerDelegate = self
+
         ///This feels out of place, one would expect even the first presented(paged) item controller to be provided by the paging datasource but there is nothing we can do as Apple requires the first controller to be set via this "setViewControllers" method.
         let initialImageController = pagingDatasource.createItemController(startIndex)
         self.setViewControllers([initialImageController], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
 
         self.modalPresentationStyle = .OverFullScreen ///This less usual option allows the contents of view controller that presents the gallery to "bleed through" the blurView. CHECK IF REALLY NEEDED!!!!!
         self.dataSource = pagingDatasource
+
     }
     
     override public func viewDidLoad() {
@@ -80,10 +83,15 @@ public class NewGalleryViewController: UIPageViewController {
         view.sendSubviewToBack(blurView)
 
     }
-    
+
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         blurView.frame = view.bounds
+    }
+
+    func itemController(controller: ItemController, didTransitionWithProgress progress: CGFloat) {
+
+        blurView.blur = Float(progress)
     }
 }

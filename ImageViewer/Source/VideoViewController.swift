@@ -25,9 +25,5 @@ class VideoViewController: UIViewController, ItemController {
         super.viewDidLoad()
 
         self.view.backgroundColor = UIColor.blueColor().colorWithAlphaComponent(0.2)
-
-        let squareView = UIView(frame: CGRect(origin: CGPoint(x: 100, y: 100), size: CGSize(width: 20, height: 20)))
-        squareView.backgroundColor = UIColor.greenColor()
-        self.view.addSubview(squareView)
     }
 }

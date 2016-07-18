@@ -11,6 +11,7 @@ import UIKit
 class NewImageViewController: UIViewController, ItemController {
 
     let index: Int
+    var delegate: ItemControllerDelegate?
 
     init(index: Int, image: UIImage, displacedViewsDatasource: GalleryDisplacedViewsDatasource?,  configuration: GalleryConfiguration) {
 
@@ -24,10 +25,18 @@ class NewImageViewController: UIViewController, ItemController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.view.backgroundColor = UIColor.redColor().colorWithAlphaComponent(0.2)
+        let scrubber = UISlider(frame: CGRect(origin: CGPoint(x: 20, y: 100), size: CGSize(width: 200, height: 40)))
 
-        let squareView = UIView(frame: CGRect(origin: CGPoint(x: 100, y: 100), size: CGSize(width: 20, height: 20)))
-        squareView.backgroundColor = UIColor.yellowColor()
-        self.view.addSubview(squareView)
+        scrubber.minimumValue = 0
+        scrubber.maximumValue = 1000
+
+        scrubber.addTarget(self, action: #selector(scrubberValueChanged), forControlEvents: UIControlEvents.ValueChanged)
+
+        self.view.addSubview(scrubber)
+    }
+
+    func scrubberValueChanged(scrubber: UISlider) {
+
+        self.delegate?.itemController(self, didTransitionWithProgress: CGFloat( 1 - scrubber.value / 1000))
     }
 }

@@ -10,6 +10,7 @@ import UIKit
 
 final class NewGalleryPagingDatasource: NSObject, UIPageViewControllerDataSource {
 
+    var itemControllerDelegate: ItemControllerDelegate?
     private let itemsDatasource: GalleryItemsDatasource
     private var displacedViewsDatasource: GalleryDisplacedViewsDatasource?
     private let configuration: GalleryConfiguration
@@ -72,8 +73,15 @@ final class NewGalleryPagingDatasource: NSObject, UIPageViewControllerDataSource
 
         switch item {
 
-        case .Image(let image):     return NewImageViewController(index: itemIndex, image: image, displacedViewsDatasource: displacedViewsDatasource, configuration: configuration)
-        case .Video(let url):       return VideoViewController(index: itemIndex, video: url, displacedViewsDatasource: displacedViewsDatasource, configuration: configuration)
+        case .Image(let image):
+
+            let imageController = NewImageViewController(index: itemIndex, image: image, displacedViewsDatasource: displacedViewsDatasource, configuration: configuration)
+            imageController.delegate = itemControllerDelegate
+            return imageController
+
+        case .Video(let url):
+
+           return VideoViewController(index: itemIndex, video: url, displacedViewsDatasource: displacedViewsDatasource, configuration: configuration)
 
         }
     }
