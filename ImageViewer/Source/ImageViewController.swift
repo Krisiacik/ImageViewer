@@ -142,7 +142,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
             
             if let index = self?.index, provider = self?.itemsDatasource {
                 
-                provider.provideGalleryItem(atIndex: index, completion: completion)
+                completion(provider.provideGalleryItem(index))
             }
         }
     }

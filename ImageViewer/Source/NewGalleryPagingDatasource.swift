@@ -38,7 +38,7 @@ final class NewGalleryPagingDatasource: NSObject, UIPageViewControllerDataSource
 
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
 
-        guard let currentController = viewController as? ItemViewController else { return nil }
+        guard let currentController = viewController as? ItemController else { return nil }
         let previousIndex = (currentController.index == 0) ? itemCount - 1 : currentController.index - 1
 
         switch pagingMode {
@@ -53,7 +53,7 @@ final class NewGalleryPagingDatasource: NSObject, UIPageViewControllerDataSource
 
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
 
-        guard let currentController = viewController as? ItemViewController  else { return nil }
+        guard let currentController = viewController as? ItemController  else { return nil }
         let nextIndex = (currentController.index == itemCount - 1) ? 0 : currentController.index + 1
 
         switch pagingMode {
@@ -66,8 +66,15 @@ final class NewGalleryPagingDatasource: NSObject, UIPageViewControllerDataSource
         }
     }
 
-    func createItemController(itemIndex: Int) -> ItemViewController {
+    func createItemController(itemIndex: Int) -> UIViewController {
 
-        return ItemViewController(index: itemIndex, itemsDatasource: itemsDatasource, displacedViewsDatasource: displacedViewsDatasource, configuration: configuration)
+        let item = itemsDatasource.provideGalleryItem(itemIndex)
+
+        switch item {
+
+        case .Image(let image):     return NewImageViewController(index: itemIndex, image: image, displacedViewsDatasource: displacedViewsDatasource, configuration: configuration)
+        case .Video(let url):       return VideoViewController(index: itemIndex, video: url, displacedViewsDatasource: displacedViewsDatasource, configuration: configuration)
+
+        }
     }
 }

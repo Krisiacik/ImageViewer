@@ -50,10 +50,15 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
         completion(images[index] ?? nil)
     }
 
-    func provideGalleryItem(atIndex index: Int, completion: GalleryItem -> Void) {
-        
+    func provideGalleryItem(index: Int) -> GalleryItem {
+
+        if index == 2 {
+
+            return GalleryItem.Video(NSURL(string: "")!)
+        }
+
         let image = images[index].image ?? UIImage(named: "0")!
         
-        completion(GalleryItem.Image(image))
+        return GalleryItem.Image(image)
     }
 }

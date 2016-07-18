@@ -33,7 +33,7 @@ public class NewGalleryViewController: UIPageViewController {
 
     init(startIndex: Int, itemsDatasource: GalleryItemsDatasource, displacedViewsDatasource: GalleryDisplacedViewsDatasource? = nil, configuration: GalleryConfiguration = []) {
 
-        ///Only those options relevant to the paging GalleryViewController are handled here explicitely, the rest are handled by the GalleryItemController
+        ///Only those options relevant to the paging GalleryViewController are explicitely handled here, the rest is handled by ItemViewControllers
         for item in configuration {
 
             switch item {
