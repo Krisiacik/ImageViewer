@@ -15,7 +15,7 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
     @IBAction func showGalleryImageViewer(sender: UITapGestureRecognizer) {
         
         guard let displacedView = sender.view as? UIImageView else { return }
-        guard let currentIndex = images.indexOf(displacedView) else { return }
+        guard let _ = images.indexOf(displacedView) else { return }
         
 //        let frame = CGRect(x: 0, y: 0, width: 200, height: 24)
 //        let headerView = CounterView(frame: frame, currentIndex: currentIndex, count: images.count)
@@ -45,9 +45,9 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
         return images.count
     }
 
-    func provideDisplacementItem(atIndex index: Int, completion: UIView? -> Void) {
+    func provideDisplacementItem(atIndex index: Int) -> UIView? {
         
-        completion(images[index] ?? nil)
+        return images[index] ?? nil
     }
 
     func provideGalleryItem(index: Int) -> GalleryItem {

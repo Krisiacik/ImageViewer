@@ -21,6 +21,12 @@
 		EB1CEC181C84A4EE00BB27B8 /* ImageViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7DABE481C12245B00F5BD7B /* ImageViewer.framework */; };
 		EB1CEC1F1C84A54600BB27B8 /* UtilityFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1CEC1E1C84A54600BB27B8 /* UtilityFunctions.swift */; };
 		EB1CEC221C84A64100BB27B8 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1CEC211C84A64100BB27B8 /* UIView.swift */; };
+		EB1DB6E61D3E500B00DC9064 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1DB6E51D3E500B00DC9064 /* UIImageView.swift */; };
+		EB1DB6E71D3E500B00DC9064 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1DB6E51D3E500B00DC9064 /* UIImageView.swift */; };
+		EB1DB6E91D3E595D00DC9064 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1DB6E81D3E595D00DC9064 /* UIApplication.swift */; };
+		EB1DB6EA1D3E595D00DC9064 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1DB6E81D3E595D00DC9064 /* UIApplication.swift */; };
+		EB1DB6EC1D3E74A000DC9064 /* CGRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1DB6EB1D3E74A000DC9064 /* CGRect.swift */; };
+		EB1DB6ED1D3E74A000DC9064 /* CGRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1DB6EB1D3E74A000DC9064 /* CGRect.swift */; };
 		EB243F911C889F88006DEF58 /* GallerySwipeToDismissTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB243F901C889F88006DEF58 /* GallerySwipeToDismissTransition.swift */; };
 		EB243F921C889F88006DEF58 /* GallerySwipeToDismissTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB243F901C889F88006DEF58 /* GallerySwipeToDismissTransition.swift */; };
 		EB243F971C8996DF006DEF58 /* ImageViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB243F961C8996DF006DEF58 /* ImageViewControllerDelegate.swift */; };
@@ -90,6 +96,9 @@
 		EB1CEC171C84A4EE00BB27B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ImageViewerTests/Info.plist; sourceTree = SOURCE_ROOT; };
 		EB1CEC1E1C84A54600BB27B8 /* UtilityFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityFunctions.swift; sourceTree = "<group>"; };
 		EB1CEC211C84A64100BB27B8 /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		EB1DB6E51D3E500B00DC9064 /* UIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
+		EB1DB6E81D3E595D00DC9064 /* UIApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
+		EB1DB6EB1D3E74A000DC9064 /* CGRect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGRect.swift; sourceTree = "<group>"; };
 		EB243F901C889F88006DEF58 /* GallerySwipeToDismissTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GallerySwipeToDismissTransition.swift; sourceTree = "<group>"; };
 		EB243F961C8996DF006DEF58 /* ImageViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewControllerDelegate.swift; sourceTree = "<group>"; };
 		EB243F991C899F1C006DEF58 /* GalleryCloseTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryCloseTransition.swift; sourceTree = "<group>"; };
@@ -206,8 +215,8 @@
 				EB1F6E191C908DEB0046A7FB /* Layout */,
 				EBA90E411C8729EB000AA697 /* Transitions */,
 				EB1CEC1E1C84A54600BB27B8 /* UtilityFunctions.swift */,
-				EBEBEF901C84578E008C1E58 /* Container Controller */,
-				EB6A56D21C85E41700BBDEF6 /* Page Controller */,
+				EBEBEF901C84578E008C1E58 /* Paging Controller */,
+				EB6A56D21C85E41700BBDEF6 /* Item Controller */,
 				EB40C3751C9C5C30004EA215 /* Protocols */,
 				C7DABE5D1C12275C00F5BD7B /* Extensions */,
 			);
@@ -218,9 +227,12 @@
 			isa = PBXGroup;
 			children = (
 				C7DABE631C12276800F5BD7B /* CGSize.swift */,
+				EB1DB6EB1D3E74A000DC9064 /* CGRect.swift */,
 				4CD1C49B1C16FF64008D5F84 /* CGPoint.swift */,
 				EB1CEC211C84A64100BB27B8 /* UIView.swift */,
+				EB1DB6E51D3E500B00DC9064 /* UIImageView.swift */,
 				EB40C3721C9C5BF1004EA215 /* UIViewController.swift */,
+				EB1DB6E81D3E595D00DC9064 /* UIApplication.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -258,7 +270,7 @@
 			name = Protocols;
 			sourceTree = "<group>";
 		};
-		EB6A56D21C85E41700BBDEF6 /* Page Controller */ = {
+		EB6A56D21C85E41700BBDEF6 /* Item Controller */ = {
 			isa = PBXGroup;
 			children = (
 				EBE627081D2689AD0095999A /* ItemController.swift */,
@@ -267,7 +279,7 @@
 				EB5F68DB1D241BC600501552 /* ImageViewControllerFactory.swift */,
 				EB8BEC781D3D1C9B00DCE3EC /* New  */,
 			);
-			name = "Page Controller";
+			name = "Item Controller";
 			sourceTree = "<group>";
 		};
 		EB8BEC771D3D1C7200DCE3EC /* New */ = {
@@ -308,7 +320,7 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
-		EBEBEF901C84578E008C1E58 /* Container Controller */ = {
+		EBEBEF901C84578E008C1E58 /* Paging Controller */ = {
 			isa = PBXGroup;
 			children = (
 				EBEBEF951C846847008C1E58 /* GalleryViewController.swift */,
@@ -316,7 +328,7 @@
 				EB6A56CE1C85D4F500BBDEF6 /* GalleryPagingDatasource.swift */,
 				EB8BEC771D3D1C7200DCE3EC /* New */,
 			);
-			name = "Container Controller";
+			name = "Paging Controller";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -460,16 +472,19 @@
 				EB243F9A1C899F1C006DEF58 /* GalleryCloseTransition.swift in Sources */,
 				EBA90E3F1C8729E2000AA697 /* GalleryPresentTransition.swift in Sources */,
 				C7897CF61C1356C6006447FB /* CGSize.swift in Sources */,
+				EB1DB6E91D3E595D00DC9064 /* UIApplication.swift in Sources */,
 				EBE627091D2689AD0095999A /* ItemController.swift in Sources */,
 				EBAF4C601D391C720039CA93 /* NewGalleryPagingDatasource.swift in Sources */,
 				EB4DEBC11C84A8B400D5F897 /* UtilityFunctions.swift in Sources */,
 				EBA8CB341D38E51500545E5B /* BlurView.swift in Sources */,
 				EBA0A9531C89C653005B8DD3 /* GalleryConfiguration.swift in Sources */,
+				EB1DB6E61D3E500B00DC9064 /* UIImageView.swift in Sources */,
 				EBAF4C661D3937BC0039CA93 /* VideoViewController.swift in Sources */,
 				EB5F68DD1D241D7D00501552 /* ImageViewControllerFactory.swift in Sources */,
 				EBDC60B61D195EAB00597F29 /* GalleryViewFactory.swift in Sources */,
 				EB40C3731C9C5BF1004EA215 /* UIViewController.swift in Sources */,
 				EBE627061D2688890095999A /* NewGalleryViewController.swift in Sources */,
+				EB1DB6EC1D3E74A000DC9064 /* CGRect.swift in Sources */,
 				EB5253F41C8DCE9800EAA4A4 /* CounterView.swift in Sources */,
 				EBE627121D268AB70095999A /* GalleryItem.swift in Sources */,
 				EB7B7E4F1C8F260A006834F7 /* LayoutEnums.swift in Sources */,
@@ -497,7 +512,9 @@
 			files = (
 				EB1CEC221C84A64100BB27B8 /* UIView.swift in Sources */,
 				EBE627131D268AB70095999A /* GalleryItem.swift in Sources */,
+				EB1DB6ED1D3E74A000DC9064 /* CGRect.swift in Sources */,
 				EBAF4C671D3937BC0039CA93 /* VideoViewController.swift in Sources */,
+				EB1DB6E71D3E500B00DC9064 /* UIImageView.swift in Sources */,
 				4CD1C49D1C16FF64008D5F84 /* CGPoint.swift in Sources */,
 				EBE627101D268A7F0095999A /* GalleryDisplacedViewsDatasource.swift in Sources */,
 				EB5F68DC1D241BC600501552 /* ImageViewControllerFactory.swift in Sources */,
@@ -512,6 +529,7 @@
 				EB1CEC1F1C84A54600BB27B8 /* UtilityFunctions.swift in Sources */,
 				C7DABE641C12276800F5BD7B /* CGSize.swift in Sources */,
 				EBA0A9541C89C653005B8DD3 /* GalleryConfiguration.swift in Sources */,
+				EB1DB6EA1D3E595D00DC9064 /* UIApplication.swift in Sources */,
 				EB243F9B1C899F1C006DEF58 /* GalleryCloseTransition.swift in Sources */,
 				EBEBEF961C846847008C1E58 /* GalleryViewController.swift in Sources */,
 				EBBFCB971D26CBA2007E7244 /* BlurView.swift in Sources */,

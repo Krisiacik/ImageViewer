@@ -10,5 +10,5 @@ import UIKit
 
 public protocol GalleryDisplacedViewsDatasource {
     
-    func provideDisplacementItem(atIndex index: Int, completion: UIView? -> Void)
+    func provideDisplacementItem(atIndex index: Int) -> UIView?
 }

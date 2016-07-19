@@ -13,7 +13,7 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     //VIEWS
     private let blurView = BlurView()
     private var closeButton: UIButton? = makeCloseButton()
-
+    private weak var initialItemController: ItemController?
     ///LOCAL STATE
     private var decorationViewsHidden = true ///Picks up the initial value from configuration, if provided. Subseqently also works as local state for the setting.
 
@@ -68,12 +68,18 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
         pagingDatasource.itemControllerDelegate = self
 
         ///This feels out of place, one would expect even the first presented(paged) item controller to be provided by the paging datasource but there is nothing we can do as Apple requires the first controller to be set via this "setViewControllers" method.
-        let initialImageController = pagingDatasource.createItemController(startIndex)
-        self.setViewControllers([initialImageController], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
 
-        self.modalPresentationStyle = .OverFullScreen ///This less usual option allows the contents of view controller that presents the gallery to "bleed through" the blurView. CHECK IF REALLY NEEDED!!!!!
+        let initialController = pagingDatasource.createItemController(startIndex)
+        self.setViewControllers([initialController], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
+
+        if let controller = initialController as? ItemController {
+
+            initialItemController = controller
+        }
+
+        ///This less known and used presentation style option allows the contents of parent view controller presenting the gallery to "bleed through" the blurView. Otherwise we would see only black color.
+        self.modalPresentationStyle = .OverFullScreen
         self.dataSource = pagingDatasource
-
     }
     
     override public func viewDidLoad() {
@@ -81,7 +87,10 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
         
         view.addSubview(blurView)
         view.sendSubviewToBack(blurView)
+    }
 
+    public override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
     }
 
     public override func viewDidLayoutSubviews() {
@@ -90,8 +99,19 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
         blurView.frame = view.bounds
     }
 
+    public override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+
+    }
+
     func itemController(controller: ItemController, didTransitionWithProgress progress: CGFloat) {
 
         blurView.blur = Float(progress)
+    }
+
+    func itemControllerShouldPresentInitially(controller: ItemController) -> Bool {
+
+        return true
     }
 }

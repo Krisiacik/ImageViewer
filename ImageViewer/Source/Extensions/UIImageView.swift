@@ -1,0 +1,21 @@
+//
+//  UIImageView.swift
+//  ImageViewer
+//
+//  Created by Kristian Angyal on 19/07/2016.
+//  Copyright © 2016 MailOnline. All rights reserved.
+//
+
+import UIKit
+
+extension UIImageView {
+
+    func clone() -> UIImageView {
+
+        let imageView = UIImageView(image: self.image)
+        imageView.frame = self.bounds
+        imageView.contentMode = self.contentMode
+
+        return imageView
+    }
+}

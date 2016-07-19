@@ -8,7 +8,9 @@
 
 import UIKit
 
-protocol ItemController {
+protocol ItemController: class {
 
     var index: Int { get }
+
+    func presentItem()
 }

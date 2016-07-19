@@ -75,8 +75,10 @@ final class NewGalleryPagingDatasource: NSObject, UIPageViewControllerDataSource
 
         case .Image(let image):
 
-            let imageController = NewImageViewController(index: itemIndex, image: image, displacedViewsDatasource: displacedViewsDatasource, configuration: configuration)
+            let imageController = NewImageViewController(index: itemIndex, image: image, configuration: configuration)
             imageController.delegate = itemControllerDelegate
+            imageController.displacedViewsDatasource = displacedViewsDatasource
+
             return imageController
 
         case .Video(let url):

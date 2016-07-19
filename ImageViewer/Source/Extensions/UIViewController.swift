@@ -12,6 +12,6 @@ public extension UIViewController {
     
     public func presentImageGallery(gallery: NewGalleryViewController, completion: (Void -> Void)? = {}) {
         
-        presentViewController(gallery, animated: true, completion: completion)
+        presentViewController(gallery, animated: false, completion: completion)
     }
 }
