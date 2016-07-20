@@ -72,8 +72,9 @@ class BlurView: UIView {
         let contentAlpha = CGFloat(contentScope / contentRange)
 
         print(blurAlpha)
+        print(contentAlpha)
 
         blurringViewContainer.alpha = blurAlpha
-        blurringView.contentView.alpha = contentAlpha
+        blurringView.contentView.alpha = 0
     }
 }

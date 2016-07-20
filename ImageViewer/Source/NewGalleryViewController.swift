@@ -14,6 +14,7 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     private let blurView = BlurView()
     private var closeButton: UIButton? = makeCloseButton()
     private weak var initialItemController: ItemController?
+    private var initialPresentationDone = false
     ///LOCAL STATE
     private var decorationViewsHidden = true ///Picks up the initial value from configuration, if provided. Subseqently also works as local state for the setting.
 
@@ -102,16 +103,11 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-
+        initialItemController?.presentItem(animateAlongsideView: self.blurView)
     }
 
     func itemController(controller: ItemController, didTransitionWithProgress progress: CGFloat) {
 
         blurView.blur = Float(progress)
-    }
-
-    func itemControllerShouldPresentInitially(controller: ItemController) -> Bool {
-
-        return true
     }
 }

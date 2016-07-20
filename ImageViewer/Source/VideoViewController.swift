@@ -11,6 +11,7 @@ import UIKit
 class VideoViewController: UIViewController, ItemController {
 
     let index: Int
+    var isInitialController = false
 
     init(index: Int, video: NSURL, displacedViewsDatasource: GalleryDisplacedViewsDatasource?, configuration: GalleryConfiguration) {
 
@@ -23,7 +24,9 @@ class VideoViewController: UIViewController, ItemController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
 
-        self.view.backgroundColor = UIColor.blueColor().colorWithAlphaComponent(0.2)
+    func presentItem(animateAlongsideView alongsideView: BlurView) {
+
     }
 }

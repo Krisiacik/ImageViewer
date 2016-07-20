@@ -11,6 +11,7 @@ import UIKit
 protocol ItemController: class {
 
     var index: Int { get }
+    var isInitialController: Bool { get set }
 
-    func presentItem()
+    func presentItem(animateAlongsideView alongsideView: BlurView)
 }
