@@ -28,6 +28,7 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     private var footerLayout = FooterLayout.Center(25)
     private var closeLayout = CloseButtonLayout.PinRight(8, 16)
     private var statusBarHidden = true
+    private var overlayAccelerationFactor: CGFloat = 1
 
     @available(*, unavailable)
     required public init?(coder: NSCoder) { fatalError() }
@@ -46,6 +47,11 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
             case .CloseLayout(let layout):                  closeLayout = layout
             case .StatusBarHidden(let hidden):              statusBarHidden = hidden
             case .HideDecorationViewsOnLaunch(let hidden):  decorationViewsHidden = hidden
+            case .OverlayColor(let color):                  blurView.overlayColor = color
+            case .OverlayBlurStyle(let style):              blurView.blurringView.effect = UIBlurEffect(style: style)
+            case .OverlayBlurOpacity(let opacity):          blurView.blurOpacity = opacity
+            case .OverlayColorOpacity(let opacity):         blurView.colorOpacity = opacity
+
 
             case .CloseButtonMode(let closeButtonMode):
 
@@ -103,11 +109,17 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        initialItemController?.presentItem(animateAlongsideView: self.blurView)
+        initialItemController?.presentItem(alongsideAnimation: blurView.animate)
     }
 
     func itemController(controller: ItemController, didTransitionWithProgress progress: CGFloat) {
 
         blurView.blur = Float(progress)
+    }
+
+    func dismiss() {
+
+        self.presentingViewController?.view.subviews.forEach { $0.hidden = false }
+        self.dismissViewControllerAnimated(false, completion: nil)
     }
 }

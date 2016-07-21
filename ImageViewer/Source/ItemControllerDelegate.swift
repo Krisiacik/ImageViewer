@@ -18,4 +18,6 @@ protocol ItemControllerDelegate: class {
 
 //    ///The displacement effect happens on the item controller but the state for that must be persisted for the whole lifecycle of the gallery and item controllers are being destroyed and recreated when paging happens.
 //    func itemControllerShouldPresentInitially(controller: ItemController) -> Bool
+
+    func dismiss()
 }

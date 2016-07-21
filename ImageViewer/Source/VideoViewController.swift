@@ -26,7 +26,7 @@ class VideoViewController: UIViewController, ItemController {
         super.viewDidLoad()
     }
 
-    func presentItem(animateAlongsideView alongsideView: BlurView) {
+    func presentItem(alongsideAnimation alongsideAnimation: Duration -> Void) {
 
     }
 }

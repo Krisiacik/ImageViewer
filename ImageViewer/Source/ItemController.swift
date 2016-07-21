@@ -8,10 +8,12 @@
 
 import UIKit
 
+typealias Duration = NSTimeInterval
+
 protocol ItemController: class {
 
     var index: Int { get }
     var isInitialController: Bool { get set }
 
-    func presentItem(animateAlongsideView alongsideView: BlurView)
+    func presentItem(alongsideAnimation alongsideAnimation: (Duration) -> Void)
 }

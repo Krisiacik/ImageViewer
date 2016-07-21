@@ -14,7 +14,12 @@ class NewImageViewController: UIViewController, ItemController {
     var delegate: ItemControllerDelegate?
     var displacedViewsDatasource: GalleryDisplacedViewsDatasource?
     var isInitialController = false
-    var transitionProgress: Float = 0
+
+    //CONFIGURATION
+    private var displacementDuration: NSTimeInterval = 0.6
+    private var displacementTransitionCurve: UIViewAnimationCurve = .Linear
+    private var displacementSpringBounce: CGFloat = 0.7
+    private var overlayAccelerationFactor: CGFloat = 1
 
     let imageView = UIImageView()
 
@@ -23,10 +28,34 @@ class NewImageViewController: UIViewController, ItemController {
         self.index = index
         self.imageView.image = image
 
+        for item in configuration {
+
+            switch item {
+
+            case .DisplacementDuration(let duration):       displacementDuration = duration
+            case .DisplacementTransitionCurve(let curve):   displacementTransitionCurve = curve
+            case .OverlayAccelerationFactor(let factor):    overlayAccelerationFactor = factor
+
+            case .DisplacementTransitionStyle(let style):
+
+            switch style {
+
+                case .SpringBounce(let bounce):             displacementSpringBounce = bounce
+                case .Normal:                               displacementSpringBounce = 1
+                }
+
+            default: break
+            }
+        }
+
         super.init(nibName: nil, bundle: nil)
 
         self.modalPresentationStyle = .Custom
-        self.addObserver(self, forKeyPath: "transitionProgress", options: NSKeyValueObservingOptions.New, context: nil)
+
+        let dismissRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismiss))
+        dismissRecognizer.numberOfTapsRequired = 1
+
+        self.view.addGestureRecognizer(dismissRecognizer)
     }
 
     @available (*, unavailable)
@@ -48,7 +77,7 @@ class NewImageViewController: UIViewController, ItemController {
         super.viewDidLayoutSubviews()
     }
 
-    func presentItem(animateAlongsideView alongsideView: BlurView) {
+    func presentItem(alongsideAnimation alongsideAnimation: Duration -> Void) {
 
         //Get the displaced view
         guard let displacedView = displacedViewsDatasource?.provideDisplacementItem(atIndex: index) as? UIImageView,
@@ -62,8 +91,9 @@ class NewImageViewController: UIViewController, ItemController {
 
         displacedView.hidden = true
 
-        UIView.animateWithDuration(10, animations: { () -> Void in
+        alongsideAnimation(displacementDuration * Double(overlayAccelerationFactor))
 
+        UIView.animateWithDuration(displacementDuration, delay: 0, usingSpringWithDamping: displacementSpringBounce, initialSpringVelocity: 1, options: UIViewAnimationOptions.CurveEaseIn, animations: {
 
             if UIApplication.isPortraitOnly == true {
                 animatedImageView.transform = rotationTransform()
@@ -76,35 +106,12 @@ class NewImageViewController: UIViewController, ItemController {
             animatedImageView.bounds.size = aspectFitSize
             animatedImageView.center = self.view.boundsCenter
 
-            alongsideView.blur = 1
-
-            }, completion: { [weak self] _ in
-
-                //                /// Unhide gallery views
-                //                if self?.decorationViewsHidden == false {
-                //
-                //                    UIView.animateWithDuration(0.2, animations: { [weak self] in
-                //                        self?.headerView?.alpha = 1.0
-                //                        self?.footerView?.alpha = 1.0
-                //                        self?.closeView?.alpha = 1.0
-                //                        })
-                //                }
-            })
-
-        UIView.transitionWithView(self.view, duration: 0.3, options: UIViewAnimationOptions.CurveLinear, animations: {
-
-            self.transitionProgress = 1
-            
             }, completion: nil)
     }
     
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        print("OBSERVED")
-    }
-    
-    func scrubberValueChanged(scrubber: UISlider) {
+    func dismiss() {
         
-        self.delegate?.itemController(self, didTransitionWithProgress: CGFloat( 1 - scrubber.value / 1000))
+        self.delegate?.dismiss()
     }
 }
 

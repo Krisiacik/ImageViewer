@@ -10,7 +10,13 @@ import UIKit
 
 class BlurView: UIView {
 
-    var overlayColor = UIColor.blackColor()
+
+    var blurOpacity: CGFloat = 1
+    var colorOpacity: CGFloat = 1
+
+    var overlayColor = UIColor.whiteColor() {
+        didSet { blurringView.contentView.backgroundColor = overlayColor }
+    }
 
     var blur: Float = 0 {
         didSet { applyBlur(blur) }
@@ -75,6 +81,17 @@ class BlurView: UIView {
         print(contentAlpha)
 
         blurringViewContainer.alpha = blurAlpha
-        blurringView.contentView.alpha = 0
+        blurringView.contentView.alpha = contentAlpha
+    }
+
+    func animate(duration: NSTimeInterval) {
+
+        UIView.animateWithDuration(duration * 0.4) {
+            self.blurringViewContainer.alpha = self.blurOpacity
+        }
+        UIView.animateWithDuration(duration * 0.7, delay: duration * 0.3, options: .CurveLinear, animations: { 
+
+            self.blurringView.contentView.alpha = self.colorOpacity
+            }, completion: nil)
     }
 }

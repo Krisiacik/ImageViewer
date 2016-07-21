@@ -15,13 +15,13 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
     @IBAction func showGalleryImageViewer(sender: UITapGestureRecognizer) {
         
         guard let displacedView = sender.view as? UIImageView else { return }
-        guard let _ = images.indexOf(displacedView) else { return }
+        guard let displacedViewIndex = images.indexOf(displacedView) else { return }
         
 //        let frame = CGRect(x: 0, y: 0, width: 200, height: 24)
 //        let headerView = CounterView(frame: frame, currentIndex: currentIndex, count: images.count)
 //        let footerView = CounterView(frame: frame, currentIndex: currentIndex, count: images.count)
         
-        let galleryViewController = NewGalleryViewController(startIndex: images.indexOf(displacedView) ?? 0, itemsDatasource: self, displacedViewsDatasource: self)
+        let galleryViewController = NewGalleryViewController(startIndex: displacedViewIndex, itemsDatasource: self, displacedViewsDatasource: self, configuration: galleryConfiguration())
 //        galleryViewController.headerView = headerView
 //        galleryViewController.footerView = footerView
 //        
@@ -61,4 +61,19 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
         
         return GalleryItem.Image(image)
     }
+}
+
+
+func galleryConfiguration() -> GalleryConfiguration {
+
+    let displacementDuration        = GalleryConfigurationItem.DisplacementDuration(0.45)
+    let displacementBounce          = GalleryConfigurationItem.DisplacementTransitionStyle(.SpringBounce(0.5))
+    let displacementCurve           = GalleryConfigurationItem.DisplacementTransitionCurve(.EaseOut)
+    let overlayColor                = GalleryConfigurationItem.OverlayColor(UIColor.blackColor())
+    let colorOpacity                = GalleryConfigurationItem.OverlayColorOpacity(0.85)
+    let blurOpacity                 = GalleryConfigurationItem.OverlayBlurOpacity(1)
+    let blurStyle                   = GalleryConfigurationItem.OverlayBlurStyle(UIBlurEffectStyle.Light)
+    let overlayAccelerationFactor   = GalleryConfigurationItem.OverlayAccelerationFactor(0.4)
+
+    return [displacementDuration, displacementCurve, displacementBounce, overlayColor, blurOpacity, colorOpacity, blurStyle, overlayAccelerationFactor]
 }
