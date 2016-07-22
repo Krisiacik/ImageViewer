@@ -15,11 +15,7 @@ class BlurView: UIView {
     var colorOpacity: CGFloat = 1
 
     var overlayColor = UIColor.whiteColor() {
-        didSet { blurringView.contentView.backgroundColor = overlayColor }
-    }
-
-    var blur: Float = 0 {
-        didSet { applyBlur(blur) }
+        didSet { colorView.backgroundColor = overlayColor }
     }
 
     /// The following two pairs of values allow us to tweak the pace and thresholds at which the two distint effect layers kick-in, when they create a final composited blur layer.
@@ -37,6 +33,7 @@ class BlurView: UIView {
 
     let blurringViewContainer = UIView() //serves as a transparency container for the blurringView as it's not recommended by Apple to apply transparency directly to the UIVisualEffectsView
     let blurringView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
+    let colorView = UIView()
 
     convenience init() {
 
@@ -46,12 +43,14 @@ class BlurView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        blurringView.contentView.backgroundColor = overlayColor
-        blurringView.contentView.alpha = 0
         blurringViewContainer.alpha = 0
+
+        colorView.backgroundColor = overlayColor
+        colorView.alpha = 0
 
         self.addSubview(blurringViewContainer)
         blurringViewContainer.addSubview(blurringView)
+        self.addSubview(colorView)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -63,25 +62,7 @@ class BlurView: UIView {
 
         blurringViewContainer.frame = self.bounds
         blurringView.frame = blurringViewContainer.bounds
-    }
-
-    private func applyBlur(value: Float) {
-
-        let normalizedValue = CGFloat(min(abs(value), 1)) //We are scoping the values to 0..1 interval. A "Percent" foundation type would be nice but this will have to do.
-
-        let blurScopedValue = max(min(normalizedValue, blurThresholdMax), blurThresholdMin) - blurThresholdMin
-        let blurRange = blurThresholdMax - blurThresholdMin
-        let blurAlpha = CGFloat(blurScopedValue / blurRange)
-
-        let contentScope = max(min(normalizedValue, overlayColorThresholdMax), overlayColorThresholdMin) - overlayColorThresholdMin
-        let contentRange = overlayColorThresholdMax - overlayColorThresholdMin
-        let contentAlpha = CGFloat(contentScope / contentRange)
-
-        print(blurAlpha)
-        print(contentAlpha)
-
-        blurringViewContainer.alpha = blurAlpha
-        blurringView.contentView.alpha = contentAlpha
+        colorView.frame = self.bounds
     }
 
     func animate(duration: NSTimeInterval) {
@@ -91,7 +72,7 @@ class BlurView: UIView {
         }
         UIView.animateWithDuration(duration * 0.7, delay: duration * 0.3, options: .CurveLinear, animations: { 
 
-            self.blurringView.contentView.alpha = self.colorOpacity
+            self.colorView.alpha = self.colorOpacity
             }, completion: nil)
     }
 }

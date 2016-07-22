@@ -114,7 +114,6 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
 
     func itemController(controller: ItemController, didTransitionWithProgress progress: CGFloat) {
 
-        blurView.blur = Float(progress)
     }
 
     func dismiss() {

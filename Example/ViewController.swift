@@ -63,15 +63,14 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
     }
 }
 
-
 func galleryConfiguration() -> GalleryConfiguration {
 
-    let displacementDuration        = GalleryConfigurationItem.DisplacementDuration(0.45)
-    let displacementBounce          = GalleryConfigurationItem.DisplacementTransitionStyle(.SpringBounce(0.5))
+    let displacementDuration        = GalleryConfigurationItem.DisplacementDuration(0.4)
+    let displacementBounce          = GalleryConfigurationItem.DisplacementTransitionStyle(.SpringBounce(0.7))
     let displacementCurve           = GalleryConfigurationItem.DisplacementTransitionCurve(.EaseOut)
     let overlayColor                = GalleryConfigurationItem.OverlayColor(UIColor.blackColor())
-    let colorOpacity                = GalleryConfigurationItem.OverlayColorOpacity(0.85)
-    let blurOpacity                 = GalleryConfigurationItem.OverlayBlurOpacity(1)
+    let colorOpacity                = GalleryConfigurationItem.OverlayColorOpacity(1)
+    let blurOpacity                 = GalleryConfigurationItem.OverlayBlurOpacity(0)
     let blurStyle                   = GalleryConfigurationItem.OverlayBlurStyle(UIBlurEffectStyle.Light)
     let overlayAccelerationFactor   = GalleryConfigurationItem.OverlayAccelerationFactor(0.4)
 
