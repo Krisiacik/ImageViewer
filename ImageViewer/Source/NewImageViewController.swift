@@ -14,26 +14,28 @@ class NewImageViewController: UIViewController, ItemController {
     var delegate: ItemControllerDelegate?
     var displacedViewsDatasource: GalleryDisplacedViewsDatasource?
     var isInitialController = false
+    let fetchImage: FetchImage
 
     //CONFIGURATION
     private var displacementDuration: NSTimeInterval = 0.6
-    private var displacementTransitionCurve: UIViewAnimationCurve = .Linear
+    private var displacementTimingCurve: UIViewAnimationCurve = .Linear
     private var displacementSpringBounce: CGFloat = 0.7
     private var overlayAccelerationFactor: CGFloat = 1
 
-    let imageView = UIImageView()
+    var imageView = UIImageView()
 
-    init(index: Int, image: UIImage, configuration: GalleryConfiguration) {
+    init(index: Int, fetchImageBlock: FetchImage, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
         self.index = index
-        self.imageView.image = image
+        self.fetchImage = fetchImageBlock
+        self.isInitialController = isInitialController
 
         for item in configuration {
 
             switch item {
 
             case .DisplacementDuration(let duration):       displacementDuration = duration
-            case .DisplacementTransitionCurve(let curve):   displacementTransitionCurve = curve
+            case .DisplacementTimingCurve(let curve):       displacementTimingCurve = curve
             case .OverlayAccelerationFactor(let factor):    overlayAccelerationFactor = factor
 
             case .DisplacementTransitionStyle(let style):
@@ -56,6 +58,8 @@ class NewImageViewController: UIViewController, ItemController {
         dismissRecognizer.numberOfTapsRequired = 1
 
         self.view.addGestureRecognizer(dismissRecognizer)
+
+        self.imageView.hidden = isInitialController
     }
 
     @available (*, unavailable)
@@ -63,6 +67,18 @@ class NewImageViewController: UIViewController, ItemController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        fetchImage { [weak self] image in
+
+            if let image = image {
+
+                self?.imageView.image = image
+                self?.imageView.bounds.size = aspectFitContentSize(forBoundingSize: self!.view.bounds.size, contentSize: image.size)
+                self?.imageView.center = self!.view.boundsCenter
+
+                self?.view.addSubview(self!.imageView)
+            }
+        }
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -106,7 +122,11 @@ class NewImageViewController: UIViewController, ItemController {
             animatedImageView.bounds.size = aspectFitSize
             animatedImageView.center = self.view.boundsCenter
 
-            }, completion: nil)
+            }, completion: { _ in
+
+                self.imageView.hidden = false
+                self.imageView  = animatedImageView
+        })
     }
     
     func dismiss() {

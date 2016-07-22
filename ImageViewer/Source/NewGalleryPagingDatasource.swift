@@ -67,15 +67,15 @@ final class NewGalleryPagingDatasource: NSObject, UIPageViewControllerDataSource
         }
     }
 
-    func createItemController(itemIndex: Int) -> UIViewController {
+    func createItemController(itemIndex: Int, isInitial: Bool = false) -> UIViewController {
 
         let item = itemsDatasource.provideGalleryItem(itemIndex)
 
         switch item {
 
-        case .Image(let image):
+        case .Image(let fetchImageBlock):
 
-            let imageController = NewImageViewController(index: itemIndex, image: image, configuration: configuration)
+            let imageController = NewImageViewController(index: itemIndex, fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitial)
             imageController.delegate = itemControllerDelegate
             imageController.displacedViewsDatasource = displacedViewsDatasource
 

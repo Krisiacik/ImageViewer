@@ -76,7 +76,7 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
 
         ///This feels out of place, one would expect even the first presented(paged) item controller to be provided by the paging datasource but there is nothing we can do as Apple requires the first controller to be set via this "setViewControllers" method.
 
-        let initialController = pagingDatasource.createItemController(startIndex)
+        let initialController = pagingDatasource.createItemController(startIndex, isInitial: true)
         self.setViewControllers([initialController], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
 
         if let controller = initialController as? ItemController {

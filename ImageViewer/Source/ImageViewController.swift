@@ -124,9 +124,10 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
                 
                 switch item {
                     
-                case .Image(let image):
+                case .Image( _):
 
-                        self?.updateImageAndContentSize(image)
+                    break
+                        //self?.updateImageAndContentSize(image)
                     
                 default: break
                 }

@@ -43,7 +43,7 @@ public enum GalleryConfigurationItem {
     case HideDecorationViewsOnLaunch(Bool) /// Sets the close button, header view and footer view visible/invisible on launch. Visibility of these three views is toggled by single tapping anywhere in the gallery area. This setting is global to Gallery.
 
     case DisplacementDuration(NSTimeInterval) //// Duration of the displacement effect when gallery is being presented via touching an image
-    case DisplacementTransitionCurve(UIViewAnimationCurve)
+    case DisplacementTimingCurve(UIViewAnimationCurve)
     case DisplacementTransitionStyle(DisplacementStyle)
 
     case OverlayColor(UIColor) ///Base color of the overlay layer that is mostly visible when images are displaced (gallery is being presented), rotated and interactively dismissed.

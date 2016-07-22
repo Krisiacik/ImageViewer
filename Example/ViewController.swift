@@ -52,24 +52,27 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
 
     func provideGalleryItem(index: Int) -> GalleryItem {
 
-        if index == 2 {
+//        if index == 2 {
+//
+//            return GalleryItem.Video(NSURL(string: "")!)
+//        }
+//        else {
 
-            return GalleryItem.Video(NSURL(string: "")!)
-        }
+            let image = images[index].image ?? UIImage(named: "0")!
 
-        let image = images[index].image ?? UIImage(named: "0")!
-        
-        return GalleryItem.Image(image)
+            return GalleryItem.Image { $0(image) }
+//        }
     }
 }
 
+
 func galleryConfiguration() -> GalleryConfiguration {
 
-    let displacementDuration        = GalleryConfigurationItem.DisplacementDuration(0.4)
+    let displacementDuration        = GalleryConfigurationItem.DisplacementDuration(0.6)
     let displacementBounce          = GalleryConfigurationItem.DisplacementTransitionStyle(.SpringBounce(0.7))
-    let displacementCurve           = GalleryConfigurationItem.DisplacementTransitionCurve(.EaseOut)
-    let overlayColor                = GalleryConfigurationItem.OverlayColor(UIColor.blackColor())
-    let colorOpacity                = GalleryConfigurationItem.OverlayColorOpacity(1)
+    let displacementCurve           = GalleryConfigurationItem.DisplacementTimingCurve(.EaseOut)
+    let overlayColor                = GalleryConfigurationItem.OverlayColor(UIColor.whiteColor())
+    let colorOpacity                = GalleryConfigurationItem.OverlayColorOpacity(0.85)
     let blurOpacity                 = GalleryConfigurationItem.OverlayBlurOpacity(0)
     let blurStyle                   = GalleryConfigurationItem.OverlayBlurStyle(UIBlurEffectStyle.Light)
     let overlayAccelerationFactor   = GalleryConfigurationItem.OverlayAccelerationFactor(0.4)

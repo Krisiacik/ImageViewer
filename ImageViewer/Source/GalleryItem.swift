@@ -8,8 +8,11 @@
 
 import UIKit
 
+public typealias ConsumeImage = UIImage? -> Void
+public typealias FetchImage = ConsumeImage -> Void
+
 public enum GalleryItem {
     
-    case Image(UIImage)
+    case Image(FetchImage)
     case Video(NSURL)
 }
