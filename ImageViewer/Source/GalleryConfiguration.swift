@@ -21,10 +21,16 @@ public enum GalleryPagingMode {
     case Carousel /// Pages through images from 0 to N and the again 0 to N in a loop, works both directions.
 }
 
-public enum DisplacementStyle {
+public enum GalleryDisplacementStyle {
 
     case Normal
     case SpringBounce(CGFloat) ///
+}
+
+public enum GalleryPresentationStyle {
+
+    case FadeIn
+    case Displace
 }
 
 public typealias GalleryConfiguration = [GalleryConfigurationItem]
@@ -42,9 +48,12 @@ public enum GalleryConfigurationItem {
     case StatusBarHidden(Bool) /// Sets the status bar visible/invisible while gallery is presented.
     case HideDecorationViewsOnLaunch(Bool) /// Sets the close button, header view and footer view visible/invisible on launch. Visibility of these three views is toggled by single tapping anywhere in the gallery area. This setting is global to Gallery.
 
-    case DisplacementDuration(NSTimeInterval) //// Duration of the displacement effect when gallery is being presented via touching an image
+    case PresentationStyle(GalleryPresentationStyle) /// Allows you to select between different types of initial gallery presentation style
+
+    case DisplacementKeepOriginalInPlace(Bool) ///Setting this to true is useful when your overlay layer is not fully opaque and you have multiple images on screen at once. The problem is image 1 is going to be displaced (gallery is being presented) and you can see that it is missing in the parent canvas because the canvas bleeds through overlay layer. However when you page to a different image and you decide to dismiss the gallery, that different image is going to be returned (using reveserse displacement). Thats look a bit strange because it is reverse displacing but it actually is already present in the parent canvas whreas the originla image 1 is still missing there. This setting helps you avoid it.
+    case DisplacementDuration(NSTimeInterval) /// Duration of the displacement effect when gallery is being presented via touching an image
     case DisplacementTimingCurve(UIViewAnimationCurve)
-    case DisplacementTransitionStyle(DisplacementStyle)
+    case DisplacementTransitionStyle(GalleryDisplacementStyle)
 
     case OverlayColor(UIColor) ///Base color of the overlay layer that is mostly visible when images are displaced (gallery is being presented), rotated and interactively dismissed.
     case OverlayBlurStyle(UIBlurEffectStyle) ///Allows to select the overall B&W tone of the overlay

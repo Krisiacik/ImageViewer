@@ -17,6 +17,7 @@ class NewImageViewController: UIViewController, ItemController {
     let fetchImage: FetchImage
 
     //CONFIGURATION
+    private var presentationStyle = GalleryPresentationStyle.Displace
     private var displacementDuration: NSTimeInterval = 0.6
     private var displacementTimingCurve: UIViewAnimationCurve = .Linear
     private var displacementSpringBounce: CGFloat = 0.7
@@ -34,6 +35,7 @@ class NewImageViewController: UIViewController, ItemController {
 
             switch item {
 
+            case .PresentationStyle(let style):             presentationStyle = style
             case .DisplacementDuration(let duration):       displacementDuration = duration
             case .DisplacementTimingCurve(let curve):       displacementTimingCurve = curve
             case .OverlayAccelerationFactor(let factor):    overlayAccelerationFactor = factor
@@ -95,38 +97,52 @@ class NewImageViewController: UIViewController, ItemController {
 
     func presentItem(alongsideAnimation alongsideAnimation: Duration -> Void) {
 
-        //Get the displaced view
-        guard let displacedView = displacedViewsDatasource?.provideDisplacementItem(atIndex: index) as? UIImageView,
-            let image = displacedView.image else { return }
-
-        //Prepare the animated image view
-        let animatedImageView = displacedView.clone()
-        animatedImageView.frame = displacedView.frame(inCoordinatesOfView: self.view)
-        animatedImageView.clipsToBounds = true
-        self.view.addSubview(animatedImageView)
-
-        displacedView.hidden = true
-
         alongsideAnimation(displacementDuration * Double(overlayAccelerationFactor))
 
-        UIView.animateWithDuration(displacementDuration, delay: 0, usingSpringWithDamping: displacementSpringBounce, initialSpringVelocity: 1, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+        switch presentationStyle {
 
-            if UIApplication.isPortraitOnly == true {
-                animatedImageView.transform = rotationTransform()
+        case .FadeIn:
+
+            imageView.alpha = 0
+            imageView.hidden = false
+            UIView.animateWithDuration(displacementDuration) { [weak self] in
+
+                self?.imageView.alpha = 1
             }
-            /// Animate it into the center (with optionaly rotating) - that basically includes changing the size and position
 
-            let boundingSize = rotationAdjustedBounds().size
-            let aspectFitSize = aspectFitContentSize(forBoundingSize: boundingSize, contentSize: image.size)
+        case .Displace:
 
-            animatedImageView.bounds.size = aspectFitSize
-            animatedImageView.center = self.view.boundsCenter
+            //Get the displaced view
+            guard let displacedView = displacedViewsDatasource?.provideDisplacementItem(atIndex: index) as? UIImageView,
+                let image = displacedView.image else { return }
 
-            }, completion: { _ in
+            //Prepare the animated image view
+            let animatedImageView = displacedView.clone()
+            animatedImageView.frame = displacedView.frame(inCoordinatesOfView: self.view)
+            animatedImageView.clipsToBounds = true
+            self.view.addSubview(animatedImageView)
 
-                self.imageView.hidden = false
-                self.imageView  = animatedImageView
-        })
+            displacedView.hidden = true
+
+            UIView.animateWithDuration(displacementDuration, delay: 0, usingSpringWithDamping: displacementSpringBounce, initialSpringVelocity: 1, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+
+                if UIApplication.isPortraitOnly == true {
+                    animatedImageView.transform = rotationTransform()
+                }
+                /// Animate it into the center (with optionaly rotating) - that basically includes changing the size and position
+
+                let boundingSize = rotationAdjustedBounds().size
+                let aspectFitSize = aspectFitContentSize(forBoundingSize: boundingSize, contentSize: image.size)
+
+                animatedImageView.bounds.size = aspectFitSize
+                animatedImageView.center = self.view.boundsCenter
+
+                }, completion: { _ in
+
+                    self.imageView.hidden = false
+                    animatedImageView.removeFromSuperview()
+            })
+        }
     }
     
     func dismiss() {
