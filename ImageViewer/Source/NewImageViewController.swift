@@ -10,11 +10,17 @@ import UIKit
 
 class NewImageViewController: UIViewController, ItemController {
 
-    let index: Int
+    //UI
+    var imageView = UIImageView()
+
+    //DELEGATE / DATASOURCE
     var delegate: ItemControllerDelegate?
     var displacedViewsDatasource: GalleryDisplacedViewsDatasource?
+
+    //STATE
+    let index: Int
     var isInitialController = false
-    let fetchImage: FetchImage
+    let fetchImageBlock: FetchImage
 
     //CONFIGURATION
     private var presentationStyle = GalleryPresentationStyle.Displace
@@ -23,12 +29,12 @@ class NewImageViewController: UIViewController, ItemController {
     private var displacementSpringBounce: CGFloat = 0.7
     private var overlayAccelerationFactor: CGFloat = 1
 
-    var imageView = UIImageView()
+
 
     init(index: Int, fetchImageBlock: FetchImage, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
         self.index = index
-        self.fetchImage = fetchImageBlock
+        self.fetchImageBlock = fetchImageBlock
         self.isInitialController = isInitialController
 
         for item in configuration {
@@ -70,7 +76,7 @@ class NewImageViewController: UIViewController, ItemController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        fetchImage { [weak self] image in
+        fetchImageBlock { [weak self] image in
 
             if let image = image {
 
