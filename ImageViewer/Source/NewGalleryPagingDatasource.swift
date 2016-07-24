@@ -75,7 +75,7 @@ final class NewGalleryPagingDatasource: NSObject, UIPageViewControllerDataSource
 
         case .Image(let fetchImageBlock):
 
-            let imageController = NewImageViewController(index: itemIndex, fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitial)
+            let imageController = NewImageViewController(index: itemIndex, itemCount: self.itemsDatasource.numberOfItemsInGalery(), fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitial)
             imageController.delegate = itemControllerDelegate
             imageController.displacedViewsDatasource = displacedViewsDatasource
 

@@ -22,6 +22,7 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
     let index: Int
     var isInitialController = false
     let fetchImageBlock: FetchImage
+    let itemCount: Int
 
     //CONFIGURATION
     private var presentationStyle = GalleryPresentationStyle.Displace
@@ -31,23 +32,26 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
     private var overlayAccelerationFactor: CGFloat = 1
     private let minimumZoomScale: CGFloat = 1
     private var maximumZoomScale: CGFloat = 4
-
+    private var pagingMode: GalleryPagingMode = .Standard
+    
     /// INTERACTIONS
     private let singleTapRecognizer = UITapGestureRecognizer()
     private let doubleTapRecognizer = UITapGestureRecognizer()
-    private let panGestureRecognizer = UIPanGestureRecognizer()
+    private let panRecognizer = UIPanGestureRecognizer()
     
-    init(index: Int, fetchImageBlock: FetchImage, configuration: GalleryConfiguration, isInitialController: Bool = false) {
+    init(index: Int, itemCount: Int, fetchImageBlock: FetchImage, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
         self.index = index
+        self.itemCount = itemCount
         self.fetchImageBlock = fetchImageBlock
         self.isInitialController = isInitialController
 
         for item in configuration {
 
             switch item {
-
+                
             case .PresentationStyle(let style):             presentationStyle = style
+            case .PagingMode(let mode):                     pagingMode = mode
             case .DisplacementDuration(let duration):       displacementDuration = duration
             case .DisplacementTimingCurve(let curve):       displacementTimingCurve = curve
             case .OverlayAccelerationFactor(let factor):    overlayAccelerationFactor = factor
@@ -103,9 +107,9 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
         
         singleTapRecognizer.requireGestureRecognizerToFail(doubleTapRecognizer)
         
-        panGestureRecognizer.addTarget(self, action: #selector(scrollViewDidSwipeToDismiss))
-        panGestureRecognizer.delegate = self
-        view.addGestureRecognizer(panGestureRecognizer)
+        panRecognizer.addTarget(self, action: #selector(scrollViewDidSwipeToDismiss))
+        panRecognizer.delegate = self
+        view.addGestureRecognizer(panRecognizer)
     }
 
     private func createViewHierarchy() {
@@ -211,6 +215,26 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
                     animatedImageView.removeFromSuperview()
             })
         }
+    }
+    
+    ///This resolves which of the two pan gesture recognizers should kick in. There is one built in the GalleryViewController (as it is a UIPageViewController subclass), and another one is added as part of item controller. When we pan, we need to decide whether it constitutes a horizontal paging gesture, or a swipe-to-dismiss gesture.
+    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+        /// We only care about the pan gesture recognizer
+        guard gestureRecognizer == panRecognizer else { return false }
+        
+        let velocity = panRecognizer.velocityInView(panRecognizer.view)
+        
+        /// If the vertical velocity (in both up and bottom direction) is faster then horizontal velocity..it is clearly a vertical swipe to dismiss so we allow it.
+        guard fabs(velocity.y) < fabs(velocity.x) else { return true }
+        
+        /// A special case for horizontal "swipe to dismiss" is when the gallery has carousel mode OFF, then it is possible to reach the beginning or the end of image set while paging. PAging will stop at index = 0 or at index.max. In this case we allow to jump out from the gallery also via horizontal swipe to dismiss.
+        if (self.index == 0 && velocity.x > 0) || (self.index == self.itemCount - 1 && velocity.x < 0) {
+            
+            return (pagingMode == .Standard)
+        }
+        
+        return false
     }
 }
 
