@@ -12,10 +12,9 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     
     /// UI
     private var closeButton: UIButton? = makeCloseButton()
-    /// You can set any UIView subclass here. If set, it will be put into view hierachy and laid out
-    /// following either the default pinning settings or settings from a custom configuration.
+    /// A custom view on the top of the gallery with layout using default (or custom) pinning settings for header.
     public var headerView: UIView?
-    /// Behaves the same way as headerView above, the only difference is this one is pinned to the bottom.
+    /// A custom view at the bottom of the gallery with layout using default (or custom) pinning settingsfor footer.
     public var footerView: UIView?
     private let displacedView: UIView
     private var applicationWindow: UIWindow? { return UIApplication.sharedApplication().delegate?.window?.flatMap { $0 } }

@@ -38,13 +38,18 @@ public typealias GalleryConfiguration = [GalleryConfigurationItem]
 public enum GalleryConfigurationItem {
 
     case ImageDividerWidth(CGFloat) /// Distance (width of the area) between images when paged.
+   
     case SpinnerStyle(UIActivityIndicatorViewStyle) /// This spinner is shown when we page to an image page, but the image itself is still loading.
     case SpinnerColor(UIColor) /// Color of the spinner above.
+    
     case CloseButtonMode(GalleryCloseButtonMode)
-    case PagingMode(GalleryPagingMode)
     case CloseLayout(CloseButtonLayout) /// Layout behaviour for the close button.
+    
+    case PagingMode(GalleryPagingMode)
+
     case HeaderViewLayout(HeaderLayout) /// Layout behaviour for optional header view.
     case FooterViewLayout(FooterLayout) /// Layout behaviour for optional footer view.
+    
     case StatusBarHidden(Bool) /// Sets the status bar visible/invisible while gallery is presented.
     case HideDecorationViewsOnLaunch(Bool) /// Sets the close button, header view and footer view visible/invisible on launch. Visibility of these three views is toggled by single tapping anywhere in the gallery area. This setting is global to Gallery.
 

@@ -16,5 +16,7 @@ protocol ItemControllerDelegate: class {
     ///Represents a generic transitioning progress from 0 to 1 (or reversed) where 0 is no progress and 1 is fully finished transitioning. It's up to the implementing controller to make decisions about how this value is being calculated, based on the nature of transition.
     func itemController(controller: ItemController, didTransitionWithProgress progress: CGFloat)
 
-    func itemControllerDidSingleTap()
+    func itemControllerDidSingleTap(controller: ItemController)
+    
+    func itemControllerDidAppear(controller: ItemController)
 }

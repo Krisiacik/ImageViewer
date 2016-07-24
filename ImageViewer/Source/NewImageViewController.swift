@@ -137,6 +137,8 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        
+        self.delegate?.itemControllerDidAppear(self)
     }
 
     override func viewWillLayoutSubviews() {
@@ -156,7 +158,7 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
 
     func scrollViewDidSingleTap() {
         
-        self.delegate?.itemControllerDidSingleTap()
+        self.delegate?.itemControllerDidSingleTap(self)
     }
     
     func scrollViewDidDoubleTap() {
@@ -223,9 +225,10 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
         /// We only care about the pan gesture recognizer
         guard gestureRecognizer == panRecognizer else { return false }
         
+        // The velocity vector will help us make the right decision
         let velocity = panRecognizer.velocityInView(panRecognizer.view)
         
-        /// If the vertical velocity (in both up and bottom direction) is faster then horizontal velocity..it is clearly a vertical swipe to dismiss so we allow it.
+        /// If the vertical velocity (in both up and down direction) is faster then horizontal velocity..it is clearly a vertical swipe to dismiss, so we allow it.
         guard fabs(velocity.y) < fabs(velocity.x) else { return true }
         
         /// A special case for horizontal "swipe to dismiss" is when the gallery has carousel mode OFF, then it is possible to reach the beginning or the end of image set while paging. PAging will stop at index = 0 or at index.max. In this case we allow to jump out from the gallery also via horizontal swipe to dismiss.
@@ -237,5 +240,3 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
         return false
     }
 }
-
-

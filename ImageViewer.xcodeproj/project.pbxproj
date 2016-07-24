@@ -285,8 +285,8 @@
 		EB8BEC771D3D1C7200DCE3EC /* New */ = {
 			isa = PBXGroup;
 			children = (
-				EBAF4C5F1D391C720039CA93 /* NewGalleryPagingDatasource.swift */,
 				EBE627051D2688890095999A /* NewGalleryViewController.swift */,
+				EBAF4C5F1D391C720039CA93 /* NewGalleryPagingDatasource.swift */,
 			);
 			name = New;
 			sourceTree = "<group>";

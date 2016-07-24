@@ -10,13 +10,21 @@ import UIKit
 
 public class NewGalleryViewController: UIPageViewController, ItemControllerDelegate {
 
-    //VIEWS
-    private let blurView = BlurView()
+    //UI
+    private let overlayView = BlurView()
+    /// A custom view on the top of the gallery with layout using default (or custom) pinning settings for header.
+    public var headerView: UIView?
+    /// A custom view at the bottom of the gallery with layout using default (or custom) pinning settingsfor footer.
+    public var footerView: UIView?
     private var closeButton: UIButton? = makeCloseButton()
+    
     private weak var initialItemController: ItemController?
+    
     private var initialPresentationDone = false
 
     ///LOCAL STATE
+    ///represents the current page index
+    var currentIndex: Int
     private var decorationViewsHidden = true ///Picks up the initial value from configuration, if provided. Subseqently also works as local state for the setting.
     private var isAnimating = false
 
@@ -33,11 +41,25 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     private var overlayAccelerationFactor: CGFloat = 1
     private let rotationAnimationDuration = 0.2
 
+    /// COMPLETION BLOCKS
+    /// If set ,the block is executed right after the initial launch animations finish.
+    public var launchedCompletion: (() -> Void)?
+    /// If set, called everytime ANY animation stops in the page controller stops and the viewer passes a page index of the page that is currently on screen
+    public var landedPageAtIndexCompletion: ((Int) -> Void)?
+    /// If set, launched after all animations finish when the close button is pressed.
+    public var closedCompletion: (() -> Void)?
+    /// If set, launched after all animations finish when the close() method is invoked via public API.
+    public var programaticallyClosedCompletion: (() -> Void)?
+    /// If set, launched after all animations finish when the swipe-to-dismiss (applies to all directions and cases) gesture is used.
+    public var swipedToDismissCompletion: (() -> Void)?
+    
     @available(*, unavailable)
     required public init?(coder: NSCoder) { fatalError() }
 
     init(startIndex: Int, itemsDatasource: GalleryItemsDatasource, displacedViewsDatasource: GalleryDisplacedViewsDatasource? = nil, configuration: GalleryConfiguration = []) {
 
+        self.currentIndex = startIndex
+        
         ///Only those options relevant to the paging GalleryViewController are explicitely handled here, the rest is handled by ItemViewControllers
         for item in configuration {
 
@@ -50,10 +72,10 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
             case .CloseLayout(let layout):                  closeLayout = layout
             case .StatusBarHidden(let hidden):              statusBarHidden = hidden
             case .HideDecorationViewsOnLaunch(let hidden):  decorationViewsHidden = hidden
-            case .OverlayColor(let color):                  blurView.overlayColor = color
-            case .OverlayBlurStyle(let style):              blurView.blurringView.effect = UIBlurEffect(style: style)
-            case .OverlayBlurOpacity(let opacity):          blurView.blurOpacity = opacity
-            case .OverlayColorOpacity(let opacity):         blurView.colorOpacity = opacity
+            case .OverlayColor(let color):                  overlayView.overlayColor = color
+            case .OverlayBlurStyle(let style):              overlayView.blurringView.effect = UIBlurEffect(style: style)
+            case .OverlayBlurOpacity(let opacity):          overlayView.blurOpacity = opacity
+            case .OverlayColorOpacity(let opacity):         overlayView.colorOpacity = opacity
 
 
             case .CloseButtonMode(let closeButtonMode):
@@ -97,28 +119,137 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
+    
+    func configureHeaderView() {
+        
+        if let header = headerView {
+            self.view.addSubview(header)
+        }
+    }
+    
+    func configureFooterView() {
+        
+        if let footer = footerView {
+            self.view.addSubview(footer)
+        }
+    }
+    
+    func configureCloseButton() {
+        
+        closeButton?.addTarget(self, action: #selector(GalleryViewController.closeInteractively), forControlEvents: .TouchUpInside)
+    }
+    
+    func createViewHierarchy() {
+        
+        view.addSubview(overlayView)
+        view.sendSubviewToBack(overlayView)
+    }
 
     override public func viewDidLoad() {
         super.viewDidLoad()
 
-        view.addSubview(blurView)
-        view.sendSubviewToBack(blurView)
+        configureHeaderView()
+        configureFooterView()
+        configureCloseButton()
+        createViewHierarchy()
     }
-
-    public override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+    
+    public override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        initialItemController?.presentItem(alongsideAnimation: overlayView.animate)
     }
 
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        blurView.frame = view.bounds
+        overlayView.frame = view.bounds
+        
+        layoutCloseButton()
+        layoutHeaderView()
+        layoutFooterView()
     }
 
-    public override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-
-        initialItemController?.presentItem(alongsideAnimation: blurView.animate)
+    func layoutCloseButton() {
+        
+        guard let close = closeButton else { return }
+        
+        switch closeLayout {
+            
+        case .PinRight(let marginTop, let marginRight):
+            
+            close.autoresizingMask = [.FlexibleBottomMargin, .FlexibleLeftMargin]
+            close.frame.origin.x = self.view.bounds.size.width - marginRight - close.bounds.size.width
+            close.frame.origin.y = marginTop
+            
+        case .PinLeft(let marginTop, let marginLeft):
+            
+            close.autoresizingMask = [.FlexibleBottomMargin, .FlexibleRightMargin]
+            close.frame.origin.x = marginLeft
+            close.frame.origin.y = marginTop
+        }
+    }
+    
+    func layoutHeaderView() {
+        
+        guard let header = headerView else { return }
+        
+        switch headerLayout {
+            
+        case .Center(let marginTop):
+            
+            header.autoresizingMask = [.FlexibleBottomMargin, .FlexibleLeftMargin, .FlexibleRightMargin]
+            header.center = self.view.boundsCenter
+            header.frame.origin.y = marginTop
+            
+        case .PinBoth(let marginTop, let marginLeft,let marginRight):
+            
+            header.autoresizingMask = [.FlexibleBottomMargin, .FlexibleWidth]
+            header.bounds.size.width = self.view.bounds.width - marginLeft - marginRight
+            header.sizeToFit()
+            header.frame.origin = CGPoint(x: marginLeft, y: marginTop)
+            
+        case .PinLeft(let marginTop, let marginLeft):
+            
+            header.autoresizingMask = [.FlexibleBottomMargin, .FlexibleRightMargin]
+            header.frame.origin = CGPoint(x: marginLeft, y: marginTop)
+            
+        case .PinRight(let marginTop, let marginRight):
+            
+            header.autoresizingMask = [.FlexibleBottomMargin, .FlexibleLeftMargin]
+            header.frame.origin = CGPoint(x: self.view.bounds.width - marginRight - header.bounds.width, y: marginTop)
+        }
+    }
+    
+    func layoutFooterView() {
+        
+        guard let footer = footerView else { return }
+        
+        switch footerLayout {
+            
+        case .Center(let marginBottom):
+            
+            footer.autoresizingMask = [.FlexibleTopMargin, .FlexibleLeftMargin, .FlexibleRightMargin]
+            footer.center = self.view.boundsCenter
+            footer.frame.origin.y = self.view.bounds.height - footer.bounds.height - marginBottom
+            
+        case .PinBoth(let marginBottom, let marginLeft,let marginRight):
+            
+            footer.autoresizingMask = [.FlexibleTopMargin, .FlexibleWidth]
+            footer.frame.size.width = self.view.bounds.width - marginLeft - marginRight
+            footer.sizeToFit()
+            footer.frame.origin = CGPoint(x: marginLeft, y: self.view.bounds.height - footer.bounds.height - marginBottom)
+            
+        case .PinLeft(let marginBottom, let marginLeft):
+            
+            footer.autoresizingMask = [.FlexibleTopMargin, .FlexibleRightMargin]
+            footer.frame.origin = CGPoint(x: marginLeft, y: self.view.bounds.height - footer.bounds.height - marginBottom)
+            
+        case .PinRight(let marginBottom, let marginRight):
+            
+            footer.autoresizingMask = [.FlexibleTopMargin, .FlexibleLeftMargin]
+            footer.frame.origin = CGPoint(x: self.view.bounds.width - marginRight - footer.bounds.width, y: self.view.bounds.height - footer.bounds.height - marginBottom)
+        }
     }
 
     func itemController(controller: ItemController, didTransitionWithProgress progress: CGFloat) {
@@ -154,11 +285,19 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
         }
     }
     
-    func itemControllerDidSingleTap() {
+    func itemControllerDidSingleTap(controller: ItemController) {
         //HIDE DECORATION VIEWS HERE
         
         print("SINGLE TAP")
         self.presentingViewController?.view.subviews.forEach { $0.hidden = false }
         self.dismissViewControllerAnimated(false, completion: nil)
+    }
+    
+    func itemControllerDidAppear(controller: ItemController) {
+        
+        self.currentIndex = controller.index
+        self.landedPageAtIndexCompletion?(self.currentIndex)
+        self.headerView?.sizeToFit()
+        self.footerView?.sizeToFit()
     }
 }
