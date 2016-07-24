@@ -26,6 +26,7 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
 
     //CONFIGURATION
     private var presentationStyle = GalleryPresentationStyle.Displace
+    private var zoomDuration = 0.2
     private var displacementDuration: NSTimeInterval = 0.6
     private var displacementTimingCurve: UIViewAnimationCurve = .Linear
     private var displacementSpringBounce: CGFloat = 0.7
@@ -50,6 +51,7 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
 
             switch item {
                 
+            case .DoubleTapToZoomDuration(let duration):    zoomDuration = duration
             case .PresentationStyle(let style):             presentationStyle = style
             case .PagingMode(let mode):                     pagingMode = mode
             case .DisplacementDuration(let duration):       displacementDuration = duration
@@ -103,7 +105,7 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
         singleTapRecognizer.numberOfTapsRequired = 1
         scrollView.addGestureRecognizer(singleTapRecognizer)
         
-        doubleTapRecognizer.addTarget(self, action: #selector(scrollViewDidDoubleTap))
+        doubleTapRecognizer.addTarget(self, action: #selector(scrollViewDidDoubleTap(_:)))
         doubleTapRecognizer.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(doubleTapRecognizer)
         
@@ -173,8 +175,24 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
         self.delegate?.itemControllerDidSingleTap(self)
     }
     
-    func scrollViewDidDoubleTap() {
+    func scrollViewDidDoubleTap(recognizer: UITapGestureRecognizer) {
         
+        let touchPoint = recognizer.locationOfTouch(0, inView: imageView)
+        let aspectFillScale = aspectFillZoomScale(forBoundingSize: scrollView.bounds.size, contentSize: imageView.bounds.size)
+        
+        if (scrollView.zoomScale == 1.0 || scrollView.zoomScale > aspectFillScale) {
+            
+            let zoomRectangle = zoomRect(ForScrollView: scrollView, scale: aspectFillScale, center: touchPoint)
+            
+            UIView.animateWithDuration(zoomDuration, animations: {
+                self.scrollView.zoomToRect(zoomRectangle, animated: false)
+            })
+        }
+        else  {
+            UIView.animateWithDuration(zoomDuration, animations: {
+                self.scrollView.setZoomScale(1.0, animated: false)
+            })
+        }
     }
     
     func scrollViewDidSwipeToDismiss() {

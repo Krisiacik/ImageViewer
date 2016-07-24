@@ -76,6 +76,7 @@ func galleryConfiguration() -> GalleryConfiguration {
     let blurOpacity                 = GalleryConfigurationItem.OverlayBlurOpacity(0)
     let blurStyle                   = GalleryConfigurationItem.OverlayBlurStyle(UIBlurEffectStyle.Light)
     let overlayAccelerationFactor   = GalleryConfigurationItem.OverlayAccelerationFactor(1)
+    let zoomDuration                = GalleryConfigurationItem.DoubleTapToZoomDuration(1)
 
-    return [presentationStyle, displacementDuration, displacementCurve, displacementBounce, overlayColor, blurOpacity, colorOpacity, blurStyle, overlayAccelerationFactor]
+    return [zoomDuration, presentationStyle, displacementDuration, displacementCurve, displacementBounce, overlayColor, blurOpacity, colorOpacity, blurStyle, overlayAccelerationFactor]
 }

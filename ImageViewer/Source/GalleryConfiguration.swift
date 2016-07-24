@@ -56,7 +56,8 @@ public enum GalleryConfigurationItem {
     case PresentationStyle(GalleryPresentationStyle) /// Allows you to select between different types of initial gallery presentation style
 
     case MaximumZoolScale(CGFloat) ///Allows to set maximum magnification factor for the image
-
+    case DoubleTapToZoomDuration(NSTimeInterval) ///Sets the duration of the animation when item is double tapped and transitions between ScaleToAspectFit & ScaleToAspectFill sizes.
+    
     case DisplacementKeepOriginalInPlace(Bool) ///Setting this to true is useful when your overlay layer is not fully opaque and you have multiple images on screen at once. The problem is image 1 is going to be displaced (gallery is being presented) and you can see that it is missing in the parent canvas because the canvas bleeds through overlay layer. However when you page to a different image and you decide to dismiss the gallery, that different image is going to be returned (using reveserse displacement). Thats look a bit strange because it is reverse displacing but it actually is already present in the parent canvas whreas the originla image 1 is still missing there. This setting helps you avoid it.
     case DisplacementDuration(NSTimeInterval) /// Duration of the displacement effect when gallery is being presented via touching an image
     case DisplacementTimingCurve(UIViewAnimationCurve)
