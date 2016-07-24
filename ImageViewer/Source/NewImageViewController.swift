@@ -38,7 +38,7 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
     /// INTERACTIONS
     private let singleTapRecognizer = UITapGestureRecognizer()
     private let doubleTapRecognizer = UITapGestureRecognizer()
-    private let panRecognizer = UIPanGestureRecognizer()
+    private let swipeToDismissRecognizer = UIPanGestureRecognizer()
     
     init(index: Int, itemCount: Int, fetchImageBlock: FetchImage, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
@@ -111,9 +111,9 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
         
         singleTapRecognizer.requireGestureRecognizerToFail(doubleTapRecognizer)
         
-        panRecognizer.addTarget(self, action: #selector(scrollViewDidSwipeToDismiss))
-        panRecognizer.delegate = self
-        view.addGestureRecognizer(panRecognizer)
+        swipeToDismissRecognizer.addTarget(self, action: #selector(scrollViewDidSwipeToDismiss))
+        swipeToDismissRecognizer.delegate = self
+        view.addGestureRecognizer(swipeToDismissRecognizer)
     }
 
     private func createViewHierarchy() {
@@ -250,19 +250,22 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
     }
     
     ///This resolves which of the two pan gesture recognizers should kick in. There is one built in the GalleryViewController (as it is a UIPageViewController subclass), and another one is added as part of item controller. When we pan, we need to decide whether it constitutes a horizontal paging gesture, or a swipe-to-dismiss gesture.
+    /// All the logic is from the perspective of SwipeToDismissRecognizer - should it kick in (or let the paging recognizer page)?
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         
-        /// We only care about the pan gesture recognizer
-        guard gestureRecognizer == panRecognizer else { return false }
+        /// We only care about the swipe to dismiss gesture recognizer, not the built-in pan recogizner that handles paging.
+        guard gestureRecognizer == swipeToDismissRecognizer else { return false }
         
-        // The velocity vector will help us make the right decision
-        let velocity = panRecognizer.velocityInView(panRecognizer.view)
+        /// The velocity vector will help us make the right decision
+        let velocity = swipeToDismissRecognizer.velocityInView(swipeToDismissRecognizer.view)
+        ///A bit of paranoia
+        guard velocity.orientation != .None else { return false }
         
-        /// If the vertical velocity (in both up and down direction) is faster then horizontal velocity..it is clearly a vertical swipe to dismiss, so we allow it.
-        guard fabs(velocity.y) < fabs(velocity.x) else { return true }
+        /// We continue if the swipe is horizontal, otherwise it's Vertical and it is swipe to dismiss.
+        guard velocity.orientation == .Horizontal else { return true }
         
         /// A special case for horizontal "swipe to dismiss" is when the gallery has carousel mode OFF, then it is possible to reach the beginning or the end of image set while paging. PAging will stop at index = 0 or at index.max. In this case we allow to jump out from the gallery also via horizontal swipe to dismiss.
-        if (self.index == 0 && velocity.x > 0) || (self.index == self.itemCount - 1 && velocity.x < 0) {
+        if (self.index == 0 && velocity.direction == .Right) || (self.index == self.itemCount - 1 && velocity.direction == .Left) {
             
             return (pagingMode == .Standard)
         }
