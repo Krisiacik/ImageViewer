@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewImageViewController: UIViewController, ItemController, UIGestureRecognizerDelegate {
+class NewImageViewController: UIViewController, ItemController, UIGestureRecognizerDelegate, UIScrollViewDelegate {
 
     //UI
     var imageView = UIImageView()
@@ -90,6 +90,8 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
         scrollView.contentOffset = CGPointZero
         scrollView.minimumZoomScale = minimumZoomScale
         scrollView.maximumZoomScale = maximumZoomScale
+        
+        scrollView.delegate = self
 
         imageView.layer.borderWidth = 1
         imageView.layer.borderColor = UIColor.redColor().CGColor
@@ -156,6 +158,16 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
         imageView.center = scrollView.boundsCenter
     }
 
+    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+        
+        return imageView
+    }
+    
+    func scrollViewDidZoom(scrollView: UIScrollView) {
+        
+        imageView.center = contentCenter(forBoundingSize: scrollView.bounds.size, contentSize: scrollView.contentSize)
+    }
+    
     func scrollViewDidSingleTap() {
         
         self.delegate?.itemControllerDidSingleTap(self)

@@ -273,7 +273,6 @@
 		EB6A56D21C85E41700BBDEF6 /* Item Controller */ = {
 			isa = PBXGroup;
 			children = (
-				EBE627081D2689AD0095999A /* ItemController.swift */,
 				EBEBEF931C84665B008C1E58 /* ImageViewController.swift */,
 				EB243F961C8996DF006DEF58 /* ImageViewControllerDelegate.swift */,
 				EB5F68DB1D241BC600501552 /* ImageViewControllerFactory.swift */,
@@ -294,6 +293,7 @@
 		EB8BEC781D3D1C9B00DCE3EC /* New  */ = {
 			isa = PBXGroup;
 			children = (
+				EBE627081D2689AD0095999A /* ItemController.swift */,
 				EBAF4C651D3937BC0039CA93 /* VideoViewController.swift */,
 				EBAF4C621D3937AE0039CA93 /* NewImageViewController.swift */,
 				EB8BEC791D3D1CB500DCE3EC /* ItemControllerDelegate.swift */,
