@@ -15,8 +15,10 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     private var closeButton: UIButton? = makeCloseButton()
     private weak var initialItemController: ItemController?
     private var initialPresentationDone = false
+
     ///LOCAL STATE
     private var decorationViewsHidden = true ///Picks up the initial value from configuration, if provided. Subseqently also works as local state for the setting.
+    private var isAnimating = false
 
     //PAGING DATASOURCE
     private let pagingDatasource: NewGalleryPagingDatasource
@@ -29,6 +31,7 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     private var closeLayout = CloseButtonLayout.PinRight(8, 16)
     private var statusBarHidden = true
     private var overlayAccelerationFactor: CGFloat = 1
+    private let rotationAnimationDuration = 0.2
 
     @available(*, unavailable)
     required public init?(coder: NSCoder) { fatalError() }
@@ -87,11 +90,17 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
         ///This less known and used presentation style option allows the contents of parent view controller presenting the gallery to "bleed through" the blurView. Otherwise we would see only black color.
         self.modalPresentationStyle = .OverFullScreen
         self.dataSource = pagingDatasource
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(GalleryViewController.rotate), name: UIDeviceOrientationDidChangeNotification, object: nil)
     }
-    
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
     override public func viewDidLoad() {
         super.viewDidLoad()
-        
+
         view.addSubview(blurView)
         view.sendSubviewToBack(blurView)
     }
@@ -102,7 +111,7 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
 
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
+
         blurView.frame = view.bounds
     }
 
@@ -116,8 +125,37 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
 
     }
 
-    func dismiss() {
+    // MARK: - Animations
 
+    func rotate() {
+
+        /// If the app supports rotation on global level, we don't need to rotate here manually because the rotation
+        /// of key Window will rotate all app's content with it via affine transform and from the perspective of the
+        /// gallery it is just a simple relayout. Allowing access to remaining code only makes sense if the app is
+        /// portrait only but we still want to support rotation inside the gallery.
+        guard isPortraitOnly() else { return }
+
+        guard UIDevice.currentDevice().orientation.isFlat == false &&
+            isAnimating == false else { return }
+
+        isAnimating = true
+
+        UIView.animateWithDuration(rotationAnimationDuration, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { [weak self] () -> Void in
+
+            self?.view.transform = rotationTransform()
+            self?.view.bounds = rotationAdjustedBounds()
+            self?.view.setNeedsLayout()
+            self?.view.layoutIfNeeded()
+            
+            })
+        { [weak self] finished  in
+            
+            self?.isAnimating = false
+        }
+    }
+    
+    func dismiss() {
+        
         self.presentingViewController?.view.subviews.forEach { $0.hidden = false }
         self.dismissViewControllerAnimated(false, completion: nil)
     }
