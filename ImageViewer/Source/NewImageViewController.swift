@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewImageViewController: UIViewController, ItemController {
+class NewImageViewController: UIViewController, ItemController, UIGestureRecognizerDelegate {
 
     //UI
     var imageView = UIImageView()
@@ -32,7 +32,11 @@ class NewImageViewController: UIViewController, ItemController {
     private let minimumZoomScale: CGFloat = 1
     private var maximumZoomScale: CGFloat = 4
 
-
+    /// INTERACTIONS
+    private let singleTapRecognizer = UITapGestureRecognizer()
+    private let doubleTapRecognizer = UITapGestureRecognizer()
+    private let panGestureRecognizer = UIPanGestureRecognizer()
+    
     init(index: Int, fetchImageBlock: FetchImage, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
         self.index = index
@@ -64,13 +68,10 @@ class NewImageViewController: UIViewController, ItemController {
 
         self.modalPresentationStyle = .Custom
 
-        let dismissRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismiss))
-        dismissRecognizer.numberOfTapsRequired = 1
-        self.view.addGestureRecognizer(dismissRecognizer)
-
         self.imageView.hidden = isInitialController
 
         configureScrollView()
+        configureGestureRecognizers()
     }
 
     @available (*, unavailable)
@@ -89,6 +90,23 @@ class NewImageViewController: UIViewController, ItemController {
         imageView.layer.borderWidth = 1
         imageView.layer.borderColor = UIColor.redColor().CGColor
     }
+    
+    func configureGestureRecognizers() {
+        
+        singleTapRecognizer.addTarget(self, action: #selector(scrollViewDidSingleTap))
+        singleTapRecognizer.numberOfTapsRequired = 1
+        scrollView.addGestureRecognizer(singleTapRecognizer)
+        
+        doubleTapRecognizer.addTarget(self, action: #selector(scrollViewDidDoubleTap))
+        doubleTapRecognizer.numberOfTapsRequired = 2
+        scrollView.addGestureRecognizer(doubleTapRecognizer)
+        
+        singleTapRecognizer.requireGestureRecognizerToFail(doubleTapRecognizer)
+        
+        panGestureRecognizer.addTarget(self, action: #selector(scrollViewDidSwipeToDismiss))
+        panGestureRecognizer.delegate = self
+        view.addGestureRecognizer(panGestureRecognizer)
+    }
 
     private func createViewHierarchy() {
 
@@ -103,7 +121,7 @@ class NewImageViewController: UIViewController, ItemController {
 
         createViewHierarchy()
 
-        fetchImageBlock { [weak self] image in
+        fetchImageBlock { [weak self] image in //DON'T Forget offloading the main thread
 
             if let image = image {
 
@@ -132,6 +150,19 @@ class NewImageViewController: UIViewController, ItemController {
         imageView.center = scrollView.boundsCenter
     }
 
+    func scrollViewDidSingleTap() {
+        
+        self.delegate?.itemControllerDidSingleTap()
+    }
+    
+    func scrollViewDidDoubleTap() {
+        
+    }
+    
+    func scrollViewDidSwipeToDismiss() {
+        
+    }
+    
     func presentItem(alongsideAnimation alongsideAnimation: Duration -> Void) {
 
         alongsideAnimation(displacementDuration * Double(overlayAccelerationFactor))
@@ -180,11 +211,6 @@ class NewImageViewController: UIViewController, ItemController {
                     animatedImageView.removeFromSuperview()
             })
         }
-    }
-    
-    func dismiss() {
-        
-        self.delegate?.dismiss()
     }
 }
 

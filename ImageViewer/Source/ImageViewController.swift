@@ -100,9 +100,8 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         createViewHierarchy()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    @available (iOS, unavailable)
+    required init?(coder aDecoder: NSCoder) { fatalError() }
     
     deinit {
         

@@ -154,8 +154,10 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
         }
     }
     
-    func dismiss() {
+    func itemControllerDidSingleTap() {
+        //HIDE DECORATION VIEWS HERE
         
+        print("SINGLE TAP")
         self.presentingViewController?.view.subviews.forEach { $0.hidden = false }
         self.dismissViewControllerAnimated(false, completion: nil)
     }
