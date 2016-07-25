@@ -29,7 +29,7 @@ public enum GalleryDisplacementStyle {
 
 public enum GalleryPresentationStyle {
 
-    case FadeIn
+    case Fade
     case Displace
 }
 

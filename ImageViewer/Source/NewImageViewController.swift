@@ -29,7 +29,7 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
     //CONFIGURATION
     private var presentationStyle = GalleryPresentationStyle.Displace
     private var zoomDuration = 0.2
-    private var displacementDuration: NSTimeInterval = 0.6
+    private var displacementDuration: NSTimeInterval = 0.3
     private var displacementTimingCurve: UIViewAnimationCurve = .Linear
     private var displacementSpringBounce: CGFloat = 0.7
     private var overlayAccelerationFactor: CGFloat = 1
@@ -377,7 +377,7 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
 
         switch presentationStyle {
 
-        case .FadeIn:
+        case .Fade:
 
             imageView.alpha = 0
             imageView.hidden = false
@@ -420,6 +420,104 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
                     animatedImageView.removeFromSuperview()
             })
         }
+    }
+
+    func findVisibleDisplacedView() -> UIImageView? {
+
+        guard let displacedView = displacedViewsDatasource?.provideDisplacementItem(atIndex: index) as? UIImageView else { return nil }
+
+        let displacedViewFrame = displacedView.frame(inCoordinatesOfView: self.view)
+        let validAreaFrame = self.view.frame.insetBy(dx: displacedViewFrame.size.width * 0.8, dy: displacedViewFrame.size.height * 0.8)
+        let isVisibleEnough = displacedViewFrame.intersects(validAreaFrame)
+
+        return isVisibleEnough ? displacedView : nil
+    }
+
+    func dismissItem(alongsideAnimation alongsideAnimation: () -> Void, completion: () -> Void) {
+
+        alongsideAnimation()
+
+        if presentationStyle == .Displace {
+
+            if let displacedView = self.findVisibleDisplacedView() {
+
+                print("DISPLACE")
+
+                UIView.animateWithDuration(displacementDuration, animations: { 
+
+                    self.imageView.frame = displacedView.frame(inCoordinatesOfView: self.view)
+                    self.imageView.clipsToBounds = true
+                    self.imageView.contentMode = displacedView.contentMode
+                    }, completion: { _ in
+
+                        completion()
+                })
+
+                return
+            }
+        }
+
+        UIView.animateWithDuration(displacementDuration, animations: { 
+
+            self.imageView.alpha = 0
+
+            }) { _ in
+
+                completion()
+        }
+
+//        switch presentationStyle {
+//
+//        case .Displace:
+//
+//            //Get the displaced view
+//            guard let displacedView = displacedViewsDatasource?.provideDisplacementItem(atIndex: index) as? UIImageView,
+//                let image = displacedView.image else { return }
+//
+//            let displacedViewFrame = displacedView.frame(inCoordinatesOfView: self.view)
+//
+//            let validAreaFrame = self.view.frame.insetBy(dx: view.bounds.size.width * 0.8, dy: view.bounds.size.height * 0.8)
+//            let isVisibleEnough = displacedViewFrame.intersects(validAreaFrame)
+//
+//
+//            //Prepare the animated image view
+//            let animatedImageView = displacedView.clone()
+//            animatedImageView.frame = displacedView.frame(inCoordinatesOfView: self.view)
+//            animatedImageView.clipsToBounds = true
+//            self.view.addSubview(animatedImageView)
+//
+//            displacedView.hidden = true
+//
+//            UIView.animateWithDuration(displacementDuration, delay: 0, usingSpringWithDamping: displacementSpringBounce, initialSpringVelocity: 1, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+//
+//                if UIApplication.isPortraitOnly == true {
+//                    animatedImageView.transform = rotationTransform()
+//                }
+//                /// Animate it into the center (with optionaly rotating) - that basically includes changing the size and position
+//
+//                let boundingSize = rotationAdjustedBounds().size
+//                let aspectFitSize = aspectFitContentSize(forBoundingSize: boundingSize, contentSize: image.size)
+//
+//                animatedImageView.bounds.size = aspectFitSize
+//                animatedImageView.center = self.view.boundsCenter
+//
+//                }, completion: { _ in
+//
+//                    self.imageView.hidden = false
+//                    displacedView.hidden = false
+//                    
+//                    animatedImageView.removeFromSuperview()
+//            })
+//
+//        case .Fade:
+//
+//            imageView.alpha = 1
+//            
+//            UIView.animateWithDuration(displacementDuration) { [weak self] in
+//
+//                self?.imageView.alpha = 0
+//            }
+//        }
     }
     
     ///This resolves which of the two pan gesture recognizers should kick in. There is one built in the GalleryViewController (as it is a UIPageViewController subclass), and another one is added as part of item controller. When we pan, we need to decide whether it constitutes a horizontal paging gesture, or a swipe-to-dismiss gesture.

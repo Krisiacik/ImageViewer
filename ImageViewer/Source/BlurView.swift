@@ -73,4 +73,28 @@ class BlurView: UIView {
             self.colorView.alpha = self.colorOpacity
             }, completion: nil)
     }
+
+    func present(duration: NSTimeInterval) {
+
+        UIView.animateWithDuration(duration * 0.4) {
+            self.blurringViewContainer.alpha = self.blurOpacity
+        }
+
+        UIView.animateWithDuration(duration * 0.7, delay: duration * 0.3, options: .CurveLinear, animations: {
+
+            self.colorView.alpha = self.colorOpacity
+            }, completion: nil)
+    }
+
+    func dismiss() {
+
+        UIView.animateWithDuration(0.3) {
+            self.blurringViewContainer.alpha = 0
+        }
+
+        UIView.animateWithDuration(0.3, delay: 0, options: .CurveLinear, animations: {
+
+            self.colorView.alpha = 0
+            }, completion: nil)
+    }
 }

@@ -298,8 +298,8 @@
 			isa = PBXGroup;
 			children = (
 				EBE627081D2689AD0095999A /* ItemController.swift */,
-				EBAF4C651D3937BC0039CA93 /* VideoViewController.swift */,
 				EBAF4C621D3937AE0039CA93 /* NewImageViewController.swift */,
+				EBAF4C651D3937BC0039CA93 /* VideoViewController.swift */,
 				EB8BEC791D3D1CB500DCE3EC /* ItemControllerDelegate.swift */,
 			);
 			name = "New ";

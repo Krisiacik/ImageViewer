@@ -43,6 +43,7 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     private let rotationAnimationDuration = 0.2
     private let swipeToDismissFadeOutAccelerationFactor: CGFloat = 6
     private let decorationViewsVisibilityAnimationDuration = 0.15
+    private let decorationViewsDismissAnimationDuration = 0.1
     
     /// COMPLETION BLOCKS
     /// If set ,the block is executed right after the initial launch animations finish.
@@ -301,6 +302,53 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
         { [weak self] finished  in
             
             self?.isAnimating = false
+        }
+    }
+    
+    /// Invoked when closed programatically
+    public func close() {
+        
+        closeDecorationViews(programaticallyClosedCompletion)
+    }
+    
+    /// Invoked when closed via close button
+    func closeInteractively() {
+        
+        closeDecorationViews(closedCompletion)
+    }
+    
+    func closeDecorationViews(completion: (() -> Void)?) {
+        
+        UIView.animateWithDuration(decorationViewsVisibilityAnimationDuration, animations: { [weak self] in
+            
+            self?.headerView?.alpha = 0.0
+            self?.footerView?.alpha = 0.0
+            self?.closeButton?.alpha = 0.0
+            
+            }, completion: { [weak self] done in
+
+                if let itemController = self?.viewControllers?.first as? ItemController {
+
+                    itemController.dismissItem(alongsideAnimation: {
+
+                        self?.overlayView.dismiss()
+
+                        }, completion: { 
+                            self?.closeGallery(false, completion: completion) //this intermediate step might not be necessary
+                    })
+                }
+            })
+    }
+    
+    func closeGallery(animated: Bool, completion: (() -> Void)?) {
+
+        self.overlayView.removeFromSuperview()
+
+        self.modalTransitionStyle = .CrossDissolve
+        self.dismissViewControllerAnimated(animated) {
+            
+            UIApplication.applicationWindow.windowLevel = UIWindowLevelNormal
+            completion?()
         }
     }
     

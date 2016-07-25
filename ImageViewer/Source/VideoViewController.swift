@@ -29,4 +29,8 @@ class VideoViewController: UIViewController, ItemController {
     func presentItem(alongsideAnimation alongsideAnimation: Duration -> Void) {
 
     }
+
+    func dismissItem(alongsideAnimation alongsideAnimation: () -> Void, completion: () -> Void) {
+
+    }
 }
