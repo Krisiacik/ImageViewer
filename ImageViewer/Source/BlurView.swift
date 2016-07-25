@@ -10,7 +10,6 @@ import UIKit
 
 class BlurView: UIView {
 
-
     var blurOpacity: CGFloat = 1
     var colorOpacity: CGFloat = 1
 
@@ -53,9 +52,8 @@ class BlurView: UIView {
         self.addSubview(colorView)
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    @available (iOS, unavailable)
+    required init?(coder aDecoder: NSCoder) { fatalError() }
     
     override func layoutSubviews() {
         super.layoutSubviews()

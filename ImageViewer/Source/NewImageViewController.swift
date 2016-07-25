@@ -108,9 +108,6 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
         scrollView.delegate = self
         
         scrollView.addObserver(self, forKeyPath: "contentOffset", options: NSKeyValueObservingOptions.New, context: nil)
-
-        imageView.layer.borderWidth = 1
-        imageView.layer.borderColor = UIColor.redColor().CGColor
     }
     
     func configureGestureRecognizers() {
@@ -138,8 +135,6 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.view.backgroundColor = UIColor.blueColor().colorWithAlphaComponent(0.8)
 
         createViewHierarchy()
 
@@ -287,49 +282,51 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
     
     func handleSwipeToDismissEnded(swipeOrientation: SwipeToDismiss, finalVelocity velocity: CGPoint, finalTouchPoint touchPoint: CGPoint) {
         
-        let presentingViewController = self.presentingViewController
-        let parentViewController = self.parentViewController as? GalleryViewController
-        
         let maxIndex = self.itemCount - 1
+        
+        let swipeToDismissCompletionBlock = { [weak self] in
+            
+            UIApplication.applicationWindow.windowLevel = UIWindowLevelNormal
+            self?.swipingToDismiss = nil
+            self?.delegate?.itemControllerDidFinishSwipeToDismissSuccesfully()
+        }
         
         switch (swipeOrientation, index) {
             
-        case (.Vertical, _) where velocity.y < -thresholdVelocity: /// All images VERTICAL UP direction
+        /// Any item VERTICAL UP direction
+        case (.Vertical, _) where velocity.y < -thresholdVelocity:
             
-            swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation, touchPoint: touchPoint.y, targetOffset: (view.bounds.height / 2) + (imageView.bounds.height / 2), escapeVelocity: velocity.y) {  [weak self] in
-                self?.swipingToDismiss = nil
-                UIApplication.applicationWindow.windowLevel = UIWindowLevelNormal
-                parentViewController?.swipedToDismissCompletion?()
-                presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
-            }
+            swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation,
+                                                                  touchPoint: touchPoint.y,
+                                                                  targetOffset: (view.bounds.height / 2) + (imageView.bounds.height / 2),
+                                                                  escapeVelocity: velocity.y,
+                                                                  completion: swipeToDismissCompletionBlock)
+        /// Any item VERTICAL DOWN direction
+        case (.Vertical, _) where thresholdVelocity < velocity.y:
             
-        case (.Vertical, _) where thresholdVelocity < velocity.y: /// All images VERTICAL DOWN direction
+            swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation,
+                                                                  touchPoint: touchPoint.y,
+                                                                  targetOffset: -(view.bounds.height / 2) - (imageView.bounds.height / 2),
+                                                                  escapeVelocity: velocity.y,
+                                                                  completion: swipeToDismissCompletionBlock)
+        /// First item HORIZONTAL RIGHT direction
+        case (.Horizontal, 0) where thresholdVelocity < velocity.x:
             
-            swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation, touchPoint: touchPoint.y, targetOffset: -(view.bounds.height / 2) - (imageView.bounds.height / 2), escapeVelocity: velocity.y) {  [weak self] in
-                self?.swipingToDismiss = nil
-                UIApplication.applicationWindow.windowLevel = UIWindowLevelNormal
-                parentViewController?.swipedToDismissCompletion?()
-                presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
-            }
+            swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation,
+                                                                  touchPoint: touchPoint.x,
+                                                                  targetOffset: -(view.bounds.width / 2) - (imageView.bounds.width / 2),
+                                                                  escapeVelocity: velocity.x,
+                                                                  completion: swipeToDismissCompletionBlock)
+        /// Last item HORIZONTAL LEFT direction
+        case (.Horizontal, maxIndex) where velocity.x < -thresholdVelocity:
             
-        case (.Horizontal, 0) where thresholdVelocity < velocity.x: /// First image HORIZONTAL RIGHT direction
-            
-            swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation, touchPoint: touchPoint.x, targetOffset: -(view.bounds.width / 2) - (imageView.bounds.width / 2), escapeVelocity: velocity.x) {  [weak self] in
-                self?.swipingToDismiss = nil
-                UIApplication.applicationWindow.windowLevel = UIWindowLevelNormal
-                parentViewController?.swipedToDismissCompletion?()
-                presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
-            }
-            
-        case (.Horizontal, maxIndex) where velocity.x < -thresholdVelocity: /// Last image HORIZONTAL LEFT direction
-            
-            swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation, touchPoint: touchPoint.x, targetOffset: (view.bounds.width / 2) + (imageView.bounds.width / 2), escapeVelocity: velocity.x) {  [weak self] in
-                self?.swipingToDismiss = nil
-                UIApplication.applicationWindow.windowLevel = UIWindowLevelNormal
-                parentViewController?.swipedToDismissCompletion?()
-                presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
-            }
-            
+            swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation,
+                                                                  touchPoint: touchPoint.x,
+                                                                  targetOffset: (view.bounds.width / 2) + (imageView.bounds.width / 2),
+                                                                  escapeVelocity: velocity.x,
+                                                                  completion: swipeToDismissCompletionBlock)
+       
+        ///If nonoe of the above select cases, we cancel.
         default:
             
             swipeToDismissTransition?.cancelTransition() { [weak self] in
@@ -337,7 +334,7 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
             }
         }
     }
-    
+
     func animateDisplacedImageToOriginalPosition(duration: NSTimeInterval, completion: ((Bool) -> Void)?) {
         
         guard (self.isAnimating == false) else { return }

@@ -123,6 +123,17 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
+    func configureOverlayView() {
+        
+        overlayView.bounds.size = UIScreen.mainScreen().bounds.insetBy(dx: -UIScreen.mainScreen().bounds.width * 2, dy: -UIScreen.mainScreen().bounds.height * 2).size
+        
+        if let controller = self.presentingViewController {
+            
+            overlayView.center = controller.view.boundsCenter
+            controller.view.addSubview(overlayView)
+        }
+    }
+    
     func configureHeaderView() {
         
         if let header = headerView {
@@ -148,12 +159,6 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
             self.view.addSubview(closeButton)
         }
     }
-    
-    func createViewHierarchy() {
-        
-        view.addSubview(overlayView)
-        view.sendSubviewToBack(overlayView)
-    }
 
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -161,20 +166,27 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
         configureHeaderView()
         configureFooterView()
         configureCloseButton()
-        createViewHierarchy()
     }
     
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        if decorationViewsHidden == false { animateDecorationViews(visible: true) }
+        ///We have to call this here (not sooner), because it adds the overlay view to the presenting controller and the presentingController property is set only at this moment in the VC lifecycle.
+        configureOverlayView()
+        
+        ///Animates decoration views to the initial state if they are set to be visible on launch. We do not need to do anything if they are set to be hidden ,as they are already set up as hidden by default. Unhiding them for the launch is part of chosen UX.
+        
+        if decorationViewsHidden == false {
+            animateDecorationViews(visible: true)
+        }
+        
         initialItemController?.presentItem(alongsideAnimation: overlayView.animate)
     }
     
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        overlayView.frame = view.bounds
+        overlayView.frame = view.bounds.insetBy(dx: -UIScreen.mainScreen().bounds.width * 2, dy: -UIScreen.mainScreen().bounds.height * 2)
         
         layoutCloseButton()
         layoutHeaderView()
@@ -316,7 +328,6 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
         
         self.decorationViewsHidden.flip()
         animateDecorationViews(visible: !self.decorationViewsHidden)
-
     }
     
     func itemController(controller: ItemController, didSwipeToDismissWithDistanceToEdge distance: CGFloat) {
@@ -329,5 +340,15 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
             headerView?.alpha = alpha
             footerView?.alpha = alpha
         }
+        
+        self.overlayView.blurringView.alpha = 1 - distance
+        self.overlayView.colorView.alpha = 1 - distance
+    }
+    
+    func itemControllerDidFinishSwipeToDismissSuccesfully() {
+
+        self.swipedToDismissCompletion?()
+        self.overlayView.removeFromSuperview()
+        self.dismissViewControllerAnimated(false, completion: nil)
     }
 }
