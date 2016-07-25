@@ -25,7 +25,8 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     ///LOCAL STATE
     ///represents the current page index
     var currentIndex: Int
-    private var decorationViewsHidden = true ///Picks up the initial value from configuration, if provided. Subseqently also works as local state for the setting.
+    ///Picks up the initial value from configuration, if provided. Subseqently also works as local state for the setting.
+    private var decorationViewsHidden = true
     private var isAnimating = false
 
     //PAGING DATASOURCE
@@ -40,7 +41,9 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     private var statusBarHidden = true
     private var overlayAccelerationFactor: CGFloat = 1
     private let rotationAnimationDuration = 0.2
-
+    private let swipeToDismissFadeOutAccelerationFactor: CGFloat = 6
+    private let decorationViewsVisibilityAnimationDuration = 0.15
+    
     /// COMPLETION BLOCKS
     /// If set ,the block is executed right after the initial launch animations finish.
     public var launchedCompletion: (() -> Void)?
@@ -123,6 +126,7 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     func configureHeaderView() {
         
         if let header = headerView {
+            header.alpha = 0
             self.view.addSubview(header)
         }
     }
@@ -130,6 +134,7 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     func configureFooterView() {
         
         if let footer = footerView {
+            footer.alpha = 0
             self.view.addSubview(footer)
         }
     }
@@ -137,6 +142,11 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     func configureCloseButton() {
         
         closeButton?.addTarget(self, action: #selector(GalleryViewController.closeInteractively), forControlEvents: .TouchUpInside)
+        
+        if let closeButton = closeButton {
+            closeButton.alpha = 0
+            self.view.addSubview(closeButton)
+        }
     }
     
     func createViewHierarchy() {
@@ -157,9 +167,10 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
+        if decorationViewsHidden == false { animateDecorationViews(visible: true) }
         initialItemController?.presentItem(alongsideAnimation: overlayView.animate)
     }
-
+    
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
@@ -252,10 +263,6 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
         }
     }
 
-    func itemController(controller: ItemController, didTransitionWithProgress progress: CGFloat) {
-
-    }
-
     // MARK: - Animations
 
     func rotate() {
@@ -285,19 +292,42 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
         }
     }
     
-    func itemControllerDidSingleTap(controller: ItemController) {
-        //HIDE DECORATION VIEWS HERE
+    func animateDecorationViews(visible visible: Bool) {
         
-        print("SINGLE TAP")
-        self.presentingViewController?.view.subviews.forEach { $0.hidden = false }
-        self.dismissViewControllerAnimated(false, completion: nil)
+        let targetAlpha: CGFloat = (visible) ? 1 : 0
+        
+        UIView.animateWithDuration(decorationViewsVisibilityAnimationDuration) { [weak self] in
+            
+            self?.headerView?.alpha = targetAlpha
+            self?.footerView?.alpha = targetAlpha
+            self?.closeButton?.alpha = targetAlpha
+        }
     }
-    
+
     func itemControllerDidAppear(controller: ItemController) {
         
         self.currentIndex = controller.index
         self.landedPageAtIndexCompletion?(self.currentIndex)
         self.headerView?.sizeToFit()
         self.footerView?.sizeToFit()
+    }
+    
+    func itemControllerDidSingleTap(controller: ItemController) {
+        
+        self.decorationViewsHidden.flip()
+        animateDecorationViews(visible: !self.decorationViewsHidden)
+
+    }
+    
+    func itemController(controller: ItemController, didSwipeToDismissWithDistanceToEdge distance: CGFloat) {
+        
+        if decorationViewsHidden == false {
+            
+            let alpha = 1 - distance * swipeToDismissFadeOutAccelerationFactor
+            
+            closeButton?.alpha = alpha
+            headerView?.alpha = alpha
+            footerView?.alpha = alpha
+        }
     }
 }

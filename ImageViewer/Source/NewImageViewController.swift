@@ -90,6 +90,11 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
     @available (*, unavailable)
     required init?(coder aDecoder: NSCoder) { fatalError() }
 
+    deinit {
+        
+        self.scrollView.removeObserver(self, forKeyPath: "contentOffset")
+    }
+    
     private func configureScrollView() {
 
         scrollView.showsHorizontalScrollIndicator = false
@@ -101,6 +106,8 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
         scrollView.maximumZoomScale = maximumZoomScale
         
         scrollView.delegate = self
+        
+        scrollView.addObserver(self, forKeyPath: "contentOffset", options: NSKeyValueObservingOptions.New, context: nil)
 
         imageView.layer.borderWidth = 1
         imageView.layer.borderColor = UIColor.redColor().CGColor
@@ -440,5 +447,31 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
         }
         
         return false
+    }
+    
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String: AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        
+        guard let swipingToDissmissInProgress = swipingToDismiss else { return }
+        guard keyPath == "contentOffset" else { return }
+        
+        let distanceToEdge: CGFloat
+        let percentDistance: CGFloat
+        
+        switch swipingToDissmissInProgress {
+            
+        case .Horizontal:
+            
+            distanceToEdge = (scrollView.bounds.width / 2) + (imageView.bounds.width / 2)
+            percentDistance = fabs(scrollView.contentOffset.x / distanceToEdge)
+            
+        case .Vertical:
+            
+            distanceToEdge = (scrollView.bounds.height / 2) + (imageView.bounds.height / 2)
+            percentDistance = fabs(scrollView.contentOffset.y / distanceToEdge)
+        }
+        
+        if let delegate = self.delegate {
+            delegate.itemController(self, didSwipeToDismissWithDistanceToEdge: percentDistance)
+        }
     }
 }

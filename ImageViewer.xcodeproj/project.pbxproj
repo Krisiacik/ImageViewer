@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4CD1C49C1C16FF64008D5F84 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD1C49B1C16FF64008D5F84 /* CGPoint.swift */; };
 		4CD1C49D1C16FF64008D5F84 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD1C49B1C16FF64008D5F84 /* CGPoint.swift */; };
+		A32D40041D45C4DE00AB5ADA /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32D40031D45C4DE00AB5ADA /* Bool.swift */; };
+		A32D40051D45C50800AB5ADA /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32D40031D45C4DE00AB5ADA /* Bool.swift */; };
 		C7897CE51C1350B7006447FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7897CE41C1350B7006447FB /* AppDelegate.swift */; };
 		C7897CE71C1350B7006447FB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7897CE61C1350B7006447FB /* ViewController.swift */; };
 		C7897CEA1C1350B7006447FB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7897CE81C1350B7006447FB /* Main.storyboard */; };
@@ -81,6 +83,7 @@
 
 /* Begin PBXFileReference section */
 		4CD1C49B1C16FF64008D5F84 /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
+		A32D40031D45C4DE00AB5ADA /* Bool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
 		C7897CE21C1350B7006447FB /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7897CE41C1350B7006447FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C7897CE61C1350B7006447FB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -226,6 +229,7 @@
 		C7DABE5D1C12275C00F5BD7B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				A32D40031D45C4DE00AB5ADA /* Bool.swift */,
 				C7DABE631C12276800F5BD7B /* CGSize.swift */,
 				EB1DB6EB1D3E74A000DC9064 /* CGRect.swift */,
 				4CD1C49B1C16FF64008D5F84 /* CGPoint.swift */,
@@ -482,6 +486,7 @@
 				EBAF4C661D3937BC0039CA93 /* VideoViewController.swift in Sources */,
 				EB5F68DD1D241D7D00501552 /* ImageViewControllerFactory.swift in Sources */,
 				EBDC60B61D195EAB00597F29 /* GalleryViewFactory.swift in Sources */,
+				A32D40051D45C50800AB5ADA /* Bool.swift in Sources */,
 				EB40C3731C9C5BF1004EA215 /* UIViewController.swift in Sources */,
 				EBE627061D2688890095999A /* NewGalleryViewController.swift in Sources */,
 				EB1DB6EC1D3E74A000DC9064 /* CGRect.swift in Sources */,
@@ -527,6 +532,7 @@
 				EBAF4C611D391C720039CA93 /* NewGalleryPagingDatasource.swift in Sources */,
 				EBEBEF941C84665B008C1E58 /* ImageViewController.swift in Sources */,
 				EB1CEC1F1C84A54600BB27B8 /* UtilityFunctions.swift in Sources */,
+				A32D40041D45C4DE00AB5ADA /* Bool.swift in Sources */,
 				C7DABE641C12276800F5BD7B /* CGSize.swift in Sources */,
 				EBA0A9541C89C653005B8DD3 /* GalleryConfiguration.swift in Sources */,
 				EB1DB6EA1D3E595D00DC9064 /* UIApplication.swift in Sources */,

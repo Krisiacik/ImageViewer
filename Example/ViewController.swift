@@ -80,6 +80,7 @@ func galleryConfiguration() -> GalleryConfiguration {
     let zoomDuration                = GalleryConfigurationItem.DoubleTapToZoomDuration(1)
     let maximumZoomScale            = GalleryConfigurationItem.MaximumZoolScale(8)
     let swipeThresholdVelocity      = GalleryConfigurationItem.SwipeToDismissThresholdVelocity(500)
+    let decorViewHidden             = GalleryConfigurationItem.HideDecorationViewsOnLaunch(false)
 
-    return [swipeThresholdVelocity, pagingMode, maximumZoomScale, zoomDuration, presentationStyle, displacementDuration, displacementCurve, displacementBounce, overlayColor, blurOpacity, colorOpacity, blurStyle, overlayAccelerationFactor]
+    return [decorViewHidden, swipeThresholdVelocity, pagingMode, maximumZoomScale, zoomDuration, presentationStyle, displacementDuration, displacementCurve, displacementBounce, overlayColor, blurOpacity, colorOpacity, blurStyle, overlayAccelerationFactor]
 }
