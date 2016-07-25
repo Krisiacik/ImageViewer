@@ -67,7 +67,7 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
 
 func galleryConfiguration() -> GalleryConfiguration {
 
-    let pagingMode                  = GalleryConfigurationItem.PagingMode(GalleryPagingMode.Carousel)
+    let pagingMode                  = GalleryConfigurationItem.PagingMode(GalleryPagingMode.Standard)
     let presentationStyle           = GalleryConfigurationItem.PresentationStyle(.Displace)
     let displacementDuration        = GalleryConfigurationItem.DisplacementDuration(0.5)
     let displacementBounce          = GalleryConfigurationItem.DisplacementTransitionStyle(.SpringBounce(0.7))
@@ -79,6 +79,7 @@ func galleryConfiguration() -> GalleryConfiguration {
     let overlayAccelerationFactor   = GalleryConfigurationItem.OverlayAccelerationFactor(1)
     let zoomDuration                = GalleryConfigurationItem.DoubleTapToZoomDuration(1)
     let maximumZoomScale            = GalleryConfigurationItem.MaximumZoolScale(8)
+    let swipeThresholdVelocity      = GalleryConfigurationItem.SwipeToDismissThresholdVelocity(500)
 
-    return [pagingMode, maximumZoomScale, zoomDuration, presentationStyle, displacementDuration, displacementCurve, displacementBounce, overlayColor, blurOpacity, colorOpacity, blurStyle, overlayAccelerationFactor]
+    return [swipeThresholdVelocity, pagingMode, maximumZoomScale, zoomDuration, presentationStyle, displacementDuration, displacementCurve, displacementBounce, overlayColor, blurOpacity, colorOpacity, blurStyle, overlayAccelerationFactor]
 }
