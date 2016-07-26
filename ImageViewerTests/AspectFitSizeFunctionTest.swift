@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import ImageViewer
+@testable import ImageViewer
 
 /*
 We are testing what is the fitting size of an image on phone's screen. We have these combinations:

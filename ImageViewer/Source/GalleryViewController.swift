@@ -62,6 +62,8 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     public var landedPageAtIndexCompletion: ((Int) -> Void)?
     /// If set, launched after all animations finish when the close button is pressed.
     public var closedCompletion: (() -> Void)?
+    /// If set, launched after all animations finish when the close() method is invoked via public API.
+    public var programaticallyClosedCompletion: (() -> Void)?
     /// If set, launched after all animations finish when the swipe-to-dismiss (applies to all directions and cases) gesture is used.
     public var swipedToDismissCompletion: (() -> Void)?
     
@@ -190,7 +192,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     
     private func configureCloseButton() {
         
-        closeButton?.addTarget(self, action: #selector(GalleryViewController.close), forControlEvents: .TouchUpInside)
+        closeButton?.addTarget(self, action: #selector(GalleryViewController.interactiveClose), forControlEvents: .TouchUpInside)
     }
     
     func createViewHierarchy() {
@@ -337,7 +339,17 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     
     // MARK: - Actions
     
-    func close() {
+    public func close() {
+    
+        closeWithAnimation(programaticallyClosedCompletion)
+    }
+    
+    func interactiveClose() {
+        
+        closeWithAnimation(closedCompletion)
+     }
+    
+    func closeWithAnimation(completion: (() -> Void)?) {
         
         UIView.animateWithDuration(0.1, animations: { [weak self] in
             
@@ -355,26 +367,24 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
                     
                     imageController.closeAnimation(self?.closeAnimationDuration ?? 0.2, completion: { [weak self] finished in
                         
-                        self?.innerClose()
+                        self?.postAnimationClose(completion)
                         })
                 }
             }
             else {
-                self?.innerClose()
+                self?.postAnimationClose(completion)
             }
-            
         }
     }
     
-    func innerClose() {
+    func postAnimationClose(completion: (() -> Void)?) {
         
         self.modalTransitionStyle = .CrossDissolve
-        self.dismissViewControllerAnimated(true) {
+        self.dismissViewControllerAnimated(false) {
             
             self.applicationWindow!.windowLevel = UIWindowLevelNormal
+            completion?()
         }
-        
-        closedCompletion?()
     }
     
     // MARK: - Image Controller Delegate
@@ -412,5 +422,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
         
         self.currentIndex = controller.index
         self.landedPageAtIndexCompletion?(self.currentIndex)
+        self.headerView?.sizeToFit()
+        self.footerView?.sizeToFit()
     }
 }
