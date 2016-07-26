@@ -51,8 +51,6 @@ public enum GalleryConfigurationItem {
     ///Sets the duration of the animation when item is double tapped and transitions between ScaleToAspectFit & ScaleToAspectFill sizes.
     case DoubleTapToZoomDuration(NSTimeInterval)
 
-
-
     ///Transition duration for the blur layer component of the overlay when Gallery is being presented.
     case BlurPresentDuration(NSTimeInterval)
     
@@ -77,8 +75,6 @@ public enum GalleryConfigurationItem {
 
     ///Transition delay for the color layer component of the overlay when Gallery is being dismissed.
     case ColorDismissDelay(NSTimeInterval)
-
-
 
     ///Transition duration for the item when the fade-in/fade-out effect is used globaly for items while Gallery is being presented /dismissed.
     case ItemFadeDuration(NSTimeInterval)
@@ -118,6 +114,20 @@ public enum GalleryConfigurationItem {
     
     ///The minimum velocity needed for the image to continue on its swipe-to-dismiss path instead of returning to its original position. The velocity is in scalar units per second, which in our case represents points on screen per second. When the thumb moves on screen and eventually is lifted, it traveled along a path and the speed represents the number of points it traveled in the last 1000 msec before it was lifted.
     case SwipeToDismissThresholdVelocity(CGFloat)
+
+    ///Allows to set rotation support support with relation to rotation support in the hosting app.
+    case RotationMode(GalleryRotationMode)
+}
+
+public enum GalleryRotationMode {
+
+    ///Gallery will never rotate
+    case Never
+    ///Gallery will rotate to orientations supported in the application.
+    case ApplicationBased
+
+    ///Galleyr will rotate regardelss of the rotation setting in the application.
+    case Always
 }
 
 public enum GalleryCloseButtonMode {

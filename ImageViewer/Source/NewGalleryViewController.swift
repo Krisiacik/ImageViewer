@@ -83,14 +83,14 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
             case .OverlayColorOpacity(let opacity):             overlayView.colorTargetOpacity = opacity
 
 
-            case .BlurPresentDuration(let duration):              overlayView.blurPresentDuration = duration
-            case .BlurPresentDelay(let delay):                    overlayView.blurPresentDelay = delay
-            case .ColorPresentDuration(let duration):             overlayView.colorPresentDuration = duration
-            case .ColorPresentDelay(let delay):                   overlayView.colorPresentDelay = delay
-            case .BlurDismissDuration(let duration):              overlayView.blurDismissDuration = duration
-            case .BlurDismissDelay(let delay):                    overlayView.blurDismissDelay = delay
-            case .ColorDismissDuration(let duration):             overlayView.colorDismissDuration = duration
-            case .ColorDismissDelay(let delay):                   overlayView.colorDismissDelay = delay
+            case .BlurPresentDuration(let duration):            overlayView.blurPresentDuration = duration
+            case .BlurPresentDelay(let delay):                  overlayView.blurPresentDelay = delay
+            case .ColorPresentDuration(let duration):           overlayView.colorPresentDuration = duration
+            case .ColorPresentDelay(let delay):                 overlayView.colorPresentDelay = delay
+            case .BlurDismissDuration(let duration):            overlayView.blurDismissDuration = duration
+            case .BlurDismissDelay(let delay):                  overlayView.blurDismissDelay = delay
+            case .ColorDismissDuration(let duration):           overlayView.colorDismissDuration = duration
+            case .ColorDismissDelay(let delay):                 overlayView.colorDismissDelay = delay
 
             case .CloseButtonMode(let closeButtonMode):
 
@@ -199,6 +199,9 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
+//        self.view.transform = rotationTransform()
+//        self.view.bounds = rotationAdjustedBounds()
+
         overlayView.frame = view.bounds.insetBy(dx: -UIScreen.mainScreen().bounds.width * 2, dy: -UIScreen.mainScreen().bounds.height * 2)
         
         layoutCloseButton()
@@ -301,6 +304,8 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
         guard UIDevice.currentDevice().orientation.isFlat == false &&
             isAnimating == false else { return }
 
+        print("ROTATE")
+
         isAnimating = true
 
         UIView.animateWithDuration(rotationDuration, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { [weak self] () -> Void in
@@ -309,7 +314,7 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
             self?.view.bounds = rotationAdjustedBounds()
             self?.view.setNeedsLayout()
             self?.view.layoutIfNeeded()
-            
+
             })
         { [weak self] finished  in
             

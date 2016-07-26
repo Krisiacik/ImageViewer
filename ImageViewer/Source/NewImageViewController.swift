@@ -171,24 +171,24 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
         imageView.center = scrollView.boundsCenter
     }
 
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
-        
-        rotate(toBoundingSize: size, transitionCoordinator: coordinator)
-    }
-    
-    func rotate(toBoundingSize boundingSize: CGSize, transitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        
-        coordinator.animateAlongsideTransition({ [weak self] transitionContext in
-            
-            if let imageView = self?.imageView, _ = imageView.image, scrollView = self?.scrollView {
-                
-                imageView.bounds.size = aspectFitContentSize(forBoundingSize: boundingSize, contentSize: imageView.bounds.size)
-                scrollView.zoomScale = self!.minimumZoomScale
-            }
-            }, completion: nil)
-    }
-    
+//    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+//        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+//        
+//        rotate(toBoundingSize: size, transitionCoordinator: coordinator)
+//    }
+//    
+//    func rotate(toBoundingSize boundingSize: CGSize, transitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+//        
+//        coordinator.animateAlongsideTransition({ [weak self] transitionContext in
+//            
+//            if let imageView = self?.imageView, _ = imageView.image, scrollView = self?.scrollView {
+//                
+//                imageView.bounds.size = aspectFitContentSize(forBoundingSize: boundingSize, contentSize: imageView.bounds.size)
+//                scrollView.zoomScale = self!.minimumZoomScale
+//            }
+//            }, completion: nil)
+//    }
+
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         
         return imageView
@@ -405,9 +405,9 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
 
             UIView.animateWithDuration(displacementDuration, delay: 0, usingSpringWithDamping: displacementSpringBounce, initialSpringVelocity: 1, options: UIViewAnimationOptions.CurveEaseIn, animations: {
 
-                if UIApplication.isPortraitOnly == true {
-                    animatedImageView.transform = rotationTransform()
-                }
+//                if UIApplication.isPortraitOnly == true {
+//                    animatedImageView.transform = rotationTransform()
+//                }
                 /// Animate it into the center (with optionaly rotating) - that basically includes changing the size and position
 
                 let boundingSize = rotationAdjustedBounds().size
