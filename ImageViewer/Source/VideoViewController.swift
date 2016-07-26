@@ -81,7 +81,7 @@ class VideoViewController: UIViewController, ItemController {
  */
     }
 
-    func presentItem(alongsideAnimation alongsideAnimation: Duration -> Void) {
+    func presentItem(alongsideAnimation alongsideAnimation: () -> Void) {
         
     }
     

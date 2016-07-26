@@ -11,31 +11,24 @@ import UIKit
 class BlurView: UIView {
 
 
-    var blurTransitionDuration: NSTimeInterval = 0.3
-    var blurTransitionDelay: NSTimeInterval = 0.3
+    var blurPresentDuration: NSTimeInterval = 0.3
+    var blurPresentDelay: NSTimeInterval = 0
 
-    var colorTransitionDuration: NSTimeInterval = 0.3
-    var colorTransitionDelay: NSTimeInterval = 0.3
+    var colorPresentDuration: NSTimeInterval = 0.3
+    var colorPresentDelay: NSTimeInterval = 0.1
 
-    var blurOpacity: CGFloat = 1
-    var colorOpacity: CGFloat = 1
+    var blurDismissDuration: NSTimeInterval = 0.3
+    var blurDismissDelay: NSTimeInterval = 0
+
+    var colorDismissDuration: NSTimeInterval = 0.3
+    var colorDismissDelay: NSTimeInterval = 0.1
+
+    var blurTargetOpacity: CGFloat = 1
+    var colorTargetOpacity: CGFloat = 1
 
     var overlayColor = UIColor.whiteColor() {
         didSet { colorView.backgroundColor = overlayColor }
     }
-
-    /// The following two pairs of values allow us to tweak the pace and thresholds at which the two distint effect layers kick-in, when they create a final composited blur layer.
-    /// One is the transparency of the blur layer, the other one is transparency of the color overlay layer. The color overlay layer is on top of the blurring layer. The "Blur value" goes from 0 to 1
-    /// But we would want for example the blur layer to be applied faster so we set this from 0 to 0.5 which means that at 0 the transparency of the blur layer will be full ie it will be invisible, and at 0.5 it will be fully visible. We can set the same thing for the color overlay layer. By tweaking these values we can achive a visually pleasing effect.
-
-    /// Represents the range (on a scale of 0 to 1) in which the blur goes from nothing to fully applied.
-    var blurThresholdMin: CGFloat = 0
-    var blurThresholdMax: CGFloat = 0.3
-
-    /// Represents the range (on a scale of 0 to 1) in which the overlay color transparency goes from nothing to fully applied.
-    var overlayColorThresholdMin: CGFloat = 0.1
-    var overlayColorThresholdMax: CGFloat = 1
-
 
     let blurringViewContainer = UIView() //serves as a transparency container for the blurringView as it's not recommended by Apple to apply transparency directly to the UIVisualEffectsView
     let blurringView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
@@ -70,36 +63,27 @@ class BlurView: UIView {
         colorView.frame = self.bounds
     }
 
-    func animate(duration: NSTimeInterval) {
+    func present() {
 
-        UIView.animateWithDuration(duration * 0.4) {
-            self.blurringViewContainer.alpha = self.blurOpacity
-        }
-        UIView.animateWithDuration(duration * 0.7, delay: duration * 0.3, options: .CurveLinear, animations: { 
+        UIView.animateWithDuration(blurPresentDuration, delay: blurPresentDelay, options: .CurveLinear, animations: {
 
-            self.colorView.alpha = self.colorOpacity
+            self.blurringViewContainer.alpha = self.blurTargetOpacity
             }, completion: nil)
-    }
 
-    func present(duration: NSTimeInterval) {
+        UIView.animateWithDuration(colorPresentDuration, delay: colorPresentDelay, options: .CurveLinear, animations: {
 
-        UIView.animateWithDuration(duration * 0.4) {
-            self.blurringViewContainer.alpha = self.blurOpacity
-        }
-
-        UIView.animateWithDuration(duration * 0.7, delay: duration * 0.3, options: .CurveLinear, animations: {
-
-            self.colorView.alpha = self.colorOpacity
+            self.colorView.alpha = self.colorTargetOpacity
             }, completion: nil)
     }
 
     func dismiss() {
 
-        UIView.animateWithDuration(0.3) {
-            self.blurringViewContainer.alpha = 0
-        }
+        UIView.animateWithDuration(blurDismissDuration, delay: blurDismissDelay, options: .CurveLinear, animations: {
 
-        UIView.animateWithDuration(0.3, delay: 0, options: .CurveLinear, animations: {
+            self.blurringViewContainer.alpha = 0
+            }, completion: nil)
+
+        UIView.animateWithDuration(colorDismissDuration, delay: colorDismissDelay, options: .CurveLinear, animations: {
 
             self.colorView.alpha = 0
             }, completion: nil)

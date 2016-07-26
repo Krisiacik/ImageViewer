@@ -30,10 +30,10 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
     private var presentationStyle = GalleryPresentationStyle.Displacement
     private var doubleTapToZoomDuration = 0.2
     private var displacementDuration: NSTimeInterval = 0.3
+    private var reverseDisplacementDuration: NSTimeInterval = 0.2
     private var itemFadeDuration: NSTimeInterval = 0.3
     private var displacementTimingCurve: UIViewAnimationCurve = .Linear
     private var displacementSpringBounce: CGFloat = 0.7
-    private var overlayAccelerationFactor: CGFloat = 1
     private let minimumZoomScale: CGFloat = 1
     private var maximumZoomScale: CGFloat = 4
     private var pagingMode: GalleryPagingMode = .Standard
@@ -63,8 +63,8 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
             case .PresentationStyle(let style):                     presentationStyle = style
             case .PagingMode(let mode):                             pagingMode = mode
             case .DisplacementDuration(let duration):               displacementDuration = duration
+            case .ReverseDisplacementDuration(let duration):        reverseDisplacementDuration = duration
             case .DisplacementTimingCurve(let curve):               displacementTimingCurve = curve
-            case .OverlayAccelerationFactor(let factor):            overlayAccelerationFactor = factor
             case .MaximumZoolScale(let scale):                      maximumZoomScale = scale
             case .ItemFadeDuration(let duration):                   itemFadeDuration = duration
 
@@ -373,9 +373,9 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
         }
     }
     
-    func presentItem(alongsideAnimation alongsideAnimation: Duration -> Void) {
+    func presentItem(alongsideAnimation alongsideAnimation: () -> Void) {
 
-        alongsideAnimation(displacementDuration * Double(overlayAccelerationFactor))
+        alongsideAnimation()
 
         switch presentationStyle {
 
@@ -444,7 +444,7 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
 
             if let displacedView = self.findVisibleDisplacedView() {
 
-                UIView.animateWithDuration(displacementDuration, animations: { 
+                UIView.animateWithDuration(reverseDisplacementDuration, animations: {
 
                     self.imageView.frame = displacedView.frame(inCoordinatesOfView: self.view)
                     self.imageView.clipsToBounds = true

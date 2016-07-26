@@ -74,25 +74,33 @@ func galleryConfiguration() -> GalleryConfiguration {
         GalleryConfigurationItem.HideDecorationViewsOnLaunch(false),
 
         GalleryConfigurationItem.OverlayColor(UIColor.blackColor()),
-        GalleryConfigurationItem.OverlayColorOpacity(0),
+        GalleryConfigurationItem.OverlayColorOpacity(1),
         GalleryConfigurationItem.OverlayBlurOpacity(1),
         GalleryConfigurationItem.OverlayBlurStyle(UIBlurEffectStyle.Light),
-        GalleryConfigurationItem.OverlayAccelerationFactor(1),
 
         GalleryConfigurationItem.MaximumZoolScale(8),
         GalleryConfigurationItem.SwipeToDismissThresholdVelocity(500),
 
         GalleryConfigurationItem.DoubleTapToZoomDuration(0.15),
-        GalleryConfigurationItem.BlurLayerDuration(3),
-        GalleryConfigurationItem.BlurLayerDelay(0.3),
-        GalleryConfigurationItem.ColorLayerDuration(0.4),
-        GalleryConfigurationItem.ColorLayerDelay(0.3),
+
+
+        GalleryConfigurationItem.BlurPresentDuration(0.5),
+        GalleryConfigurationItem.BlurPresentDelay(0),
+        GalleryConfigurationItem.ColorPresentDuration(0.25),
+        GalleryConfigurationItem.ColorPresentDelay(0),
+
+        GalleryConfigurationItem.BlurDismissDuration(0.1),
+        GalleryConfigurationItem.BlurDismissDelay(0.4),
+        GalleryConfigurationItem.ColorDismissDuration(0.45),
+        GalleryConfigurationItem.ColorDismissDelay(0),
+
         GalleryConfigurationItem.ItemFadeDuration(0.3),
-        GalleryConfigurationItem.DecorationViewsFadeDuration(0.3),
+        GalleryConfigurationItem.DecorationViewsFadeDuration(0.15),
         GalleryConfigurationItem.RotationDuration(0.15),
 
-        GalleryConfigurationItem.DisplacementDuration(0.3),
-        GalleryConfigurationItem.DisplacementTransitionStyle(.Normal),
+        GalleryConfigurationItem.DisplacementDuration(0.55),
+        GalleryConfigurationItem.ReverseDisplacementDuration(0.2),
+        GalleryConfigurationItem.DisplacementTransitionStyle(.SpringBounce(0.7)),
         GalleryConfigurationItem.DisplacementTimingCurve(.Linear),
     ]
 }

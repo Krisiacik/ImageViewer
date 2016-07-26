@@ -79,13 +79,18 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
             case .RotationDuration(let duration):               rotationDuration = duration
             case .OverlayColor(let color):                      overlayView.overlayColor = color
             case .OverlayBlurStyle(let style):                  overlayView.blurringView.effect = UIBlurEffect(style: style)
-            case .OverlayBlurOpacity(let opacity):              overlayView.blurOpacity = opacity
-            case .OverlayColorOpacity(let opacity):             overlayView.colorOpacity = opacity
-            case .BlurLayerDuration(let duration):              overlayView.blurTransitionDuration = duration
-            case .BlurLayerDelay(let delay):                    overlayView.blurTransitionDelay = delay
-            case .ColorLayerDuration(let duration):             overlayView.colorTransitionDuration = duration
-            case .ColorLayerDelay(let delay):                   overlayView.colorTransitionDelay = delay
+            case .OverlayBlurOpacity(let opacity):              overlayView.blurTargetOpacity = opacity
+            case .OverlayColorOpacity(let opacity):             overlayView.colorTargetOpacity = opacity
 
+
+            case .BlurPresentDuration(let duration):              overlayView.blurPresentDuration = duration
+            case .BlurPresentDelay(let delay):                    overlayView.blurPresentDelay = delay
+            case .ColorPresentDuration(let duration):             overlayView.colorPresentDuration = duration
+            case .ColorPresentDelay(let delay):                   overlayView.colorPresentDelay = delay
+            case .BlurDismissDuration(let duration):              overlayView.blurDismissDuration = duration
+            case .BlurDismissDelay(let delay):                    overlayView.blurDismissDelay = delay
+            case .ColorDismissDuration(let duration):             overlayView.colorDismissDuration = duration
+            case .ColorDismissDelay(let delay):                   overlayView.colorDismissDelay = delay
 
             case .CloseButtonMode(let closeButtonMode):
 
@@ -186,7 +191,7 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
             animateDecorationViews(visible: true)
         }
         
-        initialItemController?.presentItem(alongsideAnimation: overlayView.animate)
+        initialItemController?.presentItem(alongsideAnimation: overlayView.present)
     }
     
     public override func viewDidLayoutSubviews() {
@@ -334,12 +339,13 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
 
                 if let itemController = self?.viewControllers?.first as? ItemController {
 
-                    itemController.dismissItem(alongsideAnimation: {
+                    itemController.dismissItem(alongsideAnimation:
 
-                        self?.overlayView.dismiss()
+                        (self?.overlayView.dismiss)!
 
-                        }, completion: { 
-                            self?.closeGallery(false, completion: completion) //this intermediate step might not be necessary
+                        , completion: {
+
+                            self?.closeGallery(false, completion: completion)
                     })
                 }
             })
