@@ -126,6 +126,8 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
             GalleryConfigurationItem.ReverseDisplacementDuration(0.2),
             GalleryConfigurationItem.DisplacementTransitionStyle(.SpringBounce(0.7)),
             GalleryConfigurationItem.DisplacementTimingCurve(.Linear),
+
+            GalleryConfigurationItem.StatusBarHidden(true)
         ]
     }
 }

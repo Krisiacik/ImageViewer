@@ -127,6 +127,8 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
         self.modalPresentationStyle = .OverFullScreen
         self.dataSource = pagingDatasource
 
+        UIApplication.applicationWindow.windowLevel = (statusBarHidden) ? UIWindowLevelStatusBar + 1 : UIWindowLevelNormal
+
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(GalleryViewController.rotate), name: UIDeviceOrientationDidChangeNotification, object: nil)
     }
 
