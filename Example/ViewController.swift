@@ -52,35 +52,54 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
 
     func provideGalleryItem(index: Int) -> GalleryItem {
 
-//        if index == 2 {
-//
-//            return GalleryItem.Video(NSURL(string: "")!)
-//        }
-//        else {
+        if index == 2 {
+
+            return GalleryItem.Video(NSURL(string: "http://video.dailymail.co.uk/video/mol/2016/07/15/1458458950652835194/1024x576_1458458950652835194.mp4")!)
+        }
+        else {
 
             let image = images[index].image ?? UIImage(named: "0")!
 
             return GalleryItem.Image { $0(image) }
-//        }
+        }
     }
 }
 
 func galleryConfiguration() -> GalleryConfiguration {
 
-    let pagingMode                  = GalleryConfigurationItem.PagingMode(GalleryPagingMode.Standard)
-    let presentationStyle           = GalleryConfigurationItem.PresentationStyle(.Displace)
-    let displacementDuration        = GalleryConfigurationItem.DisplacementDuration(0.5)
-    let displacementBounce          = GalleryConfigurationItem.DisplacementTransitionStyle(.SpringBounce(0.7))
-    let displacementCurve           = GalleryConfigurationItem.DisplacementTimingCurve(.EaseOut)
-    let overlayColor                = GalleryConfigurationItem.OverlayColor(UIColor.blackColor())
-    let colorOpacity                = GalleryConfigurationItem.OverlayColorOpacity(1)
-    let blurOpacity                 = GalleryConfigurationItem.OverlayBlurOpacity(1)
-    let blurStyle                   = GalleryConfigurationItem.OverlayBlurStyle(UIBlurEffectStyle.Light)
-    let overlayAccelerationFactor   = GalleryConfigurationItem.OverlayAccelerationFactor(1)
-    let zoomDuration                = GalleryConfigurationItem.DoubleTapToZoomDuration(1)
-    let maximumZoomScale            = GalleryConfigurationItem.MaximumZoolScale(8)
-    let swipeThresholdVelocity      = GalleryConfigurationItem.SwipeToDismissThresholdVelocity(500)
-    let decorViewHidden             = GalleryConfigurationItem.HideDecorationViewsOnLaunch(false)
+    return [
 
-    return [decorViewHidden, swipeThresholdVelocity, pagingMode, maximumZoomScale, zoomDuration, presentationStyle, displacementDuration, displacementCurve, displacementBounce, overlayColor, blurOpacity, colorOpacity, blurStyle, overlayAccelerationFactor]
+        GalleryConfigurationItem.PagingMode(.Standard),
+        GalleryConfigurationItem.PresentationStyle(.Displacement),
+        GalleryConfigurationItem.HideDecorationViewsOnLaunch(false),
+
+        GalleryConfigurationItem.OverlayColor(UIColor.blackColor()),
+        GalleryConfigurationItem.OverlayColorOpacity(0),
+        GalleryConfigurationItem.OverlayBlurOpacity(1),
+        GalleryConfigurationItem.OverlayBlurStyle(UIBlurEffectStyle.Light),
+        GalleryConfigurationItem.OverlayAccelerationFactor(1),
+
+        GalleryConfigurationItem.MaximumZoolScale(8),
+        GalleryConfigurationItem.SwipeToDismissThresholdVelocity(500),
+
+        GalleryConfigurationItem.DoubleTapToZoomDuration(0.15),
+        GalleryConfigurationItem.BlurLayerDuration(3),
+        GalleryConfigurationItem.BlurLayerDelay(0.3),
+        GalleryConfigurationItem.ColorLayerDuration(0.4),
+        GalleryConfigurationItem.ColorLayerDelay(0.3),
+        GalleryConfigurationItem.ItemFadeDuration(0.3),
+        GalleryConfigurationItem.DecorationViewsFadeDuration(0.3),
+        GalleryConfigurationItem.RotationDuration(0.15),
+
+        GalleryConfigurationItem.DisplacementDuration(0.3),
+        GalleryConfigurationItem.DisplacementTransitionStyle(.Normal),
+        GalleryConfigurationItem.DisplacementTimingCurve(.Linear),
+    ]
 }
+
+
+
+
+
+
+

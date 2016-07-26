@@ -12,4 +12,5 @@ public protocol GalleryItemsDatasource {
     
     func numberOfItemsInGalery() -> Int
     func provideGalleryItem(index: Int) -> GalleryItem
+   // func provideSuplementaryItemAtIndex<T>(index: Int) -> T?
 }

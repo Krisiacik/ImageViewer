@@ -27,9 +27,10 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
     private var isAnimating = false
 
     //CONFIGURATION
-    private var presentationStyle = GalleryPresentationStyle.Displace
-    private var zoomDuration = 0.2
+    private var presentationStyle = GalleryPresentationStyle.Displacement
+    private var doubleTapToZoomDuration = 0.2
     private var displacementDuration: NSTimeInterval = 0.3
+    private var itemFadeDuration: NSTimeInterval = 0.3
     private var displacementTimingCurve: UIViewAnimationCurve = .Linear
     private var displacementSpringBounce: CGFloat = 0.7
     private var overlayAccelerationFactor: CGFloat = 1
@@ -58,13 +59,15 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
             switch item {
                 
             case .SwipeToDismissThresholdVelocity(let velocity):    thresholdVelocity = velocity
-            case .DoubleTapToZoomDuration(let duration):            zoomDuration = duration
+            case .DoubleTapToZoomDuration(let duration):            doubleTapToZoomDuration = duration
             case .PresentationStyle(let style):                     presentationStyle = style
             case .PagingMode(let mode):                             pagingMode = mode
             case .DisplacementDuration(let duration):               displacementDuration = duration
             case .DisplacementTimingCurve(let curve):               displacementTimingCurve = curve
             case .OverlayAccelerationFactor(let factor):            overlayAccelerationFactor = factor
             case .MaximumZoolScale(let scale):                      maximumZoomScale = scale
+            case .ItemFadeDuration(let duration):                   itemFadeDuration = duration
+
             case .DisplacementTransitionStyle(let style):
 
             switch style {
@@ -143,7 +146,6 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
             if let image = image {
 
                 self?.imageView.image = image
-                print(image.size)
             }
         }
     }
@@ -211,12 +213,12 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
             
             let zoomRectangle = zoomRect(ForScrollView: scrollView, scale: aspectFillScale, center: touchPoint)
             
-            UIView.animateWithDuration(zoomDuration, animations: {
+            UIView.animateWithDuration(doubleTapToZoomDuration, animations: {
                 self.scrollView.zoomToRect(zoomRectangle, animated: false)
             })
         }
         else  {
-            UIView.animateWithDuration(zoomDuration, animations: {
+            UIView.animateWithDuration(doubleTapToZoomDuration, animations: {
                 self.scrollView.setZoomScale(1.0, animated: false)
             })
         }
@@ -381,12 +383,13 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
 
             imageView.alpha = 0
             imageView.hidden = false
-            UIView.animateWithDuration(displacementDuration) { [weak self] in
+
+            UIView.animateWithDuration(itemFadeDuration) { [weak self] in
 
                 self?.imageView.alpha = 1
             }
 
-        case .Displace:
+        case .Displacement:
 
             //Get the displaced view
             guard let displacedView = displacedViewsDatasource?.provideDisplacementItem(atIndex: index) as? UIImageView,
@@ -437,11 +440,9 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
 
         alongsideAnimation()
 
-        if presentationStyle == .Displace {
+        if presentationStyle == .Displacement {
 
             if let displacedView = self.findVisibleDisplacedView() {
-
-                print("DISPLACE")
 
                 UIView.animateWithDuration(displacementDuration, animations: { 
 
@@ -457,7 +458,7 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
             }
         }
 
-        UIView.animateWithDuration(displacementDuration, animations: { 
+        UIView.animateWithDuration(itemFadeDuration, animations: {
 
             self.imageView.alpha = 0
 

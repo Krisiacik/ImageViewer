@@ -10,6 +10,13 @@ import UIKit
 
 class BlurView: UIView {
 
+
+    var blurTransitionDuration: NSTimeInterval = 0.3
+    var blurTransitionDelay: NSTimeInterval = 0.3
+
+    var colorTransitionDuration: NSTimeInterval = 0.3
+    var colorTransitionDelay: NSTimeInterval = 0.3
+
     var blurOpacity: CGFloat = 1
     var colorOpacity: CGFloat = 1
 

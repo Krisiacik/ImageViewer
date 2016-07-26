@@ -40,10 +40,9 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     private var closeLayout = CloseButtonLayout.PinRight(8, 16)
     private var statusBarHidden = true
     private var overlayAccelerationFactor: CGFloat = 1
-    private let rotationAnimationDuration = 0.2
+    private var rotationDuration = 0.2
     private let swipeToDismissFadeOutAccelerationFactor: CGFloat = 6
-    private let decorationViewsVisibilityAnimationDuration = 0.15
-    private let decorationViewsDismissAnimationDuration = 0.1
+    private var decorationViewsFadeDuration = 0.15
     
     /// COMPLETION BLOCKS
     /// If set ,the block is executed right after the initial launch animations finish.
@@ -69,17 +68,23 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
 
             switch item {
 
-            case .ImageDividerWidth(let width):             spineDividerWidth = Float(width)
-            case .PagingMode(let mode):                     galleryPagingMode = mode
-            case .HeaderViewLayout(let layout):             headerLayout = layout
-            case .FooterViewLayout(let layout):             footerLayout = layout
-            case .CloseLayout(let layout):                  closeLayout = layout
-            case .StatusBarHidden(let hidden):              statusBarHidden = hidden
-            case .HideDecorationViewsOnLaunch(let hidden):  decorationViewsHidden = hidden
-            case .OverlayColor(let color):                  overlayView.overlayColor = color
-            case .OverlayBlurStyle(let style):              overlayView.blurringView.effect = UIBlurEffect(style: style)
-            case .OverlayBlurOpacity(let opacity):          overlayView.blurOpacity = opacity
-            case .OverlayColorOpacity(let opacity):         overlayView.colorOpacity = opacity
+            case .ImageDividerWidth(let width):                 spineDividerWidth = Float(width)
+            case .PagingMode(let mode):                         galleryPagingMode = mode
+            case .HeaderViewLayout(let layout):                 headerLayout = layout
+            case .FooterViewLayout(let layout):                 footerLayout = layout
+            case .CloseLayout(let layout):                      closeLayout = layout
+            case .StatusBarHidden(let hidden):                  statusBarHidden = hidden
+            case .HideDecorationViewsOnLaunch(let hidden):      decorationViewsHidden = hidden
+            case .DecorationViewsFadeDuration(let duration):    decorationViewsFadeDuration = duration
+            case .RotationDuration(let duration):               rotationDuration = duration
+            case .OverlayColor(let color):                      overlayView.overlayColor = color
+            case .OverlayBlurStyle(let style):                  overlayView.blurringView.effect = UIBlurEffect(style: style)
+            case .OverlayBlurOpacity(let opacity):              overlayView.blurOpacity = opacity
+            case .OverlayColorOpacity(let opacity):             overlayView.colorOpacity = opacity
+            case .BlurLayerDuration(let duration):              overlayView.blurTransitionDuration = duration
+            case .BlurLayerDelay(let delay):                    overlayView.blurTransitionDelay = delay
+            case .ColorLayerDuration(let duration):             overlayView.colorTransitionDuration = duration
+            case .ColorLayerDelay(let delay):                   overlayView.colorTransitionDelay = delay
 
 
             case .CloseButtonMode(let closeButtonMode):
@@ -126,7 +131,7 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     
     func configureOverlayView() {
         
-        overlayView.bounds.size = UIScreen.mainScreen().bounds.insetBy(dx: -UIScreen.mainScreen().bounds.width * 2, dy: -UIScreen.mainScreen().bounds.height * 2).size
+        overlayView.bounds.size = UIScreen.mainScreen().bounds.insetBy(dx: -UIScreen.mainScreen().bounds.width / 2, dy: -UIScreen.mainScreen().bounds.height / 2).size
         
         if let controller = self.presentingViewController {
             
@@ -291,7 +296,7 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
 
         isAnimating = true
 
-        UIView.animateWithDuration(rotationAnimationDuration, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { [weak self] () -> Void in
+        UIView.animateWithDuration(rotationDuration, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { [weak self] () -> Void in
 
             self?.view.transform = rotationTransform()
             self?.view.bounds = rotationAdjustedBounds()
@@ -319,7 +324,7 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     
     func closeDecorationViews(completion: (() -> Void)?) {
         
-        UIView.animateWithDuration(decorationViewsVisibilityAnimationDuration, animations: { [weak self] in
+        UIView.animateWithDuration(decorationViewsFadeDuration, animations: { [weak self] in
             
             self?.headerView?.alpha = 0.0
             self?.footerView?.alpha = 0.0
@@ -356,7 +361,7 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
         
         let targetAlpha: CGFloat = (visible) ? 1 : 0
         
-        UIView.animateWithDuration(decorationViewsVisibilityAnimationDuration) { [weak self] in
+        UIView.animateWithDuration(decorationViewsFadeDuration) { [weak self] in
             
             self?.headerView?.alpha = targetAlpha
             self?.footerView?.alpha = targetAlpha
