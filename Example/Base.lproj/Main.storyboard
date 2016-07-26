@@ -117,13 +117,13 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="568"/>
                     <connections>
-                        <outletCollection property="images" destination="e0P-yL-Aev" collectionClass="NSMutableArray" id="EqC-su-iGb"/>
-                        <outletCollection property="images" destination="coc-LS-cRe" collectionClass="NSMutableArray" id="egF-Eh-ky4"/>
-                        <outletCollection property="images" destination="fu6-tO-ZRV" collectionClass="NSMutableArray" id="0N3-xY-zmp"/>
-                        <outletCollection property="images" destination="272-lL-lW4" collectionClass="NSMutableArray" id="M12-Dc-Uqd"/>
-                        <outletCollection property="images" destination="9Vs-Br-5DO" collectionClass="NSMutableArray" id="9Zg-Py-XxU"/>
-                        <outletCollection property="images" destination="JMP-xp-mLE" collectionClass="NSMutableArray" id="WaD-RP-efY"/>
-                        <outletCollection property="images" destination="FkF-T8-MIe" collectionClass="NSMutableArray" id="hHF-2g-Bi9"/>
+                        <outlet property="image1" destination="coc-LS-cRe" id="V33-DX-Npk"/>
+                        <outlet property="image2" destination="fu6-tO-ZRV" id="l7j-ac-X0p"/>
+                        <outlet property="image3" destination="272-lL-lW4" id="KPw-6M-3al"/>
+                        <outlet property="image4" destination="9Vs-Br-5DO" id="SDC-iv-vXP"/>
+                        <outlet property="image5" destination="JMP-xp-mLE" id="pmt-7i-IXz"/>
+                        <outlet property="image6" destination="e0P-yL-Aev" id="9Q3-XK-waM"/>
+                        <outlet property="image7" destination="FkF-T8-MIe" id="SXw-cQ-O65"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
