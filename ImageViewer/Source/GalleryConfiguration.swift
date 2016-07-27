@@ -121,8 +121,6 @@ public enum GalleryConfigurationItem {
 
 public enum GalleryRotationMode {
 
-    ///Gallery will never rotate
-    case Never
     ///Gallery will rotate to orientations supported in the application.
     case ApplicationBased
 

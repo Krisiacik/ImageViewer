@@ -41,6 +41,7 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     private var statusBarHidden = true
     private var overlayAccelerationFactor: CGFloat = 1
     private var rotationDuration = 0.2
+    private var rotationMode = GalleryRotationMode.Always
     private let swipeToDismissFadeOutAccelerationFactor: CGFloat = 6
     private var decorationViewsFadeDuration = 0.15
     
@@ -77,12 +78,11 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
             case .HideDecorationViewsOnLaunch(let hidden):      decorationViewsHidden = hidden
             case .DecorationViewsFadeDuration(let duration):    decorationViewsFadeDuration = duration
             case .RotationDuration(let duration):               rotationDuration = duration
+            case .RotationMode(let mode):                       rotationMode = mode
             case .OverlayColor(let color):                      overlayView.overlayColor = color
             case .OverlayBlurStyle(let style):                  overlayView.blurringView.effect = UIBlurEffect(style: style)
             case .OverlayBlurOpacity(let opacity):              overlayView.blurTargetOpacity = opacity
             case .OverlayColorOpacity(let opacity):             overlayView.colorTargetOpacity = opacity
-
-
             case .BlurPresentDuration(let duration):            overlayView.blurPresentDuration = duration
             case .BlurPresentDelay(let delay):                  overlayView.blurPresentDelay = delay
             case .ColorPresentDuration(let duration):           overlayView.colorPresentDuration = duration
@@ -199,8 +199,11 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-//        self.view.transform = rotationTransform()
-//        self.view.bounds = rotationAdjustedBounds()
+        if rotationMode == .Always && UIApplication.isPortraitOnly {
+
+            self.view.transform = rotationTransform()
+            self.view.bounds = rotationAdjustedBounds()
+        }
 
         overlayView.frame = view.bounds.insetBy(dx: -UIScreen.mainScreen().bounds.width * 2, dy: -UIScreen.mainScreen().bounds.height * 2)
         

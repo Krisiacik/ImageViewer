@@ -171,24 +171,6 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
         imageView.center = scrollView.boundsCenter
     }
 
-//    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-//        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
-//        
-//        rotate(toBoundingSize: size, transitionCoordinator: coordinator)
-//    }
-//    
-//    func rotate(toBoundingSize boundingSize: CGSize, transitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-//        
-//        coordinator.animateAlongsideTransition({ [weak self] transitionContext in
-//            
-//            if let imageView = self?.imageView, _ = imageView.image, scrollView = self?.scrollView {
-//                
-//                imageView.bounds.size = aspectFitContentSize(forBoundingSize: boundingSize, contentSize: imageView.bounds.size)
-//                scrollView.zoomScale = self!.minimumZoomScale
-//            }
-//            }, completion: nil)
-//    }
-
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         
         return imageView
@@ -341,23 +323,14 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
         
         guard (self.isAnimating == false) else { return }
         isAnimating = true
-        
-        //displacedView.hidden = true
+
         
         UIView.animateWithDuration(duration, animations: {
             self.scrollView.zoomScale = self.scrollView.minimumZoomScale
-            //self.blackOverlayView.alpha = 0.0
             
             if isPortraitOnly() {
                 self.imageView.transform = CGAffineTransformInvert(rotationTransform())
             }
-            
-            /// Get position of displaced view in window
-            //let displacedViewInWindowPosition = self.applicationWindow!.convertRect(self.displacedView.bounds, fromView: self.displacedView)
-            /// Translate that to gallery view
-            //let displacedViewInOurCoordinateSystem = self.view.convertRect(displacedViewInWindowPosition, fromView: self.applicationWindow!)
-            
-            //self.imageView.frame = displacedViewInOurCoordinateSystem
             
         }) { [weak self] finished in
             
@@ -366,8 +339,7 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
             if finished {
                 
                 UIApplication.applicationWindow.windowLevel = UIWindowLevelNormal
-                
-                //self?.displacedView.hidden = false
+
                 self?.isAnimating = false
             }
         }
@@ -397,6 +369,11 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
 
             //Prepare the animated image view
             let animatedImageView = displacedView.clone()
+
+            //let orientation = UIDevice.currentDevice().orientation
+
+
+
             animatedImageView.frame = displacedView.frame(inCoordinatesOfView: self.view)
             animatedImageView.clipsToBounds = true
             self.view.addSubview(animatedImageView)
@@ -405,9 +382,9 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
 
             UIView.animateWithDuration(displacementDuration, delay: 0, usingSpringWithDamping: displacementSpringBounce, initialSpringVelocity: 1, options: UIViewAnimationOptions.CurveEaseIn, animations: {
 
-//                if UIApplication.isPortraitOnly == true {
-//                    animatedImageView.transform = rotationTransform()
-//                }
+                if UIApplication.isPortraitOnly == true {
+                    animatedImageView.transform = rotationTransform()
+                }
                 /// Animate it into the center (with optionaly rotating) - that basically includes changing the size and position
 
                 let boundingSize = rotationAdjustedBounds().size
