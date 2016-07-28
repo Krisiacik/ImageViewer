@@ -195,13 +195,15 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
             
             let zoomRectangle = zoomRect(ForScrollView: scrollView, scale: aspectFillScale, center: touchPoint)
             
-            UIView.animateWithDuration(doubleTapToZoomDuration, animations: {
-                self.scrollView.zoomToRect(zoomRectangle, animated: false)
+            UIView.animateWithDuration(doubleTapToZoomDuration, animations: { [weak self] in
+
+                self?.scrollView.zoomToRect(zoomRectangle, animated: false)
             })
         }
         else  {
-            UIView.animateWithDuration(doubleTapToZoomDuration, animations: {
-                self.scrollView.setZoomScale(1.0, animated: false)
+            UIView.animateWithDuration(doubleTapToZoomDuration, animations: {  [weak self] in
+
+                self?.scrollView.setZoomScale(1.0, animated: false)
             })
         }
     }
@@ -212,7 +214,7 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
         guard imageView.image != nil else {  return }
         
         /// A deliberate UX decision...you have to zoom back in to scale 1 to be able to swipe to dismiss. It is difficult for the user to swipe to dismiss from images larger then screen bounds because almost all the time it's not swiping to dismiss but instead panning a zoomed in picture on the canvas.
-        guard scrollView.zoomScale == scrollView.minimumZoomScale else {  return }
+        guard scrollView.zoomScale == scrollView.minimumZoomScale else { return }
         
         let currentVelocity = recognizer.velocityInView(self.view)
         let currentTouchPoint = recognizer.translationInView(view)
@@ -323,13 +325,13 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
         
         guard (self.isAnimating == false) else { return }
         isAnimating = true
-
         
-        UIView.animateWithDuration(duration, animations: {
-            self.scrollView.zoomScale = self.scrollView.minimumZoomScale
+        UIView.animateWithDuration(duration, animations: {  [weak self] in
+
+            self?.scrollView.zoomScale = self!.scrollView.minimumZoomScale
             
             if isPortraitOnly() {
-                self.imageView.transform = CGAffineTransformInvert(rotationTransform())
+                self?.imageView.transform = CGAffineTransformInvert(rotationTransform())
             }
             
         }) { [weak self] finished in
@@ -372,15 +374,13 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
 
             //let orientation = UIDevice.currentDevice().orientation
 
-
-
             animatedImageView.frame = displacedView.frame(inCoordinatesOfView: self.view)
             animatedImageView.clipsToBounds = true
             self.view.addSubview(animatedImageView)
 
             displacedView.hidden = true
 
-            UIView.animateWithDuration(displacementDuration, delay: 0, usingSpringWithDamping: displacementSpringBounce, initialSpringVelocity: 1, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+            UIView.animateWithDuration(displacementDuration, delay: 0, usingSpringWithDamping: displacementSpringBounce, initialSpringVelocity: 1, options: .CurveEaseIn, animations: { [weak self] in
 
                 if UIApplication.isPortraitOnly == true {
                     animatedImageView.transform = rotationTransform()
@@ -391,11 +391,11 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
                 let aspectFitSize = aspectFitContentSize(forBoundingSize: boundingSize, contentSize: image.size)
 
                 animatedImageView.bounds.size = aspectFitSize
-                animatedImageView.center = self.view.boundsCenter
+                animatedImageView.center = self?.view.boundsCenter ?? CGPoint.zero
 
-                }, completion: { _ in
+                }, completion: { [weak self] done in
 
-                    self.imageView.hidden = false
+                    self?.imageView.hidden = false
                     displacedView.hidden = false
                     animatedImageView.removeFromSuperview()
             })
@@ -421,11 +421,11 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
 
             if let displacedView = self.findVisibleDisplacedView() {
 
-                UIView.animateWithDuration(reverseDisplacementDuration, animations: {
+                UIView.animateWithDuration(reverseDisplacementDuration, animations: { [weak self] in
 
-                    self.imageView.frame = displacedView.frame(inCoordinatesOfView: self.view)
-                    self.imageView.clipsToBounds = true
-                    self.imageView.contentMode = displacedView.contentMode
+                    self?.imageView.frame = displacedView.frame(inCoordinatesOfView: self!.view)
+                    self?.imageView.clipsToBounds = true
+                    self?.imageView.contentMode = displacedView.contentMode
                     }, completion: { _ in
 
                         completion()
@@ -435,67 +435,14 @@ class NewImageViewController: UIViewController, ItemController, UIGestureRecogni
             }
         }
 
-        UIView.animateWithDuration(itemFadeDuration, animations: {
+        UIView.animateWithDuration(itemFadeDuration, animations: {  [weak self] in
 
-            self.imageView.alpha = 0
+            self?.imageView.alpha = 0
 
             }) { _ in
 
                 completion()
         }
-
-//        switch presentationStyle {
-//
-//        case .Displace:
-//
-//            //Get the displaced view
-//            guard let displacedView = displacedViewsDatasource?.provideDisplacementItem(atIndex: index) as? UIImageView,
-//                let image = displacedView.image else { return }
-//
-//            let displacedViewFrame = displacedView.frame(inCoordinatesOfView: self.view)
-//
-//            let validAreaFrame = self.view.frame.insetBy(dx: view.bounds.size.width * 0.8, dy: view.bounds.size.height * 0.8)
-//            let isVisibleEnough = displacedViewFrame.intersects(validAreaFrame)
-//
-//
-//            //Prepare the animated image view
-//            let animatedImageView = displacedView.clone()
-//            animatedImageView.frame = displacedView.frame(inCoordinatesOfView: self.view)
-//            animatedImageView.clipsToBounds = true
-//            self.view.addSubview(animatedImageView)
-//
-//            displacedView.hidden = true
-//
-//            UIView.animateWithDuration(displacementDuration, delay: 0, usingSpringWithDamping: displacementSpringBounce, initialSpringVelocity: 1, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-//
-//                if UIApplication.isPortraitOnly == true {
-//                    animatedImageView.transform = rotationTransform()
-//                }
-//                /// Animate it into the center (with optionaly rotating) - that basically includes changing the size and position
-//
-//                let boundingSize = rotationAdjustedBounds().size
-//                let aspectFitSize = aspectFitContentSize(forBoundingSize: boundingSize, contentSize: image.size)
-//
-//                animatedImageView.bounds.size = aspectFitSize
-//                animatedImageView.center = self.view.boundsCenter
-//
-//                }, completion: { _ in
-//
-//                    self.imageView.hidden = false
-//                    displacedView.hidden = false
-//                    
-//                    animatedImageView.removeFromSuperview()
-//            })
-//
-//        case .Fade:
-//
-//            imageView.alpha = 1
-//            
-//            UIView.animateWithDuration(displacementDuration) { [weak self] in
-//
-//                self?.imageView.alpha = 0
-//            }
-//        }
     }
     
     ///This resolves which of the two pan gesture recognizers should kick in. There is one built in the GalleryViewController (as it is a UIPageViewController subclass), and another one is added as part of item controller. When we pan, we need to decide whether it constitutes a horizontal paging gesture, or a swipe-to-dismiss gesture.

@@ -19,8 +19,6 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     private var closeButton: UIButton? = makeCloseButton()
     
     private weak var initialItemController: ItemController?
-    
-    private var initialPresentationDone = false
 
     ///LOCAL STATE
     ///represents the current page index
@@ -28,6 +26,7 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
     ///Picks up the initial value from configuration, if provided. Subseqently also works as local state for the setting.
     private var decorationViewsHidden = true
     private var isAnimating = false
+    private var initialPresentationDone = false
 
     //PAGING DATASOURCE
     private let pagingDatasource: NewGalleryPagingDatasource
@@ -114,7 +113,6 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
         pagingDatasource.itemControllerDelegate = self
 
         ///This feels out of place, one would expect even the first presented(paged) item controller to be provided by the paging datasource but there is nothing we can do as Apple requires the first controller to be set via this "setViewControllers" method.
-
         let initialController = pagingDatasource.createItemController(startIndex, isInitial: true)
         self.setViewControllers([initialController], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
 
@@ -193,7 +191,8 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
             animateDecorationViews(visible: true)
         }
         
-        initialItemController?.presentItem(alongsideAnimation: overlayView.present)
+        initialItemController?.presentItem(alongsideAnimation: { [weak self] in
+            self?.overlayView.present() })
     }
     
     public override func viewDidLayoutSubviews() {
@@ -349,9 +348,9 @@ public class NewGalleryViewController: UIPageViewController, ItemControllerDeleg
 
                 if let itemController = self?.viewControllers?.first as? ItemController {
 
-                    itemController.dismissItem(alongsideAnimation:
+                    itemController.dismissItem(alongsideAnimation: { [weak self] in
 
-                        (self?.overlayView.dismiss)!
+                        self?.overlayView.dismiss() }
 
                         , completion: {
 

@@ -68,26 +68,25 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
     func provideGalleryItem(index: Int) -> GalleryItem {
 
 
-        let image = images[index].image ?? UIImage(named: "0")!
+//        let image = images[index].image ?? UIImage(named: "0")!
+//
+//        return GalleryItem.Image { $0(image) }
+//    }
 
-        return GalleryItem.Image { $0(image) }
+
+        if index == 2 {
+
+            return GalleryItem.Video(previewImage: UIImage(named: "2")!, videoURL: NSURL(string: "http:video.dailymail.co.uk/video/mol/2016/07/15/1458458950652835194/1024x576_1458458950652835194.mp4")!)
+        }
+        else {
+
+            let image = images[index].image ?? UIImage(named: "0")!
+            
+            return GalleryItem.Image { $0(image) }
+        }
+        
     }
 
-    /*
-
-     if index == 2 {
-
-     return GalleryItem.Video(NSURL(string: "http://video.dailymail.co.uk/video/mol/2016/07/15/1458458950652835194/1024x576_1458458950652835194.mp4")!)
-     }
-     else {
-
-     let image = images[index].image ?? UIImage(named: "0")!
-
-     return GalleryItem.Image { $0(image) }
-     }
-
-     }
-     */
 
     func galleryConfiguration() -> GalleryConfiguration {
 

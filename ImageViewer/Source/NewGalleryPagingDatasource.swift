@@ -81,10 +81,13 @@ final class NewGalleryPagingDatasource: NSObject, UIPageViewControllerDataSource
 
             return imageController
 
-        case .Video(let url):
+        case .Video(let previewImage, let videoURL):
 
-           return VideoViewController(index: itemIndex, video: url, displacedViewsDatasource: displacedViewsDatasource, configuration: configuration)
+           let videoController = VideoViewController(index: itemIndex, itemCount: self.itemsDatasource.numberOfItemsInGalery(), previewImage: previewImage, videoURL: videoURL,  displacedViewsDatasource: displacedViewsDatasource, configuration: configuration, isInitialController: isInitial)
 
+            videoController.delegate = itemControllerDelegate
+
+            return videoController
         }
     }
 }

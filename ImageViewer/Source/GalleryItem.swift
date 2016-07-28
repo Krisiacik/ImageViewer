@@ -13,6 +13,6 @@ public typealias FetchImage = ConsumeImage -> Void
 
 public enum GalleryItem {
     
-    case Image(FetchImage)
-    case Video(NSURL)
+    case Image(fetchImageBlock: FetchImage)
+    case Video(previewImage: UIImage, videoURL: NSURL)
 }

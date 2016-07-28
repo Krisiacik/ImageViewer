@@ -31,7 +31,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     private var displacedViewsDatasource: GalleryDisplacedViewsDatasource?
     private var pagingDatasource: GalleryViewControllerPagingDatasource!
     private let fadeInHandler = ImageFadeInHandler()
-    
+
     /// LOCAL CONFIG
     private let startIndex: Int
     private var galleryPagingMode = GalleryPagingMode.Standard

@@ -65,27 +65,31 @@ class BlurView: UIView {
 
     func present() {
 
-        UIView.animateWithDuration(blurPresentDuration, delay: blurPresentDelay, options: .CurveLinear, animations: {
+        UIView.animateWithDuration(blurPresentDuration, delay: blurPresentDelay, options: .CurveLinear, animations: { [weak self] in
 
-            self.blurringViewContainer.alpha = self.blurTargetOpacity
+            self?.blurringViewContainer.alpha = self!.blurTargetOpacity
+
             }, completion: nil)
 
-        UIView.animateWithDuration(colorPresentDuration, delay: colorPresentDelay, options: .CurveLinear, animations: {
+        UIView.animateWithDuration(colorPresentDuration, delay: colorPresentDelay, options: .CurveLinear, animations: { [weak self] in
 
-            self.colorView.alpha = self.colorTargetOpacity
+            self?.colorView.alpha = self!.colorTargetOpacity
+
             }, completion: nil)
     }
 
     func dismiss() {
 
-        UIView.animateWithDuration(blurDismissDuration, delay: blurDismissDelay, options: .CurveLinear, animations: {
+        UIView.animateWithDuration(blurDismissDuration, delay: blurDismissDelay, options: .CurveLinear, animations: { [weak self] in
 
-            self.blurringViewContainer.alpha = 0
+            self?.blurringViewContainer.alpha = 0
+
             }, completion: nil)
 
-        UIView.animateWithDuration(colorDismissDuration, delay: colorDismissDelay, options: .CurveLinear, animations: {
+        UIView.animateWithDuration(colorDismissDuration, delay: colorDismissDelay, options: .CurveLinear, animations: { [weak self] in
 
-            self.colorView.alpha = 0
+            self?.colorView.alpha = 0
+
             }, completion: nil)
     }
 }
