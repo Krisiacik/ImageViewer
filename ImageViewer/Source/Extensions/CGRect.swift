@@ -8,11 +8,17 @@
 
 import UIKit
 
-extension UIView {
 
-    func frame(inCoordinatesOfView parentView: UIView) -> CGRect {
+extension CGRect {
 
-        let frameInWindow = UIApplication.applicationWindow.convertRect(self.bounds, fromView: self)
-        return parentView.convertRect(frameInWindow, fromView: UIApplication.applicationWindow)
+    init(x: CGFloat, y: CGFloat, width: CGFloat, height: CGFloat) {
+
+        self = CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: width, height: height))
+    }
+
+    static var one: CGRect {
+
+        return CGRect(x: 0, y: 0, width: 1, height: 1)
     }
 }
+

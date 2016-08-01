@@ -88,12 +88,24 @@
                                     <outletCollection property="gestureRecognizers" destination="0dc-20-whm" appends="YES" id="iCR-D1-RHn"/>
                                 </connections>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t12-VM-OhC">
+                                <rect key="frame" x="262" y="445" width="46" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="46" id="gMf-AX-6jT"/>
+                                    <constraint firstAttribute="height" constant="30" id="lLm-i5-EjN"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <segue destination="6Lk-lk-E3M" kind="modal" id="aeF-SH-CdK"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="JMP-xp-mLE" firstAttribute="top" secondItem="9Vs-Br-5DO" secondAttribute="bottom" constant="8" id="3R1-ra-0LG"/>
                             <constraint firstItem="272-lL-lW4" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="6Ee-Yt-GWf"/>
                             <constraint firstItem="FkF-T8-MIe" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="6Px-4i-KGU"/>
+                            <constraint firstItem="t12-VM-OhC" firstAttribute="top" secondItem="e0P-yL-Aev" secondAttribute="bottom" constant="8" id="9ny-ff-6Fc"/>
                             <constraint firstItem="coc-LS-cRe" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Bul-oP-IVo"/>
                             <constraint firstItem="fu6-tO-ZRV" firstAttribute="leading" secondItem="coc-LS-cRe" secondAttribute="trailing" constant="8" id="OV2-yg-lfL"/>
                             <constraint firstItem="FkF-T8-MIe" firstAttribute="top" secondItem="e0P-yL-Aev" secondAttribute="bottom" constant="8" id="QCa-1r-tV9"/>
@@ -107,6 +119,7 @@
                             <constraint firstItem="fu6-tO-ZRV" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="lNa-Tm-2t6"/>
                             <constraint firstItem="e0P-yL-Aev" firstAttribute="top" secondItem="9Vs-Br-5DO" secondAttribute="bottom" constant="8" id="lbP-2M-BuH"/>
                             <constraint firstAttribute="trailingMargin" secondItem="FkF-T8-MIe" secondAttribute="trailing" id="nQC-GW-eOd"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="t12-VM-OhC" secondAttribute="trailing" constant="-4" id="nXw-Tr-J5V"/>
                             <constraint firstItem="coc-LS-cRe" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="r7o-jp-GMW"/>
                             <constraint firstItem="9Vs-Br-5DO" firstAttribute="top" secondItem="fu6-tO-ZRV" secondAttribute="bottom" constant="8" id="z5g-Rj-vnJ"/>
                             <constraint firstItem="e0P-yL-Aev" firstAttribute="leading" secondItem="JMP-xp-mLE" secondAttribute="trailing" constant="8" id="zvY-yn-dal"/>
@@ -164,6 +177,25 @@
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-148" y="180"/>
+        </scene>
+        <!--Play View Controller-->
+        <scene sceneID="1Jy-pk-WB3">
+            <objects>
+                <viewController id="6Lk-lk-E3M" customClass="PlayViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fpB-De-YrZ"/>
+                        <viewControllerLayoutGuide type="bottom" id="fuH-zJ-vfu"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="iaT-Dd-3d7">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="PEh-Dn-9aN"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cPM-6S-g28" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="320" y="180"/>
         </scene>
     </scenes>
     <resources>
