@@ -36,7 +36,7 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
         let headerView = CounterView(frame: frame, currentIndex: displacedViewIndex, count: images.count)
         let footerView = CounterView(frame: frame, currentIndex: displacedViewIndex, count: images.count)
 
-        let galleryViewController = NewGalleryViewController(startIndex: displacedViewIndex, itemsDatasource: self, displacedViewsDatasource: self, configuration: galleryConfiguration())
+        let galleryViewController = GalleryViewController(startIndex: displacedViewIndex, itemsDatasource: self, displacedViewsDatasource: self, configuration: galleryConfiguration())
         galleryViewController.headerView = headerView
         galleryViewController.footerView = footerView
 

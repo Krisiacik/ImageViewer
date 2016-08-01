@@ -10,7 +10,7 @@ import UIKit
 
 public extension UIButton {
 
-    public static func circlePlayButton(diameter: CGFloat) -> UIButton {
+    static func circlePlayButton(diameter: CGFloat) -> UIButton {
 
         let button = UIButton(type: UIButtonType.Custom)
         button.frame = CGRect(origin: CGPoint.zero, size: CGSize(width: diameter, height: diameter))
@@ -24,7 +24,7 @@ public extension UIButton {
         return button
     }
 
-    public static func playButton(width width: CGFloat, height: CGFloat) -> UIButton {
+    static func playButton(width width: CGFloat, height: CGFloat) -> UIButton {
 
         let smallerEdge = min(width, height)
         let triangleEdgeLength: CGFloat = min(smallerEdge, 20)
@@ -48,10 +48,11 @@ public extension UIButton {
         return button
     }
 
-    public static func pauseButton(width width: CGFloat, height: CGFloat) -> UIButton {
+    static func pauseButton(width width: CGFloat, height: CGFloat) -> UIButton {
 
         let button = UIButton(type: UIButtonType.Custom)
         button.contentHorizontalAlignment = .Center
+
 
         let elementHeight = min(20, height)
         let elementSize = CGSize(width: elementHeight * 0.3, height: elementHeight)
@@ -63,6 +64,16 @@ public extension UIButton {
         let pauseImageHighlighted = CAShapeLayer.pauseShape(UIColor.whiteColor().colorWithAlphaComponent(0.7), elementSize: elementSize, elementDistance: distance).toImage()
         button.setImage(pauseImageHighlighted, forState: UIControlState.Highlighted)
         
+        return button
+    }
+
+
+    static func closeButton() -> UIButton {
+
+        let button = UIButton(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 50, height: 50)))
+        button.setImage(UIImage(named: "close_normal"), forState: UIControlState.Normal)
+        button.setImage(UIImage(named: "close_highlighted"), forState: UIControlState.Highlighted)
+
         return button
     }
 }

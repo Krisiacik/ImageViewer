@@ -19,12 +19,22 @@ class VideoView: UIView {
 
         didSet {
 
+            print("RATE \(self.player!.rate)")
+
+            let status = (self.player!.status == .ReadyToPlay)  ? "ReadyToPlay" : "None"
+            print("STATUS \(status)")
+
             if let videoLayer = self.layer as? AVPlayerLayer {
+
+
+                previewImageView.alpha = 0
 
                 videoLayer.player = player
                 videoLayer.videoGravity = AVLayerVideoGravityResizeAspect
 
                 player?.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.New, context: nil)
+                player?.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.New, context: nil)
+                player?.currentItem?.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.New, context: nil)
             }
         }
     }
@@ -54,10 +64,22 @@ class VideoView: UIView {
     }
 
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        if keyPath == "rate" {
-            if player?.rate != 0 {
-                previewImageView.alpha = 0
-            }
-        }
+
+
+        print("KEYPATH: \(keyPath) of OBJECT \(object) with CHANGE \(change)")
+
+//        if keyPath == "rate" {
+//            if player?.rate != 0 {
+//
+//                print("RATE \(self.player!.rate)")
+//
+//                previewImageView.alpha = 0
+//            }
+//        }
+//        else if keyPath == "status" {
+//
+//            let status = (self.player!.status == .ReadyToPlay)  ? "ReadyToPlay" : "None"
+//            print("STATUS \(status)")
+//        }
     }
 }
