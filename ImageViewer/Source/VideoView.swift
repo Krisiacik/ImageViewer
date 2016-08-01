@@ -26,9 +26,6 @@ class VideoView: UIView {
 
             if let videoLayer = self.layer as? AVPlayerLayer {
 
-
-                previewImageView.alpha = 0
-
                 videoLayer.player = player
                 videoLayer.videoGravity = AVLayerVideoGravityResizeAspect
 
@@ -51,6 +48,10 @@ class VideoView: UIView {
         super.init(frame: frame)
 
         self.addSubview(previewImageView)
+
+        previewImageView.contentMode = .ScaleAspectFill
+        previewImageView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        previewImageView.clipsToBounds = true
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -60,7 +61,18 @@ class VideoView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        previewImageView.frame = self.bounds
+        previewImageView.bounds.size = aspectFitSize(forContentOfSize: CGSize(width: 1920, height: 1080), inBounds: rotationAdjustedBounds().size)
+        previewImageView.center = self.boundsCenter
+    }
+
+    func playInitially() {
+
+        self.player?.play()
+
+        UIView.animateWithDuration(0.35) {
+
+            self.previewImageView.alpha = 0
+        }
     }
 
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {

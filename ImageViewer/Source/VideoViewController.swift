@@ -12,11 +12,11 @@ import AVFoundation
 
 extension VideoView: ItemView {}
 
-class SuperNewVideoViewController: ItemBaseController<VideoView> {
+class VideoViewController: ItemBaseController<VideoView> {
 
     let videoURL: NSURL
     let fullHDScreenSize = CGSize(width: 1920, height: 1080)
-
+    let circlePlayButton = UIButton.circlePlayButton(70)
 
     init(index: Int, itemCount: Int, previewImage: UIImage, videoURL: NSURL, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
@@ -30,6 +30,8 @@ class SuperNewVideoViewController: ItemBaseController<VideoView> {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.itemView.addSubview(circlePlayButton)
+        
         let player = AVPlayer(URL: self.videoURL)
         self.itemView.player = player
         self.itemView.contentMode = .ScaleAspectFill
@@ -38,7 +40,6 @@ class SuperNewVideoViewController: ItemBaseController<VideoView> {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-         self.itemView.player?.play()
     }
 
     override func viewDidDisappear(animated: Bool) {
@@ -51,6 +52,9 @@ class SuperNewVideoViewController: ItemBaseController<VideoView> {
         super.viewDidLayoutSubviews()
 
         itemView.bounds.size = aspectFitSize(forContentOfSize: fullHDScreenSize, inBounds: self.scrollView.bounds.size)
+
+        circlePlayButton.bounds = itemView.bounds
+        circlePlayButton.center = itemView.boundsCenter
     }
 
     override func displacementTargetSize(forSize size: CGSize) -> CGSize {

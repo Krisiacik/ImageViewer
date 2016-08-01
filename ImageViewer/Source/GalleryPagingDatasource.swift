@@ -83,7 +83,7 @@ final class GalleryPagingDatasource: NSObject, UIPageViewControllerDataSource {
 
         case .Video(let previewImage, let videoURL):
 
-           let videoController = SuperNewVideoViewController(index: itemIndex, itemCount: self.itemsDatasource.numberOfItemsInGalery(), previewImage: previewImage, videoURL: videoURL, configuration: configuration, isInitialController: isInitial)
+           let videoController = VideoViewController(index: itemIndex, itemCount: self.itemsDatasource.numberOfItemsInGalery(), previewImage: previewImage, videoURL: videoURL, configuration: configuration, isInitialController: isInitial)
 
             videoController.delegate = itemControllerDelegate
             videoController.displacedViewsDatasource = displacedViewsDatasource

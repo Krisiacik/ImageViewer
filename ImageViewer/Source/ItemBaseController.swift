@@ -433,6 +433,7 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
                     self?.itemView.frame = displacedView.frame(inCoordinatesOfView: self!.view)
                     self?.itemView.clipsToBounds = true
                     self?.itemView.contentMode = displacedView.contentMode
+
                     }, completion: { _ in
 
                         completion()
