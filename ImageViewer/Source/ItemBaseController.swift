@@ -384,10 +384,7 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
                 }
                 /// Animate it into the center (with optionaly rotating) - that basically includes changing the size and position
 
-                let boundingSize = rotationAdjustedBounds().size
-                let aspectFitSize = aspectFitContentSize(forBoundingSize: boundingSize, contentSize: image.size)
-
-                animatedImageView.bounds.size = aspectFitSize
+                animatedImageView.bounds.size = self?.displacementTargetSize(forSize: image.size) ?? image.size
                 animatedImageView.center = self?.view.boundsCenter ?? CGPoint.zero
 
                 }, completion: { [weak self] done in
@@ -399,6 +396,13 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
                     self?.didFinishPresentingItem()
                 })
         }
+    }
+
+    func displacementTargetSize(forSize size: CGSize) -> CGSize {
+
+        let boundingSize = rotationAdjustedBounds().size
+
+        return aspectFitSize(forContentOfSize: size, inBounds: boundingSize)
     }
 
     func didFinishPresentingItem() {
