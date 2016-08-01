@@ -20,6 +20,7 @@ public extension UIButton {
 
         let circleImageHighlighted = CAShapeLayer.circlePlayShape(UIColor.lightGrayColor(), diameter: diameter).toImage()
         button.setImage(circleImageHighlighted, forState: UIControlState.Highlighted)
+
         return button
     }
 
@@ -47,7 +48,7 @@ public extension UIButton {
         return button
     }
 
-    public  static func pauseButton(width width: CGFloat, height: CGFloat) -> UIButton {
+    public static func pauseButton(width width: CGFloat, height: CGFloat) -> UIButton {
 
         let button = UIButton(type: UIButtonType.Custom)
         button.contentHorizontalAlignment = .Center
@@ -65,3 +66,19 @@ public extension UIButton {
         return button
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
