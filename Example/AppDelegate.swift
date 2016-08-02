@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
-       // application.windows.first?.layer.speed = 0.1
+        //application.windows.first?.layer.speed = 0.1
 
         return true
     }

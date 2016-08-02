@@ -122,7 +122,7 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
             GalleryConfigurationItem.RotationDuration(0.15),
 
             GalleryConfigurationItem.DisplacementDuration(0.55),
-            GalleryConfigurationItem.ReverseDisplacementDuration(0.2),
+            GalleryConfigurationItem.ReverseDisplacementDuration(3.0),
             GalleryConfigurationItem.DisplacementTransitionStyle(.SpringBounce(0.7)),
             GalleryConfigurationItem.DisplacementTimingCurve(.Linear),
 

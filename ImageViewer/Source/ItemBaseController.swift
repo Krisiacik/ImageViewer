@@ -437,7 +437,9 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
         alongsideAnimation()
 
-        if presentationStyle == .Displacement {
+        switch presentationStyle {
+
+        case .Displacement:
 
             if let displacedView = self.findVisibleDisplacedView() {
 
@@ -451,18 +453,18 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
                         completion()
                 })
-
-                return
             }
-        }
 
-        UIView.animateWithDuration(itemFadeDuration, animations: {  [weak self] in
+        case .Fade:
 
-            self?.itemView.alpha = 0
+            UIView.animateWithDuration(itemFadeDuration, animations: {  [weak self] in
 
-        }) { _ in
+                self?.itemView.alpha = 0
 
-            completion()
+            }) { _ in
+
+                completion()
+            }
         }
     }
 

@@ -58,13 +58,6 @@ class VideoView: UIView {
         super.init(coder: aDecoder)
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        previewImageView.bounds.size = aspectFitSize(forContentOfSize: CGSize(width: 1920, height: 1080), inBounds: rotationAdjustedBounds().size)
-        previewImageView.center = self.boundsCenter
-    }
-
     func playInitially() {
 
         self.player?.play()
