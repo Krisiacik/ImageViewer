@@ -25,4 +25,14 @@ extension UIView {
 
         for view in subviews { self.addSubview(view) }
     }
+
+    static func animateWithDuration(duration: NSTimeInterval, delay: NSTimeInterval, animations: () -> Void) {
+
+        UIView.animateWithDuration(duration, delay: delay, options: UIViewAnimationOptions.CurveEaseInOut, animations: animations, completion: nil)
+    }
+
+    static func animateWithDuration(duration: NSTimeInterval, delay: NSTimeInterval, animations: () -> Void, completion: ((Bool) -> Void)?) {
+
+        UIView.animateWithDuration(duration, delay: delay, options: UIViewAnimationOptions.CurveEaseInOut, animations: animations, completion: completion)
+    }
 }

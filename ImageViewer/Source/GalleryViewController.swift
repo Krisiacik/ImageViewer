@@ -184,15 +184,28 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         
         ///We have to call this here (not sooner), because it adds the overlay view to the presenting controller and the presentingController property is set only at this moment in the VC lifecycle.
         configureOverlayView()
-        
-        ///Animates decoration views to the initial state if they are set to be visible on launch. We do not need to do anything if they are set to be hidden ,as they are already set up as hidden by default. Unhiding them for the launch is part of chosen UX.
-        
-        if decorationViewsHidden == false {
-            animateDecorationViews(visible: true)
-        }
-        
+
+        ///The initial presentation animations and transitions
+        presentInitially()
+    }
+
+    func presentInitially() {
+
+        ///Animates decoration views to the initial state if they are set to be visible on launch. We do not need to do anything if they are set to be hidden because they are already set up as hidden by default. Unhiding them for the launch is part of chosen UX.
         initialItemController?.presentItem(alongsideAnimation: { [weak self] in
-            self?.overlayView.present() })
+
+            self?.overlayView.present()
+
+        }) { [weak self] in
+
+            if let weakself = self {
+
+                if weakself.decorationViewsHidden == false {
+
+                    weakself.animateDecorationViews(visible: true)
+                }
+            }
+        }
     }
     
     public override func viewDidLayoutSubviews() {
@@ -335,8 +348,14 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         
         closeDecorationViews(closedCompletion)
     }
-    
+
     func closeDecorationViews(completion: (() -> Void)?) {
+
+        if let itemController = self.viewControllers?.first as? ItemController {
+
+            itemController.closeDecorationViews?(decorationViewsFadeDuration)
+        }
+
         
         UIView.animateWithDuration(decorationViewsFadeDuration, animations: { [weak self] in
             
@@ -375,9 +394,9 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
     func animateDecorationViews(visible visible: Bool) {
         
         let targetAlpha: CGFloat = (visible) ? 1 : 0
-        
+
         UIView.animateWithDuration(decorationViewsFadeDuration) { [weak self] in
-            
+
             self?.headerView?.alpha = targetAlpha
             self?.footerView?.alpha = targetAlpha
             self?.closeButton?.alpha = targetAlpha

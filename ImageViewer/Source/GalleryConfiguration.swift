@@ -54,15 +54,17 @@ public enum GalleryConfigurationItem {
     ///Transition duration for the blur layer component of the overlay when Gallery is being presented.
     case BlurPresentDuration(NSTimeInterval)
     
-    ///Transition delay for the blur layer component of the overlay when Gallery is being presented.
+    ///Delayed start for the transition of the blur layer component of the overlay when Gallery is being presented.
     case BlurPresentDelay(NSTimeInterval)
 
     ///Transition duration for the color layer component of the overlay when Gallery is being presented.
     case ColorPresentDuration(NSTimeInterval)
 
-    ///Transition delay for the color layer component of the overlay when Gallery is being presented.
+    ///Delayed start for the transition of color layer component of the overlay when Gallery is being presented.
     case ColorPresentDelay(NSTimeInterval)
 
+    ///Delayed start for decoration views transition (fade-in) when Gallery is being presented.
+    case DecorationViewsPresentDelay(NSTimeInterval)
 
     ///Transition duration for the blur layer component of the overlay when Gallery is being dismissed.
     case BlurDismissDuration(NSTimeInterval)

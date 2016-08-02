@@ -29,7 +29,7 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
     let index: Int
     var isInitialController = false
     let itemCount: Int
-    private var swipingToDismiss: SwipeToDismiss?
+    var swipingToDismiss: SwipeToDismiss?
     private var isAnimating = false
 
     //CONFIGURATION
@@ -357,7 +357,7 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
     // MARK: - Present/Dismiss transitions
 
-    func presentItem(alongsideAnimation alongsideAnimation: () -> Void) {
+    func presentItem(alongsideAnimation alongsideAnimation: () -> Void, completion: () -> Void) {
 
         alongsideAnimation()
 
@@ -368,9 +368,13 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
             itemView.alpha = 0
             itemView.hidden = false
 
-            UIView.animateWithDuration(itemFadeDuration) { [weak self] in
+            UIView.animateWithDuration(itemFadeDuration, animations: { [weak self] in
 
                 self?.itemView.alpha = 1
+
+            }) { _ in
+
+                completion()
             }
 
         case .Displacement:
@@ -381,9 +385,6 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
             //Prepare the animated image view
             let animatedImageView = displacedView.clone()
-
-            //let orientation = UIDevice.currentDevice().orientation
-
             animatedImageView.frame = displacedView.frame(inCoordinatesOfView: self.view)
             animatedImageView.clipsToBounds = true
             self.view.addSubview(animatedImageView)
@@ -401,6 +402,8 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
                 animatedImageView.center = self?.view.boundsCenter ?? CGPoint.zero
 
                 }, completion: { [weak self] done in
+
+                    completion()
 
                     self?.itemView.hidden = false
                     displacedView.hidden = false
@@ -487,16 +490,16 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
         /// A special case for horizontal "swipe to dismiss" is when the gallery has carousel mode OFF, then it is possible to reach the beginning or the end of image set while paging. PAging will stop at index = 0 or at index.max. In this case we allow to jump out from the gallery also via horizontal swipe to dismiss.
         if (self.index == 0 && velocity.direction == .Right) || (self.index == self.itemCount - 1 && velocity.direction == .Left) {
-
+            
             return (pagingMode == .Standard)
         }
-
+        
         return false
     }
-
+    
     //Reports the continuous progress of Swipe To Dismiss to the  Gallery View Controller
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String: AnyObject]?, context: UnsafeMutablePointer<Void>) {
-
+        
         guard let swipingToDissmissInProgress = swipingToDismiss else { return }
         guard keyPath == "contentOffset" else { return }
         
