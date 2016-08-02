@@ -17,12 +17,14 @@ class VideoViewController: ItemBaseController<VideoView> {
     private let swipeToDismissFadeOutAccelerationFactor: CGFloat = 6
 
     let videoURL: NSURL
+    let videoPlayer: AVPlayer
     let fullHDScreenSize = CGSize(width: 1920, height: 1080)
     let embeddedPlayButton = UIButton.circlePlayButton(70)
 
     init(index: Int, itemCount: Int, previewImage: UIImage, videoURL: NSURL, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
         self.videoURL = videoURL
+        self.videoPlayer = AVPlayer(URL: self.videoURL)
 
         super.init(index: index, itemCount: itemCount, configuration: configuration, isInitialController: isInitialController)
 
@@ -36,15 +38,32 @@ class VideoViewController: ItemBaseController<VideoView> {
         embeddedPlayButton.autoresizingMask = [.FlexibleTopMargin, .FlexibleLeftMargin, .FlexibleBottomMargin, .FlexibleRightMargin]
         self.view.addSubview(embeddedPlayButton)
         embeddedPlayButton.center = self.view.boundsCenter
-        
-        let player = AVPlayer(URL: self.videoURL)
-        self.itemView.player = player
+
+        embeddedPlayButton.addTarget(self, action: #selector(playVideoInitially), forControlEvents: UIControlEvents.TouchUpInside)
+
+        self.itemView.player = videoPlayer
         self.itemView.contentMode = .ScaleAspectFill
     }
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
+    }
+
+    func playVideoInitially() {
+
+        self.videoPlayer.play()
+
+        self.itemView.previewImageView.hidden = true
+
+        UIView.animateWithDuration(0.25, animations: { [weak self] in
+
+            self?.embeddedPlayButton.alpha = 0
+
+        }) { [weak self] _ in
+
+            self?.embeddedPlayButton.hidden = true
+        }
     }
 
     func closeDecorationViews(duration: NSTimeInterval) {
@@ -75,7 +94,7 @@ class VideoViewController: ItemBaseController<VideoView> {
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
 
-         self.itemView.player?.pause()
+         self.videoPlayer.pause()
     }
 
     override func viewDidLayoutSubviews() {

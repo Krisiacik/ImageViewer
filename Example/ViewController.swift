@@ -84,7 +84,6 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
             
             return GalleryItem.Image { $0(image) }
         }
-        
     }
 
     func galleryConfiguration() -> GalleryConfiguration {
@@ -93,7 +92,7 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
 
             GalleryConfigurationItem.PagingMode(.Standard),
             GalleryConfigurationItem.PresentationStyle(.Displacement),
-            GalleryConfigurationItem.HideDecorationViewsOnLaunch(false),
+            GalleryConfigurationItem.HideDecorationViewsOnLaunch(true),
 
             GalleryConfigurationItem.OverlayColor(UIColor.blackColor()),
             GalleryConfigurationItem.OverlayColorOpacity(1),
