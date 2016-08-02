@@ -53,6 +53,9 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
     // TRANSITIONS
     private var swipeToDismissTransition: GallerySwipeToDismissTransition?
 
+
+    // MARK: - Initializers
+
     init(index: Int, itemCount: Int, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
         self.index = index
@@ -103,6 +106,8 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
         self.scrollView.removeObserver(self, forKeyPath: "contentOffset")
     }
 
+    // MARK: - Configuration
+
     private func configureScrollView() {
 
         scrollView.showsHorizontalScrollIndicator = false
@@ -141,6 +146,8 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
         scrollView.addSubview(itemView)
     }
 
+    // MARK: - View Controller Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -172,6 +179,8 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
         return itemView
     }
+
+    // MARK: - Scroll View delegate methods
 
     func scrollViewDidZoom(scrollView: UIScrollView) {
 
@@ -238,6 +247,8 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
             break
         }
     }
+
+    // MARK: - Swipe To Dismiss
 
     func handleSwipeToDismissInProgress(swipeOrientation: SwipeToDismiss, forTouchPoint touchPoint: CGPoint) {
 
@@ -343,6 +354,8 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
             }
         }
     }
+
+    // MARK: - Present/Dismiss transitions
 
     func presentItem(alongsideAnimation alongsideAnimation: () -> Void) {
 
@@ -453,6 +466,8 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
         }
     }
 
+    // MARK: - Arkane stuff
+
     ///This resolves which of the two pan gesture recognizers should kick in. There is one built in the OLDGalleryViewController (as it is a UIPageViewController subclass), and another one is added as part of item controller. When we pan, we need to decide whether it constitutes a horizontal paging gesture, or a swipe-to-dismiss gesture.
     /// All the logic is from the perspective of SwipeToDismissRecognizer - should it kick in (or let the paging recognizer page)?
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -477,6 +492,7 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
         return false
     }
 
+    //Reports the continuous progress of Swipe To Dismiss to the  Gallery View Controller
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String: AnyObject]?, context: UnsafeMutablePointer<Void>) {
 
         guard let swipingToDissmissInProgress = swipingToDismiss else { return }

@@ -16,6 +16,5 @@ protocol ItemController: class {
     var isInitialController: Bool { get set }
 
     func presentItem(alongsideAnimation alongsideAnimation: () -> Void)
-
     func dismissItem(alongsideAnimation alongsideAnimation: () -> Void, completion: () -> Void)
 }

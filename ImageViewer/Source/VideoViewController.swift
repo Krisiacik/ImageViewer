@@ -30,6 +30,7 @@ class VideoViewController: ItemBaseController<VideoView> {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        circlePlayButton.autoresizingMask = [.FlexibleTopMargin, .FlexibleLeftMargin, .FlexibleBottomMargin, .FlexibleRightMargin]
         self.itemView.addSubview(circlePlayButton)
         
         let player = AVPlayer(URL: self.videoURL)
