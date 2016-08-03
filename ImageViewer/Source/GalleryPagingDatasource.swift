@@ -16,11 +16,13 @@ final class GalleryPagingDatasource: NSObject, UIPageViewControllerDataSource {
     private let configuration: GalleryConfiguration
     private let itemCount: Int
     private var pagingMode = GalleryPagingMode.Standard
+    private unowned var scrubber: VideoScrubber
 
-    init(itemsDatasource: GalleryItemsDatasource, displacedViewsDatasource: GalleryDisplacedViewsDatasource?, configuration: GalleryConfiguration) {
+    init(itemsDatasource: GalleryItemsDatasource, displacedViewsDatasource: GalleryDisplacedViewsDatasource?, scrubber: VideoScrubber, configuration: GalleryConfiguration) {
 
         self.itemsDatasource = itemsDatasource
         self.displacedViewsDatasource = displacedViewsDatasource
+        self.scrubber = scrubber
         self.configuration = configuration
         self.itemCount = itemsDatasource.numberOfItemsInGalery()
 
@@ -83,7 +85,7 @@ final class GalleryPagingDatasource: NSObject, UIPageViewControllerDataSource {
 
         case .Video(let previewImage, let videoURL):
 
-           let videoController = VideoViewController(index: itemIndex, itemCount: self.itemsDatasource.numberOfItemsInGalery(), previewImage: previewImage, videoURL: videoURL, configuration: configuration, isInitialController: isInitial)
+            let videoController = VideoViewController(index: itemIndex, itemCount: self.itemsDatasource.numberOfItemsInGalery(), previewImage: previewImage, videoURL: videoURL, scrubber: scrubber, configuration: configuration, isInitialController: isInitial)
 
             videoController.delegate = itemControllerDelegate
             videoController.displacedViewsDatasource = displacedViewsDatasource

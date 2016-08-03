@@ -18,12 +18,15 @@ class VideoViewController: ItemBaseController<VideoView> {
 
     let videoURL: NSURL
     let videoPlayer: AVPlayer
+    unowned let scrubber: VideoScrubber
+
     let fullHDScreenSize = CGSize(width: 1920, height: 1080)
     let embeddedPlayButton = UIButton.circlePlayButton(70)
 
-    init(index: Int, itemCount: Int, previewImage: UIImage, videoURL: NSURL, configuration: GalleryConfiguration, isInitialController: Bool = false) {
+    init(index: Int, itemCount: Int, previewImage: UIImage, videoURL: NSURL, scrubber: VideoScrubber, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
         self.videoURL = videoURL
+        self.scrubber = scrubber
         self.videoPlayer = AVPlayer(URL: self.videoURL)
 
         super.init(index: index, itemCount: itemCount, configuration: configuration, isInitialController: isInitialController)
@@ -48,6 +51,20 @@ class VideoViewController: ItemBaseController<VideoView> {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
+        scrubber.player = self.videoPlayer
+    }
+
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+
+         self.videoPlayer.pause()
+        scrubber.player = nil
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        itemView.bounds.size = aspectFitSize(forContentOfSize: fullHDScreenSize, inBounds: self.scrollView.bounds.size)
     }
 
     func playVideoInitially() {
@@ -80,27 +97,15 @@ class VideoViewController: ItemBaseController<VideoView> {
         let circleButtonAnimation = {
 
             UIView.animateWithDuration(0.15) { [weak self] in
-            self?.embeddedPlayButton.alpha = 1
+                self?.embeddedPlayButton.alpha = 1
             }
         }
 
         super.presentItem(alongsideAnimation: alongsideAnimation) {
-
-                circleButtonAnimation()
-                completion()
+            
+            circleButtonAnimation()
+            completion()
         }
-    }
-
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-
-         self.videoPlayer.pause()
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        itemView.bounds.size = aspectFitSize(forContentOfSize: fullHDScreenSize, inBounds: self.scrollView.bounds.size)
     }
 
     override func displacementTargetSize(forSize size: CGSize) -> CGSize {

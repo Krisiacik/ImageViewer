@@ -157,7 +157,6 @@
 		EBE627111D268AB70095999A /* GalleryItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GalleryItem.swift; path = Source/GalleryItem.swift; sourceTree = "<group>"; };
 		EBEBEF931C84665B008C1E58 /* OLDImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OLDImageViewController.swift; sourceTree = "<group>"; };
 		EBEBEF951C846847008C1E58 /* OLDGalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OLDGalleryViewController.swift; sourceTree = "<group>"; };
-		EBFC24E31D4BECEB00B2DC4C /* VisualCoding.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = VisualCoding.playground; path = Playgrounds/VisualCoding.playground; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,7 +203,6 @@
 		C7DABE3E1C12245B00F5BD7B = {
 			isa = PBXGroup;
 			children = (
-				EBFC24E21D4BECCB00B2DC4C /* Playground */,
 				C7897CE31C1350B7006447FB /* Example */,
 				C7DABE4A1C12245B00F5BD7B /* ImageViewer */,
 				EB1CEC141C84A4EE00BB27B8 /* ImageViewerTests */,
@@ -399,14 +397,6 @@
 				EB8BEC771D3D1C7200DCE3EC /* OLD */,
 			);
 			name = "Paging Controller";
-			sourceTree = "<group>";
-		};
-		EBFC24E21D4BECCB00B2DC4C /* Playground */ = {
-			isa = PBXGroup;
-			children = (
-				EBFC24E31D4BECEB00B2DC4C /* VisualCoding.playground */,
-			);
-			name = Playground;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

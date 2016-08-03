@@ -17,6 +17,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
     /// A custom view at the bottom of the gallery with layout using default (or custom) pinning settingsfor footer.
     public var footerView: UIView?
     private var closeButton: UIButton? = UIButton.closeButton()
+    private let scrubber = VideoScrubber()
     
     private weak var initialItemController: ItemController?
 
@@ -104,7 +105,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
             }
         }
 
-        pagingDatasource = GalleryPagingDatasource(itemsDatasource: itemsDatasource, displacedViewsDatasource: displacedViewsDatasource, configuration: configuration)
+        pagingDatasource = GalleryPagingDatasource(itemsDatasource: itemsDatasource, displacedViewsDatasource: displacedViewsDatasource, scrubber: scrubber, configuration: configuration)
 
         super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll,
                    navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal,
@@ -177,6 +178,8 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         configureHeaderView()
         configureFooterView()
         configureCloseButton()
+
+        self.view.addSubview(scrubber)
     }
     
     public override func viewDidAppear(animated: Bool) {
@@ -222,6 +225,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         layoutCloseButton()
         layoutHeaderView()
         layoutFooterView()
+        layoutScrubber()
     }
 
     func layoutCloseButton() {
@@ -304,6 +308,14 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
             footer.autoresizingMask = [.FlexibleTopMargin, .FlexibleLeftMargin]
             footer.frame.origin = CGPoint(x: self.view.bounds.width - marginRight - footer.bounds.width, y: self.view.bounds.height - footer.bounds.height - marginBottom)
         }
+    }
+
+    func layoutScrubber() {
+
+        scrubber.bounds = CGRect(origin: CGPoint.zero, size: CGSize(width: self.view.bounds.width, height: 20))
+        scrubber.center = self.view.boundsCenter
+
+        scrubber.center.y = (footerView?.frame.origin.y ?? self.view.bounds.maxY) - scrubber.bounds.height
     }
 
     // MARK: - Animations
