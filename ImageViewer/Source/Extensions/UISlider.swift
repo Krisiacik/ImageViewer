@@ -23,11 +23,11 @@ extension UISlider {
         minTrackImage.frame = tileImageFrame
 
         let maxTrackImage = CALayer()
-        maxTrackImage.backgroundColor = UIColor.lightGrayColor().CGColor
+        maxTrackImage.backgroundColor = UIColor.darkGrayColor().CGColor
         maxTrackImage.frame = tileImageFrame
 
         slider.setMinimumTrackImage(minTrackImage.toImage(), forState: UIControlState.Normal)
-        slider.setMinimumTrackImage(minTrackImage.toImage(), forState: UIControlState.Normal)
+        slider.setMaximumTrackImage(maxTrackImage.toImage(), forState: UIControlState.Normal)
         
         return slider
     }

@@ -15,23 +15,28 @@ class VideoView: UIView {
 
     var image: UIImage? { didSet { previewImageView.image = image } }
 
-    var player: AVPlayer? {
+    var player: AVObservablePlayer? {
+
+        willSet {
+
+            if newValue == nil {
+
+                if let observablePlayer = player {
+
+                    observablePlayer.removeObserver(self, forKeyPath: AVObservablePlayer.ObservableKeyPaths.state)
+                }
+            }
+        }
 
         didSet {
 
-            print("RATE \(self.player!.rate)")
+            if  let observablePlayer = player,
+                let videoLayer = self.layer as? AVPlayerLayer {
 
-            let status = (self.player!.status == .ReadyToPlay)  ? "ReadyToPlay" : "None"
-            print("STATUS \(status)")
-
-            if let videoLayer = self.layer as? AVPlayerLayer {
-
-                videoLayer.player = player
+                videoLayer.player = observablePlayer.player
                 videoLayer.videoGravity = AVLayerVideoGravityResizeAspect
 
-                player?.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.New, context: nil)
-                player?.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.New, context: nil)
-                player?.currentItem?.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.New, context: nil)
+                observablePlayer.addObserver(self, forKeyPath: AVObservablePlayer.ObservableKeyPaths.state, options: NSKeyValueObservingOptions.New, context: nil)
             }
         }
     }
@@ -58,33 +63,34 @@ class VideoView: UIView {
         super.init(coder: aDecoder)
     }
 
-    func playInitially() {
-
-        self.player?.play()
-
-        UIView.animateWithDuration(0.35) {
-
-            self.previewImageView.alpha = 0
-        }
-    }
-
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
 
+        if keyPath == AVObservablePlayer.ObservableKeyPaths.state {
 
-        print("KEYPATH: \(keyPath) of OBJECT \(object) with CHANGE \(change)")
+            if let observablePlayer = self.player {
 
-//        if keyPath == "rate" {
-//            if player?.rate != 0 {
-//
-//                print("RATE \(self.player!.rate)")
-//
-//                previewImageView.alpha = 0
-//            }
-//        }
-//        else if keyPath == "status" {
-//
-//            let status = (self.player!.status == .ReadyToPlay)  ? "ReadyToPlay" : "None"
-//            print("STATUS \(status)")
-//        }
+                switch observablePlayer.state {
+
+                case AVObservablePlayerStateNone:
+
+                    self.previewImageView.hidden = false
+
+                case AVObservablePlayerStateReady:
+
+                    self.previewImageView.hidden = false
+
+                case AVObservablePlayerStatePlaying:
+
+                    self.previewImageView.hidden = true
+
+                case AVObservablePlayerStateError:
+
+                    self.previewImageView.hidden = false
+
+                default:
+                    break
+                }
+            }
+        }
     }
 }

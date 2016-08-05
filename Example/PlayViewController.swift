@@ -14,7 +14,7 @@ class PlayViewController: UIViewController {
         super.viewDidLoad()
 
 
-        let scrubber = VideoScrubber(frame: CGRect(x: 20, y: 200, width: 300, height: 40))
+        let scrubber = VideoScrubber(frame: CGRect(x: 20, y: 200, width: 300, height: 50))
 
         scrubber.backgroundColor = UIColor.redColor()
 

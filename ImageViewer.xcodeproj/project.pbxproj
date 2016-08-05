@@ -18,6 +18,8 @@
 		C7897CEF1C1350B7006447FB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7897CED1C1350B7006447FB /* LaunchScreen.storyboard */; };
 		C7897CF61C1356C6006447FB /* CGSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DABE631C12276800F5BD7B /* CGSize.swift */; };
 		C7DABE641C12276800F5BD7B /* CGSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DABE631C12276800F5BD7B /* CGSize.swift */; };
+		EB03C20A1D533B3C00718129 /* AVObservablePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB03C2091D533B3C00718129 /* AVObservablePlayer.swift */; };
+		EB03C20B1D533B3C00718129 /* AVObservablePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB03C2091D533B3C00718129 /* AVObservablePlayer.swift */; };
 		EB057A151D510264007565F1 /* AVPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB057A141D510264007565F1 /* AVPlayer.swift */; };
 		EB057A161D510264007565F1 /* AVPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB057A141D510264007565F1 /* AVPlayer.swift */; };
 		EB17B3751D4A4E7400EED1DA /* PlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB17B3741D4A4E7400EED1DA /* PlayViewController.swift */; };
@@ -71,8 +73,6 @@
 		EB8BEC7B1D3D1CB500DCE3EC /* ItemControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8BEC791D3D1CB500DCE3EC /* ItemControllerDelegate.swift */; };
 		EBA0A9531C89C653005B8DD3 /* GalleryConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA0A9521C89C653005B8DD3 /* GalleryConfiguration.swift */; };
 		EBA0A9541C89C653005B8DD3 /* GalleryConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA0A9521C89C653005B8DD3 /* GalleryConfiguration.swift */; };
-		EBA76F6E1D4F62220094931F /* VideoPlaybackEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA76F6D1D4F62220094931F /* VideoPlaybackEngine.swift */; };
-		EBA76F6F1D4F62220094931F /* VideoPlaybackEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA76F6D1D4F62220094931F /* VideoPlaybackEngine.swift */; };
 		EBA76F711D4F855C0094931F /* ItemBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA76F701D4F855C0094931F /* ItemBaseController.swift */; };
 		EBA76F721D4F855C0094931F /* ItemBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA76F701D4F855C0094931F /* ItemBaseController.swift */; };
 		EBA8CB341D38E51500545E5B /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBFCB961D26CBA2007E7244 /* BlurView.swift */; };
@@ -114,6 +114,7 @@
 		C7DABE481C12245B00F5BD7B /* ImageViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ImageViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7DABE551C12248600F5BD7B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7DABE631C12276800F5BD7B /* CGSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGSize.swift; sourceTree = "<group>"; };
+		EB03C2091D533B3C00718129 /* AVObservablePlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVObservablePlayer.swift; sourceTree = "<group>"; };
 		EB057A141D510264007565F1 /* AVPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVPlayer.swift; sourceTree = "<group>"; };
 		EB17B3741D4A4E7400EED1DA /* PlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayViewController.swift; sourceTree = "<group>"; };
 		EB17B3771D4A51D200EED1DA /* UIBezierPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBezierPath.swift; sourceTree = "<group>"; };
@@ -142,7 +143,6 @@
 		EB7B7E4D1C8F240D006834F7 /* LayoutEnums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutEnums.swift; sourceTree = "<group>"; };
 		EB8BEC791D3D1CB500DCE3EC /* ItemControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemControllerDelegate.swift; sourceTree = "<group>"; };
 		EBA0A9521C89C653005B8DD3 /* GalleryConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryConfiguration.swift; sourceTree = "<group>"; };
-		EBA76F6D1D4F62220094931F /* VideoPlaybackEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlaybackEngine.swift; sourceTree = "<group>"; };
 		EBA76F701D4F855C0094931F /* ItemBaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemBaseController.swift; sourceTree = "<group>"; };
 		EBA90E3E1C8729E2000AA697 /* GalleryPresentTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GalleryPresentTransition.swift; path = ImageViewer/GalleryPresentTransition.swift; sourceTree = "<group>"; };
 		EBA90E421C875225000AA697 /* ImageFadeInHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageFadeInHandler.swift; sourceTree = "<group>"; };
@@ -363,7 +363,7 @@
 			isa = PBXGroup;
 			children = (
 				EBAF4C651D3937BC0039CA93 /* VideoViewController.swift */,
-				EBA76F6D1D4F62220094931F /* VideoPlaybackEngine.swift */,
+				EB03C2091D533B3C00718129 /* AVObservablePlayer.swift */,
 				EB6F46541D4660AC00984035 /* VideoView.swift */,
 				EB3464F11D4BA9BC009494B5 /* VideoScrubber.swift */,
 			);
@@ -541,7 +541,7 @@
 				EBA90E3F1C8729E2000AA697 /* GalleryPresentTransition.swift in Sources */,
 				C7897CF61C1356C6006447FB /* CGSize.swift in Sources */,
 				EB1DB6E91D3E595D00DC9064 /* UIApplication.swift in Sources */,
-				EBA76F6E1D4F62220094931F /* VideoPlaybackEngine.swift in Sources */,
+				EB03C20A1D533B3C00718129 /* AVObservablePlayer.swift in Sources */,
 				EBE627091D2689AD0095999A /* ItemController.swift in Sources */,
 				EBAF4C601D391C720039CA93 /* GalleryPagingDatasource.swift in Sources */,
 				EB17B3781D4A51D200EED1DA /* UIBezierPath.swift in Sources */,
@@ -604,9 +604,9 @@
 				EB6F46551D4660AC00984035 /* VideoView.swift in Sources */,
 				EBE6270D1D268A4A0095999A /* GalleryDisplacedViewDatasource.swift in Sources */,
 				EBE627071D2688890095999A /* GalleryViewController.swift in Sources */,
+				EB03C20B1D533B3C00718129 /* AVObservablePlayer.swift in Sources */,
 				EBA90E401C8729E2000AA697 /* GalleryPresentTransition.swift in Sources */,
 				EB17B3821D4A6E7F00EED1DA /* UIButton.swift in Sources */,
-				EBA76F6F1D4F62220094931F /* VideoPlaybackEngine.swift in Sources */,
 				EB40C3781C9C5C48004EA215 /* GalleryItemsDatasource.swift in Sources */,
 				EBAF4C611D391C720039CA93 /* GalleryPagingDatasource.swift in Sources */,
 				EBEBEF941C84665B008C1E58 /* OLDImageViewController.swift in Sources */,
