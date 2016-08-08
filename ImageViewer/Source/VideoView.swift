@@ -15,7 +15,7 @@ class VideoView: UIView {
 
     var image: UIImage? { didSet { previewImageView.image = image } }
 
-    var player: AVObservablePlayer? {
+    var player: AVPlayer? {
 
         willSet {
 
@@ -23,20 +23,41 @@ class VideoView: UIView {
 
                 if let observablePlayer = player {
 
-                    observablePlayer.removeObserver(self, forKeyPath: AVObservablePlayer.ObservableKeyPaths.state)
+                    observablePlayer.removeObserver(self, forKeyPath: "status")
                 }
             }
         }
 
         didSet {
 
-            if  let observablePlayer = player,
+            if  let observablePlayer = self.player,
+                let item = self.player?.currentItem,
                 let videoLayer = self.layer as? AVPlayerLayer {
 
-                videoLayer.player = observablePlayer.player
+                videoLayer.player = observablePlayer
                 videoLayer.videoGravity = AVLayerVideoGravityResizeAspect
 
-                observablePlayer.addObserver(self, forKeyPath: AVObservablePlayer.ObservableKeyPaths.state, options: NSKeyValueObservingOptions.New, context: nil)
+                observablePlayer.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.New, context: nil)
+                observablePlayer.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.New, context: nil)
+
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(playerDidFinishPlaying), name: AVPlayerItemDidPlayToEndTimeNotification, object: item)
+            }
+        }
+    }
+
+    func playerDidFinishPlaying() {
+
+        if  let player = self.player,
+            let _ = self.player?.currentItem {
+
+            player.seekToTime(CMTime(seconds: 0, preferredTimescale: 1))
+
+            UIView.animateWithDuration(0.3) { [weak self] in
+
+                if let weakself = self {
+
+                    weakself.previewImageView.alpha = 1
+                }
             }
         }
     }
@@ -65,32 +86,19 @@ class VideoView: UIView {
 
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
 
-        if keyPath == AVObservablePlayer.ObservableKeyPaths.state {
+        if let status = self.player?.status, let currentTime = self.player?.currentTime().seconds {
 
-            if let observablePlayer = self.player {
+            if status == .ReadyToPlay && currentTime != 0 {
 
-                switch observablePlayer.state {
+                UIView.animateWithDuration(0.3) { [weak self] in
 
-                case AVObservablePlayerStateNone:
+                    if let weakself = self {
 
-                    self.previewImageView.hidden = false
-
-                case AVObservablePlayerStateReady:
-
-                    self.previewImageView.hidden = false
-
-                case AVObservablePlayerStatePlaying:
-
-                    self.previewImageView.hidden = true
-
-                case AVObservablePlayerStateError:
-
-                    self.previewImageView.hidden = false
-
-                default:
-                    break
+                        weakself.previewImageView.alpha = 0
+                    }
                 }
             }
         }
     }
 }
+

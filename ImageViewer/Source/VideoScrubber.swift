@@ -2,7 +2,7 @@
 //  VideoScrubber.swift
 //  ImageViewer
 //
-//  Created by Kristian Angyal on 29/07/2016.
+//  Created by Kristian Angyal on 08/08/2016.
 //  Copyright © 2016 MailOnline. All rights reserved.
 //
 
@@ -13,36 +13,69 @@ public class VideoScrubber: UIControl {
 
     let playButton = UIButton.playButton(width: 50, height: 40)
     let pauseButton = UIButton.pauseButton(width: 50, height: 40)
-    let scrubber = UISlider.createSlider(320, height: 20, pointerDiameter: 10, barHeight: 2)
+    let scrubber = Slider.createSlider(320, height: 20, pointerDiameter: 10, barHeight: 2)
     let timeLabel = UILabel(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 50, height: 20)))
     var duration: NSTimeInterval?
+    private var periodicObserver: AnyObject?
+    private var stoppedSlidingTimeStamp = NSDate()
 
-    var player: AVObservablePlayer? {
+
+    var player: AVPlayer? {
 
         willSet {
 
             if newValue == nil {
 
-                if let observablePlayer = player { observablePlayer.removeObserver(self, forKeyPath: AVObservablePlayer.ObservableKeyPaths.state) }
+                if let player = player {
+
+                    player.removeObserver(self, forKeyPath: "status")
+
+                    if let periodicObserver = self.periodicObserver {
+
+                        player.removeTimeObserver(periodicObserver)
+                        self.periodicObserver = nil
+                    }
+                }
             }
         }
 
         didSet {
-            if let _ = player { configureObservers() }
+
+            if let player = player {
+
+                player.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.New, context: nil)
+                player.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.New, context: nil)
+                scrubber.addObserver(self, forKeyPath: "isSliding", options: NSKeyValueObservingOptions.New, context: nil)
+
+                periodicObserver = player.addPeriodicTimeObserverForInterval(CMTime(value: 1, timescale: 1), queue: nil) { [weak self] time in
+
+                    if let weakself = self {
+                        weakself.update()
+                    }
+                }
+            }
         }
     }
 
     override init(frame: CGRect) {
 
         super.init(frame: frame)
+        setup()
+    }
+
+    public required init?(coder aDecoder: NSCoder) {
+
+        super.init(coder: aDecoder)
+        setup()
+    }
+
+    func setup() {
 
         self.clipsToBounds = true
-
         pauseButton.hidden = true
 
         scrubber.minimumValue = 0
         scrubber.maximumValue = 1000
-
         scrubber.value = 0
 
         timeLabel.attributedText = NSAttributedString(string: "--:--", attributes: [NSForegroundColorAttributeName : UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(12)])
@@ -50,14 +83,11 @@ public class VideoScrubber: UIControl {
 
         playButton.addTarget(self, action: #selector(play), forControlEvents: UIControlEvents.TouchUpInside)
         pauseButton.addTarget(self, action: #selector(pause), forControlEvents: UIControlEvents.TouchUpInside)
-        scrubber.addTarget(self, action: #selector(seekTime), forControlEvents: UIControlEvents.TouchUpInside)
         scrubber.addTarget(self, action: #selector(updateCurrentTime), forControlEvents: UIControlEvents.ValueChanged)
+        scrubber.addTarget(self, action: #selector(seekToTime), forControlEvents: UIControlEvents.TouchUpInside)
 
         self.addSubviews(playButton, pauseButton, scrubber, timeLabel)
     }
-
-    @available (*, unavailable)
-    public required init?(coder aDecoder: NSCoder) { fatalError() }
 
     public override func layoutSubviews() {
         super.layoutSubviews()
@@ -65,8 +95,6 @@ public class VideoScrubber: UIControl {
         playButton.center = self.boundsCenter
         playButton.frame.origin.x = 0
         pauseButton.frame = playButton.frame
-        playButton.backgroundColor = UIColor.greenColor()
-        pauseButton.backgroundColor = UIColor.greenColor()
 
         timeLabel.center = self.boundsCenter
         timeLabel.frame.origin.x = self.bounds.maxX - timeLabel.bounds.width
@@ -77,9 +105,21 @@ public class VideoScrubber: UIControl {
         scrubber.frame.origin.x = playButton.frame.maxX
     }
 
-    func configureObservers() {
+    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String: AnyObject]?, context: UnsafeMutablePointer<Void>) {
 
-        self.player?.addObserver(self, forKeyPath: AVObservablePlayer.ObservableKeyPaths.state, options: NSKeyValueObservingOptions.New, context: nil)
+        if keyPath == "isSliding" {
+
+            if scrubber.isSliding == false {
+
+                stoppedSlidingTimeStamp = NSDate()
+            }
+        }
+
+        else if keyPath == "rate" || keyPath == "status" {
+
+            self.update()
+        }
+
     }
 
     func play() {
@@ -92,78 +132,68 @@ public class VideoScrubber: UIControl {
         self.player?.pause()
     }
 
-    func seekTime() {
+    func seekToTime() {
 
         let progress = scrubber.value / scrubber.maximumValue //naturally will be between 0 to 1
-        let time = self.player!.player.currentItem!.duration.toSeconds() * Double(progress)
 
-        self.player!.seekTime(time)
+        if let player = self.player, let currentItem =  player.currentItem {
+
+            let time = currentItem.duration.seconds * Double(progress)
+            player.seekToTime(CMTime(seconds: time, preferredTimescale: 1))
+        }
     }
 
-    override public func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String: AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    func update() {
 
-        if keyPath == AVObservablePlayer.ObservableKeyPaths.state {
+        updateButtons()
+        updateDuration()
+        updateScrubber()
+        updateCurrentTime()
+    }
 
-            switch player!.state {
+    func updateButtons() {
 
-            case  AVObservablePlayerStateNone:
+        if let player = self.player {
 
-                print("NONE")
-                self.playButton.hidden = true
-                self.pauseButton.hidden = true
-                self.updateCurrentTime()
-
-            case  AVObservablePlayerStateReady:
-
-                print("READY")
-                self.playButton.hidden = false
-                self.pauseButton.hidden = true
-                updateDuration()
-                updateCurrentTime()
-
-            case  AVObservablePlayerStatePlaying:
-
-                print("PLAYING")
-                self.playButton.hidden = true
-                self.pauseButton.hidden = false
-                self.updateCurrentTime()
-
-            case  AVObservablePlayerStatePaused:
-
-                print("PAUSED")
-                self.playButton.hidden = false
-                self.pauseButton.hidden = true
-                self.updateCurrentTime()
-
-            case  AVObservablePlayerStateError:
-
-                print("ERROR")
-                self.playButton.hidden = true
-                self.pauseButton.hidden = true
-
-
-            default:
-                print("UNKNOWN DAMN IT")
-            }
-        }
-
-        else if keyPath == AVObservablePlayer.ObservableKeyPaths.currentTime {
-
-            self.updateCurrentTime()
+            self.playButton.hidden = player.isPlaying()
+            self.pauseButton.hidden = !self.playButton.hidden
         }
     }
 
     func updateDuration() {
 
-        if let duration = self.player?.player.currentItem?.duration {
+        if let duration = self.player?.currentItem?.duration {
 
-            self.duration = duration.toSeconds()
+            self.duration = (duration.isNumeric) ? duration.seconds : nil
+        }
+    }
+
+    func updateScrubber() {
+
+        guard scrubber.isSliding == false else { return }
+
+        let timeElapsed = NSDate().timeIntervalSinceDate( stoppedSlidingTimeStamp)
+        guard timeElapsed > 1 else {
+            return
+        }
+
+        if let player = self.player, duration = self.duration {
+
+            let progress = player.currentTime().seconds / duration
+
+            UIView.animateWithDuration(0.9) { [weak self] in
+
+                if let weakself = self {
+
+                    weakself.scrubber.value = Float(progress) * weakself.scrubber.maximumValue
+                }
+            }
         }
     }
 
     func updateCurrentTime() {
 
-        if let duration = self.duration {
+        if let duration = self.duration where self.duration != nil {
 
             let sliderProgress = scrubber.value / scrubber.maximumValue
             let currentTime = Double(sliderProgress) * duration
@@ -172,16 +202,19 @@ public class VideoScrubber: UIControl {
 
             timeLabel.attributedText = NSAttributedString(string: timeString, attributes: [NSForegroundColorAttributeName : UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(12)])
         }
+        else {
+            timeLabel.attributedText = NSAttributedString(string: "--:--", attributes: [NSForegroundColorAttributeName : UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(12)])
+        }
     }
-
+    
     func stringFromTimeInterval(interval:NSTimeInterval) -> String {
-
+        
         let timeInterval = NSInteger(interval)
-
+        
         let seconds = timeInterval % 60
         let minutes = (timeInterval / 60) % 60
         //let hours = (timeInterval / 3600)
-
+        
         return NSString(format: "%0.2d:%0.2d",minutes,seconds) as String
         //return NSString(format: "%0.2d:%0.2d:%0.2d",hours,minutes,seconds) as String
     }

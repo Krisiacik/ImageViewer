@@ -17,7 +17,7 @@ class VideoViewController: ItemBaseController<VideoView> {
     private let swipeToDismissFadeOutAccelerationFactor: CGFloat = 6
 
     let videoURL: NSURL
-    let videoPlayer: AVObservablePlayer
+    let videoPlayer: AVPlayer
     unowned let scrubber: VideoScrubber
 
     let fullHDScreenSize = CGSize(width: 1920, height: 1080)
@@ -27,7 +27,7 @@ class VideoViewController: ItemBaseController<VideoView> {
 
         self.videoURL = videoURL
         self.scrubber = scrubber
-        self.videoPlayer = AVObservablePlayer(player: AVPlayer(URL: self.videoURL))
+        self.videoPlayer = AVPlayer(URL: self.videoURL)
 
         super.init(index: index, itemCount: itemCount, configuration: configuration, isInitialController: isInitialController)
 

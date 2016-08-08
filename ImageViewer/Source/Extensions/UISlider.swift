@@ -8,11 +8,11 @@
 
 import UIKit
 
-extension UISlider {
+extension Slider {
 
-    static func createSlider(width: CGFloat, height: CGFloat, pointerDiameter: CGFloat, barHeight: CGFloat) -> UISlider {
+    static func createSlider(width: CGFloat, height: CGFloat, pointerDiameter: CGFloat, barHeight: CGFloat) -> Slider {
 
-        let slider = UISlider(frame: CGRect(x: 0, y: 0, width: width, height: height))
+        let slider = Slider(frame: CGRect(x: 0, y: 0, width: width, height: height))
 
         slider.setThumbImage(CAShapeLayer.circle(UIColor.whiteColor(), diameter: pointerDiameter).toImage(), forState: UIControlState.Normal)
 

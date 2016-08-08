@@ -12,6 +12,6 @@ extension AVPlayer {
 
     func isPlaying() -> Bool {
 
-        return (self.rate != 0) && (self.error == nil)
+        return (self.rate != 0.0 && self.status == .ReadyToPlay)
     }
 }
