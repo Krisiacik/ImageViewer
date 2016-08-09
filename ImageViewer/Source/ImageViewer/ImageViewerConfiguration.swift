@@ -24,10 +24,11 @@ public struct ImageViewerConfiguration {
     
     public let imageSize: CGSize
     public let closeButtonAssets: CloseButtonAssets
-    
-    public init(imageSize: CGSize, closeButtonAssets: CloseButtonAssets) {
-        
+    public let backgroundColor: UIColor
+
+    public init(imageSize: CGSize, closeButtonAssets: CloseButtonAssets, backgroundColor: UIColor = UIColor.blackColor()) {
         self.imageSize = imageSize
         self.closeButtonAssets = closeButtonAssets
+        self.backgroundColor = backgroundColor
     }
 }

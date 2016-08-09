@@ -41,7 +41,8 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
     private var isAnimating = false
     private var dynamicTransparencyActive = false
     private var pagingMode: GalleryPagingMode = .Standard
-    
+    private var backgroundColor: UIColor = .blackColor()
+
     /// LOCAL CONFIG
     private let thresholdVelocity: CGFloat = 500 // The speed of swipe needs to be at least this amount of pixels per second for the swipe to finish dismissal.
     private let rotationAnimationDuration = 0.2
@@ -75,11 +76,11 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         configuration.forEach { configurationItem in
             
             switch configurationItem {
-                
-            case .SpinnerColor(let color):  activityIndicatorView.color = color
-            case .SpinnerStyle(let style):  activityIndicatorView.activityIndicatorViewStyle = style
-            case .PagingMode(let mode):     pagingMode = mode
-                
+
+            case .SpinnerColor(let color):     activityIndicatorView.color = color
+            case .SpinnerStyle(let style):     activityIndicatorView.activityIndicatorViewStyle = style
+            case .PagingMode(let mode):        pagingMode = mode
+            case .BackgroundColor(let color):  backgroundColor = color
             default: break
             }
         }
@@ -87,7 +88,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ImageViewController.adjustImageViewForRotation), name: UIDeviceOrientationDidChangeNotification, object: nil)
         
         self.view.backgroundColor = UIColor.clearColor()
-        blackOverlayView.backgroundColor = UIColor.blackColor()
+        blackOverlayView.backgroundColor = backgroundColor
         self.view.addSubview(blackOverlayView)
         self.modalPresentationStyle = .Custom
         
@@ -236,7 +237,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.blackColor()
+        self.view.backgroundColor = backgroundColor
     }
     
     override func viewDidAppear(animated: Bool) {

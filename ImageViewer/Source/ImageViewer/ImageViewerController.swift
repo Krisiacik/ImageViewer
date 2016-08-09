@@ -270,8 +270,8 @@ public final class ImageViewerController: UIViewController, UIScrollViewDelegate
         displacedView.hidden = true
         
         overlayView.alpha = 0.0
-        overlayView.backgroundColor = UIColor.blackColor()
-        
+        overlayView.backgroundColor = configuration.backgroundColor
+
         UIView.animateWithDuration(duration, animations: {
             self.view.transform = rotationTransform()
             self.overlayView.alpha = 1.0

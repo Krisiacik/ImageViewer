@@ -28,6 +28,7 @@ public enum GalleryConfigurationItem {
     case FooterViewLayout(FooterLayout)
     case StatusBarHidden(Bool)
     case HideDecorationViewsOnLaunch(Bool)
+    case BackgroundColor(UIColor)
 }
 
 func defaultGalleryConfiguration() -> GalleryConfiguration {
@@ -51,5 +52,6 @@ func defaultGalleryConfiguration() -> GalleryConfiguration {
     
     let hideDecorationViews = GalleryConfigurationItem.HideDecorationViewsOnLaunch(true)
     
-    return [dividerWidth, spinnerStyle, spinnerColor, closeButton, pagingMode, headerLayout, footerLayout, closeLayout, statusBarHidden, hideDecorationViews]
+    let backgroundColor = GalleryConfigurationItem.BackgroundColor(.blackColor())
+    return [dividerWidth, spinnerStyle, spinnerColor, closeButton, pagingMode, headerLayout, footerLayout, closeLayout, statusBarHidden, hideDecorationViews, backgroundColor]
 }
