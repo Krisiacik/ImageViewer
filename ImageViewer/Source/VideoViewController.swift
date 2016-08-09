@@ -71,7 +71,6 @@ class VideoViewController: ItemBaseController<VideoView> {
 
         self.videoPlayer.play()
 
-        self.itemView.previewImageView.hidden = true
 
         UIView.animateWithDuration(0.25, animations: { [weak self] in
 

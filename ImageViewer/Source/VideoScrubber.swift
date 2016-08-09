@@ -13,12 +13,13 @@ public class VideoScrubber: UIControl {
 
     let playButton = UIButton.playButton(width: 50, height: 40)
     let pauseButton = UIButton.pauseButton(width: 50, height: 40)
+    let replayButton = UIButton.replayButton(width: 50, height: 40)
+
     let scrubber = Slider.createSlider(320, height: 20, pointerDiameter: 10, barHeight: 2)
     let timeLabel = UILabel(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 50, height: 20)))
     var duration: NSTimeInterval?
     private var periodicObserver: AnyObject?
     private var stoppedSlidingTimeStamp = NSDate()
-
 
     var player: AVPlayer? {
 
@@ -29,6 +30,8 @@ public class VideoScrubber: UIControl {
                 if let player = player {
 
                     player.removeObserver(self, forKeyPath: "status")
+                    player.removeObserver(self, forKeyPath: "rate")
+                    scrubber.removeObserver(self, forKeyPath: "isSliding")
 
                     if let periodicObserver = self.periodicObserver {
 
@@ -53,6 +56,8 @@ public class VideoScrubber: UIControl {
                         weakself.update()
                     }
                 }
+
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didEndPlaying), name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
             }
         }
     }
@@ -69,10 +74,34 @@ public class VideoScrubber: UIControl {
         setup()
     }
 
+    deinit {
+
+        if let player = player {
+
+            player.removeObserver(self, forKeyPath: "status")
+            player.removeObserver(self, forKeyPath: "rate")
+            scrubber.removeObserver(self, forKeyPath: "isSliding")
+
+            if let periodicObserver = self.periodicObserver {
+
+                player.removeTimeObserver(periodicObserver)
+                self.periodicObserver = nil
+            }
+        }
+    }
+
+    func didEndPlaying() {
+
+        self.playButton.hidden = true
+        self.pauseButton.hidden = true
+        self.replayButton.hidden = false
+    }
+
     func setup() {
 
         self.clipsToBounds = true
         pauseButton.hidden = true
+        replayButton.hidden = true
 
         scrubber.minimumValue = 0
         scrubber.maximumValue = 1000
@@ -83,10 +112,11 @@ public class VideoScrubber: UIControl {
 
         playButton.addTarget(self, action: #selector(play), forControlEvents: UIControlEvents.TouchUpInside)
         pauseButton.addTarget(self, action: #selector(pause), forControlEvents: UIControlEvents.TouchUpInside)
+        replayButton.addTarget(self, action: #selector(replay), forControlEvents: UIControlEvents.TouchUpInside)
         scrubber.addTarget(self, action: #selector(updateCurrentTime), forControlEvents: UIControlEvents.ValueChanged)
         scrubber.addTarget(self, action: #selector(seekToTime), forControlEvents: UIControlEvents.TouchUpInside)
 
-        self.addSubviews(playButton, pauseButton, scrubber, timeLabel)
+        self.addSubviews(playButton, pauseButton, replayButton, scrubber, timeLabel)
     }
 
     public override func layoutSubviews() {
@@ -95,6 +125,7 @@ public class VideoScrubber: UIControl {
         playButton.center = self.boundsCenter
         playButton.frame.origin.x = 0
         pauseButton.frame = playButton.frame
+        replayButton.frame = playButton.frame
 
         timeLabel.center = self.boundsCenter
         timeLabel.frame.origin.x = self.bounds.maxX - timeLabel.bounds.width
@@ -119,11 +150,16 @@ public class VideoScrubber: UIControl {
 
             self.update()
         }
-
     }
 
     func play() {
 
+        self.player?.play()
+    }
+
+    func replay() {
+
+        self.player?.seekToTime(CMTime(value:0 , timescale: 1))
         self.player?.play()
     }
 
@@ -157,6 +193,7 @@ public class VideoScrubber: UIControl {
 
             self.playButton.hidden = player.isPlaying()
             self.pauseButton.hidden = !self.playButton.hidden
+            self.replayButton.hidden = true
         }
     }
 

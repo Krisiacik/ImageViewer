@@ -11,53 +11,29 @@ import AVFoundation
 
 class VideoView: UIView {
 
-    let previewImageView = UIImageView()
-
+    private let previewImageView = UIImageView()
     var image: UIImage? { didSet { previewImageView.image = image } }
-
     var player: AVPlayer? {
 
         willSet {
 
             if newValue == nil {
 
-                if let observablePlayer = player {
-
-                    observablePlayer.removeObserver(self, forKeyPath: "status")
-                }
+                player?.removeObserver(self, forKeyPath: "status")
+                player?.removeObserver(self, forKeyPath: "rate")
             }
         }
 
         didSet {
 
-            if  let observablePlayer = self.player,
-                let item = self.player?.currentItem,
+            if  let player = self.player,
                 let videoLayer = self.layer as? AVPlayerLayer {
 
-                videoLayer.player = observablePlayer
+                videoLayer.player = player
                 videoLayer.videoGravity = AVLayerVideoGravityResizeAspect
 
-                observablePlayer.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.New, context: nil)
-                observablePlayer.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.New, context: nil)
-
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(playerDidFinishPlaying), name: AVPlayerItemDidPlayToEndTimeNotification, object: item)
-            }
-        }
-    }
-
-    func playerDidFinishPlaying() {
-
-        if  let player = self.player,
-            let _ = self.player?.currentItem {
-
-            player.seekToTime(CMTime(seconds: 0, preferredTimescale: 1))
-
-            UIView.animateWithDuration(0.3) { [weak self] in
-
-                if let weakself = self {
-
-                    weakself.previewImageView.alpha = 1
-                }
+                player.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.New, context: nil)
+                player.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.New, context: nil)
             }
         }
     }
@@ -84,11 +60,17 @@ class VideoView: UIView {
         super.init(coder: aDecoder)
     }
 
+    deinit {
+
+        player?.removeObserver(self, forKeyPath: "status")
+        player?.removeObserver(self, forKeyPath: "rate")
+    }
+
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
 
-        if let status = self.player?.status, let currentTime = self.player?.currentTime().seconds {
+        if let status = self.player?.status, let currentTime = self.player?.currentTime().seconds, let rate = self.player?.rate  {
 
-            if status == .ReadyToPlay && currentTime != 0 {
+            if status == .ReadyToPlay && currentTime == 0 && rate != 0 {
 
                 UIView.animateWithDuration(0.3) { [weak self] in
 

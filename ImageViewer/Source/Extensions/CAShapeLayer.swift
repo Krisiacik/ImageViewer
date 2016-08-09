@@ -10,6 +10,17 @@ import UIKit
 
 public extension CAShapeLayer {
 
+    public static func replayShape(fillColor: UIColor, triangleEdgeLength: CGFloat) -> CAShapeLayer {
+
+        let triangle = CAShapeLayer()
+        let altitude = (sqrt(3) / 2) * triangleEdgeLength
+        triangle.frame = CGRect(origin: CGPoint.zero, size: CGSize(width: altitude, height: triangleEdgeLength))
+        triangle.path = UIBezierPath.equilateralTriangle(triangleEdgeLength).CGPath
+        triangle.fillColor = fillColor.CGColor
+
+        return triangle
+    }
+
     public static func playShape(fillColor: UIColor, triangleEdgeLength: CGFloat) -> CAShapeLayer {
 
         let triangle = CAShapeLayer()

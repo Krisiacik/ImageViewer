@@ -24,6 +24,30 @@ public extension UIButton {
         return button
     }
 
+    static func replayButton(width width: CGFloat, height: CGFloat) -> UIButton {
+
+        let smallerEdge = min(width, height)
+        let triangleEdgeLength: CGFloat = min(smallerEdge, 20)
+
+        let button = UIButton(type: UIButtonType.Custom)
+        button.bounds.size = CGSize(width: width, height: height)
+        button.contentHorizontalAlignment = .Center
+
+        let playShapeNormal = CAShapeLayer.playShape(UIColor.redColor(), triangleEdgeLength: triangleEdgeLength).toImage()
+        button.setImage(playShapeNormal, forState: UIControlState.Normal)
+
+        let playShapeHighlighted = CAShapeLayer.playShape(UIColor.redColor().colorWithAlphaComponent(0.7), triangleEdgeLength: triangleEdgeLength).toImage()
+        button.setImage(playShapeHighlighted, forState: UIControlState.Highlighted)
+
+        ///the geometric center of equilateral triangle is not the same as the geometric center of its smallest bounding rect. There is some offset between the two centers to the left when the triangle points to the right. We have to shift the triangle to the right by that offset.
+        let altitude = (sqrt(3) / 2) * triangleEdgeLength
+        let innerCircleDiameter = (sqrt(3) / 6) * triangleEdgeLength
+
+        button.imageEdgeInsets.left = altitude / 2 - innerCircleDiameter
+        
+        return button
+    }
+
     static func playButton(width width: CGFloat, height: CGFloat) -> UIButton {
 
         let smallerEdge = min(width, height)
