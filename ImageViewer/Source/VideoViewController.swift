@@ -37,7 +37,8 @@ class VideoViewController: ItemBaseController<VideoView> {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        embeddedPlayButton.alpha = 0
+        if isInitialController == true { embeddedPlayButton.alpha = 0 }
+
         embeddedPlayButton.autoresizingMask = [.FlexibleTopMargin, .FlexibleLeftMargin, .FlexibleBottomMargin, .FlexibleRightMargin]
         self.view.addSubview(embeddedPlayButton)
         embeddedPlayButton.center = self.view.boundsCenter
@@ -57,7 +58,7 @@ class VideoViewController: ItemBaseController<VideoView> {
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
 
-         self.videoPlayer.pause()
+        self.videoPlayer.pause()
         scrubber.player = nil
     }
 
@@ -101,7 +102,7 @@ class VideoViewController: ItemBaseController<VideoView> {
         }
 
         super.presentItem(alongsideAnimation: alongsideAnimation) {
-            
+
             circleButtonAnimation()
             completion()
         }
@@ -132,9 +133,9 @@ class VideoViewController: ItemBaseController<VideoView> {
             distanceToEdge = (scrollView.bounds.height / 2) + (itemView.bounds.height / 2)
             percentDistance = fabs(scrollView.contentOffset.y / distanceToEdge)
         }
-
+        
         embeddedPlayButton.alpha =  1 - percentDistance * swipeToDismissFadeOutAccelerationFactor
-
+        
         super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
     }
 }

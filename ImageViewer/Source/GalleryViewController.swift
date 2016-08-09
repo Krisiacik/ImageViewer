@@ -172,14 +172,19 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         }
     }
 
+    func configureScrubber() {
+
+        scrubber.alpha = 0
+        self.view.addSubview(scrubber)
+    }
+
     override public func viewDidLoad() {
         super.viewDidLoad()
 
         configureHeaderView()
         configureFooterView()
         configureCloseButton()
-
-        self.view.addSubview(scrubber)
+        configureScrubber()
     }
     
     public override func viewDidAppear(animated: Bool) {
@@ -374,7 +379,8 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
             self?.headerView?.alpha = 0.0
             self?.footerView?.alpha = 0.0
             self?.closeButton?.alpha = 0.0
-            
+            self?.scrubber.alpha = 0.0
+
             }, completion: { [weak self] done in
 
                 if let itemController = self?.viewControllers?.first as? ItemController {
@@ -412,6 +418,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
             self?.headerView?.alpha = targetAlpha
             self?.footerView?.alpha = targetAlpha
             self?.closeButton?.alpha = targetAlpha
+            self?.scrubber.alpha = targetAlpha
         }
     }
 
