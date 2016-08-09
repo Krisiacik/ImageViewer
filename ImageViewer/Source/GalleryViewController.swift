@@ -417,7 +417,16 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
             self?.headerView?.alpha = targetAlpha
             self?.footerView?.alpha = targetAlpha
             self?.closeButton?.alpha = targetAlpha
-            self?.scrubber.alpha = targetAlpha
+
+            if let _ = self?.viewControllers?.first as? VideoViewController {
+
+                self?.scrubber.player = nil
+
+                UIView.animateWithDuration(0.3) { [weak self] in
+
+                    self?.scrubber.alpha = targetAlpha
+                }
+            }
         }
     }
 
@@ -449,11 +458,14 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         self.headerView?.sizeToFit()
         self.footerView?.sizeToFit()
 
-        if scrubber.alpha == 0 {
+        if let _ = controller as? VideoViewController {
 
-            UIView.animateWithDuration(0.3) { [weak self] in
+            if scrubber.alpha == 0 && decorationViewsHidden == false {
 
-                self?.scrubber.alpha = 1
+                UIView.animateWithDuration(0.3) { [weak self] in
+
+                    self?.scrubber.alpha = 1
+                }
             }
         }
     }

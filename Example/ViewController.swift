@@ -77,7 +77,6 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
 //        return GalleryItem.Image { $0(image) }
 //    }
 
-
         if index == 2 {
 
             return GalleryItem.Video(previewImage: UIImage(named: "2")!, videoURL: NSURL(string: "http:video.dailymail.co.uk/video/mol/2016/07/15/1458458950652835194/1024x576_1458458950652835194.mp4")!)
