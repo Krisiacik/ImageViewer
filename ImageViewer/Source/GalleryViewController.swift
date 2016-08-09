@@ -317,10 +317,9 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
 
     func layoutScrubber() {
 
-        scrubber.bounds = CGRect(origin: CGPoint.zero, size: CGSize(width: self.view.bounds.width, height: 20))
+        scrubber.bounds = CGRect(origin: CGPoint.zero, size: CGSize(width: self.view.bounds.width, height: 40))
         scrubber.center = self.view.boundsCenter
-
-        scrubber.center.y = (footerView?.frame.origin.y ?? self.view.bounds.maxY) - scrubber.bounds.height
+        scrubber.frame.origin.y = (footerView?.frame.origin.y ?? self.view.bounds.maxY) - scrubber.bounds.height
     }
 
     // MARK: - Animations

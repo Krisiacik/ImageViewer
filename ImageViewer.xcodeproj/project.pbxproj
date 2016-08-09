@@ -364,8 +364,8 @@
 			children = (
 				EBAF4C651D3937BC0039CA93 /* VideoViewController.swift */,
 				EB6F46541D4660AC00984035 /* VideoView.swift */,
-				EB60EE581D590E8B00CC5BA8 /* Slider.swift */,
 				EB60EE551D58EB4800CC5BA8 /* VideoScrubber.swift */,
+				EB60EE581D590E8B00CC5BA8 /* Slider.swift */,
 			);
 			name = Video;
 			sourceTree = "<group>";

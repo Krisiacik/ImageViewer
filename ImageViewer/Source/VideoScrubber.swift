@@ -99,6 +99,10 @@ public class VideoScrubber: UIControl {
 
     func setup() {
 
+//        self.backgroundColor = UIColor.greenColor()
+//        self.playButton.backgroundColor = UIColor.redColor()
+//        self.pauseButton.backgroundColor = UIColor.redColor()
+
         self.clipsToBounds = true
         pauseButton.hidden = true
         replayButton.hidden = true
