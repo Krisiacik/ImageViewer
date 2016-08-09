@@ -40,16 +40,20 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
         galleryViewController.headerView = headerView
 //        galleryViewController.footerView = footerView
 
-        galleryViewController.launchedCompletion = { print("LAUNCHED") }
-        galleryViewController.closedCompletion = { print("CLOSED") }
-        galleryViewController.swipedToDismissCompletion = { print("SWIPE-DISMISSED") }
+        galleryViewController.launchedCompletion = {
+            //print("LAUNCHED") 
+        }
+        galleryViewController.closedCompletion = { //print("CLOSED") 
+        }
+        galleryViewController.swipedToDismissCompletion = { //print("SWIPE-DISMISSED") 
+        }
 
         galleryViewController.landedPageAtIndexCompletion = { index in
 
-            print("LANDED AT INDEX: \(index)")
+            //print("LANDED AT INDEX: \(index)")
 
             headerView.currentIndex = index
-//            footerView.currentIndex = index
+            //footerView.currentIndex = index
         }
 
         self.presentImageGallery(galleryViewController)
@@ -94,7 +98,7 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
             GalleryConfigurationItem.PresentationStyle(.Fade),
             GalleryConfigurationItem.HideDecorationViewsOnLaunch(true),
 
-            GalleryConfigurationItem.OverlayColor(UIColor.blackColor()),
+            GalleryConfigurationItem.OverlayColor(UIColor(white: 0.035, alpha: 1)),
             GalleryConfigurationItem.OverlayColorOpacity(1),
             GalleryConfigurationItem.OverlayBlurOpacity(1),
             GalleryConfigurationItem.OverlayBlurStyle(UIBlurEffectStyle.Light),

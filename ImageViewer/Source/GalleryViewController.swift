@@ -421,12 +421,41 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         }
     }
 
+    func itemControllerWillAppear(controller: ItemController) {
+
+        if let videoController = controller as? VideoViewController {
+
+            scrubber.player = videoController.videoPlayer
+        }
+    }
+
+    func itemControllerWillDisappear(controller: ItemController) {
+
+        if let _ = controller as? VideoViewController {
+
+            scrubber.player = nil
+
+            UIView.animateWithDuration(0.3) { [weak self] in
+
+                self?.scrubber.alpha = 0
+            }
+        }
+    }
+
     func itemControllerDidAppear(controller: ItemController) {
         
         self.currentIndex = controller.index
         self.landedPageAtIndexCompletion?(self.currentIndex)
         self.headerView?.sizeToFit()
         self.footerView?.sizeToFit()
+
+        if scrubber.alpha == 0 {
+
+            UIView.animateWithDuration(0.3) { [weak self] in
+
+                self?.scrubber.alpha = 1
+            }
+        }
     }
     
     func itemControllerDidSingleTap(controller: ItemController) {

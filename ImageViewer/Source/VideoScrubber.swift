@@ -21,7 +21,7 @@ public class VideoScrubber: UIControl {
     private var periodicObserver: AnyObject?
     private var stoppedSlidingTimeStamp = NSDate()
 
-    var player: AVPlayer? {
+    weak var player: AVPlayer? {
 
         willSet {
 
@@ -58,6 +58,8 @@ public class VideoScrubber: UIControl {
                 }
 
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didEndPlaying), name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
+
+                self.update()
             }
         }
     }
@@ -76,17 +78,14 @@ public class VideoScrubber: UIControl {
 
     deinit {
 
-        if let player = player {
+        player?.removeObserver(self, forKeyPath: "status")
+        player?.removeObserver(self, forKeyPath: "rate")
+        scrubber.removeObserver(self, forKeyPath: "isSliding")
 
-            player.removeObserver(self, forKeyPath: "status")
-            player.removeObserver(self, forKeyPath: "rate")
-            scrubber.removeObserver(self, forKeyPath: "isSliding")
+        if let periodicObserver = self.periodicObserver {
 
-            if let periodicObserver = self.periodicObserver {
-
-                player.removeTimeObserver(periodicObserver)
-                self.periodicObserver = nil
-            }
+            player?.removeTimeObserver(periodicObserver)
+            self.periodicObserver = nil
         }
     }
 

@@ -34,6 +34,11 @@ class VideoViewController: ItemBaseController<VideoView> {
         self.itemView.image = previewImage
     }
 
+    deinit {
+        
+        scrubber.player = nil
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -49,17 +54,25 @@ class VideoViewController: ItemBaseController<VideoView> {
         self.itemView.contentMode = .ScaleAspectFill
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+
+    }
+
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        scrubber.player = self.videoPlayer
+
     }
 
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
 
         self.videoPlayer.pause()
-        scrubber.player = nil
     }
 
     override func viewDidLayoutSubviews() {

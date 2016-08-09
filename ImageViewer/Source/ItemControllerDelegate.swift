@@ -19,6 +19,8 @@ protocol ItemControllerDelegate: class {
     func itemControllerDidFinishSwipeToDismissSuccesfully()
 
     func itemControllerDidSingleTap(controller: ItemController)
-    
+
+    func itemControllerWillAppear(controller: ItemController)
+    func itemControllerWillDisappear(controller: ItemController)
     func itemControllerDidAppear(controller: ItemController)
 }

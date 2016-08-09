@@ -154,10 +154,22 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
         createViewHierarchy()
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+        self.delegate?.itemControllerWillAppear(self)
+    }
+
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
         self.delegate?.itemControllerDidAppear(self)
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        self.delegate?.itemControllerWillDisappear(self)
     }
 
     override func viewWillLayoutSubviews() {

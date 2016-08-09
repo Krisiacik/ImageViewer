@@ -68,9 +68,9 @@ class VideoView: UIView {
 
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
 
-        if let status = self.player?.status, let currentTime = self.player?.currentTime().seconds, let rate = self.player?.rate  {
+        if let status = self.player?.status, let rate = self.player?.rate  {
 
-            if status == .ReadyToPlay && currentTime == 0 && rate != 0 {
+            if status == .ReadyToPlay && rate != 0 {
 
                 UIView.animateWithDuration(0.3) { [weak self] in
 
