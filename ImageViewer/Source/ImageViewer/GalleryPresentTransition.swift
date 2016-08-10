@@ -69,6 +69,11 @@ final class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransiti
         animatedImageView.bounds = displacedView.bounds
         animatedImageView.frame.origin = origin
         animatedImageView.image = screenshot
+
+        // Special case for where displaced view is an UIImageView
+        if let displacedImageView = displacedView as? UIImageView {
+            animatedImageView.contentMode = displacedImageView.contentMode
+        }
         
         /// Put it into the container
         transitionContainerView.addSubview(animatedImageView)
