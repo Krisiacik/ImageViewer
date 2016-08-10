@@ -208,7 +208,13 @@ class VideoViewController: ItemBaseController<VideoView> {
                 case .RemoteControlPlay:
 
                     self.player.play()
-                    
+
+                case .RemoteControlPreviousTrack:
+
+                    self.player.pause()
+                    self.player.seekToTime(CMTime(value: 0, timescale: 1))
+                    self.player.play()
+
                 default:
 
                     break
