@@ -29,10 +29,15 @@ public class VideoScrubber: UIControl {
 
                 if let player = player {
 
+                    ///KVO
                     player.removeObserver(self, forKeyPath: "status")
                     player.removeObserver(self, forKeyPath: "rate")
                     scrubber.removeObserver(self, forKeyPath: "isSliding")
 
+                    ///NC
+                    NSNotificationCenter.defaultCenter().removeObserver(self)
+
+                    ///TIMER
                     if let periodicObserver = self.periodicObserver {
 
                         player.removeTimeObserver(periodicObserver)
@@ -44,20 +49,25 @@ public class VideoScrubber: UIControl {
 
         didSet {
 
+            print(player)
+
             if let player = player {
 
+                ///KVO
                 player.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.New, context: nil)
                 player.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.New, context: nil)
                 scrubber.addObserver(self, forKeyPath: "isSliding", options: NSKeyValueObservingOptions.New, context: nil)
 
+                ///NC
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didEndPlaying), name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
+
+                ///TIMER
                 periodicObserver = player.addPeriodicTimeObserverForInterval(CMTime(value: 1, timescale: 1), queue: nil) { [weak self] time in
 
                     if let weakself = self {
                         weakself.update()
                     }
                 }
-
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didEndPlaying), name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
 
                 self.update()
             }

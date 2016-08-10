@@ -36,7 +36,7 @@ class VideoViewController: ItemBaseController<VideoView> {
 
     deinit {
         
-        scrubber.player = nil
+        //scrubber.player = nil
     }
 
     override func viewDidLoad() {
@@ -50,7 +50,7 @@ class VideoViewController: ItemBaseController<VideoView> {
 
         embeddedPlayButton.addTarget(self, action: #selector(playVideoInitially), forControlEvents: UIControlEvents.TouchUpInside)
 
-        self.itemView.player = videoPlayer
+        //self.itemView.player = videoPlayer
         self.itemView.contentMode = .ScaleAspectFill
     }
 
@@ -65,7 +65,6 @@ class VideoViewController: ItemBaseController<VideoView> {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-
 
     }
 
@@ -146,7 +145,9 @@ class VideoViewController: ItemBaseController<VideoView> {
             distanceToEdge = (scrollView.bounds.height / 2) + (itemView.bounds.height / 2)
             percentDistance = fabs(scrollView.contentOffset.y / distanceToEdge)
         }
-        
+
+//        print("DISTANCE: \(percentDistance)")
+
         embeddedPlayButton.alpha =  1 - percentDistance * swipeToDismissFadeOutAccelerationFactor
         
         super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)

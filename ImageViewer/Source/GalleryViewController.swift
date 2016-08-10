@@ -334,9 +334,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
 
         guard UIDevice.currentDevice().orientation.isFlat == false &&
             isAnimating == false else { return }
-
-        print("ROTATE")
-
+        
         isAnimating = true
 
         UIView.animateWithDuration(rotationDuration, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { [weak self] () -> Void in
@@ -420,8 +418,6 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
 
             if let _ = self?.viewControllers?.first as? VideoViewController {
 
-                self?.scrubber.player = nil
-
                 UIView.animateWithDuration(0.3) { [weak self] in
 
                     self?.scrubber.alpha = targetAlpha
@@ -477,7 +473,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
     }
     
     func itemController(controller: ItemController, didSwipeToDismissWithDistanceToEdge distance: CGFloat) {
-        
+
         if decorationViewsHidden == false {
             
             let alpha = 1 - distance * swipeToDismissFadeOutAccelerationFactor
@@ -485,6 +481,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
             closeButton?.alpha = alpha
             headerView?.alpha = alpha
             footerView?.alpha = alpha
+            scrubber.alpha = alpha
         }
         
         self.overlayView.blurringView.alpha = 1 - distance
