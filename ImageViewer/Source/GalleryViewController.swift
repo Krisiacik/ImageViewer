@@ -18,7 +18,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
     public var footerView: UIView?
     private var closeButton: UIButton? = UIButton.closeButton()
     private let scrubber = VideoScrubber()
-    
+
     private weak var initialItemController: ItemController?
 
     ///LOCAL STATE
@@ -44,7 +44,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
     private var rotationMode = GalleryRotationMode.Always
     private let swipeToDismissFadeOutAccelerationFactor: CGFloat = 6
     private var decorationViewsFadeDuration = 0.15
-    
+
     /// COMPLETION BLOCKS
     /// If set ,the block is executed right after the initial launch animations finish.
     public var launchedCompletion: (() -> Void)?
@@ -56,14 +56,14 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
     public var programaticallyClosedCompletion: (() -> Void)?
     /// If set, launched after all animations finish when the swipe-to-dismiss (applies to all directions and cases) gesture is used.
     public var swipedToDismissCompletion: (() -> Void)?
-    
+
     @available(*, unavailable)
     required public init?(coder: NSCoder) { fatalError() }
 
     init(startIndex: Int, itemsDatasource: GalleryItemsDatasource, displacedViewsDatasource: GalleryDisplacedViewsDatasource? = nil, configuration: GalleryConfiguration = []) {
 
         self.currentIndex = startIndex
-        
+
         ///Only those options relevant to the paging OLDGalleryViewController are explicitely handled here, the rest is handled by ItemViewControllers
         for item in configuration {
 
@@ -134,38 +134,38 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
-    
+
     func configureOverlayView() {
-        
+
         overlayView.bounds.size = UIScreen.mainScreen().bounds.insetBy(dx: -UIScreen.mainScreen().bounds.width / 2, dy: -UIScreen.mainScreen().bounds.height / 2).size
-        
+
         if let controller = self.presentingViewController {
-            
+
             overlayView.center = controller.view.boundsCenter
             controller.view.addSubview(overlayView)
         }
     }
-    
+
     func configureHeaderView() {
-        
+
         if let header = headerView {
             header.alpha = 0
             self.view.addSubview(header)
         }
     }
-    
+
     func configureFooterView() {
-        
+
         if let footer = footerView {
             footer.alpha = 0
             self.view.addSubview(footer)
         }
     }
-    
+
     func configureCloseButton() {
-        
+
         closeButton?.addTarget(self, action: #selector(OLDGalleryViewController.closeInteractively), forControlEvents: .TouchUpInside)
-        
+
         if let closeButton = closeButton {
             closeButton.alpha = 0
             self.view.addSubview(closeButton)
@@ -186,10 +186,10 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         configureCloseButton()
         configureScrubber()
     }
-    
+
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         ///We have to call this here (not sooner), because it adds the overlay view to the presenting controller and the presentingController property is set only at this moment in the VC lifecycle.
         configureOverlayView()
 
@@ -215,7 +215,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
             }
         }
     }
-    
+
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
@@ -226,7 +226,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         }
 
         overlayView.frame = view.bounds.insetBy(dx: -UIScreen.mainScreen().bounds.width * 2, dy: -UIScreen.mainScreen().bounds.height * 2)
-        
+
         layoutCloseButton()
         layoutHeaderView()
         layoutFooterView()
@@ -234,82 +234,82 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
     }
 
     func layoutCloseButton() {
-        
+
         guard let close = closeButton else { return }
-        
+
         switch closeLayout {
-            
+
         case .PinRight(let marginTop, let marginRight):
-            
+
             close.autoresizingMask = [.FlexibleBottomMargin, .FlexibleLeftMargin]
             close.frame.origin.x = self.view.bounds.size.width - marginRight - close.bounds.size.width
             close.frame.origin.y = marginTop
-            
+
         case .PinLeft(let marginTop, let marginLeft):
-            
+
             close.autoresizingMask = [.FlexibleBottomMargin, .FlexibleRightMargin]
             close.frame.origin.x = marginLeft
             close.frame.origin.y = marginTop
         }
     }
-    
+
     func layoutHeaderView() {
-        
+
         guard let header = headerView else { return }
-        
+
         switch headerLayout {
-            
+
         case .Center(let marginTop):
-            
+
             header.autoresizingMask = [.FlexibleBottomMargin, .FlexibleLeftMargin, .FlexibleRightMargin]
             header.center = self.view.boundsCenter
             header.frame.origin.y = marginTop
-            
+
         case .PinBoth(let marginTop, let marginLeft,let marginRight):
-            
+
             header.autoresizingMask = [.FlexibleBottomMargin, .FlexibleWidth]
             header.bounds.size.width = self.view.bounds.width - marginLeft - marginRight
             header.sizeToFit()
             header.frame.origin = CGPoint(x: marginLeft, y: marginTop)
-            
+
         case .PinLeft(let marginTop, let marginLeft):
-            
+
             header.autoresizingMask = [.FlexibleBottomMargin, .FlexibleRightMargin]
             header.frame.origin = CGPoint(x: marginLeft, y: marginTop)
-            
+
         case .PinRight(let marginTop, let marginRight):
-            
+
             header.autoresizingMask = [.FlexibleBottomMargin, .FlexibleLeftMargin]
             header.frame.origin = CGPoint(x: self.view.bounds.width - marginRight - header.bounds.width, y: marginTop)
         }
     }
-    
+
     func layoutFooterView() {
-        
+
         guard let footer = footerView else { return }
-        
+
         switch footerLayout {
-            
+
         case .Center(let marginBottom):
-            
+
             footer.autoresizingMask = [.FlexibleTopMargin, .FlexibleLeftMargin, .FlexibleRightMargin]
             footer.center = self.view.boundsCenter
             footer.frame.origin.y = self.view.bounds.height - footer.bounds.height - marginBottom
-            
+
         case .PinBoth(let marginBottom, let marginLeft,let marginRight):
-            
+
             footer.autoresizingMask = [.FlexibleTopMargin, .FlexibleWidth]
             footer.frame.size.width = self.view.bounds.width - marginLeft - marginRight
             footer.sizeToFit()
             footer.frame.origin = CGPoint(x: marginLeft, y: self.view.bounds.height - footer.bounds.height - marginBottom)
-            
+
         case .PinLeft(let marginBottom, let marginLeft):
-            
+
             footer.autoresizingMask = [.FlexibleTopMargin, .FlexibleRightMargin]
             footer.frame.origin = CGPoint(x: marginLeft, y: self.view.bounds.height - footer.bounds.height - marginBottom)
-            
+
         case .PinRight(let marginBottom, let marginRight):
-            
+
             footer.autoresizingMask = [.FlexibleTopMargin, .FlexibleLeftMargin]
             footer.frame.origin = CGPoint(x: self.view.bounds.width - marginRight - footer.bounds.width, y: self.view.bounds.height - footer.bounds.height - marginBottom)
         }
@@ -334,7 +334,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
 
         guard UIDevice.currentDevice().orientation.isFlat == false &&
             isAnimating == false else { return }
-        
+
         isAnimating = true
 
         UIView.animateWithDuration(rotationDuration, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { [weak self] () -> Void in
@@ -346,20 +346,20 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
 
             })
         { [weak self] finished  in
-            
+
             self?.isAnimating = false
         }
     }
-    
+
     /// Invoked when closed programatically
     public func close() {
-        
+
         closeDecorationViews(programaticallyClosedCompletion)
     }
-    
+
     /// Invoked when closed via close button
     func closeInteractively() {
-        
+
         closeDecorationViews(closedCompletion)
     }
 
@@ -370,9 +370,9 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
             itemController.closeDecorationViews?(decorationViewsFadeDuration)
         }
 
-        
+
         UIView.animateWithDuration(decorationViewsFadeDuration, animations: { [weak self] in
-            
+
             self?.headerView?.alpha = 0.0
             self?.footerView?.alpha = 0.0
             self?.closeButton?.alpha = 0.0
@@ -393,21 +393,21 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
                 }
             })
     }
-    
+
     func closeGallery(animated: Bool, completion: (() -> Void)?) {
 
         self.overlayView.removeFromSuperview()
 
         self.modalTransitionStyle = .CrossDissolve
         self.dismissViewControllerAnimated(animated) {
-            
+
             UIApplication.applicationWindow.windowLevel = UIWindowLevelNormal
             completion?()
         }
     }
-    
+
     func animateDecorationViews(visible visible: Bool) {
-        
+
         let targetAlpha: CGFloat = (visible) ? 1 : 0
 
         UIView.animateWithDuration(decorationViewsFadeDuration) { [weak self] in
@@ -430,7 +430,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
 
         if let videoController = controller as? VideoViewController {
 
-            scrubber.player = videoController.videoPlayer
+            scrubber.player = videoController.player
         }
     }
 
@@ -448,7 +448,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
     }
 
     func itemControllerDidAppear(controller: ItemController) {
-        
+
         self.currentIndex = controller.index
         self.landedPageAtIndexCompletion?(self.currentIndex)
         self.headerView?.sizeToFit()
@@ -465,15 +465,15 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
             }
         }
     }
-    
+
     func itemControllerDidSingleTap(controller: ItemController) {
-        
+
         self.decorationViewsHidden.flip()
         animateDecorationViews(visible: !self.decorationViewsHidden)
     }
     
     func itemController(controller: ItemController, didSwipeToDismissWithDistanceToEdge distance: CGFloat) {
-
+        
         if decorationViewsHidden == false {
             
             let alpha = 1 - distance * swipeToDismissFadeOutAccelerationFactor
@@ -489,7 +489,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
     }
     
     func itemControllerDidFinishSwipeToDismissSuccesfully() {
-
+        
         self.swipedToDismissCompletion?()
         self.overlayView.removeFromSuperview()
         self.dismissViewControllerAnimated(false, completion: nil)

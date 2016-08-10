@@ -17,7 +17,7 @@ class VideoViewController: ItemBaseController<VideoView> {
     private let swipeToDismissFadeOutAccelerationFactor: CGFloat = 6
 
     let videoURL: NSURL
-    let videoPlayer: AVPlayer
+    let player: AVPlayer
     unowned let scrubber: VideoScrubber
 
     let fullHDScreenSize = CGSize(width: 1920, height: 1080)
@@ -27,16 +27,11 @@ class VideoViewController: ItemBaseController<VideoView> {
 
         self.videoURL = videoURL
         self.scrubber = scrubber
-        self.videoPlayer = AVPlayer(URL: self.videoURL)
+        self.player = AVPlayer(URL: self.videoURL)
 
         super.init(index: index, itemCount: itemCount, configuration: configuration, isInitialController: isInitialController)
 
         self.itemView.image = previewImage
-    }
-
-    deinit {
-        
-        //scrubber.player = nil
     }
 
     override func viewDidLoad() {
@@ -50,17 +45,28 @@ class VideoViewController: ItemBaseController<VideoView> {
 
         embeddedPlayButton.addTarget(self, action: #selector(playVideoInitially), forControlEvents: UIControlEvents.TouchUpInside)
 
-        //self.itemView.player = videoPlayer
+        self.itemView.player = player
         self.itemView.contentMode = .ScaleAspectFill
     }
 
     override func viewWillAppear(animated: Bool) {
+
+        self.player.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.New, context: nil)
+        self.player.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.New, context: nil)
+
+        UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
+
         super.viewWillAppear(animated)
     }
 
     override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
 
+        self.player.removeObserver(self, forKeyPath: "status")
+        self.player.removeObserver(self, forKeyPath: "rate")
+
+        UIApplication.sharedApplication().endReceivingRemoteControlEvents()
+
+        super.viewWillDisappear(animated)
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -71,7 +77,7 @@ class VideoViewController: ItemBaseController<VideoView> {
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
 
-        self.videoPlayer.pause()
+        self.player.pause()
     }
 
     override func viewDidLayoutSubviews() {
@@ -82,7 +88,7 @@ class VideoViewController: ItemBaseController<VideoView> {
 
     func playVideoInitially() {
 
-        self.videoPlayer.play()
+        self.player.play()
 
 
         UIView.animateWithDuration(0.25, animations: { [weak self] in
@@ -127,8 +133,22 @@ class VideoViewController: ItemBaseController<VideoView> {
 
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
 
+        if keyPath == "rate" || keyPath == "status" {
+
+            handlePlayerStatus()
+        }
+
+        else if keyPath == "contentOffset" {
+
+            handleSwipeToDismissTransition()
+        }
+
+        super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+    }
+
+    func handleSwipeToDismissTransition() {
+
         guard let swipingToDissmissInProgress = swipingToDismiss else { return }
-        guard keyPath == "contentOffset" else { return }
 
         let distanceToEdge: CGFloat
         let percentDistance: CGFloat
@@ -146,10 +166,54 @@ class VideoViewController: ItemBaseController<VideoView> {
             percentDistance = fabs(scrollView.contentOffset.y / distanceToEdge)
         }
 
-//        print("DISTANCE: \(percentDistance)")
+        //print("DISTANCE: \(percentDistance)")
 
         embeddedPlayButton.alpha =  1 - percentDistance * swipeToDismissFadeOutAccelerationFactor
-        
-        super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+    }
+
+    func handlePlayerStatus() {
+
+        if player.isPlaying() && embeddedPlayButton.alpha != 0  {
+
+            UIView.animateWithDuration(0.3) { [weak self] in
+
+                self?.embeddedPlayButton.alpha = 0
+            }
+        }
+    }
+    
+    override func remoteControlReceivedWithEvent(event: UIEvent?) {
+
+        if let event = event {
+            
+            if event.type == UIEventType.RemoteControl {
+                
+                switch event.subtype {
+
+                case .RemoteControlTogglePlayPause:
+
+                    if self.player.isPlaying()  {
+
+                        self.player.pause()
+                    }
+                    else {
+
+                        self.player.play()
+                    }
+
+                case .RemoteControlPause:
+
+                    self.player.pause()
+
+                case .RemoteControlPlay:
+
+                    self.player.play()
+                    
+                default:
+
+                    break
+                }
+            }
+        }
     }
 }
