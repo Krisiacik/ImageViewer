@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		158A869B1D2E99F4004EE55E /* ThumbnailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A869A1D2E99F4004EE55E /* ThumbnailsViewController.swift */; };
+		158A869C1D2EA753004EE55E /* ThumbnailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A869A1D2E99F4004EE55E /* ThumbnailsViewController.swift */; };
+		158A869E1D2EC8CC004EE55E /* ThumbnailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A869D1D2EC8CC004EE55E /* ThumbnailsCell.swift */; };
+		158A869F1D2EC8CC004EE55E /* ThumbnailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A869D1D2EC8CC004EE55E /* ThumbnailsCell.swift */; };
 		4CB66CD51C18772B002DB91F /* ImageViewerDismissTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB66CD41C18772B002DB91F /* ImageViewerDismissTransition.swift */; };
 		4CB66CD61C18772B002DB91F /* ImageViewerDismissTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB66CD41C18772B002DB91F /* ImageViewerDismissTransition.swift */; };
 		4CB66CD81C187F9C002DB91F /* ImageViewerSwipeToDismissTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB66CD71C187F9C002DB91F /* ImageViewerSwipeToDismissTransition.swift */; };
@@ -62,6 +66,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		158A869A1D2E99F4004EE55E /* ThumbnailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailsViewController.swift; sourceTree = "<group>"; };
+		158A869D1D2EC8CC004EE55E /* ThumbnailsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailsCell.swift; sourceTree = "<group>"; };
 		4CB66CD41C18772B002DB91F /* ImageViewerDismissTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewerDismissTransition.swift; sourceTree = "<group>"; };
 		4CB66CD71C187F9C002DB91F /* ImageViewerSwipeToDismissTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewerSwipeToDismissTransition.swift; sourceTree = "<group>"; };
 		4CD1C4981C160651008D5F84 /* ImageViewerPresentTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewerPresentTransition.swift; sourceTree = "<group>"; };
@@ -230,6 +236,7 @@
 			isa = PBXGroup;
 			children = (
 				EBEBEF951C846847008C1E58 /* GalleryViewController.swift */,
+				158A869A1D2E99F4004EE55E /* ThumbnailsViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -246,6 +253,7 @@
 			isa = PBXGroup;
 			children = (
 				EB7B7E4D1C8F240D006834F7 /* HeaderFooterLayout.swift */,
+				158A869D1D2EC8CC004EE55E /* ThumbnailsCell.swift */,
 			);
 			name = Layout;
 			sourceTree = "<group>";
@@ -473,6 +481,7 @@
 				EB40C3731C9C5BF1004EA215 /* UIViewController.swift in Sources */,
 				EB5253F41C8DCE9800EAA4A4 /* CounterView.swift in Sources */,
 				C7897CF41C1356C6006447FB /* ImageViewerController.swift in Sources */,
+				158A869C1D2EA753004EE55E /* ThumbnailsViewController.swift in Sources */,
 				4CB66CD81C187F9C002DB91F /* ImageViewerSwipeToDismissTransition.swift in Sources */,
 				EB7B7E4F1C8F260A006834F7 /* HeaderFooterLayout.swift in Sources */,
 				EB1CEBE51C846DEF00BB27B8 /* GalleryViewController.swift in Sources */,
@@ -481,6 +490,7 @@
 				C7897CE71C1350B7006447FB /* ViewController.swift in Sources */,
 				4CD1C49A1C16099B008D5F84 /* ImageViewerPresentTransition.swift in Sources */,
 				EBA90E431C875225000AA697 /* ImageFadeInHandler.swift in Sources */,
+				158A869E1D2EC8CC004EE55E /* ThumbnailsCell.swift in Sources */,
 				4CD1C49C1C16FF64008D5F84 /* CGPoint.swift in Sources */,
 				EBB390031C8C692800CE1F71 /* ImageViewControllerFactory.swift in Sources */,
 				EB4DEBC01C84A6FD00D5F897 /* UIView.swift in Sources */,
@@ -502,6 +512,8 @@
 				4CB66CD91C187F9C002DB91F /* ImageViewerSwipeToDismissTransition.swift in Sources */,
 				EBA90E401C8729E2000AA697 /* GalleryPresentTransition.swift in Sources */,
 				EB40C3781C9C5C48004EA215 /* ImageProvider.swift in Sources */,
+				158A869F1D2EC8CC004EE55E /* ThumbnailsCell.swift in Sources */,
+				158A869B1D2E99F4004EE55E /* ThumbnailsViewController.swift in Sources */,
 				EB40C37E1C9C5E25004EA215 /* ImageViewerConfiguration.swift in Sources */,
 				4CB66CD61C18772B002DB91F /* ImageViewerDismissTransition.swift in Sources */,
 				EBEBEF941C84665B008C1E58 /* ImageViewController.swift in Sources */,

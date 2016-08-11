@@ -26,6 +26,10 @@ class ViewController: UIViewController {
             UIImage(named: "8"),
             UIImage(named: "9")]
 
+        var imageCount: Int {
+            return images.count
+        }
+
         func provideImage(completion: UIImage? -> Void) {
             completion(UIImage(named: "image_big"))
         }
@@ -65,7 +69,7 @@ class ViewController: UIViewController {
         let headerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: imageCount)
         let footerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: imageCount)
         
-        let galleryViewController = GalleryViewController(imageProvider: imageProvider, displacedView: displacedView, imageCount: imageCount, startIndex: displacedView.tag, configuration: [.BackgroundColor(randomColorBackground())])
+        let galleryViewController = GalleryViewController(imageProvider: imageProvider, displacedView: displacedView, imageCount: imageCount, startIndex: displacedView.tag)
 
         galleryViewController.headerView = headerView
         galleryViewController.footerView = footerView
@@ -83,11 +87,5 @@ class ViewController: UIViewController {
         }
         
         self.presentImageGallery(galleryViewController)
-    }
-
-    private func randomColorBackground() -> UIColor {
-        let colors = [UIColor.whiteColor(), UIColor.blackColor()]
-        let randomIndex = Int(arc4random_uniform(2))
-        return colors[randomIndex]
     }
 }
