@@ -50,6 +50,11 @@ func zoomRect(ForScrollView scrollView: UIScrollView, scale: CGFloat, center: CG
 
 func screenshotFromView(view: UIView) -> UIImage {
     
+    // Special case for where displaced view is an UIImageView
+    if let imageView = view as? UIImageView, image = imageView.image {
+        return image
+    }
+
     let image: UIImage
     
     UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, UIScreen.mainScreen().scale)

@@ -64,8 +64,9 @@ class ViewController: UIViewController {
         let frame = CGRect(x: 0, y: 0, width: 200, height: 24)
         let headerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: imageCount)
         let footerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: imageCount)
+        
+        let galleryViewController = GalleryViewController(imageProvider: imageProvider, displacedView: displacedView, imageCount: imageCount, startIndex: displacedView.tag, configuration: [.BackgroundColor(randomColorBackground())])
 
-        let galleryViewController = GalleryViewController(imageProvider: imageProvider, displacedView: displacedView, imageCount: imageCount, startIndex: displacedView.tag)
         galleryViewController.headerView = headerView
         galleryViewController.footerView = footerView
         
@@ -82,5 +83,11 @@ class ViewController: UIViewController {
         }
         
         self.presentImageGallery(galleryViewController)
+    }
+
+    private func randomColorBackground() -> UIColor {
+        let colors = [UIColor.whiteColor(), UIColor.blackColor()]
+        let randomIndex = Int(arc4random_uniform(2))
+        return colors[randomIndex]
     }
 }
