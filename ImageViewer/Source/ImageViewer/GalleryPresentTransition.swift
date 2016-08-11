@@ -10,6 +10,7 @@ import UIKit
 
 final class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransitioning {
     
+    private let backgroundColor: UIColor
     private let duration: NSTimeInterval
     private let displacedView: UIView
     var headerView: UIView?
@@ -18,11 +19,12 @@ final class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransiti
     var completion: (() -> Void)?
     private let decorationViewsHidden: Bool
     
-    init(duration: NSTimeInterval, displacedView: UIView , decorationViewsHidden: Bool) {
-        
+
+    init(duration: NSTimeInterval, displacedView: UIView, decorationViewsHidden: Bool, backgroundColor: UIColor) {
         self.duration = duration
         self.displacedView = displacedView
         self.decorationViewsHidden = decorationViewsHidden
+        self.backgroundColor = backgroundColor
     }
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
@@ -42,7 +44,7 @@ final class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransiti
         toViewController.view.frame = UIScreen.mainScreen().bounds
         
         /// Prepare transition of background from transparent to full black
-        toViewController.view.backgroundColor = UIColor.blackColor()
+        toViewController.view.backgroundColor = backgroundColor
         toViewController.view.alpha = 0.0
         
         if isPortraitOnly() {

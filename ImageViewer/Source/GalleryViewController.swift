@@ -37,6 +37,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     /// LOCAL CONFIG
     private let configuration: GalleryConfiguration
     private var spinnerColor = UIColor.whiteColor()
+    private var backgroundColor = UIColor.blackColor()
     private var spinnerStyle = UIActivityIndicatorViewStyle.White
     private let presentTransitionDuration = 0.25
     private let dismissTransitionDuration = 1.00
@@ -97,11 +98,11 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
             case .CloseLayout(let layout):                  closeLayout = layout
             case .StatusBarHidden(let hidden):              statusBarHidden = hidden
             case .HideDecorationViewsOnLaunch(let hidden):  isDecorationViewsHidden = hidden
-                
+            case .BackgroundColor(let color):               backgroundColor = color
             }
         }
+        self.presentTransition = GalleryPresentTransition(duration: presentTransitionDuration, displacedView: self.displacedView, decorationViewsHidden: isDecorationViewsHidden, backgroundColor: backgroundColor)
         
-        self.presentTransition = GalleryPresentTransition(duration: presentTransitionDuration, displacedView: self.displacedView , decorationViewsHidden: isDecorationViewsHidden)
         self.closeTransition = GalleryCloseTransition(duration: dismissTransitionDuration)
         
         super.init(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey : NSNumber(float: dividerWidth)])
@@ -135,7 +136,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     func applyOverlayView() -> UIView {
         
         let overlayView = UIView()
-        overlayView.backgroundColor = UIColor.blackColor()
+        overlayView.backgroundColor = backgroundColor
         overlayView.bounds.size = UIScreen.mainScreen().bounds.insetBy(dx: -UIScreen.mainScreen().bounds.width * 2, dy: -UIScreen.mainScreen().bounds.height * 2).size
         overlayView.center = self.view.boundsCenter
         self.presentingViewController?.view.addSubview(overlayView)
@@ -391,7 +392,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     
     func imageViewController(controller: ImageViewController, didSwipeToDismissWithDistanceToEdge distance: CGFloat) {
         
-        self.view.backgroundColor = (distance == 0) ? UIColor.blackColor() : UIColor.clearColor()
+        self.view.backgroundColor = (distance == 0) ? backgroundColor : UIColor.clearColor()
         
         if isDecorationViewsHidden == false {
             
