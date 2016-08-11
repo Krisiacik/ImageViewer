@@ -57,7 +57,7 @@ func screenshotFromView(view: UIView) -> UIImage {
 
     let image: UIImage
     
-    UIGraphicsBeginImageContextWithOptions(view.bounds.size, true, UIScreen.mainScreen().scale)
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, UIScreen.mainScreen().scale)
     view.drawViewHierarchyInRect(view.bounds, afterScreenUpdates: false)
     image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
@@ -117,4 +117,19 @@ func rotationAdjustedCenter(view: UIView) -> CGPoint {
     guard isPortraitOnly() else { return view.center }
     
     return (UIDevice.currentDevice().orientation.isLandscape) ? view.center.inverted() : view.center
+}
+
+func layoutAspectFit(view: UIView, image: UIImage) {
+    let widthRatio = image.size.width / view.bounds.size.width
+    let heightRatio = image.size.height / view.bounds.size.height
+
+    let newWidth = image.size.width / max(widthRatio, heightRatio)
+    let newHeight = image.size.height / max(widthRatio, heightRatio)
+
+    let origin = CGPoint(
+        x: view.frame.origin.x + ((view.frame.width - newWidth) / 2),
+        y: view.frame.origin.y + ((view.frame.height - newHeight) / 2))
+    let size = CGSize(width: newWidth, height: newHeight)
+
+    view.frame = CGRect(origin: origin, size: size)
 }

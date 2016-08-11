@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -13,10 +13,29 @@
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Single Image" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Pa-eG-yKR">
+                                <rect key="frame" x="20" y="20" width="99" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WRv-58-cYl">
+                                <rect key="frame" x="20" y="49" width="102" height="58"/>
+                                <state key="normal" backgroundImage="image_small"/>
+                                <connections>
+                                    <action selector="showSingleImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kdW-lW-YeZ"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Gallery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e2Q-nC-lSR">
+                                <rect key="frame" x="20" y="112" width="54" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Asb-C9-sGn">
                                 <rect key="frame" x="20" y="141" width="86" height="54"/>
                                 <state key="normal" backgroundImage="0"/>
@@ -38,11 +57,25 @@
                                     <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="enQ-Ci-Y34"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CJl-WL-vk9">
+                                <rect key="frame" x="189" y="356" width="47" height="29"/>
+                                <state key="normal" backgroundImage="3"/>
+                                <connections>
+                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ouv-ci-sRd"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZtP-5M-x0L">
                                 <rect key="frame" x="20" y="335" width="163" height="108"/>
                                 <state key="normal" backgroundImage="4"/>
                                 <connections>
                                     <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="a7r-FT-uUm"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fd6-Vz-POJ">
+                                <rect key="frame" x="35" y="445" width="201" height="83"/>
+                                <state key="normal" backgroundImage="5"/>
+                                <connections>
+                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1YS-ou-fMt"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="6" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bne-tn-gLP">
@@ -59,42 +92,19 @@
                                     <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7kw-yy-QHA"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CJl-WL-vk9">
-                                <rect key="frame" x="189" y="356" width="47" height="29"/>
-                                <state key="normal" backgroundImage="3"/>
-                                <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ouv-ci-sRd"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Single Image" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Pa-eG-yKR">
-                                <rect key="frame" x="20" y="20" width="99" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Gallery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e2Q-nC-lSR">
-                                <rect key="frame" x="20" y="112" width="54" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WRv-58-cYl">
-                                <rect key="frame" x="20" y="51" width="86" height="48"/>
-                                <state key="normal" backgroundImage="image_small"/>
-                                <connections>
-                                    <action selector="showSingleImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kdW-lW-YeZ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fd6-Vz-POJ">
-                                <rect key="frame" x="35" y="445" width="201" height="83"/>
-                                <state key="normal" backgroundImage="5"/>
-                                <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1YS-ou-fMt"/>
-                                </connections>
-                            </button>
+                            <imageView autoresizesSubviews="NO" clipsSubviews="YES" tag="8" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="8" translatesAutoresizingMaskIntoConstraints="NO" id="1oI-Qo-LkP">
+                                <rect key="frame" x="20" y="540" width="100" height="50"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" tag="9" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="9" translatesAutoresizingMaskIntoConstraints="NO" id="qCv-3T-NrD" userLabel="Giraffe Image View">
+                                <rect key="frame" x="244" y="500" width="100" height="100"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="giraffeImageView" destination="qCv-3T-NrD" id="F57-sm-Bbm"/>
+                        <outlet property="panoramaImageView" destination="1oI-Qo-LkP" id="HV2-dO-eZY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -102,14 +112,16 @@
         </scene>
     </scenes>
     <resources>
-        <image name="0" width="1920" height="1200"/>
-        <image name="1" width="1366" height="768"/>
-        <image name="2" width="500" height="374"/>
-        <image name="3" width="1680" height="1050"/>
-        <image name="4" width="1024" height="681"/>
-        <image name="5" width="618" height="257"/>
-        <image name="6" width="600" height="437"/>
-        <image name="7" width="1024" height="1448"/>
+        <image name="0" width="640" height="400"/>
+        <image name="1" width="455" height="256"/>
+        <image name="2" width="166" height="124"/>
+        <image name="3" width="560" height="350"/>
+        <image name="4" width="341" height="227"/>
+        <image name="5" width="206" height="85"/>
+        <image name="6" width="200" height="145"/>
+        <image name="7" width="341" height="482"/>
+        <image name="8" width="1073" height="200"/>
+        <image name="9" width="106" height="213"/>
         <image name="image_small" width="256" height="144"/>
     </resources>
 </document>

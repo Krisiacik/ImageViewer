@@ -49,9 +49,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
     private let hideCloseButtonDuration    = 0.05
     private let zoomDuration = 0.2
     private let itemContentSize = CGSize(width: 100, height: 100)
-    private let minimumZoomScale: CGFloat = 1
-    private let maximumZoomScale: CGFloat = 4
-    
+
     /// INTERACTIONS
     private let singleTapRecognizer = UITapGestureRecognizer()
     private let doubleTapRecognizer = UITapGestureRecognizer()
@@ -149,8 +147,6 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         scrollView.contentInset = UIEdgeInsetsZero
         scrollView.contentOffset = CGPointZero
         scrollView.contentSize = itemContentSize
-        scrollView.minimumZoomScale = minimumZoomScale
-        scrollView.maximumZoomScale = maximumZoomScale
         scrollView.addObserver(self, forKeyPath: "contentOffset", options: NSKeyValueObservingOptions.New, context: nil)
     }
     
@@ -178,41 +174,38 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
     }
     
     func updateImageAndContentSize(image: UIImage) {
-        
+
         activityIndicatorView.stopAnimating()
-        
-        if imageView.image == nil {
-            
-            scrollView.zoomScale = minimumZoomScale
-            let aspectFitSize = aspectFitContentSize(forBoundingSize: rotationAdjustedBounds().size, contentSize: image.size)
-            imageView.frame.size = aspectFitSize
-            self.scrollView.contentSize = aspectFitSize
-            imageView.center = scrollView.boundsCenter
+
+        let boundingSize = rotationAdjustedBounds().size
+        let aspectFitSize = aspectFitContentSize(forBoundingSize: boundingSize, contentSize: image.size)
+        let isHorizontalFit = abs(boundingSize.width - aspectFitSize.width) < 1
+
+        scrollView.contentSize = aspectFitSize
+        scrollView.zoomScale = scrollView.minimumZoomScale
+        scrollView.maximumZoomScale = isHorizontalFit ? boundingSize.height / aspectFitSize.height : boundingSize.width / aspectFitSize.width
+
+        imageView.frame.size = aspectFitSize
+        imageView.center = scrollView.boundsCenter
+
+        if self.needToAnimateImage() {
+            UIView.transitionWithView(self.scrollView, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                self.imageView.image = image
+                }, completion: { finished in
+                    self.fadeInHandler?.addPresentedImageIndex(self.index)
+            })
+        } else {
+            self.imageView.image = image
+            self.fadeInHandler?.addPresentedImageIndex(self.index)
         }
-        
-        if let handler = fadeInHandler where handler.wasPresented(self.index) == false {
-            
-            if self.index != self.startIndex {
-                
-                activityIndicatorView.stopAnimating()
-                
-                UIView.transitionWithView(self.scrollView, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { [weak self] () -> Void in
-                    
-                    self?.imageView.image = image
-                    
-                    }, completion: { finished in
-                        
-                        handler.addPresentedImageIndex(self.index)
-                })
-                
-                return
-            }
-        }
-        
-        self.imageView.image = image
-        fadeInHandler?.addPresentedImageIndex(self.index)
     }
-    
+
+    private func needToAnimateImage() -> Bool {
+        guard let fadeInHandler = fadeInHandler else { return false }
+
+        return !fadeInHandler.wasPresented(self.index) && self.index != self.startIndex
+    }
+
     func adjustImageViewForRotation() {
         
         guard self.imageView.bounds != CGRect.zero else { return }
@@ -227,7 +220,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         UIView.animateWithDuration(rotationAnimationDuration, animations: { [weak self] () -> Void in
             
             self?.imageView.bounds.size = aspectFitContentSize(forBoundingSize: rotationAdjustedBounds().size, contentSize: imageViewBounds.size)
-            self?.scrollView.zoomScale = self!.minimumZoomScale
+            self?.scrollView.zoomScale = self?.scrollView.minimumZoomScale ?? 1.0
             }) { [weak self] finished in
                 
                 self?.isAnimating = false
@@ -249,7 +242,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         
-        self.scrollView.zoomScale = minimumZoomScale
+        self.scrollView.zoomScale = self.scrollView.minimumZoomScale
     }
     
     override func viewDidLayoutSubviews() {
@@ -274,7 +267,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
             if let imageView = self?.imageView, _ = imageView.image, scrollView = self?.scrollView {
                 
                 imageView.bounds.size = aspectFitContentSize(forBoundingSize: boundingSize, contentSize: imageView.bounds.size)
-                scrollView.zoomScale = self!.minimumZoomScale
+                scrollView.zoomScale = scrollView.minimumZoomScale
             }
             }, completion: nil)
     }
@@ -287,8 +280,8 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
     func scrollViewDidDoubleTap(recognizer: UITapGestureRecognizer) {
         
         let touchPoint = recognizer.locationOfTouch(0, inView: imageView)
-        let aspectFillScale = aspectFillZoomScale(forBoundingSize: scrollView.bounds.size, contentSize: imageView.bounds.size)
-        
+        let aspectFillScale = aspectFillZoomScale(forBoundingSize: rotationAdjustedBounds().size, contentSize: imageView.bounds.size)
+
         if (scrollView.zoomScale == 1.0 || scrollView.zoomScale > aspectFillScale) {
             
             let zoomRectangle = zoomRect(ForScrollView: scrollView, scale: aspectFillScale, center: touchPoint)
