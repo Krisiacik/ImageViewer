@@ -14,7 +14,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var giraffeImageView: UIImageView!
 
     class SomeImageProvider: ImageProvider {
-
         let images = [
             UIImage(named: "0"),
             UIImage(named: "1"),
@@ -23,7 +22,9 @@ class ViewController: UIViewController {
             UIImage(named: "4"),
             UIImage(named: "5"),
             UIImage(named: "6"),
-            UIImage(named: "7")]
+            UIImage(named: "7"),
+            UIImage(named: "8"),
+            UIImage(named: "9")]
 
         var imageCount: Int {
             return images.count
@@ -40,26 +41,35 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        panoramaImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(imageTapped)))
+        giraffeImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(imageTapped)))
     }
-    
+
+    @objc private func imageTapped(gestureRecogniser: UITapGestureRecognizer) {
+        showGalleryImageViewer(gestureRecogniser.view!)
+    }
+
     @IBAction func showSingleImageViewer(sender: UIButton) {
         
         let imageProvider = SomeImageProvider()
         let buttonAssets = CloseButtonAssets(normal: UIImage(named:"close_normal")!, highlighted: UIImage(named: "close_highlighted"))
-        let configuration = ImageViewerConfiguration(imageSize: CGSize(width: 10, height: 10), closeButtonAssets: buttonAssets)
+        let configuration = ImageViewerConfiguration(imageSize: CGSize(width: 1920, height: 1080), closeButtonAssets: buttonAssets)
         
         let imageViewer = ImageViewerController(imageProvider: imageProvider, configuration: configuration, displacedView: sender)
         self.presentImageViewer(imageViewer)
     }
-    
+
     @IBAction func showGalleryImageViewer(displacedView: UIView) {
         
         let imageProvider = SomeImageProvider()
+        let imageCount = imageProvider.images.count
+        
         let frame = CGRect(x: 0, y: 0, width: 200, height: 24)
-        let headerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: imageProvider.imageCount)
-        let footerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: imageProvider.imageCount)
-
-        let galleryViewController = GalleryViewController(imageProvider: imageProvider, displacedView: displacedView, imageCount: imageProvider.imageCount, startIndex: displacedView.tag)
+        let headerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: imageCount)
+        let footerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: imageCount)
+        
+        let galleryViewController = GalleryViewController(imageProvider: imageProvider, displacedView: displacedView, imageCount: imageCount, startIndex: displacedView.tag)
 
         galleryViewController.headerView = headerView
         galleryViewController.footerView = footerView
