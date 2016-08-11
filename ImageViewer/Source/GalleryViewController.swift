@@ -375,7 +375,17 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
     
         closeWithAnimation(programaticallyClosedCompletion)
     }
-    
+
+    public func setImageViewController(index: Int, animated: Bool) {
+
+        if currentIndex == index { return }
+        if index < 0 || index >= imageCount { return }
+        guard let imageViewController = self.imageControllerFactory.createImageViewController(index) else { return }
+
+        let direction: UIPageViewControllerNavigationDirection = index > currentIndex ? .Forward : .Reverse
+        setViewControllers([imageViewController], direction: direction, animated: animated, completion: nil)
+    }
+
     func interactiveClose() {
         
         closeWithAnimation(closedCompletion)
