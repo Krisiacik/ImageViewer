@@ -127,7 +127,7 @@ public class VideoScrubber: UIControl {
         pauseButton.addTarget(self, action: #selector(pause), forControlEvents: UIControlEvents.TouchUpInside)
         replayButton.addTarget(self, action: #selector(replay), forControlEvents: UIControlEvents.TouchUpInside)
         scrubber.addTarget(self, action: #selector(updateCurrentTime), forControlEvents: UIControlEvents.ValueChanged)
-        scrubber.addTarget(self, action: #selector(seekToTime), forControlEvents: UIControlEvents.TouchUpInside)
+        scrubber.addTarget(self, action: #selector(seekToTime), forControlEvents: [UIControlEvents.TouchUpInside, UIControlEvents.TouchUpOutside])
 
         self.addSubviews(playButton, pauseButton, replayButton, scrubber, timeLabel)
     }
