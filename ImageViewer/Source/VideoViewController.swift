@@ -103,10 +103,10 @@ class VideoViewController: ItemBaseController<VideoView> {
 
     func closeDecorationViews(duration: NSTimeInterval) {
 
-
         UIView.animateWithDuration(duration) { [weak self] in
 
             self?.embeddedPlayButton.alpha = 0
+            self?.itemView.previewImageView.alpha = 1
         }
     }
 
@@ -135,7 +135,7 @@ class VideoViewController: ItemBaseController<VideoView> {
 
         if keyPath == "rate" || keyPath == "status" {
 
-            handlePlayerStatus()
+            fadeOutEmbeddedPlayButton()
         }
 
         else if keyPath == "contentOffset" {
@@ -148,30 +148,12 @@ class VideoViewController: ItemBaseController<VideoView> {
 
     func handleSwipeToDismissTransition() {
 
-        guard let swipingToDissmissInProgress = swipingToDismiss else { return }
-
-        let distanceToEdge: CGFloat
-        let percentDistance: CGFloat
-
-        switch swipingToDissmissInProgress {
-
-        case .Horizontal:
-
-            distanceToEdge = (scrollView.bounds.width / 2) + (itemView.bounds.width / 2)
-            percentDistance = fabs(scrollView.contentOffset.x / distanceToEdge)
-
-        case .Vertical:
-
-            distanceToEdge = (scrollView.bounds.height / 2) + (itemView.bounds.height / 2)
-            percentDistance = fabs(scrollView.contentOffset.y / distanceToEdge)
-        }
-
-        //print("DISTANCE: \(percentDistance)")
-
-        embeddedPlayButton.alpha =  1 - percentDistance * swipeToDismissFadeOutAccelerationFactor
+        guard let _ = swipingToDismiss else { return }
+        
+        embeddedPlayButton.center.y = view.center.y - scrollView.contentOffset.y
     }
 
-    func handlePlayerStatus() {
+    func fadeOutEmbeddedPlayButton() {
 
         if player.isPlaying() && embeddedPlayButton.alpha != 0  {
 

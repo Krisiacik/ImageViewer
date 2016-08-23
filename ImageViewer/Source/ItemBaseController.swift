@@ -14,7 +14,6 @@ protocol ItemView {
     var image: UIImage? { get set }
 }
 
-
 class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemController, UIGestureRecognizerDelegate, UIScrollViewDelegate {
 
     //UI

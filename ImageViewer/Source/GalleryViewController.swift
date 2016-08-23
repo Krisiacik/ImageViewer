@@ -370,7 +370,6 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
             itemController.closeDecorationViews?(decorationViewsFadeDuration)
         }
 
-
         UIView.animateWithDuration(decorationViewsFadeDuration, animations: { [weak self] in
 
             self?.headerView?.alpha = 0.0

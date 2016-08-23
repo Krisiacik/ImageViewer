@@ -94,7 +94,7 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
         return [
 
             GalleryConfigurationItem.PagingMode(.Standard),
-            GalleryConfigurationItem.PresentationStyle(.Fade),
+            GalleryConfigurationItem.PresentationStyle(.Displacement),
             GalleryConfigurationItem.HideDecorationViewsOnLaunch(true),
 
             GalleryConfigurationItem.OverlayColor(UIColor(white: 0.035, alpha: 1)),
