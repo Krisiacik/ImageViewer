@@ -10,22 +10,22 @@ import UIKit
 
 final class ImageViewerPresentTransition: NSObject, UIViewControllerAnimatedTransitioning {
 
-    private let duration: NSTimeInterval
+    private let duration: TimeInterval
 
-    init(duration: NSTimeInterval) {
+    init(duration: TimeInterval) {
         self.duration = duration
     }
 
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return duration
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        let container = transitionContext.containerView()
-        let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        let container = transitionContext.containerView
+        let toViewController = transitionContext.viewController(forKey: UITransitionContextToViewControllerKey)!
         
-        toViewController.view.frame = UIScreen.mainScreen().bounds
-        container?.addSubview(toViewController.view)
+        toViewController.view.frame = UIScreen.main.bounds
+        container.addSubview(toViewController.view)
         
         if let imageViewer = toViewController as? ImageViewerController {
             imageViewer.showAnimation(duration, completion: {(finished) -> Void in

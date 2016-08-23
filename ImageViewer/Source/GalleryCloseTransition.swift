@@ -10,25 +10,25 @@ import UIKit
 
 final class GalleryCloseTransition: NSObject, UIViewControllerAnimatedTransitioning {
     
-    private let duration: NSTimeInterval
+    private let duration: TimeInterval
     
-    init(duration: NSTimeInterval) {
+    init(duration: TimeInterval) {
         
         self.duration = duration
     }
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         
         return duration
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         
-        let transitionContainerView = transitionContext.containerView()!
-        let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)!
+        let transitionContainerView = transitionContext.containerView
+        let fromViewController = transitionContext.viewController(forKey: UITransitionContextFromViewControllerKey)!
         transitionContainerView.addSubview(fromViewController.view)
         
-        UIView.animateWithDuration(self.duration, delay: 0, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+        UIView.animate(withDuration: self.duration, delay: 0, options: UIViewAnimationOptions.transitionCrossDissolve, animations: { () -> Void in
             
             /// Transition the frontend to full clear
             fromViewController.view.alpha = 1.0

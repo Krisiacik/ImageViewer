@@ -26,7 +26,7 @@ public struct ImageViewerConfiguration {
     public let closeButtonAssets: CloseButtonAssets
     public let backgroundColor: UIColor
 
-    public init(imageSize: CGSize, closeButtonAssets: CloseButtonAssets, backgroundColor: UIColor = UIColor.blackColor()) {
+    public init(imageSize: CGSize, closeButtonAssets: CloseButtonAssets, backgroundColor: UIColor = UIColor.black) {
         self.imageSize = imageSize
         self.closeButtonAssets = closeButtonAssets
         self.backgroundColor = backgroundColor

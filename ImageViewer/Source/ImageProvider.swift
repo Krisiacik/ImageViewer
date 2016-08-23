@@ -12,6 +12,6 @@ import UIKit
 public protocol ImageProvider {
 
     var imageCount: Int { get }
-    func provideImage(completion: UIImage? -> Void)
-    func provideImage(atIndex index: Int, completion: UIImage? -> Void)
+    func provideImage(completion: (UIImage?) -> Void)
+    func provideImage(atIndex index: Int, completion: (UIImage?) -> Void)
 }

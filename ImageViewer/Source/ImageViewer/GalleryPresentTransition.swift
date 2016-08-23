@@ -15,30 +15,30 @@ final class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransiti
     var closeView: UIView?
     var seeAllView: UIView?
     var completion: (() -> Void)?
-    private let duration: NSTimeInterval
+    private let duration: TimeInterval
     private let displacedView: UIView
     private let decorationViewsHidden: Bool
     private let backgroundColor: UIColor
 
-    init(duration: NSTimeInterval, displacedView: UIView, decorationViewsHidden: Bool, backgroundColor: UIColor) {
+    init(duration: TimeInterval, displacedView: UIView, decorationViewsHidden: Bool, backgroundColor: UIColor) {
         self.duration = duration
         self.displacedView = displacedView
         self.decorationViewsHidden = decorationViewsHidden
         self.backgroundColor = backgroundColor
     }
 
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return duration
     }
 
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         let originalFrame = displacedView.frame
         let imageView = displacedView as? UIImageView
-        let resizeToAspectFit = imageView?.contentMode != .ScaleAspectFit
+        let resizeToAspectFit = imageView?.contentMode != .scaleAspectFit
 
-        if let imageView = imageView where resizeToAspectFit {
+        if let imageView = imageView, resizeToAspectFit {
             /// Resize the imageView to aspect fit before showing it in the gallery
-            UIView.animateWithDuration(0.25, animations: {
+            UIView.animate(withDuration: 0.25, animations: {
                 layoutAspectFit(self.displacedView, image: imageView.image!)
                 }, completion: { [weak self] finished in
                     self?.animateDisplacedView(transitionContext, onComplete: {
@@ -50,16 +50,16 @@ final class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransiti
         }
     }
 
-    private func animateDisplacedView(transitionContext: UIViewControllerContextTransitioning, onComplete: (Void -> Void)? = nil) {
+    private func animateDisplacedView(_ transitionContext: UIViewControllerContextTransitioning, onComplete: ((Void) -> Void)? = nil) {
         /// Get the temporary container view that facilitates all the animations
-        let transitionContainerView = transitionContext.containerView()! //Apple, Apple..
+        let transitionContainerView = transitionContext.containerView
 
         /// Get the target controller's root view and add it to the scene
-        let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
+        let toViewController = transitionContext.viewController(forKey: UITransitionContextToViewControllerKey)!
         transitionContainerView.addSubview(toViewController.view)
 
         /// Make it align with scene geometry
-        toViewController.view.frame = UIScreen.mainScreen().bounds
+        toViewController.view.frame = UIScreen.main.bounds
 
         /// Prepare transition of background from transparent to full black
         toViewController.view.backgroundColor = backgroundColor
@@ -74,7 +74,7 @@ final class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransiti
         let screenshot = screenshotFromView(displacedView)
 
         /// Make the original displacedView hidden, we can give an illusion it is moving away from its parent view
-        displacedView.hidden = true
+        displacedView.isHidden = true
 
         /// Hide the gallery views
         headerView?.alpha = 0.0
@@ -83,7 +83,7 @@ final class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransiti
         seeAllView?.alpha = 0.0
 
         /// Translate coordinates of displaced view into our coordinate system (which is now the transition container view) so that we match the animation start position on device screen level
-        let origin = transitionContainerView.convertPoint(CGPoint.zero, fromView: displacedView)
+        let origin = transitionContainerView.convert(CGPoint.zero, from: displacedView)
 
         /// Create UIImageView with screenshot
         let animatedImageView = UIImageView()
@@ -99,7 +99,7 @@ final class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransiti
         /// Put it into the container
         transitionContainerView.addSubview(animatedImageView)
 
-        UIView.animateWithDuration(self.duration, animations: { () -> Void in
+        UIView.animate(withDuration: self.duration, animations: { () -> Void in
 
             if isPortraitOnly() == true {
                 animatedImageView.transform = rotationTransform()
@@ -119,14 +119,14 @@ final class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransiti
 
                 animatedImageView.removeFromSuperview()
                 transitionContext.completeTransition(finished)
-                self?.displacedView.hidden = false
+                self?.displacedView.isHidden = false
 
                 onComplete?()
 
                 /// Unhide gallery views
                 if self?.decorationViewsHidden == false {
 
-                    UIView.animateWithDuration(0.2, animations: { [weak self] in
+                    UIView.animate(withDuration: 0.2, animations: { [weak self] in
                         self?.headerView?.alpha = 1.0
                         self?.footerView?.alpha = 1.0
                         self?.closeView?.alpha = 1.0

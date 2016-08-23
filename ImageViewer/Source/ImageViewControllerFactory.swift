@@ -29,7 +29,7 @@ final class ImageViewControllerFactory {
         self.delegate = delegate
     }
 
-    func createImageViewController(imageIndex: Int) -> ImageViewController {
+    func createImageViewController(_ imageIndex: Int) -> ImageViewController {
 
         return ImageViewController(imageProvider: imageProvider,  configuration: configuration, imageCount: imageCount, displacedView: displacedView, startIndex: startIndex, imageIndex: imageIndex, showDisplacedImage: (imageIndex == self.startIndex), fadeInHandler: fadeInHandler, delegate: delegate)
     }

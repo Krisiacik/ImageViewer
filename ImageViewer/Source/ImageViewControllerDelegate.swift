@@ -10,9 +10,9 @@ import UIKit
 
 protocol ImageViewControllerDelegate: class {
     
-    func imageViewController(controller: ImageViewController, didSwipeToDismissWithDistanceToEdge distance: CGFloat)
+    func imageViewController(_ controller: ImageViewController, didSwipeToDismissWithDistanceToEdge distance: CGFloat)
     
-    func imageViewControllerDidSingleTap(controller: ImageViewController)
+    func imageViewControllerDidSingleTap(_ controller: ImageViewController)
     
-    func imageViewControllerDidAppear(controller: ImageViewController)
+    func imageViewControllerDidAppear(_ controller: ImageViewController)
 }

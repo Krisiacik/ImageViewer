@@ -36,16 +36,16 @@ public enum GalleryConfigurationItem {
 func defaultGalleryConfiguration() -> GalleryConfiguration {
 
     let dividerWidth = GalleryConfigurationItem.ImageDividerWidth(10)
-    let spinnerColor = GalleryConfigurationItem.SpinnerColor(UIColor.whiteColor())
-    let spinnerStyle = GalleryConfigurationItem.SpinnerStyle(UIActivityIndicatorViewStyle.White)
+    let spinnerColor = GalleryConfigurationItem.SpinnerColor(UIColor.white)
+    let spinnerStyle = GalleryConfigurationItem.SpinnerStyle(UIActivityIndicatorViewStyle.white)
 
     let closeButton = UIButton(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 50, height: 50)))
-    closeButton.setImage(UIImage(named: "close_normal"), forState: UIControlState.Normal)
-    closeButton.setImage(UIImage(named: "close_highlighted"), forState: UIControlState.Highlighted)
+    closeButton.setImage(UIImage(named: "close_normal"), for: UIControlState.normal)
+    closeButton.setImage(UIImage(named: "close_highlighted"), for: UIControlState.highlighted)
     let closeButtonConfig = GalleryConfigurationItem.CloseButton(closeButton)
 
     let seeAllButton = UIButton(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 100, height: 50)))
-    seeAllButton.setTitle("See All", forState: .Normal)
+    seeAllButton.setTitle("See All", for: .normal)
     let seeAllButtonConfig = GalleryConfigurationItem.SeeAllButton(seeAllButton)
 
     let pagingMode = GalleryConfigurationItem.PagingMode(GalleryPagingMode.Standard)
@@ -59,7 +59,7 @@ func defaultGalleryConfiguration() -> GalleryConfiguration {
 
     let hideDecorationViews = GalleryConfigurationItem.HideDecorationViewsOnLaunch(true)
 
-    let backgroundColor = GalleryConfigurationItem.BackgroundColor(.blackColor())
+    let backgroundColor = GalleryConfigurationItem.BackgroundColor(.black)
 
     return [dividerWidth, spinnerStyle, spinnerColor, closeButtonConfig, seeAllButtonConfig, pagingMode, headerLayout, footerLayout, closeLayout, seeAllLayout, statusBarHidden, hideDecorationViews, backgroundColor]
 }
