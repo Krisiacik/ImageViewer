@@ -130,7 +130,3 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
         ]
     }
 }
-
-
-
-

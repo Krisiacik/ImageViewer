@@ -163,7 +163,7 @@ final public class OLDGalleryViewController : UIPageViewController, UIViewContro
         /// of key Window will rotate all app's content with it via affine transform and from the perspective of the
         /// gallery it is just a simple relayout. Allowing access to remaining code only makes sense if the app is 
         /// portrait only but we still want to support rotation inside the gallery.
-        guard isPortraitOnly() else { return }
+        guard UIApplication.isPortraitOnly else { return }
         
         guard UIDevice.currentDevice().orientation.isFlat == false &&
             isAnimating == false else { return }

@@ -178,9 +178,12 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        scrollView.frame = self.view.bounds
+        let bounds = self.view.bounds
+        scrollView.frame = bounds
 
-        itemView.bounds.size = aspectFitSize(forContentOfSize: itemView.image!.size, inBounds: self.scrollView.bounds.size)
+        let aspectFitItemSize = aspectFitSize(forContentOfSize: itemView.image!.size, inBounds: self.scrollView.bounds.size)
+
+        itemView.bounds.size = aspectFitItemSize
         scrollView.contentSize = itemView.bounds.size
 
         itemView.center = scrollView.boundsCenter
@@ -349,7 +352,7 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
             self?.scrollView.zoomScale = self!.scrollView.minimumZoomScale
 
-            if isPortraitOnly() {
+            if UIApplication.isPortraitOnly {
                 self?.itemView.transform = CGAffineTransformInvert(rotationTransform())
             }
 
@@ -396,6 +399,11 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
             //Prepare the animated image view
             let animatedImageView = displacedView.clone()
+
+            print(animatedImageView)
+
+            UIDevice.currentDevice().orientation
+
             animatedImageView.frame = displacedView.frame(inCoordinatesOfView: self.view)
             animatedImageView.clipsToBounds = true
             self.view.addSubview(animatedImageView)

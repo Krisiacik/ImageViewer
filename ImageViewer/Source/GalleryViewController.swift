@@ -64,7 +64,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
 
         self.currentIndex = startIndex
 
-        ///Only those options relevant to the paging OLDGalleryViewController are explicitely handled here, the rest is handled by ItemViewControllers
+        ///Only those options relevant to the paging GalleryViewController are explicitely handled here, the rest is handled by ItemViewControllers
         for item in configuration {
 
             switch item {
@@ -122,13 +122,13 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
             initialItemController = controller
         }
 
-        ///This less known and used presentation style option allows the contents of parent view controller presenting the gallery to "bleed through" the blurView. Otherwise we would see only black color.
+        ///This less known/used presentation style option allows the contents of parent view controller presenting the gallery to "bleed through" the blurView. Otherwise we would see only black color.
         self.modalPresentationStyle = .OverFullScreen
         self.dataSource = pagingDatasource
 
         UIApplication.applicationWindow.windowLevel = (statusBarHidden) ? UIWindowLevelStatusBar + 1 : UIWindowLevelNormal
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(OLDGalleryViewController.rotate), name: UIDeviceOrientationDidChangeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(GalleryViewController.rotate), name: UIDeviceOrientationDidChangeNotification, object: nil)
     }
 
     deinit {
@@ -164,7 +164,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
 
     func configureCloseButton() {
 
-        closeButton?.addTarget(self, action: #selector(OLDGalleryViewController.closeInteractively), forControlEvents: .TouchUpInside)
+        closeButton?.addTarget(self, action: #selector(GalleryViewController.closeInteractively), forControlEvents: .TouchUpInside)
 
         if let closeButton = closeButton {
             closeButton.alpha = 0
@@ -221,8 +221,11 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
 
         if rotationMode == .Always && UIApplication.isPortraitOnly {
 
-            self.view.transform = rotationTransform()
-            self.view.bounds = rotationAdjustedBounds()
+            let transform = rotationTransform()
+            let bounds = rotationAdjustedBounds()
+
+            self.view.transform = transform
+            self.view.bounds = bounds
         }
 
         overlayView.frame = view.bounds.insetBy(dx: -UIScreen.mainScreen().bounds.width * 2, dy: -UIScreen.mainScreen().bounds.height * 2)
@@ -330,7 +333,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         /// of key Window will rotate all app's content with it via affine transform and from the perspective of the
         /// gallery it is just a simple relayout. Allowing access to remaining code only makes sense if the app is
         /// portrait only but we still want to support rotation inside the gallery.
-        guard isPortraitOnly() else { return }
+        guard UIApplication.isPortraitOnly else { return }
 
         guard UIDevice.currentDevice().orientation.isFlat == false &&
             isAnimating == false else { return }

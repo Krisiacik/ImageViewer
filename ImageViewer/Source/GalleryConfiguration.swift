@@ -126,7 +126,7 @@ public enum GalleryRotationMode {
     ///Gallery will rotate to orientations supported in the application.
     case ApplicationBased
 
-    ///Galleyr will rotate regardelss of the rotation setting in the application.
+    ///Galleyr will rotate regardless of the rotation setting in the application.
     case Always
 }
 

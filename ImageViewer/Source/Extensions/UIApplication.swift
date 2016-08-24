@@ -16,6 +16,8 @@ extension UIApplication {
 
     static var isPortraitOnly: Bool {
 
-        return UIApplication.sharedApplication().supportedInterfaceOrientationsForWindow(nil) == .Portrait
+        let orientations = UIApplication.sharedApplication().supportedInterfaceOrientationsForWindow(nil)
+
+        return !(orientations.contains(.LandscapeLeft) || orientations.contains(.LandscapeRight) || orientations.contains(.Landscape))
     }
 }

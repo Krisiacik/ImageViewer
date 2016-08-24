@@ -13,7 +13,8 @@ extension UIImageView {
     func clone() -> UIImageView {
 
         let imageView = UIImageView(image: self.image)
-        imageView.frame = self.bounds
+        imageView.bounds = self.bounds
+        imageView.center = self.center
         imageView.contentMode = self.contentMode
 
         return imageView

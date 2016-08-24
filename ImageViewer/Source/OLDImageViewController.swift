@@ -434,7 +434,7 @@ final class OLDImageViewController: UIViewController, UIScrollViewDelegate, UIGe
             self.scrollView.zoomScale = self.scrollView.minimumZoomScale
             self.blackOverlayView.alpha = 0.0
             
-            if isPortraitOnly() {
+            if UIApplication.isPortraitOnly {
                 self.imageView.transform = CGAffineTransformInvert(rotationTransform())
             }
             

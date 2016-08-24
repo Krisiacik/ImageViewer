@@ -91,8 +91,6 @@
 		EBE627071D2688890095999A /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE627051D2688890095999A /* GalleryViewController.swift */; };
 		EBE627091D2689AD0095999A /* ItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE627081D2689AD0095999A /* ItemController.swift */; };
 		EBE6270A1D2689AD0095999A /* ItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE627081D2689AD0095999A /* ItemController.swift */; };
-		EBE6270C1D268A4A0095999A /* GalleryDisplacedViewDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE6270B1D268A4A0095999A /* GalleryDisplacedViewDatasource.swift */; };
-		EBE6270D1D268A4A0095999A /* GalleryDisplacedViewDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE6270B1D268A4A0095999A /* GalleryDisplacedViewDatasource.swift */; };
 		EBE6270F1D268A7F0095999A /* GalleryDisplacedViewsDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE6270E1D268A7F0095999A /* GalleryDisplacedViewsDatasource.swift */; };
 		EBE627101D268A7F0095999A /* GalleryDisplacedViewsDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE6270E1D268A7F0095999A /* GalleryDisplacedViewsDatasource.swift */; };
 		EBE627121D268AB70095999A /* GalleryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE627111D268AB70095999A /* GalleryItem.swift */; };
@@ -152,7 +150,6 @@
 		EBBFCB961D26CBA2007E7244 /* BlurView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		EBE627051D2688890095999A /* GalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
 		EBE627081D2689AD0095999A /* ItemController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemController.swift; sourceTree = "<group>"; };
-		EBE6270B1D268A4A0095999A /* GalleryDisplacedViewDatasource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryDisplacedViewDatasource.swift; sourceTree = "<group>"; };
 		EBE6270E1D268A7F0095999A /* GalleryDisplacedViewsDatasource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryDisplacedViewsDatasource.swift; sourceTree = "<group>"; };
 		EBE627111D268AB70095999A /* GalleryItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GalleryItem.swift; path = Source/GalleryItem.swift; sourceTree = "<group>"; };
 		EBEBEF931C84665B008C1E58 /* OLDImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OLDImageViewController.swift; sourceTree = "<group>"; };
@@ -241,7 +238,6 @@
 		C7DABE581C1224EA00F5BD7B /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				EBE6270B1D268A4A0095999A /* GalleryDisplacedViewDatasource.swift */,
 				EBBFCB961D26CBA2007E7244 /* BlurView.swift */,
 				EBE627141D268ADE0095999A /* Model */,
 				EBA90E421C875225000AA697 /* ImageFadeInHandler.swift */,
@@ -579,7 +575,6 @@
 				EB40C3771C9C5C48004EA215 /* GalleryItemsDatasource.swift in Sources */,
 				EB243F911C889F88006DEF58 /* GallerySwipeToDismissTransition.swift in Sources */,
 				EB6A56CF1C85D4F500BBDEF6 /* OLDGalleryPagingDatasource.swift in Sources */,
-				EBE6270C1D268A4A0095999A /* GalleryDisplacedViewDatasource.swift in Sources */,
 				EBE6270F1D268A7F0095999A /* GalleryDisplacedViewsDatasource.swift in Sources */,
 				C7897CE51C1350B7006447FB /* AppDelegate.swift in Sources */,
 			);
@@ -603,7 +598,6 @@
 				EB60EE571D58EB4800CC5BA8 /* VideoScrubber.swift in Sources */,
 				EBA76F721D4F855C0094931F /* ItemBaseController.swift in Sources */,
 				EB6F46551D4660AC00984035 /* VideoView.swift in Sources */,
-				EBE6270D1D268A4A0095999A /* GalleryDisplacedViewDatasource.swift in Sources */,
 				EBE627071D2688890095999A /* GalleryViewController.swift in Sources */,
 				EBA90E401C8729E2000AA697 /* GalleryPresentTransition.swift in Sources */,
 				EB17B3821D4A6E7F00EED1DA /* UIButton.swift in Sources */,
@@ -695,6 +689,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULE_DEBUGGING = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -743,6 +738,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULE_DEBUGGING = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -761,6 +757,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -770,6 +767,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -780,8 +778,6 @@
 		C7DABE511C12245B00F5BD7B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -792,15 +788,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = mailonline.ImageViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		C7DABE521C12245B00F5BD7B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
