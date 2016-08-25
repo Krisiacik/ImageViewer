@@ -199,21 +199,25 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
 
     func presentInitially() {
 
+        isAnimating = true
+
         ///Animates decoration views to the initial state if they are set to be visible on launch. We do not need to do anything if they are set to be hidden because they are already set up as hidden by default. Unhiding them for the launch is part of chosen UX.
         initialItemController?.presentItem(alongsideAnimation: { [weak self] in
 
             self?.overlayView.present()
 
-        }) { [weak self] in
+            }, completion: { [weak self] in
 
-            if let weakself = self {
+                if let weakself = self {
 
-                if weakself.decorationViewsHidden == false {
+                    if weakself.decorationViewsHidden == false {
 
-                    weakself.animateDecorationViews(visible: true)
+                        weakself.animateDecorationViews(visible: true)
+                    }
+
+                    weakself.isAnimating = false
                 }
-            }
-        }
+            })
     }
 
     public override func viewDidLayoutSubviews() {
@@ -368,6 +372,9 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
 
     func closeDecorationViews(completion: (() -> Void)?) {
 
+        guard isAnimating == false else { return }
+        isAnimating = true
+
         if let itemController = self.viewControllers?.first as? ItemController {
 
             itemController.closeDecorationViews?(decorationViewsFadeDuration)
@@ -382,15 +389,17 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
 
             }, completion: { [weak self] done in
 
-                if let itemController = self?.viewControllers?.first as? ItemController {
+                if let weakself = self,
+                    let itemController = weakself.viewControllers?.first as? ItemController {
 
-                    itemController.dismissItem(alongsideAnimation: { [weak self] in
+                    itemController.dismissItem(alongsideAnimation: {
 
-                        self?.overlayView.dismiss() }
+                        weakself.overlayView.dismiss()
 
-                        , completion: {
+                        }, completion: {
 
-                            self?.closeGallery(false, completion: completion)
+                            weakself.isAnimating = true
+                            weakself.closeGallery(false, completion: completion)
                     })
                 }
             })
@@ -455,21 +464,21 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         self.landedPageAtIndexCompletion?(self.currentIndex)
         self.headerView?.sizeToFit()
         self.footerView?.sizeToFit()
-
+        
         if let _ = controller as? VideoViewController {
-
+            
             if scrubber.alpha == 0 && decorationViewsHidden == false {
-
+                
                 UIView.animateWithDuration(0.3) { [weak self] in
-
+                    
                     self?.scrubber.alpha = 1
                 }
             }
         }
     }
-
+    
     func itemControllerDidSingleTap(controller: ItemController) {
-
+        
         self.decorationViewsHidden.flip()
         animateDecorationViews(visible: !self.decorationViewsHidden)
     }

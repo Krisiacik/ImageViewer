@@ -373,6 +373,9 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
     func presentItem(alongsideAnimation alongsideAnimation: () -> Void, completion: () -> Void) {
 
+        guard isAnimating == false else { return }
+        isAnimating = true
+
         alongsideAnimation()
 
         switch presentationStyle {
@@ -386,9 +389,10 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
                 self?.itemView.alpha = 1
 
-            }) { _ in
+            }) { [weak self] _ in
 
                 completion()
+                self?.isAnimating = false
             }
 
         case .Displacement:
@@ -423,15 +427,14 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
                 animatedImageView.bounds.size = self?.displacementTargetSize(forSize: image.size) ?? image.size
                 animatedImageView.center = self?.view.boundsCenter ?? CGPoint.zero
 
-                }, completion: { [weak self] done in
-
-                    completion()
+                }, completion: { [weak self] _ in
 
                     self?.itemView.hidden = false
                     displacedView.hidden = false
                     animatedImageView.removeFromSuperview()
 
-                    self?.didFinishPresentingItem()
+                    self?.isAnimating = false
+                    completion()
                 })
         }
     }
@@ -441,10 +444,6 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
         let boundingSize = rotationAdjustedBounds().size
 
         return aspectFitSize(forContentOfSize: size, inBounds: boundingSize)
-    }
-
-    func didFinishPresentingItem() {
-
     }
 
     func findVisibleDisplacedView() -> UIImageView? {
@@ -459,6 +458,9 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
     }
 
     func dismissItem(alongsideAnimation alongsideAnimation: () -> Void, completion: () -> Void) {
+
+        guard isAnimating == false else { return }
+        isAnimating = true
 
         alongsideAnimation()
 
@@ -479,8 +481,9 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
                     self?.itemView.clipsToBounds = true
                     self?.itemView.contentMode = displacedView.contentMode
 
-                    }, completion: { _ in
+                    }, completion: { [weak self] _ in
 
+                        self?.isAnimating = false
                         completion()
                 })
             }
@@ -493,8 +496,9 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
                 self?.itemView.alpha = 0
 
-            }) { _ in
+            }) { [weak self] _ in
 
+                self?.isAnimating = false
                 completion()
             }
         }
