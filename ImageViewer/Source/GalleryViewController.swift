@@ -383,11 +383,13 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
 
     func seeAll() {
         let seeAllController = ThumbnailsViewController(imageProvider: self.imageProvider)
-        let closeButton = UIButton(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 50, height: 50)))
-        closeButton.setImage(UIImage(named: "close_normal"), forState: UIControlState.Normal)
-        closeButton.setImage(UIImage(named: "close_highlighted"), forState: UIControlState.Highlighted)
-        seeAllController.closeButton = closeButton
-        seeAllController.closeLayout = closeLayout
+        if let closeButton = closeButton {
+            let seeAllCloseButton = UIButton(frame: CGRect(origin: CGPoint.zero, size: closeButton.bounds.size))
+            seeAllCloseButton.setImage(closeButton.imageForState(.Normal), forState: .Normal)
+            seeAllCloseButton.setImage(closeButton.imageForState(.Highlighted), forState: .Highlighted)
+            seeAllController.closeButton = seeAllCloseButton
+            seeAllController.closeLayout = closeLayout
+        }
         seeAllController.onItemSelected = { index in
             self.goToIndex(index)
         }
