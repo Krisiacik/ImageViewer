@@ -492,7 +492,10 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
             closeButton?.alpha = alpha
             headerView?.alpha = alpha
             footerView?.alpha = alpha
-            scrubber.alpha = alpha
+
+            if controller is VideoViewController {
+                scrubber.alpha = alpha
+            }
         }
         
         self.overlayView.blurringView.alpha = 1 - distance
