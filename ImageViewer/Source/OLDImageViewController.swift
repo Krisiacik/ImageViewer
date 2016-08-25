@@ -435,7 +435,7 @@ final class OLDImageViewController: UIViewController, UIScrollViewDelegate, UIGe
             self.blackOverlayView.alpha = 0.0
             
             if UIApplication.isPortraitOnly {
-                self.imageView.transform = CGAffineTransformInvert(rotationTransform())
+                self.imageView.transform = CGAffineTransformInvert(windowRotationTransform())
             }
             
             /// Get position of displaced view in window

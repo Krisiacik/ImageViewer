@@ -353,7 +353,7 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
             self?.scrollView.zoomScale = self!.scrollView.minimumZoomScale
 
             if UIApplication.isPortraitOnly {
-                self?.itemView.transform = CGAffineTransformInvert(rotationTransform())
+                self?.itemView.transform = CGAffineTransformInvert(windowRotationTransform())
             }
 
         }) { [weak self] finished in
@@ -400,13 +400,9 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
             //Prepare the animated imageview
             let animatedImageView = displacedView.clone()
 
-//            //Set orientation-adjusted imageview bounds
-//            let initialSize = (UIDevice.currentDevice().orientation.isPortrait) ? displacedView.bounds.size : displacedView.bounds.size
-//            animatedImageView.bounds.size = initialSize
-
             //rotate the imageview to starting angle
             if UIApplication.isPortraitOnly == true {
-                animatedImageView.transform = deviceMatchingTransform()
+                animatedImageView.transform = deviceRotationTransform()
             }
 
             //position the image view to starting center

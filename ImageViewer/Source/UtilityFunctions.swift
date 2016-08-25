@@ -66,7 +66,8 @@ func screenshotFromView(view: UIView) -> UIImage {
     return image
 }
 
-func rotationTransform() -> CGAffineTransform {
+//the transform needed to rotate a view that matches device screen orientation to match window orientation.
+func windowRotationTransform() -> CGAffineTransform {
 
     let angleInDegrees = rotationAngleToMatchDeviceOrientation(UIDevice.currentDevice().orientation)
     let angleInRadians = degreesToRadians(angleInDegrees)
@@ -74,7 +75,8 @@ func rotationTransform() -> CGAffineTransform {
     return CGAffineTransformMakeRotation(angleInRadians)
 }
 
-func deviceMatchingTransform() -> CGAffineTransform {
+//the transform needed to rotate a view that matches window orientation to match devices screen orientation.
+func deviceRotationTransform() -> CGAffineTransform {
 
     let angleInDegrees = rotationAngleToMatchDeviceOrientation(UIDevice.currentDevice().orientation)
     let angleInRadians = degreesToRadians(angleInDegrees)

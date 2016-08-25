@@ -46,7 +46,7 @@ final class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransiti
         toViewController.view.alpha = 0.0
         
         if UIApplication.isPortraitOnly {
-            toViewController.view.transform = rotationTransform()
+            toViewController.view.transform = windowRotationTransform()
             toViewController.view.bounds = rotationAdjustedBounds()
         }
         
@@ -76,7 +76,7 @@ final class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransiti
         UIView.animateWithDuration(self.duration, animations: { () -> Void in
             
             if UIApplication.isPortraitOnly == true {
-                animatedImageView.transform = rotationTransform()
+                animatedImageView.transform = windowRotationTransform()
             }
                 /// Animate it into the center (with optionaly rotating) - that basically includes changing the size and position
             

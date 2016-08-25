@@ -174,7 +174,7 @@ final public class OLDGalleryViewController : UIPageViewController, UIViewContro
         
         UIView.animateWithDuration(rotationAnimationDuration, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { [weak self] () -> Void in
             
-            self?.view.transform = rotationTransform()
+            self?.view.transform = windowRotationTransform()
             self?.view.bounds = rotationAdjustedBounds()
             self?.view.setNeedsLayout()
             self?.view.layoutIfNeeded()
