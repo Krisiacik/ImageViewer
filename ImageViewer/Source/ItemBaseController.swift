@@ -397,14 +397,21 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
             guard let displacedView = displacedViewsDatasource?.provideDisplacementItem(atIndex: index) as? UIImageView,
                 let image = displacedView.image else { return }
 
-            //Prepare the animated image view
+            //Prepare the animated imageview
             let animatedImageView = displacedView.clone()
 
-            print(animatedImageView)
+//            //Set orientation-adjusted imageview bounds
+//            let initialSize = (UIDevice.currentDevice().orientation.isPortrait) ? displacedView.bounds.size : displacedView.bounds.size
+//            animatedImageView.bounds.size = initialSize
 
-            UIDevice.currentDevice().orientation
+            //rotate the imageview to starting angle
+            if UIApplication.isPortraitOnly == true {
+                animatedImageView.transform = deviceMatchingTransform()
+            }
 
-            animatedImageView.frame = displacedView.frame(inCoordinatesOfView: self.view)
+            //position the image view to starting center
+            animatedImageView.center = displacedView.convertPoint(displacedView.boundsCenter, toView: self.view)
+
             animatedImageView.clipsToBounds = true
             self.view.addSubview(animatedImageView)
 
@@ -413,7 +420,7 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
             UIView.animateWithDuration(displacementDuration, delay: 0, usingSpringWithDamping: displacementSpringBounce, initialSpringVelocity: 1, options: .CurveEaseIn, animations: { [weak self] in
 
                 if UIApplication.isPortraitOnly == true {
-                    animatedImageView.transform = rotationTransform()
+                    animatedImageView.transform = CGAffineTransformIdentity
                 }
                 /// Animate it into the center (with optionaly rotating) - that basically includes changing the size and position
 

@@ -67,8 +67,19 @@ func screenshotFromView(view: UIView) -> UIImage {
 }
 
 func rotationTransform() -> CGAffineTransform {
-    
-    return CGAffineTransformMakeRotation(degreesToRadians(rotationAngleToMatchDeviceOrientation(UIDevice.currentDevice().orientation)))
+
+    let angleInDegrees = rotationAngleToMatchDeviceOrientation(UIDevice.currentDevice().orientation)
+    let angleInRadians = degreesToRadians(angleInDegrees)
+
+    return CGAffineTransformMakeRotation(angleInRadians)
+}
+
+func deviceMatchingTransform() -> CGAffineTransform {
+
+    let angleInDegrees = rotationAngleToMatchDeviceOrientation(UIDevice.currentDevice().orientation)
+    let angleInRadians = degreesToRadians(angleInDegrees)
+
+    return CGAffineTransformMakeRotation(-angleInRadians)
 }
 
 func degreesToRadians(degree: CGFloat) -> CGFloat {
