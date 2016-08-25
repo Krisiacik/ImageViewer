@@ -485,6 +485,8 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
                 })
             }
 
+            else { fallthrough }
+
         case .Fade:
 
             UIView.animateWithDuration(itemFadeDuration, animations: {  [weak self] in
@@ -500,7 +502,7 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
     // MARK: - Arkane stuff
 
-    ///This resolves which of the two pan gesture recognizers should kick in. There is one built in the OLDGalleryViewController (as it is a UIPageViewController subclass), and another one is added as part of item controller. When we pan, we need to decide whether it constitutes a horizontal paging gesture, or a swipe-to-dismiss gesture.
+    ///This resolves which of the two pan gesture recognizers should kick in. There is one built in the GalleryViewController (as it is a UIPageViewController subclass), and another one is added as part of item controller. When we pan, we need to decide whether it constitutes a horizontal paging gesture, or a horizontal swipe-to-dismiss gesture.
     /// All the logic is from the perspective of SwipeToDismissRecognizer - should it kick in (or let the paging recognizer page)?
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
 
