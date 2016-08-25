@@ -470,7 +470,12 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
                 UIView.animateWithDuration(reverseDisplacementDuration, animations: { [weak self] in
 
-                    self?.itemView.frame = displacedView.frame(inCoordinatesOfView: self!.view)
+                    //rotate the image view
+                    self?.itemView.transform = deviceRotationTransform()
+
+                    //position the image view to starting center
+                    self?.itemView.bounds = displacedView.bounds
+                    self?.itemView.center = displacedView.convertPoint(displacedView.boundsCenter, toView: self!.view)
                     self?.itemView.clipsToBounds = true
                     self?.itemView.contentMode = displacedView.contentMode
 
