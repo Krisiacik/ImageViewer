@@ -8,6 +8,12 @@
 
 import UIKit
 
+enum SwipeToDismiss {
+
+    case Horizontal
+    case Vertical
+}
+
 final class GallerySwipeToDismissTransition {
     
     private weak var presentingViewController: UIViewController?
