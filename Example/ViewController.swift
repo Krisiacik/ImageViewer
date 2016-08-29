@@ -59,7 +59,7 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
         self.presentImageGallery(galleryViewController)
     }
 
-    func numberOfItemsInGalery() -> Int {
+    func itemCount() -> Int {
 
         return images.count
     }

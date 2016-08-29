@@ -17,6 +17,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
     /// A custom view at the bottom of the gallery with layout using default (or custom) pinning settingsfor footer.
     public var footerView: UIView?
     private var closeButton: UIButton? = UIButton.closeButton()
+    private var thumbnailsButton: UIButton? = UIButton.thumbnailsButton()
     private let scrubber = VideoScrubber()
 
     private weak var initialItemController: ItemController?
@@ -29,7 +30,8 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
     private var isAnimating = false
     private var initialPresentationDone = false
 
-    //PAGING DATASOURCE
+    //DATASOURCE
+    private let itemsDatasource: GalleryItemsDatasource
     private let pagingDatasource: GalleryPagingDatasource
 
     /// CONFIGURATION
@@ -37,7 +39,8 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
     private var galleryPagingMode = GalleryPagingMode.Standard
     private var headerLayout = HeaderLayout.Center(25)
     private var footerLayout = FooterLayout.Center(25)
-    private var closeLayout = CloseButtonLayout.PinRight(8, 16)
+    private var closeLayout = ButtonLayout.PinRight(8, 16)
+    private var thumbnailsLayout = ButtonLayout.PinLeft(8, 16)
     private var statusBarHidden = true
     private var overlayAccelerationFactor: CGFloat = 1
     private var rotationDuration = 0.2
@@ -63,6 +66,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
     init(startIndex: Int, itemsDatasource: GalleryItemsDatasource, displacedViewsDatasource: GalleryDisplacedViewsDatasource? = nil, configuration: GalleryConfiguration = []) {
 
         self.currentIndex = startIndex
+        self.itemsDatasource = itemsDatasource
 
         ///Only those options relevant to the paging GalleryViewController are explicitely handled here, the rest is handled by ItemViewControllers
         for item in configuration {
@@ -74,6 +78,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
             case .HeaderViewLayout(let layout):                 headerLayout = layout
             case .FooterViewLayout(let layout):                 footerLayout = layout
             case .CloseLayout(let layout):                      closeLayout = layout
+            case .ThumbnailsLayout(let layout):                 thumbnailsLayout = layout
             case .StatusBarHidden(let hidden):                  statusBarHidden = hidden
             case .HideDecorationViewsOnLaunch(let hidden):      decorationViewsHidden = hidden
             case .DecorationViewsFadeDuration(let duration):    decorationViewsFadeDuration = duration
@@ -92,12 +97,21 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
             case .ColorDismissDuration(let duration):           overlayView.colorDismissDuration = duration
             case .ColorDismissDelay(let delay):                 overlayView.colorDismissDelay = delay
 
-            case .CloseButtonMode(let closeButtonMode):
+            case .CloseButtonMode(let buttonMode):
 
-                switch closeButtonMode {
+                switch buttonMode {
 
                 case .None:                 closeButton = nil
                 case .Custom(let button):   closeButton = button
+                case .BuiltIn:              break
+                }
+                
+            case .ThumbnailsButtonMode(let buttonMode):
+                
+                switch buttonMode {
+                    
+                case .None:                 thumbnailsButton = nil
+                case .Custom(let button):   thumbnailsButton = button
                 case .BuiltIn:              break
                 }
 
@@ -172,6 +186,16 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         }
     }
 
+    func configureThumbnailsButton() {
+        
+        thumbnailsButton?.addTarget(self, action: #selector(GalleryViewController.showThumbnails), forControlEvents: .TouchUpInside)
+        
+        if let thumbnailsButton = thumbnailsButton {
+            thumbnailsButton.alpha = 0
+            self.view.addSubview(thumbnailsButton)
+        }
+    }
+    
     func configureScrubber() {
 
         scrubber.alpha = 0
@@ -184,17 +208,22 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         configureHeaderView()
         configureFooterView()
         configureCloseButton()
+        configureThumbnailsButton()
         configureScrubber()
     }
 
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
+        guard initialPresentationDone == false else { return }
+        
         ///We have to call this here (not sooner), because it adds the overlay view to the presenting controller and the presentingController property is set only at this moment in the VC lifecycle.
         configureOverlayView()
 
         ///The initial presentation animations and transitions
         presentInitially()
+        
+        initialPresentationDone = true
     }
 
     func presentInitially() {
@@ -234,29 +263,30 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
 
         overlayView.frame = view.bounds.insetBy(dx: -UIScreen.mainScreen().bounds.width * 2, dy: -UIScreen.mainScreen().bounds.height * 2)
 
-        layoutCloseButton()
+        layoutButton(closeButton, layout: closeLayout)
+        layoutButton(thumbnailsButton, layout: thumbnailsLayout)
         layoutHeaderView()
         layoutFooterView()
         layoutScrubber()
     }
-
-    func layoutCloseButton() {
-
-        guard let close = closeButton else { return }
-
-        switch closeLayout {
-
+    
+    func layoutButton(button: UIButton?, layout: ButtonLayout) {
+        
+        guard let button = button else { return }
+        
+        switch layout {
+            
         case .PinRight(let marginTop, let marginRight):
-
-            close.autoresizingMask = [.FlexibleBottomMargin, .FlexibleLeftMargin]
-            close.frame.origin.x = self.view.bounds.size.width - marginRight - close.bounds.size.width
-            close.frame.origin.y = marginTop
-
+            
+            button.autoresizingMask = [.FlexibleBottomMargin, .FlexibleLeftMargin]
+            button.frame.origin.x = self.view.bounds.size.width - marginRight - button.bounds.size.width
+            button.frame.origin.y = marginTop
+            
         case .PinLeft(let marginTop, let marginLeft):
-
-            close.autoresizingMask = [.FlexibleBottomMargin, .FlexibleRightMargin]
-            close.frame.origin.x = marginLeft
-            close.frame.origin.y = marginTop
+            
+            button.autoresizingMask = [.FlexibleBottomMargin, .FlexibleRightMargin]
+            button.frame.origin.x = marginLeft
+            button.frame.origin.y = marginTop
         }
     }
 
@@ -328,6 +358,50 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         scrubber.center = self.view.boundsCenter
         scrubber.frame.origin.y = (footerView?.frame.origin.y ?? self.view.bounds.maxY) - scrubber.bounds.height
     }
+    
+    //Thumbnails
+    
+    func showThumbnails() {
+        
+        let thumbnailsController = ThumbnailsViewController(itemsDatasource: self.itemsDatasource)
+        
+        if let closeButton = closeButton {
+            let seeAllCloseButton = UIButton(frame: CGRect(origin: CGPoint.zero, size: closeButton.bounds.size))
+            seeAllCloseButton.setImage(closeButton.imageForState(.Normal), forState: .Normal)
+            seeAllCloseButton.setImage(closeButton.imageForState(.Highlighted), forState: .Highlighted)
+            thumbnailsController.closeButton = seeAllCloseButton
+            thumbnailsController.closeLayout = closeLayout
+        }
+        thumbnailsController.onItemSelected = { index in
+            self.page(toIndex: index)
+        }
+        presentViewController(thumbnailsController, animated: true, completion: nil)
+    }
+    
+    public func page(toIndex index: Int) {
+        
+        guard currentIndex != index && index >= 0 && index < self.itemsDatasource.itemCount() else { return }
+        
+        let imageViewController = self.pagingDatasource.createItemController(index)
+        let direction: UIPageViewControllerNavigationDirection = index > currentIndex ? .Forward : .Reverse
+        
+        // workaround to make UIPageViewController happy
+        if direction == .Forward {
+            let previousVC = self.pagingDatasource.createItemController(index - 1)
+            setViewControllers([previousVC], direction: direction, animated: true, completion: { finished in
+                dispatch_async(dispatch_get_main_queue(), { [weak self] in
+                    self?.setViewControllers([imageViewController], direction: direction, animated: false, completion: nil)
+                    })
+            })
+        } else {
+            let nextVC = self.pagingDatasource.createItemController(index + 1)
+            setViewControllers([nextVC], direction: direction, animated: true, completion: { finished in
+                dispatch_async(dispatch_get_main_queue(), { [weak self] in
+                    self?.setViewControllers([imageViewController], direction: direction, animated: false, completion: nil)
+                    })
+            })
+        }
+    }
 
     // MARK: - Animations
 
@@ -385,6 +459,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
             self?.headerView?.alpha = 0.0
             self?.footerView?.alpha = 0.0
             self?.closeButton?.alpha = 0.0
+            self?.thumbnailsButton?.alpha = 0.0
             self?.scrubber.alpha = 0.0
 
             }, completion: { [weak self] done in
@@ -426,7 +501,8 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
             self?.headerView?.alpha = targetAlpha
             self?.footerView?.alpha = targetAlpha
             self?.closeButton?.alpha = targetAlpha
-
+            self?.thumbnailsButton?.alpha = targetAlpha
+            
             if let _ = self?.viewControllers?.first as? VideoViewController {
 
                 UIView.animateWithDuration(0.3) { [weak self] in
@@ -490,6 +566,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
             let alpha = 1 - distance * swipeToDismissFadeOutAccelerationFactor
             
             closeButton?.alpha = alpha
+            thumbnailsButton?.alpha = alpha
             headerView?.alpha = alpha
             footerView?.alpha = alpha
 

@@ -14,7 +14,7 @@ public typealias MarginTop = CGFloat
 public typealias MarginBottom = CGFloat
 
 /// Represents possible layouts for the close button
-public enum CloseButtonLayout {
+public enum ButtonLayout {
     
     case PinLeft(MarginTop, MarginLeft)
     case PinRight(MarginTop, MarginRight)

@@ -19,11 +19,17 @@ public enum GalleryConfigurationItem {
     case ImageDividerWidth(CGFloat)
     
     ///Option to set the Close button type.
-    case CloseButtonMode(GalleryCloseButtonMode)
-    
-    /// Layout behaviour for the close button.
-    case CloseLayout(CloseButtonLayout)
+    case CloseButtonMode(ButtonMode)
 
+    ///Option to set the Thumbnails button type.
+    case ThumbnailsButtonMode(ButtonMode)
+    
+    /// Layout behaviour for the Close button.
+    case CloseLayout(ButtonLayout)
+    
+    /// Layout behaviour for the Thumbnails button.
+    case ThumbnailsLayout(ButtonLayout)
+    
     /// This spinner is shown when we page to an image page, but the image itself is still loading.
     case SpinnerStyle(UIActivityIndicatorViewStyle)
 
@@ -130,10 +136,10 @@ public enum GalleryRotationMode {
     case Always
 }
 
-public enum GalleryCloseButtonMode {
+public enum ButtonMode {
     
     case None
-    case BuiltIn /// Standard white X with transparent tappable area, positioned in the top right corner.
+    case BuiltIn /// Standard Close or Thumbnails button.
     case Custom(UIButton)
 }
 

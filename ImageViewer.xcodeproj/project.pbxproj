@@ -11,6 +11,10 @@
 		4CD1C49D1C16FF64008D5F84 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD1C49B1C16FF64008D5F84 /* CGPoint.swift */; };
 		A32D40041D45C4DE00AB5ADA /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32D40031D45C4DE00AB5ADA /* Bool.swift */; };
 		A32D40051D45C50800AB5ADA /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32D40031D45C4DE00AB5ADA /* Bool.swift */; };
+		A35F0CEF1D74B89D00DA94CB /* ThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35F0CED1D74B89D00DA94CB /* ThumbnailCell.swift */; };
+		A35F0CF01D74B89D00DA94CB /* ThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35F0CED1D74B89D00DA94CB /* ThumbnailCell.swift */; };
+		A35F0CF11D74B89D00DA94CB /* ThumbnailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35F0CEE1D74B89D00DA94CB /* ThumbnailsViewController.swift */; };
+		A35F0CF21D74B89D00DA94CB /* ThumbnailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35F0CEE1D74B89D00DA94CB /* ThumbnailsViewController.swift */; };
 		C7897CE51C1350B7006447FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7897CE41C1350B7006447FB /* AppDelegate.swift */; };
 		C7897CE71C1350B7006447FB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7897CE61C1350B7006447FB /* ViewController.swift */; };
 		C7897CEA1C1350B7006447FB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7897CE81C1350B7006447FB /* Main.storyboard */; };
@@ -92,6 +96,8 @@
 /* Begin PBXFileReference section */
 		4CD1C49B1C16FF64008D5F84 /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
 		A32D40031D45C4DE00AB5ADA /* Bool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
+		A35F0CED1D74B89D00DA94CB /* ThumbnailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailCell.swift; sourceTree = "<group>"; };
+		A35F0CEE1D74B89D00DA94CB /* ThumbnailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailsViewController.swift; sourceTree = "<group>"; };
 		C7897CE21C1350B7006447FB /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7897CE41C1350B7006447FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C7897CE61C1350B7006447FB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -167,6 +173,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A35F0CEC1D74B88B00DA94CB /* Thumbnails Controller */ = {
+			isa = PBXGroup;
+			children = (
+				A35F0CED1D74B89D00DA94CB /* ThumbnailCell.swift */,
+				A35F0CEE1D74B89D00DA94CB /* ThumbnailsViewController.swift */,
+			);
+			name = "Thumbnails Controller";
+			path = ..;
+			sourceTree = "<group>";
+		};
 		C7897CE31C1350B7006447FB /* Example */ = {
 			isa = PBXGroup;
 			children = (
@@ -230,6 +246,7 @@
 				EB1F6E191C908DEB0046A7FB /* Layout */,
 				EBA90E411C8729EB000AA697 /* Transitions */,
 				EB1CEC1E1C84A54600BB27B8 /* UtilityFunctions.swift */,
+				A35F0CEC1D74B88B00DA94CB /* Thumbnails Controller */,
 				EBEBEF901C84578E008C1E58 /* Paging Controller */,
 				EB6A56D21C85E41700BBDEF6 /* Item Controller */,
 				EB40C3751C9C5C30004EA215 /* Protocols */,
@@ -511,7 +528,9 @@
 				EBA0A9531C89C653005B8DD3 /* GalleryConfiguration.swift in Sources */,
 				EB3464F01D4B9066009494B5 /* CALayer.swift in Sources */,
 				EB17B3811D4A6E7F00EED1DA /* UIButton.swift in Sources */,
+				A35F0CEF1D74B89D00DA94CB /* ThumbnailCell.swift in Sources */,
 				EB1DB6E61D3E500B00DC9064 /* UIImageView.swift in Sources */,
+				A35F0CF11D74B89D00DA94CB /* ThumbnailsViewController.swift in Sources */,
 				EBAF4C661D3937BC0039CA93 /* VideoViewController.swift in Sources */,
 				A32D40051D45C50800AB5ADA /* Bool.swift in Sources */,
 				EB40C3731C9C5BF1004EA215 /* UIViewController.swift in Sources */,
@@ -555,10 +574,12 @@
 				EB3464F61D4BAA19009494B5 /* UISlider.swift in Sources */,
 				EB60EE571D58EB4800CC5BA8 /* VideoScrubber.swift in Sources */,
 				EBA76F721D4F855C0094931F /* ItemBaseController.swift in Sources */,
+				A35F0CF01D74B89D00DA94CB /* ThumbnailCell.swift in Sources */,
 				EB6F46551D4660AC00984035 /* VideoView.swift in Sources */,
 				EBE627071D2688890095999A /* GalleryViewController.swift in Sources */,
 				EBA90E401C8729E2000AA697 /* GalleryPresentTransition.swift in Sources */,
 				EB17B3821D4A6E7F00EED1DA /* UIButton.swift in Sources */,
+				A35F0CF21D74B89D00DA94CB /* ThumbnailsViewController.swift in Sources */,
 				EB40C3781C9C5C48004EA215 /* GalleryItemsDatasource.swift in Sources */,
 				EBAF4C611D391C720039CA93 /* GalleryPagingDatasource.swift in Sources */,
 				EB1CEC1F1C84A54600BB27B8 /* UtilityFunctions.swift in Sources */,

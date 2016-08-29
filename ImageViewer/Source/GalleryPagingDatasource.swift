@@ -24,7 +24,7 @@ final class GalleryPagingDatasource: NSObject, UIPageViewControllerDataSource {
         self.displacedViewsDatasource = displacedViewsDatasource
         self.scrubber = scrubber
         self.configuration = configuration
-        self.itemCount = itemsDatasource.numberOfItemsInGalery()
+        self.itemCount = itemsDatasource.itemCount()
 
         if itemCount > 1 { // Potential carousel mode present in configuration only makes sense for more than 1 item
 
@@ -77,7 +77,7 @@ final class GalleryPagingDatasource: NSObject, UIPageViewControllerDataSource {
 
         case .Image(let fetchImageBlock):
 
-            let imageController = SuperNewImageViewController(index: itemIndex, itemCount: self.itemsDatasource.numberOfItemsInGalery(), fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitial)
+            let imageController = SuperNewImageViewController(index: itemIndex, itemCount: self.itemsDatasource.itemCount(), fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitial)
             imageController.delegate = itemControllerDelegate
             imageController.displacedViewsDatasource = displacedViewsDatasource
 
@@ -85,7 +85,7 @@ final class GalleryPagingDatasource: NSObject, UIPageViewControllerDataSource {
 
         case .Video(let previewImage, let videoURL):
 
-            let videoController = VideoViewController(index: itemIndex, itemCount: self.itemsDatasource.numberOfItemsInGalery(), previewImage: previewImage, videoURL: videoURL, scrubber: scrubber, configuration: configuration, isInitialController: isInitial)
+            let videoController = VideoViewController(index: itemIndex, itemCount: self.itemsDatasource.itemCount(), previewImage: previewImage, videoURL: videoURL, scrubber: scrubber, configuration: configuration, isInitialController: isInitial)
 
             videoController.delegate = itemControllerDelegate
             videoController.displacedViewsDatasource = displacedViewsDatasource
