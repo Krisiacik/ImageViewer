@@ -43,6 +43,7 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
     private var maximumZoomScale: CGFloat = 4
     private var pagingMode: GalleryPagingMode = .Standard
     private var thresholdVelocity: CGFloat = 500 // The speed of swipe needs to be at least this amount of pixels per second for the swipe to finish dismissal.
+    private var displacementKeepOriginalInPlace = false
 
     /// INTERACTIONS
     private let singleTapRecognizer = UITapGestureRecognizer()
@@ -74,6 +75,7 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
             case .DisplacementTimingCurve(let curve):               displacementTimingCurve = curve
             case .MaximumZoolScale(let scale):                      maximumZoomScale = scale
             case .ItemFadeDuration(let duration):                   itemFadeDuration = duration
+            case .DisplacementKeepOriginalInPlace(let keep):        displacementKeepOriginalInPlace = keep
 
             case .DisplacementTransitionStyle(let style):
 
@@ -241,9 +243,6 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
         if swipingToDismiss == nil { swipingToDismiss = (fabs(currentVelocity.x) > fabs(currentVelocity.y)) ? .Horizontal : .Vertical }
         guard let swipingToDismissInProgress = swipingToDismiss else { return }
-
-        //displacedView.hidden = false
-        //dynamicTransparencyActive = true
 
         switch recognizer.state {
 
@@ -415,7 +414,9 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
             animatedImageView.clipsToBounds = true
             self.view.addSubview(animatedImageView)
 
-            displacedView.hidden = true
+            if displacementKeepOriginalInPlace == false {
+                displacedView.hidden = true
+            }
 
             UIView.animateWithDuration(displacementDuration, delay: 0, usingSpringWithDamping: displacementSpringBounce, initialSpringVelocity: 1, options: .CurveEaseIn, animations: { [weak self] in
 
@@ -469,6 +470,10 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
         case .Displacement:
 
             if let displacedView = self.findVisibleDisplacedView() {
+                
+                if displacementKeepOriginalInPlace == false {
+                    displacedView.hidden = true
+                }
 
                 UIView.animateWithDuration(reverseDisplacementDuration, animations: { [weak self] in
 
@@ -484,6 +489,8 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
                     }, completion: { [weak self] _ in
 
                         self?.isAnimating = false
+                        displacedView.hidden = false
+                        
                         completion()
                 })
             }
