@@ -1,5 +1,5 @@
 //
-//  SuperNewImageViewController.swift
+//  ImageViewController.swift
 //  ImageViewer
 //
 //  Created by Kristian Angyal on 01/08/2016.

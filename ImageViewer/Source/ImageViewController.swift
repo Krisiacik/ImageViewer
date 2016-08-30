@@ -10,7 +10,7 @@ import UIKit
 
 extension UIImageView: ItemView {}
 
-class SuperNewImageViewController: ItemBaseController<UIImageView> {
+class ImageViewController: ItemBaseController<UIImageView> {
 
     var fetchImageBlock: FetchImage
 
