@@ -24,8 +24,6 @@
 		C7DABE641C12276800F5BD7B /* CGSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DABE631C12276800F5BD7B /* CGSize.swift */; };
 		EB057A151D510264007565F1 /* AVPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB057A141D510264007565F1 /* AVPlayer.swift */; };
 		EB057A161D510264007565F1 /* AVPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB057A141D510264007565F1 /* AVPlayer.swift */; };
-		EB17B3751D4A4E7400EED1DA /* PlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB17B3741D4A4E7400EED1DA /* PlayViewController.swift */; };
-		EB17B3761D4A4E7400EED1DA /* PlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB17B3741D4A4E7400EED1DA /* PlayViewController.swift */; };
 		EB17B3781D4A51D200EED1DA /* UIBezierPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB17B3771D4A51D200EED1DA /* UIBezierPath.swift */; };
 		EB17B3791D4A51D200EED1DA /* UIBezierPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB17B3771D4A51D200EED1DA /* UIBezierPath.swift */; };
 		EB17B37E1D4A5A2500EED1DA /* CAShapeLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB17B37D1D4A5A2500EED1DA /* CAShapeLayer.swift */; };
@@ -109,7 +107,6 @@
 		C7DABE551C12248600F5BD7B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7DABE631C12276800F5BD7B /* CGSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGSize.swift; sourceTree = "<group>"; };
 		EB057A141D510264007565F1 /* AVPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVPlayer.swift; sourceTree = "<group>"; };
-		EB17B3741D4A4E7400EED1DA /* PlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayViewController.swift; sourceTree = "<group>"; };
 		EB17B3771D4A51D200EED1DA /* UIBezierPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBezierPath.swift; sourceTree = "<group>"; };
 		EB17B37D1D4A5A2500EED1DA /* CAShapeLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAShapeLayer.swift; sourceTree = "<group>"; };
 		EB17B3801D4A6E7F00EED1DA /* UIButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
@@ -188,7 +185,6 @@
 			children = (
 				C7897CE41C1350B7006447FB /* AppDelegate.swift */,
 				C7897CE61C1350B7006447FB /* ViewController.swift */,
-				EB17B3741D4A4E7400EED1DA /* PlayViewController.swift */,
 				EB5253F31C8DCE9800EAA4A4 /* CounterView.swift */,
 				C7897CE81C1350B7006447FB /* Main.storyboard */,
 				C7897CEB1C1350B7006447FB /* Assets.xcassets */,
@@ -524,7 +520,6 @@
 				EB4DEBC11C84A8B400D5F897 /* UtilityFunctions.swift in Sources */,
 				EB3464F51D4BAA19009494B5 /* UISlider.swift in Sources */,
 				EBA8CB341D38E51500545E5B /* BlurView.swift in Sources */,
-				EB17B3751D4A4E7400EED1DA /* PlayViewController.swift in Sources */,
 				EBA0A9531C89C653005B8DD3 /* GalleryConfiguration.swift in Sources */,
 				EB3464F01D4B9066009494B5 /* CALayer.swift in Sources */,
 				EB17B3811D4A6E7F00EED1DA /* UIButton.swift in Sources */,
@@ -590,7 +585,6 @@
 				EB1DB6EA1D3E595D00DC9064 /* UIApplication.swift in Sources */,
 				EB243F9B1C899F1C006DEF58 /* GalleryCloseTransition.swift in Sources */,
 				EBBFCB971D26CBA2007E7244 /* BlurView.swift in Sources */,
-				EB17B3761D4A4E7400EED1DA /* PlayViewController.swift in Sources */,
 				EB8BEC7B1D3D1CB500DCE3EC /* ItemControllerDelegate.swift in Sources */,
 				EB60EE5A1D590E8B00CC5BA8 /* Slider.swift in Sources */,
 				EB40C3741C9C5BF1004EA215 /* UIViewController.swift in Sources */,
