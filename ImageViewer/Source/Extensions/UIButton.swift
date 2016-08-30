@@ -8,7 +8,7 @@
 
 import UIKit
 
-public extension UIButton {
+extension UIButton {
 
     static func circlePlayButton(diameter: CGFloat) -> UIButton {
 

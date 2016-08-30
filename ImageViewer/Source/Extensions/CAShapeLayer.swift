@@ -8,20 +8,9 @@
 
 import UIKit
 
-public extension CAShapeLayer {
+extension CAShapeLayer {
 
-    public static func replayShape(fillColor: UIColor, triangleEdgeLength: CGFloat) -> CAShapeLayer {
-
-        let triangle = CAShapeLayer()
-        let altitude = (sqrt(3) / 2) * triangleEdgeLength
-        triangle.frame = CGRect(origin: CGPoint.zero, size: CGSize(width: altitude, height: triangleEdgeLength))
-        triangle.path = UIBezierPath.equilateralTriangle(triangleEdgeLength).CGPath
-        triangle.fillColor = fillColor.CGColor
-
-        return triangle
-    }
-
-    public static func playShape(fillColor: UIColor, triangleEdgeLength: CGFloat) -> CAShapeLayer {
+    static func replayShape(fillColor: UIColor, triangleEdgeLength: CGFloat) -> CAShapeLayer {
 
         let triangle = CAShapeLayer()
         let altitude = (sqrt(3) / 2) * triangleEdgeLength
@@ -32,7 +21,18 @@ public extension CAShapeLayer {
         return triangle
     }
 
-    public static func pauseShape(fillColor: UIColor, elementSize: CGSize, elementDistance: CGFloat) -> CAShapeLayer {
+    static func playShape(fillColor: UIColor, triangleEdgeLength: CGFloat) -> CAShapeLayer {
+
+        let triangle = CAShapeLayer()
+        let altitude = (sqrt(3) / 2) * triangleEdgeLength
+        triangle.frame = CGRect(origin: CGPoint.zero, size: CGSize(width: altitude, height: triangleEdgeLength))
+        triangle.path = UIBezierPath.equilateralTriangle(triangleEdgeLength).CGPath
+        triangle.fillColor = fillColor.CGColor
+
+        return triangle
+    }
+
+    static func pauseShape(fillColor: UIColor, elementSize: CGSize, elementDistance: CGFloat) -> CAShapeLayer {
 
         let element = CALayer()
         element.bounds.size = elementSize
@@ -54,7 +54,7 @@ public extension CAShapeLayer {
         return container
     }
 
-    public static func circle(fillColor: UIColor, diameter: CGFloat) -> CAShapeLayer {
+    static func circle(fillColor: UIColor, diameter: CGFloat) -> CAShapeLayer {
 
         let circle = CAShapeLayer()
         let frame = CGRect(origin: CGPoint.zero, size: CGSize(width: diameter * 2, height: diameter * 2))
@@ -65,7 +65,7 @@ public extension CAShapeLayer {
         return circle
     }
 
-    public static func circlePlayShape(fillColor: UIColor, diameter: CGFloat) -> CAShapeLayer {
+    static func circlePlayShape(fillColor: UIColor, diameter: CGFloat) -> CAShapeLayer {
 
         let circle = CAShapeLayer()
         let frame = CGRect(origin: CGPoint.zero, size: CGSize(width: diameter, height: diameter))

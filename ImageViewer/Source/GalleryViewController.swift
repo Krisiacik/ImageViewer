@@ -63,7 +63,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
     @available(*, unavailable)
     required public init?(coder: NSCoder) { fatalError() }
 
-    init(startIndex: Int, itemsDatasource: GalleryItemsDatasource, displacedViewsDatasource: GalleryDisplacedViewsDatasource? = nil, configuration: GalleryConfiguration = []) {
+    public init(startIndex: Int, itemsDatasource: GalleryItemsDatasource, displacedViewsDatasource: GalleryDisplacedViewsDatasource? = nil, configuration: GalleryConfiguration = []) {
 
         self.currentIndex = startIndex
         self.itemsDatasource = itemsDatasource
@@ -226,7 +226,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         initialPresentationDone = true
     }
 
-    func presentInitially() {
+    private func presentInitially() {
 
         isAnimating = true
 
@@ -270,7 +270,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         layoutScrubber()
     }
     
-    func layoutButton(button: UIButton?, layout: ButtonLayout) {
+    private func layoutButton(button: UIButton?, layout: ButtonLayout) {
         
         guard let button = button else { return }
         
@@ -290,7 +290,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         }
     }
 
-    func layoutHeaderView() {
+    private func layoutHeaderView() {
 
         guard let header = headerView else { return }
 
@@ -321,7 +321,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         }
     }
 
-    func layoutFooterView() {
+    private func layoutFooterView() {
 
         guard let footer = footerView else { return }
 
@@ -352,7 +352,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         }
     }
 
-    func layoutScrubber() {
+    private func layoutScrubber() {
 
         scrubber.bounds = CGRect(origin: CGPoint.zero, size: CGSize(width: self.view.bounds.width, height: 40))
         scrubber.center = self.view.boundsCenter
@@ -444,7 +444,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         closeDecorationViews(closedCompletion)
     }
 
-    func closeDecorationViews(completion: (() -> Void)?) {
+    private func closeDecorationViews(completion: (() -> Void)?) {
 
         guard isAnimating == false else { return }
         isAnimating = true
