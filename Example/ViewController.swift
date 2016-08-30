@@ -127,7 +127,8 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
             GalleryConfigurationItem.DisplacementTimingCurve(.Linear),
 
             GalleryConfigurationItem.StatusBarHidden(true),
-            GalleryConfigurationItem.DisplacementKeepOriginalInPlace(false)
+            GalleryConfigurationItem.DisplacementKeepOriginalInPlace(false),
+            GalleryConfigurationItem.DisplacementInsetMargin(50)
         ]
     }
 }

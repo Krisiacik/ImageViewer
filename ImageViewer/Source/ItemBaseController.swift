@@ -44,6 +44,7 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
     private var pagingMode: GalleryPagingMode = .Standard
     private var thresholdVelocity: CGFloat = 500 // The speed of swipe needs to be at least this amount of pixels per second for the swipe to finish dismissal.
     private var displacementKeepOriginalInPlace = false
+    private var displacementInsetMargin: CGFloat = 0
 
     /// INTERACTIONS
     private let singleTapRecognizer = UITapGestureRecognizer()
@@ -76,6 +77,7 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
             case .MaximumZoolScale(let scale):                      maximumZoomScale = scale
             case .ItemFadeDuration(let duration):                   itemFadeDuration = duration
             case .DisplacementKeepOriginalInPlace(let keep):        displacementKeepOriginalInPlace = keep
+            case .DisplacementInsetMargin(let margin):              displacementInsetMargin = margin
 
             case .DisplacementTransitionStyle(let style):
 
@@ -452,7 +454,7 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
         guard let displacedView = displacedViewsDatasource?.provideDisplacementItem(atIndex: index) as? UIImageView else { return nil }
 
         let displacedViewFrame = displacedView.frame(inCoordinatesOfView: self.view)
-        let validAreaFrame = self.view.frame.insetBy(dx: displacedViewFrame.size.width * 0.8, dy: displacedViewFrame.size.height * 0.8)
+        let validAreaFrame = self.view.frame.insetBy(dx: displacementInsetMargin, dy: displacementInsetMargin)
         let isVisibleEnough = displacedViewFrame.intersects(validAreaFrame)
 
         return isVisibleEnough ? displacedView : nil

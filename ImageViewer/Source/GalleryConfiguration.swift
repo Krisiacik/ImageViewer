@@ -107,6 +107,9 @@ public enum GalleryConfigurationItem {
     
     ///Alows to optionaly set a spring bounce when the displacement transition finishes.
     case DisplacementTransitionStyle(GalleryDisplacementStyle)
+
+    ///For the image to be reverse displaced, it must be visible in the parent view frame on screen, otherwise it's pointless to do the reverse displacement animation as we would be animating to out of bounds of the screen. However, there might be edge cases where only a tiny percentage of image is visible on screen, so reverse-displacing to that might not be desirable / visually pleasing. To address this problem, we can define a valid area that will be smaller by a given margin and sit centered inside the parent frame. For example, setting a value of 20 means the reverse displaced image must be in a rect that is inside the parent frame and the margin on all sides is to the parent frame is 20 points.
+    case DisplacementInsetMargin(CGFloat)
     
     ///Base color of the overlay layer that is mostly visible when images are displaced (gallery is being presented), rotated and interactively dismissed.
     case OverlayColor(UIColor)
