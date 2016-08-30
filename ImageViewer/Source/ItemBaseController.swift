@@ -115,7 +115,7 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
         scrollView.contentInset = UIEdgeInsetsZero
         scrollView.contentOffset = CGPointZero
         scrollView.minimumZoomScale = minimumZoomScale
-        scrollView.maximumZoomScale = maximumZoomScale
+        scrollView.maximumZoomScale = max(maximumZoomScale, aspectFillZoomScale(forBoundingSize: self.view.bounds.size, contentSize: itemView.bounds.size))
 
         scrollView.delegate = self
 
