@@ -12,9 +12,9 @@ extension UIImageView: ItemView {}
 
 class ImageViewController: ItemBaseController<UIImageView> {
 
-    var fetchImageBlock: FetchImage
+    var fetchImageBlock: FetchImageBlock
 
-    init(index: Int, itemCount: Int, fetchImageBlock: FetchImage, configuration: GalleryConfiguration, isInitialController: Bool = false) {
+    init(index: Int, itemCount: Int, fetchImageBlock: FetchImageBlock, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
         self.fetchImageBlock = fetchImageBlock
 
