@@ -21,7 +21,7 @@ final class ImageViewerDismissTransition: NSObject, UIViewControllerAnimatedTran
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        let fromViewController = transitionContext.viewController(forKey: UITransitionContextFromViewControllerKey)!
+        let fromViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)!
         
         if let imageViewer = fromViewController as? ImageViewerController {
             imageViewer.closeAnimation(duration, completion: {(finished) -> Void in

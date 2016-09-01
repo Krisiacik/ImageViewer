@@ -22,7 +22,7 @@ final class ImageViewerPresentTransition: NSObject, UIViewControllerAnimatedTran
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         let container = transitionContext.containerView
-        let toViewController = transitionContext.viewController(forKey: UITransitionContextToViewControllerKey)!
+        let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
         
         toViewController.view.frame = UIScreen.main.bounds
         container.addSubview(toViewController.view)

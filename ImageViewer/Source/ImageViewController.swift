@@ -128,7 +128,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         }
     }
     
-    func fetchImage(_ atIndex: Int, completion: (UIImage?) -> Void) {
+    func fetchImage(_ atIndex: Int, completion: @escaping (UIImage?) -> Void) {
         
         DispatchQueue.global(qos: .background).async {
             
@@ -470,7 +470,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
     
     // MARK: - KVO
 
-    override func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [NSKeyValueChangeKey : AnyObject]?, context: UnsafeMutablePointer<Void>?) {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         
         guard let swipingToDissmissInProgress = swipingToDismiss else { return }
         guard keyPath == "contentOffset" else { return }

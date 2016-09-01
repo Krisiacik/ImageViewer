@@ -477,7 +477,7 @@ public final class ImageViewerController: UIViewController, UIScrollViewDelegate
     
     // MARK: - KVO
     
-    public override func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [NSKeyValueChangeKey : AnyObject]?, context: UnsafeMutablePointer<Void>?) {
+    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         
         if (dynamicTransparencyActive == true && keyPath == "contentOffset") {
             

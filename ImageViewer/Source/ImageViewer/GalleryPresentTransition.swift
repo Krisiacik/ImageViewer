@@ -55,7 +55,7 @@ final class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransiti
         let transitionContainerView = transitionContext.containerView
 
         /// Get the target controller's root view and add it to the scene
-        let toViewController = transitionContext.viewController(forKey: UITransitionContextToViewControllerKey)!
+        let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
         transitionContainerView.addSubview(toViewController.view)
 
         /// Make it align with scene geometry
