@@ -11,22 +11,22 @@ import UIKit
 class BlurView: UIView {
 
 
-    var blurPresentDuration: NSTimeInterval = 0.3
+    var blurPresentDuration: NSTimeInterval = 0.5
     var blurPresentDelay: NSTimeInterval = 0
 
-    var colorPresentDuration: NSTimeInterval = 0.3
-    var colorPresentDelay: NSTimeInterval = 0.1
+    var colorPresentDuration: NSTimeInterval = 0.25
+    var colorPresentDelay: NSTimeInterval = 0
 
-    var blurDismissDuration: NSTimeInterval = 0.3
-    var blurDismissDelay: NSTimeInterval = 0
+    var blurDismissDuration: NSTimeInterval = 0.1
+    var blurDismissDelay: NSTimeInterval = 0.4
 
-    var colorDismissDuration: NSTimeInterval = 0.3
-    var colorDismissDelay: NSTimeInterval = 0.1
+    var colorDismissDuration: NSTimeInterval = 0.45
+    var colorDismissDelay: NSTimeInterval = 0
 
     var blurTargetOpacity: CGFloat = 1
     var colorTargetOpacity: CGFloat = 1
 
-    var overlayColor = UIColor.whiteColor() {
+    var overlayColor = UIColor.blackColor() {
         didSet { colorView.backgroundColor = overlayColor }
     }
 

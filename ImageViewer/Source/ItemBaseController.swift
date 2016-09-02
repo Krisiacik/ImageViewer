@@ -33,18 +33,18 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
     //CONFIGURATION
     private var presentationStyle = GalleryPresentationStyle.Displacement
-    private var doubleTapToZoomDuration = 0.2
-    private var displacementDuration: NSTimeInterval = 0.3
-    private var reverseDisplacementDuration: NSTimeInterval = 0.2
+    private var doubleTapToZoomDuration = 0.15
+    private var displacementDuration: NSTimeInterval = 0.55
+    private var reverseDisplacementDuration: NSTimeInterval = 0.25
     private var itemFadeDuration: NSTimeInterval = 0.3
     private var displacementTimingCurve: UIViewAnimationCurve = .Linear
     private var displacementSpringBounce: CGFloat = 0.7
     private let minimumZoomScale: CGFloat = 1
-    private var maximumZoomScale: CGFloat = 4
+    private var maximumZoomScale: CGFloat = 8
     private var pagingMode: GalleryPagingMode = .Standard
     private var thresholdVelocity: CGFloat = 500 // The speed of swipe needs to be at least this amount of pixels per second for the swipe to finish dismissal.
     private var displacementKeepOriginalInPlace = false
-    private var displacementInsetMargin: CGFloat = 0
+    private var displacementInsetMargin: CGFloat = 50
 
     /// INTERACTIONS
     private let singleTapRecognizer = UITapGestureRecognizer()

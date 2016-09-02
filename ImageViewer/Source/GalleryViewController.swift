@@ -26,7 +26,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
     ///represents the current page index
     var currentIndex: Int
     ///Picks up the initial value from configuration, if provided. Subseqently also works as local state for the setting.
-    private var decorationViewsHidden = true
+    private var decorationViewsHidden = false
     private var isAnimating = false
     private var initialPresentationDone = false
 
@@ -43,7 +43,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
     private var thumbnailsLayout = ButtonLayout.PinLeft(8, 16)
     private var statusBarHidden = true
     private var overlayAccelerationFactor: CGFloat = 1
-    private var rotationDuration = 0.2
+    private var rotationDuration = 0.15
     private var rotationMode = GalleryRotationMode.Always
     private let swipeToDismissFadeOutAccelerationFactor: CGFloat = 6
     private var decorationViewsFadeDuration = 0.15
