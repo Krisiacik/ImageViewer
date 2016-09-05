@@ -95,7 +95,7 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
         self.modalPresentationStyle = .Custom
 
-        self.itemView.hidden = isInitialController
+        //self.itemView.hidden = isInitialController
 
         configureScrollView()
         configureGestureRecognizers()
@@ -379,66 +379,65 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
         alongsideAnimation()
 
-        switch presentationStyle {
+        if let displacedView = displacedViewsDatasource?.provideDisplacementItem(atIndex: index) as? UIImageView,
+            let image = displacedView.image {
 
-        case .Fade:
+            if presentationStyle == .Displacement {
+
+                //Prepare the animated imageview
+                let animatedImageView = displacedView.clone()
+
+                //rotate the imageview to starting angle
+                if UIApplication.isPortraitOnly == true {
+                    animatedImageView.transform = deviceRotationTransform()
+                }
+
+                //position the image view to starting center
+                animatedImageView.center = displacedView.convertPoint(displacedView.boundsCenter, toView: self.view)
+
+                animatedImageView.clipsToBounds = true
+                self.view.addSubview(animatedImageView)
+
+                if displacementKeepOriginalInPlace == false {
+                    displacedView.hidden = true
+                }
+
+                UIView.animateWithDuration(displacementDuration, delay: 0, usingSpringWithDamping: displacementSpringBounce, initialSpringVelocity: 1, options: .CurveEaseIn, animations: { [weak self] in
+
+                    if UIApplication.isPortraitOnly == true {
+                        animatedImageView.transform = CGAffineTransformIdentity
+                    }
+                    /// Animate it into the center (with optionaly rotating) - that basically includes changing the size and position
+
+                    animatedImageView.bounds.size = self?.displacementTargetSize(forSize: image.size) ?? image.size
+                    animatedImageView.center = self?.view.boundsCenter ?? CGPoint.zero
+
+                    }, completion: { [weak self] _ in
+
+                        self?.itemView.hidden = false
+                        displacedView.hidden = false
+                        animatedImageView.removeFromSuperview()
+                        
+                        self?.isAnimating = false
+                        completion()
+                    })
+            }
+        }
+
+        else {
 
             itemView.alpha = 0
             itemView.hidden = false
 
             UIView.animateWithDuration(itemFadeDuration, animations: { [weak self] in
 
-                self?.itemView.alpha = 1
+            self?.itemView.alpha = 1
 
             }) { [weak self] _ in
 
-                completion()
-                self?.isAnimating = false
+            completion()
+            self?.isAnimating = false
             }
-
-        case .Displacement:
-
-            //Get the displaced view
-            guard let displacedView = displacedViewsDatasource?.provideDisplacementItem(atIndex: index) as? UIImageView,
-                let image = displacedView.image else { return }
-
-            //Prepare the animated imageview
-            let animatedImageView = displacedView.clone()
-
-            //rotate the imageview to starting angle
-            if UIApplication.isPortraitOnly == true {
-                animatedImageView.transform = deviceRotationTransform()
-            }
-
-            //position the image view to starting center
-            animatedImageView.center = displacedView.convertPoint(displacedView.boundsCenter, toView: self.view)
-
-            animatedImageView.clipsToBounds = true
-            self.view.addSubview(animatedImageView)
-
-            if displacementKeepOriginalInPlace == false {
-                displacedView.hidden = true
-            }
-
-            UIView.animateWithDuration(displacementDuration, delay: 0, usingSpringWithDamping: displacementSpringBounce, initialSpringVelocity: 1, options: .CurveEaseIn, animations: { [weak self] in
-
-                if UIApplication.isPortraitOnly == true {
-                    animatedImageView.transform = CGAffineTransformIdentity
-                }
-                /// Animate it into the center (with optionaly rotating) - that basically includes changing the size and position
-
-                animatedImageView.bounds.size = self?.displacementTargetSize(forSize: image.size) ?? image.size
-                animatedImageView.center = self?.view.boundsCenter ?? CGPoint.zero
-
-                }, completion: { [weak self] _ in
-
-                    self?.itemView.hidden = false
-                    displacedView.hidden = false
-                    animatedImageView.removeFromSuperview()
-
-                    self?.isAnimating = false
-                    completion()
-                })
         }
     }
 
