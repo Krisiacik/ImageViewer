@@ -8,8 +8,7 @@
 
 import UIKit
 
-
-protocol ItemView {
+public protocol ItemView {
 
     var image: UIImage? { get set }
 }
@@ -95,7 +94,7 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
         self.modalPresentationStyle = .Custom
 
-        //self.itemView.hidden = isInitialController
+        self.itemView.hidden = isInitialController
 
         configureScrollView()
         configureGestureRecognizers()
@@ -185,12 +184,15 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
         let bounds = self.view.bounds
         scrollView.frame = bounds
 
-        let aspectFitItemSize = aspectFitSize(forContentOfSize: itemView.image!.size, inBounds: self.scrollView.bounds.size)
+        if let size = itemView.image?.size {
 
-        itemView.bounds.size = aspectFitItemSize
-        scrollView.contentSize = itemView.bounds.size
+            let aspectFitItemSize = aspectFitSize(forContentOfSize: size, inBounds: self.scrollView.bounds.size)
 
-        itemView.center = scrollView.boundsCenter
+            itemView.bounds.size = aspectFitItemSize
+            scrollView.contentSize = itemView.bounds.size
+
+            itemView.center = scrollView.boundsCenter
+        }
     }
 
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
@@ -379,13 +381,13 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
         alongsideAnimation()
 
-        if let displacedView = displacedViewsDatasource?.provideDisplacementItem(atIndex: index) as? UIImageView,
+        if var displacedView = displacedViewsDatasource?.provideDisplacementItem(atIndex: index),
             let image = displacedView.image {
 
             if presentationStyle == .Displacement {
 
                 //Prepare the animated imageview
-                let animatedImageView = displacedView.clone()
+                let animatedImageView = displacedView.imageView()
 
                 //rotate the imageview to starting angle
                 if UIApplication.isPortraitOnly == true {

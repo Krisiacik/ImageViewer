@@ -29,6 +29,9 @@ class ImageViewController: ItemBaseController<UIImageView> {
             if let image = image {
 
                 self?.itemView.image = image
+
+                self?.view.setNeedsLayout()
+                self?.view.layoutIfNeeded()
             }
         }
     }

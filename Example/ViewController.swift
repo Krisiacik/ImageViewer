@@ -18,22 +18,22 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
     @IBOutlet weak var image6: UIImageView!
     @IBOutlet weak var image7: UIImageView!
 
-    var images: [UIImageView] = []
+    var imageViews: [UIImageView] = []
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        images += [image1, image2, image3, image4, image5, image6, image7]
+        imageViews += [image1, image2, image3, image4, image5, image6, image7]
     }
 
     @IBAction func showGalleryImageViewer(sender: UITapGestureRecognizer) {
 
         guard let displacedView = sender.view as? UIImageView else { return }
-        guard let displacedViewIndex = images.indexOf(displacedView) else { return }
+        guard let displacedViewIndex = imageViews.indexOf(displacedView) else { return }
 
         let frame = CGRect(x: 0, y: 0, width: 200, height: 24)
-        let headerView = CounterView(frame: frame, currentIndex: displacedViewIndex, count: images.count)
+        let headerView = CounterView(frame: frame, currentIndex: displacedViewIndex, count: imageViews.count)
 //        let footerView = CounterView(frame: frame, currentIndex: displacedViewIndex, count: images.count)
 
         let galleryViewController = GalleryViewController(startIndex: displacedViewIndex, itemsDatasource: self, displacedViewsDatasource: self, configuration: galleryConfiguration())
@@ -61,12 +61,12 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
 
     func itemCount() -> Int {
 
-        return images.count
+        return imageViews.count
     }
 
-    func provideDisplacementItem(atIndex index: Int) -> UIView? {
+    func provideDisplacementItem(atIndex index: Int) -> DisplaceableView? {
 
-        return images[index] ?? nil
+        return imageViews[index] ?? nil
     }
 
     func provideGalleryItem(index: Int) -> GalleryItem {
@@ -83,7 +83,7 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
         }
         else {
 
-            let image = images[index].image ?? UIImage(named: "0")!
+            let image = imageViews[index].image ?? UIImage(named: "0")!
             
             return GalleryItem.Image { $0(image) }
         }

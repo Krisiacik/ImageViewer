@@ -8,9 +8,9 @@
 
 import UIKit
 
-extension UIImageView {
+extension DisplaceableView {
 
-    func clone() -> UIImageView {
+    func imageView() -> UIImageView {
 
         let imageView = UIImageView(image: self.image)
         imageView.bounds = self.bounds

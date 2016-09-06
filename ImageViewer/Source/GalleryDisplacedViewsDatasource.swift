@@ -8,7 +8,19 @@
 
 import UIKit
 
+public protocol DisplaceableView {
+
+    var image: UIImage? { get }
+    var bounds: CGRect { get }
+    var center: CGPoint { get }
+    var boundsCenter: CGPoint { get }
+    var contentMode: UIViewContentMode { get }
+    var hidden: Bool { get set }
+
+    func convertPoint(point: CGPoint, toView view: UIView?) -> CGPoint
+}
+
 public protocol GalleryDisplacedViewsDatasource {
     
-    func provideDisplacementItem(atIndex index: Int) -> UIView?
+    func provideDisplacementItem(atIndex index: Int) -> DisplaceableView?
 }
