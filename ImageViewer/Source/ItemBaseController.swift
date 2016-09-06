@@ -184,7 +184,7 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
         let bounds = self.view.bounds
         scrollView.frame = bounds
 
-        if let size = itemView.image?.size {
+        if let size = itemView.image?.size where size != CGSize.zero {
 
             let aspectFitItemSize = aspectFitSize(forContentOfSize: size, inBounds: self.scrollView.bounds.size)
 
