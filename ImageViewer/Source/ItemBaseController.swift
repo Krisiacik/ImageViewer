@@ -29,6 +29,7 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
     let itemCount: Int
     var swipingToDismiss: SwipeToDismiss?
     private var isAnimating = false
+    var fetchImageBlock: FetchImageBlock
 
     //CONFIGURATION
     private var presentationStyle = GalleryPresentationStyle.Displacement
@@ -56,11 +57,12 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
     // MARK: - Initializers
 
-    init(index: Int, itemCount: Int, configuration: GalleryConfiguration, isInitialController: Bool = false) {
+    init(index: Int, itemCount: Int, fetchImageBlock: FetchImageBlock, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
         self.index = index
         self.itemCount = itemCount
         self.isInitialController = isInitialController
+        self.fetchImageBlock = fetchImageBlock
 
         for item in configuration {
 
@@ -154,6 +156,17 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
         super.viewDidLoad()
 
         createViewHierarchy()
+
+        fetchImageBlock { [weak self] image in //DON'T Forget offloading the main thread
+
+            if let image = image {
+
+                self?.itemView.image = image
+
+                self?.view.setNeedsLayout()
+                self?.view.layoutIfNeeded()
+            }
+        }
     }
 
     override func viewWillAppear(animated: Bool) {

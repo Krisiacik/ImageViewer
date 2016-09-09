@@ -8,6 +8,8 @@
 
 import UIKit
 
+extension UIImageView: DisplaceableView {}
+
 class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplacedViewsDatasource {
 
     @IBOutlet weak var image1: UIImageView!
@@ -20,7 +22,6 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
 
     var imageViews: [UIImageView] = []
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -30,6 +31,7 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
     @IBAction func showGalleryImageViewer(sender: UITapGestureRecognizer) {
 
         guard let displacedView = sender.view as? UIImageView else { return }
+
         guard let displacedViewIndex = imageViews.indexOf(displacedView) else { return }
 
         let frame = CGRect(x: 0, y: 0, width: 200, height: 24)
@@ -79,7 +81,7 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
 
         if index == 2 {
 
-            return GalleryItem.Video(previewImage: UIImage(named: "2")!, videoURL: NSURL(string: "http:video.dailymail.co.uk/video/mol/2016/07/15/1458458950652835194/1024x576_1458458950652835194.mp4")!)
+            return GalleryItem.Video(fetchPreviewImageBlock: { $0(UIImage(named: "2")!)} , videoURL: NSURL(string: "http:video.dailymail.co.uk/video/mol/2016/07/15/1458458950652835194/1024x576_1458458950652835194.mp4")!)
         }
         else {
 

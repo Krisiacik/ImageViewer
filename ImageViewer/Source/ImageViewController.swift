@@ -12,27 +12,8 @@ extension UIImageView: ItemView {}
 
 class ImageViewController: ItemBaseController<UIImageView> {
 
-    var fetchImageBlock: FetchImageBlock
+    override init(index: Int, itemCount: Int, fetchImageBlock: FetchImageBlock, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
-    init(index: Int, itemCount: Int, fetchImageBlock: FetchImageBlock, configuration: GalleryConfiguration, isInitialController: Bool = false) {
-
-        self.fetchImageBlock = fetchImageBlock
-
-        super.init(index: index, itemCount: itemCount, configuration: configuration, isInitialController: isInitialController)
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        fetchImageBlock { [weak self] image in //DON'T Forget offloading the main thread
-
-            if let image = image {
-
-                self?.itemView.image = image
-
-                self?.view.setNeedsLayout()
-                self?.view.layoutIfNeeded()
-            }
-        }
+        super.init(index: index, itemCount: itemCount, fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitialController)
     }
 }

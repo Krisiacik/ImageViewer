@@ -14,5 +14,5 @@ public typealias FetchImageBlock = ImageCompletion -> Void
 public enum GalleryItem {
     
     case Image(fetchImageBlock: FetchImageBlock)
-    case Video(previewImage: UIImage, videoURL: NSURL)
+    case Video(fetchPreviewImageBlock: FetchImageBlock, videoURL: NSURL)
 }

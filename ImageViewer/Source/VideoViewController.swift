@@ -23,15 +23,13 @@ class VideoViewController: ItemBaseController<VideoView> {
     let fullHDScreenSize = CGSize(width: 1920, height: 1080)
     let embeddedPlayButton = UIButton.circlePlayButton(70)
 
-    init(index: Int, itemCount: Int, previewImage: UIImage, videoURL: NSURL, scrubber: VideoScrubber, configuration: GalleryConfiguration, isInitialController: Bool = false) {
+    init(index: Int, itemCount: Int, fetchImageBlock: FetchImageBlock, videoURL: NSURL, scrubber: VideoScrubber, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
         self.videoURL = videoURL
         self.scrubber = scrubber
         self.player = AVPlayer(URL: self.videoURL)
 
-        super.init(index: index, itemCount: itemCount, configuration: configuration, isInitialController: isInitialController)
-
-        self.itemView.image = previewImage
+        super.init(index: index, itemCount: itemCount, fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitialController)
     }
 
     override func viewDidLoad() {
@@ -84,6 +82,7 @@ class VideoViewController: ItemBaseController<VideoView> {
         super.viewDidLayoutSubviews()
 
         itemView.bounds.size = aspectFitSize(forContentOfSize: fullHDScreenSize, inBounds: self.scrollView.bounds.size)
+        itemView.center = scrollView.boundsCenter
     }
 
     func playVideoInitially() {
