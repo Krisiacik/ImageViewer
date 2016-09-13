@@ -117,6 +117,7 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
         self.galleryDatasource = GalleryViewControllerDatasource(imageControllerFactory: imageControllerFactory, imageCount: imageCount, galleryPagingMode: galleryPagingMode)
         self.dataSource = galleryDatasource
         
+        self.view.backgroundColor = backgroundColor
         self.transitioningDelegate = self
         self.modalPresentationStyle = .custom
         self.extendedLayoutIncludesOpaqueBars = true
