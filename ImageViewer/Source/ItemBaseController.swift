@@ -463,11 +463,11 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
         return aspectFitSize(forContentOfSize: size, inBounds: boundingSize)
     }
 
-    func findVisibleDisplacedView() -> UIImageView? {
+    func findVisibleDisplacedView() -> DisplaceableView? {
 
-        guard let displacedView = displacedViewsDatasource?.provideDisplacementItem(atIndex: index) as? UIImageView else { return nil }
+        guard let displacedView = displacedViewsDatasource?.provideDisplacementItem(atIndex: index) else { return nil }
 
-        let displacedViewFrame = displacedView.frame(inCoordinatesOfView: self.view)
+        let displacedViewFrame = displacedView.frameInCoordinatesOfScreen()
         let validAreaFrame = self.view.frame.insetBy(dx: displacementInsetMargin, dy: displacementInsetMargin)
         let isVisibleEnough = displacedViewFrame.intersects(validAreaFrame)
 
@@ -485,7 +485,7 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
         case .Displacement:
 
-            if let displacedView = self.findVisibleDisplacedView() {
+            if var displacedView = self.findVisibleDisplacedView() {
                 
                 if displacementKeepOriginalInPlace == false {
                     displacedView.hidden = true

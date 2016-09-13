@@ -9,9 +9,9 @@
 import UIKit
 
 extension UIView {
-    
+
     public var boundsCenter: CGPoint {
-        
+
         return CGPoint(x: self.bounds.width / 2, y: self.bounds.height / 2)
     }
 
@@ -34,5 +34,13 @@ extension UIView {
     static func animateWithDuration(duration: NSTimeInterval, delay: NSTimeInterval, animations: () -> Void, completion: ((Bool) -> Void)?) {
 
         UIView.animateWithDuration(duration, delay: delay, options: UIViewAnimationOptions.CurveEaseInOut, animations: animations, completion: completion)
+    }
+}
+
+extension DisplaceableView {
+
+    func frameInCoordinatesOfScreen() -> CGRect {
+
+        return UIView().convertRect(self.bounds, toCoordinateSpace: UIScreen.mainScreen().coordinateSpace)
     }
 }
