@@ -1,112 +1,126 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Single Image" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Pa-eG-yKR">
-                                <rect key="frame" x="20" y="20" width="99" height="21"/>
+                                <frame key="frameInset" minX="20" minY="20" width="99" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WRv-58-cYl">
-                                <rect key="frame" x="20" y="49" width="102" height="58"/>
+                                <frame key="frameInset" minX="20" minY="49" width="102" height="58"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" backgroundImage="image_small"/>
                                 <connections>
                                     <action selector="showSingleImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kdW-lW-YeZ"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Gallery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e2Q-nC-lSR">
-                                <rect key="frame" x="20" y="112" width="54" height="21"/>
+                                <frame key="frameInset" minX="20" minY="112" width="54" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Asb-C9-sGn">
-                                <rect key="frame" x="20" y="141" width="86" height="54"/>
+                                <frame key="frameInset" minX="20" minY="141" width="86" height="54"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" backgroundImage="0"/>
                                 <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qGK-lk-XgN"/>
+                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3jp-0L-Xro"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vjF-Ww-f3O">
-                                <rect key="frame" x="20" y="203" width="68" height="38"/>
+                                <frame key="frameInset" minX="20" minY="203" width="68" height="38"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" backgroundImage="1"/>
                                 <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="p3L-rK-q6l"/>
+                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="u5O-UD-NSW"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ybD-W4-tqi">
-                                <rect key="frame" x="20" y="249" width="105" height="78"/>
+                                <frame key="frameInset" minX="20" minY="249" width="105" height="78"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" backgroundImage="2"/>
                                 <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="enQ-Ci-Y34"/>
+                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="uW0-2q-ava"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CJl-WL-vk9">
-                                <rect key="frame" x="189" y="356" width="47" height="29"/>
+                                <frame key="frameInset" minX="189" minY="356" width="47" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" backgroundImage="3"/>
                                 <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ouv-ci-sRd"/>
+                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dap-X4-H3c"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZtP-5M-x0L">
-                                <rect key="frame" x="20" y="335" width="163" height="108"/>
+                                <frame key="frameInset" minX="20" minY="335" width="163" height="108"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" backgroundImage="4"/>
                                 <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="a7r-FT-uUm"/>
+                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Mhg-YI-tav"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fd6-Vz-POJ">
-                                <rect key="frame" x="35" y="445" width="201" height="83"/>
+                                <frame key="frameInset" minX="35" minY="445" width="201" height="83"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" backgroundImage="5"/>
                                 <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1YS-ou-fMt"/>
+                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="286-1e-jll"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="6" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bne-tn-gLP">
-                                <rect key="frame" x="189" y="393" width="68" height="50"/>
+                                <frame key="frameInset" minX="189" minY="393" width="68" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" backgroundImage="6"/>
                                 <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GGP-zD-vjj"/>
+                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="waG-Xe-fgU"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="7" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UDT-vb-Md5">
-                                <rect key="frame" x="139" y="160" width="118" height="167"/>
+                                <frame key="frameInset" minX="139" minY="160" width="118" height="167"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" backgroundImage="7"/>
                                 <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7kw-yy-QHA"/>
+                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="u0I-UR-HoB"/>
                                 </connections>
                             </button>
                             <imageView autoresizesSubviews="NO" clipsSubviews="YES" tag="8" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="8" translatesAutoresizingMaskIntoConstraints="NO" id="1oI-Qo-LkP">
-                                <rect key="frame" x="20" y="540" width="100" height="50"/>
+                                <frame key="frameInset" minX="20" minY="540" width="100" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView clipsSubviews="YES" tag="9" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="9" translatesAutoresizingMaskIntoConstraints="NO" id="qCv-3T-NrD" userLabel="Giraffe Image View">
-                                <rect key="frame" x="244" y="500" width="100" height="100"/>
+                                <frame key="frameInset" minX="244" minY="500" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <connections>
                         <outlet property="giraffeImageView" destination="qCv-3T-NrD" id="F57-sm-Bbm"/>
                         <outlet property="panoramaImageView" destination="1oI-Qo-LkP" id="HV2-dO-eZY"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-182" y="109"/>
         </scene>

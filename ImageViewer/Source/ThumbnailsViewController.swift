@@ -10,10 +10,10 @@ import UIKit
 
 class ThumbnailsViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UINavigationBarDelegate {
 
-    private let reuseIdentifier = "ImageCell"
-    private let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
-    private var isAnimating = false
-    private let rotationAnimationDuration = 0.2
+    fileprivate let reuseIdentifier = "ImageCell"
+    fileprivate let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
+    fileprivate var isAnimating = false
+    fileprivate let rotationAnimationDuration = 0.2
 
     var onItemSelected: ((Int) -> Void)?
     let layout = UICollectionViewFlowLayout()
@@ -75,11 +75,11 @@ class ThumbnailsViewController: UICollectionViewController, UICollectionViewDele
         guard let closeButton = closeButton, let closeLayout = closeLayout else { return }
 
         switch closeLayout {
-        case .PinRight(let marginTop, let marginRight):
+        case .pinRight(let marginTop, let marginRight):
             closeButton.autoresizingMask = [.flexibleBottomMargin, .flexibleLeftMargin]
             closeButton.frame.origin.x = self.view.bounds.size.width - marginRight - closeButton.bounds.size.width
             closeButton.frame.origin.y = marginTop
-        case .PinLeft(let marginTop, let marginLeft):
+        case .pinLeft(let marginTop, let marginLeft):
             closeButton.autoresizingMask = [.flexibleBottomMargin, .flexibleRightMargin]
             closeButton.frame.origin.x = marginLeft
             closeButton.frame.origin.y = marginTop

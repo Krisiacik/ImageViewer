@@ -15,10 +15,10 @@ final class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransiti
     var closeView: UIView?
     var seeAllView: UIView?
     var completion: (() -> Void)?
-    private let duration: TimeInterval
-    private let displacedView: UIView
-    private let decorationViewsHidden: Bool
-    private let backgroundColor: UIColor
+    fileprivate let duration: TimeInterval
+    fileprivate let displacedView: UIView
+    fileprivate let decorationViewsHidden: Bool
+    fileprivate let backgroundColor: UIColor
 
     init(duration: TimeInterval, displacedView: UIView, decorationViewsHidden: Bool, backgroundColor: UIColor) {
         self.duration = duration
@@ -50,7 +50,7 @@ final class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransiti
         }
     }
 
-    private func animateDisplacedView(_ transitionContext: UIViewControllerContextTransitioning, onComplete: ((Void) -> Void)? = nil) {
+    fileprivate func animateDisplacedView(_ transitionContext: UIViewControllerContextTransitioning, onComplete: ((Void) -> Void)? = nil) {
         /// Get the temporary container view that facilitates all the animations
         let transitionContainerView = transitionContext.containerView
 
@@ -136,7 +136,7 @@ final class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransiti
             })
     }
 
-    func animationEnded(transitionCompleted: Bool) {
+    func animationEnded(_ transitionCompleted: Bool) {
 
         /// The expected closure here should handle unhiding whichever ImageController is selected as the first one to be shown in gallery
         if transitionCompleted {

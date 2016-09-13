@@ -11,9 +11,9 @@ import UIKit
 
 final class ImageViewerSwipeToDismissTransition: NSObject, UIViewControllerAnimatedTransitioning {
     
-    private var verticalTouchPoint: CGFloat = 0
-    private var targetOffset: CGFloat = 0
-    private var verticalVelocity: CGFloat = 0
+    fileprivate var verticalTouchPoint: CGFloat = 0
+    fileprivate var targetOffset: CGFloat = 0
+    fileprivate var verticalVelocity: CGFloat = 0
     
     func setParameters(_ verticalTouchPoint: CGFloat, targetOffset: CGFloat, verticalVelocity: CGFloat) {
         self.verticalTouchPoint = verticalTouchPoint

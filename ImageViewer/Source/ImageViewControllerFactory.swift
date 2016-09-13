@@ -10,13 +10,13 @@ import UIKit
 
 final class ImageViewControllerFactory {
 
-    private let imageProvider: ImageProvider
-    private let displacedView: UIView
-    private let imageCount: Int
-    private let startIndex: Int
-    private var configuration: GalleryConfiguration
-    private var fadeInHandler: ImageFadeInHandler
-    private weak var delegate: ImageViewControllerDelegate?
+    fileprivate let imageProvider: ImageProvider
+    fileprivate let displacedView: UIView
+    fileprivate let imageCount: Int
+    fileprivate let startIndex: Int
+    fileprivate var configuration: GalleryConfiguration
+    fileprivate var fadeInHandler: ImageFadeInHandler
+    fileprivate weak var delegate: ImageViewControllerDelegate?
 
     init(imageProvider: ImageProvider, displacedView: UIView, imageCount: Int, startIndex: Int, configuration: GalleryConfiguration, fadeInHandler: ImageFadeInHandler, delegate: ImageViewControllerDelegate) {
 

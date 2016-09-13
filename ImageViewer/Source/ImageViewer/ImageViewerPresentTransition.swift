@@ -10,7 +10,7 @@ import UIKit
 
 final class ImageViewerPresentTransition: NSObject, UIViewControllerAnimatedTransitioning {
 
-    private let duration: TimeInterval
+    fileprivate let duration: TimeInterval
 
     init(duration: TimeInterval) {
         self.duration = duration

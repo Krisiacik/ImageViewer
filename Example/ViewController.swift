@@ -30,11 +30,11 @@ class ViewController: UIViewController {
             return images.count
         }
 
-        func provideImage(completion: UIImage? -> Void) {
+        func provideImage(_ completion: (UIImage?) -> Void) {
             completion(UIImage(named: "image_big"))
         }
 
-        func provideImage(atIndex index: Int, completion: UIImage? -> Void) {
+        func provideImage(atIndex index: Int, completion: (UIImage?) -> Void) {
             completion(images[index])
         }
     }
@@ -46,11 +46,11 @@ class ViewController: UIViewController {
         giraffeImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(imageTapped)))
     }
 
-    @objc private func imageTapped(gestureRecogniser: UITapGestureRecognizer) {
+    @objc fileprivate func imageTapped(_ gestureRecogniser: UITapGestureRecognizer) {
         showGalleryImageViewer(gestureRecogniser.view!)
     }
 
-    @IBAction func showSingleImageViewer(sender: UIButton) {
+    @IBAction func showSingleImageViewer(_ sender: UIButton) {
         
         let imageProvider = SomeImageProvider()
         let buttonAssets = CloseButtonAssets(normal: UIImage(named:"close_normal")!, highlighted: UIImage(named: "close_highlighted"))
@@ -60,7 +60,7 @@ class ViewController: UIViewController {
         self.presentImageViewer(imageViewer)
     }
 
-    @IBAction func showGalleryImageViewer(displacedView: UIView) {
+    @IBAction func showGalleryImageViewer(_ displacedView: UIView) {
         
         let imageProvider = SomeImageProvider()
         let imageCount = imageProvider.images.count

@@ -10,8 +10,8 @@ import UIKit
 
 final class GallerySwipeToDismissTransition {
     
-    private weak var presentingViewController: UIViewController?
-    private weak var scrollView : UIScrollView?
+    fileprivate weak var presentingViewController: UIViewController?
+    fileprivate weak var scrollView : UIScrollView?
     
     init(presentingViewController: UIViewController?, scrollView: UIScrollView?) {
         
@@ -36,8 +36,8 @@ final class GallerySwipeToDismissTransition {
             
             switch swipeDirection {
                 
-            case .Horizontal:   self.scrollView?.setContentOffset(CGPoint(x: targetOffset, y: 0), animated: false)
-            case .Vertical:     self.scrollView?.setContentOffset(CGPoint(x: 0, y: targetOffset), animated: false)
+            case .horizontal:   self.scrollView?.setContentOffset(CGPoint(x: targetOffset, y: 0), animated: false)
+            case .vertical:     self.scrollView?.setContentOffset(CGPoint(x: 0, y: targetOffset), animated: false)
         
             }
         }, completion: { (finished) -> Void in
@@ -45,7 +45,7 @@ final class GallerySwipeToDismissTransition {
         })
     }
     
-    func cancelTransition(completion: (() -> Void)? = {}) {
+    func cancelTransition(_ completion: (() -> Void)? = {}) {
         
         UIView.animate(withDuration: 0.2, delay: 0, options: .curveLinear, animations: { () -> Void in
             

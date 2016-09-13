@@ -10,17 +10,17 @@ import UIKit
 
 enum SwipeToDismiss {
     
-    case Horizontal
-    case Vertical
+    case horizontal
+    case vertical
 }
 
 final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate {
     
     /// UI
-    private let scrollView = UIScrollView()
-    private let imageView = UIImageView()
+    fileprivate let scrollView = UIScrollView()
+    fileprivate let imageView = UIImageView()
     let blackOverlayView = UIView()
-    private let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .white)
+    fileprivate let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .white)
     var applicationWindow: UIWindow? {
         return UIApplication.shared.delegate?.window?.flatMap { $0 }
     }
@@ -29,34 +29,34 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
     weak var delegate: ImageViewControllerDelegate?
     
     /// MODEL & STATE
-    private let imageProvider: ImageProvider
-    private let displacedView: UIView   
-    private let imageCount: Int
-    private let startIndex: Int
+    fileprivate let imageProvider: ImageProvider
+    fileprivate let displacedView: UIView   
+    fileprivate let imageCount: Int
+    fileprivate let startIndex: Int
     
-    weak private var fadeInHandler: ImageFadeInHandler?
+    weak fileprivate var fadeInHandler: ImageFadeInHandler?
     let index: Int
-    private let showDisplacedImage: Bool
-    private var swipingToDismiss: SwipeToDismiss?
-    private var isAnimating = false
-    private var dynamicTransparencyActive = false
-    private var pagingMode: GalleryPagingMode = .Standard
-    private var backgroundColor: UIColor = .black
+    fileprivate let showDisplacedImage: Bool
+    fileprivate var swipingToDismiss: SwipeToDismiss?
+    fileprivate var isAnimating = false
+    fileprivate var dynamicTransparencyActive = false
+    fileprivate var pagingMode: GalleryPagingMode = .standard
+    fileprivate var backgroundColor: UIColor = .black
 
     /// LOCAL CONFIG
-    private let thresholdVelocity: CGFloat = 500 // The speed of swipe needs to be at least this amount of pixels per second for the swipe to finish dismissal.
-    private let rotationAnimationDuration = 0.2
-    private let hideCloseButtonDuration    = 0.05
-    private let zoomDuration = 0.2
-    private let itemContentSize = CGSize(width: 100, height: 100)
+    fileprivate let thresholdVelocity: CGFloat = 500 // The speed of swipe needs to be at least this amount of pixels per second for the swipe to finish dismissal.
+    fileprivate let rotationAnimationDuration = 0.2
+    fileprivate let hideCloseButtonDuration    = 0.05
+    fileprivate let zoomDuration = 0.2
+    fileprivate let itemContentSize = CGSize(width: 100, height: 100)
 
     /// INTERACTIONS
-    private let singleTapRecognizer = UITapGestureRecognizer()
-    private let doubleTapRecognizer = UITapGestureRecognizer()
-    private let panGestureRecognizer = UIPanGestureRecognizer()
+    fileprivate let singleTapRecognizer = UITapGestureRecognizer()
+    fileprivate let doubleTapRecognizer = UITapGestureRecognizer()
+    fileprivate let panGestureRecognizer = UIPanGestureRecognizer()
     
     // TRANSITIONS
-    private var swipeToDismissTransition: GallerySwipeToDismissTransition?
+    fileprivate var swipeToDismissTransition: GallerySwipeToDismissTransition?
     
     init(imageProvider: ImageProvider, configuration: GalleryConfiguration, imageCount: Int, displacedView: UIView, startIndex: Int,  imageIndex: Int, showDisplacedImage: Bool, fadeInHandler: ImageFadeInHandler?, delegate: ImageViewControllerDelegate?) {
 
@@ -75,10 +75,10 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
             
             switch configurationItem {
 
-            case .SpinnerColor(let color):     activityIndicatorView.color = color
-            case .SpinnerStyle(let style):     activityIndicatorView.activityIndicatorViewStyle = style
-            case .PagingMode(let mode):        pagingMode = mode
-            case .BackgroundColor(let color):  backgroundColor = color
+            case .spinnerColor(let color):     activityIndicatorView.color = color
+            case .spinnerStyle(let style):     activityIndicatorView.activityIndicatorViewStyle = style
+            case .pagingMode(let mode):        pagingMode = mode
+            case .backgroundColor(let color):  backgroundColor = color
             default: break
             }
         }
@@ -270,7 +270,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
             }, completion: nil)
     }
     
-    func scrollViewDidSingleTap(_ recognizer: UITapGestureRecognizer) {
+    @objc fileprivate func scrollViewDidSingleTap(_ recognizer: UITapGestureRecognizer) {
         
         self.delegate?.imageViewControllerDidSingleTap(self)
     }
@@ -308,7 +308,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         let currentVelocity = recognizer.velocity(in: self.view)
         let currentTouchPoint = recognizer.translation(in: view)
         
-        if swipingToDismiss == nil { swipingToDismiss = (fabs(currentVelocity.x) > fabs(currentVelocity.y)) ? .Horizontal : .Vertical }
+        if swipingToDismiss == nil { swipingToDismiss = (fabs(currentVelocity.x) > fabs(currentVelocity.y)) ? .horizontal : .vertical }
         guard let swipingToDismissInProgress = swipingToDismiss else { return }
         
         displacedView.isHidden = false
@@ -335,21 +335,21 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         
         switch (swipeOrientation, index) {
             
-        case (.Horizontal, 0) where self.imageCount != 1:
+        case (.horizontal, 0) where self.imageCount != 1:
             
             /// edge case horizontal first index - limits the swipe to dismiss to HORIZONTAL RIGHT direction.
             swipeToDismissTransition?.updateInteractiveTransition(horizontalOffset: min(0, -touchPoint.x))
             
-        case (.Horizontal, self.imageCount - 1) where self.imageCount != 1:
+        case (.horizontal, self.imageCount - 1) where self.imageCount != 1:
             
             /// edge case horizontal last index - limits the swipe to dismiss to HORIZONTAL LEFT direction.
             swipeToDismissTransition?.updateInteractiveTransition(horizontalOffset: max(0, -touchPoint.x))
             
-        case (.Horizontal, _):
+        case (.horizontal, _):
             
             swipeToDismissTransition?.updateInteractiveTransition(horizontalOffset: -touchPoint.x) // all the rest
             
-        case (.Vertical, _):
+        case (.vertical, _):
             
             swipeToDismissTransition?.updateInteractiveTransition(verticalOffset: -touchPoint.y) // all the rest
         }
@@ -364,7 +364,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         
         switch (swipeOrientation, index) {
             
-        case (.Vertical, _) where velocity.y < -thresholdVelocity: /// All images VERTICAL UP direction
+        case (.vertical, _) where velocity.y < -thresholdVelocity: /// All images VERTICAL UP direction
             
             swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation, touchPoint: touchPoint.y, targetOffset: (view.bounds.height / 2) + (imageView.bounds.height / 2), escapeVelocity: velocity.y) {  [weak self] in
                 self?.swipingToDismiss = nil
@@ -373,7 +373,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
                 presentingViewController?.dismiss(animated: false, completion: nil)
             }
             
-        case (.Vertical, _) where thresholdVelocity < velocity.y: /// All images VERTICAL DOWN direction
+        case (.vertical, _) where thresholdVelocity < velocity.y: /// All images VERTICAL DOWN direction
             
             swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation, touchPoint: touchPoint.y, targetOffset: -(view.bounds.height / 2) - (imageView.bounds.height / 2), escapeVelocity: velocity.y) {  [weak self] in
                 self?.swipingToDismiss = nil
@@ -382,7 +382,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
                 presentingViewController?.dismiss(animated: false, completion: nil)
             }
             
-        case (.Horizontal, 0) where thresholdVelocity < velocity.x: /// First image HORIZONTAL RIGHT direction
+        case (.horizontal, 0) where thresholdVelocity < velocity.x: /// First image HORIZONTAL RIGHT direction
             
             swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation, touchPoint: touchPoint.x, targetOffset: -(view.bounds.width / 2) - (imageView.bounds.width / 2), escapeVelocity: velocity.x) {  [weak self] in
                 self?.swipingToDismiss = nil
@@ -391,7 +391,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
                 presentingViewController?.dismiss(animated: false, completion: nil)
             }
             
-        case (.Horizontal, maxIndex) where velocity.x < -thresholdVelocity: /// Last image HORIZONTAL LEFT direction
+        case (.horizontal, maxIndex) where velocity.x < -thresholdVelocity: /// Last image HORIZONTAL LEFT direction
             
             swipeToDismissTransition?.finishInteractiveTransition(swipeOrientation, touchPoint: touchPoint.x, targetOffset: (view.bounds.width / 2) + (imageView.bounds.width / 2), escapeVelocity: velocity.x) {  [weak self] in
                 self?.swipingToDismiss = nil
@@ -457,7 +457,7 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         /// A special case for horizontal "swipe to dismiss" is when the gallery has carousel mode OFF, then it is possible to reach the beginning or the end of image set while paging. PAging will stop at index = 0 or at index.max. In this case we allow to jump out from the gallery also via horizontal swipe to dismiss.
         if (self.index == 0 && velocity.x > 0) || (self.index == self.imageCount - 1 && velocity.x < 0) {
             
-            return (pagingMode == .Standard)
+            return (pagingMode == .standard)
         }
         
         return false
@@ -480,12 +480,12 @@ final class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestu
         
         switch swipingToDissmissInProgress {
             
-        case .Horizontal:
+        case .horizontal:
             
             distanceToEdge = (scrollView.bounds.width / 2) + (imageView.bounds.width / 2)
             percentDistance = fabs(scrollView.contentOffset.x / distanceToEdge)
             
-        case .Vertical:
+        case .vertical:
             
             distanceToEdge = (scrollView.bounds.height / 2) + (imageView.bounds.height / 2)
             percentDistance = fabs(scrollView.contentOffset.y / distanceToEdge)
