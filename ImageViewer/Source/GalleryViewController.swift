@@ -186,11 +186,9 @@ final public class GalleryViewController : UIPageViewController, UIViewControlle
         
         let initialImageController = self.imageControllerFactory.createImageViewController(startIndex)
         self.setViewControllers([initialImageController], direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
-        initialImageController.view.isHidden = true
+        initialImageController.view.isHidden = false
         
         self.presentTransition.completion = { [weak self] in
-            initialImageController.view.isHidden = false
-            
             self?.launchedCompletion?()
         }
     }
