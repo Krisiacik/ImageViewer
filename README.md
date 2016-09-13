@@ -74,7 +74,7 @@ let imageProvider = SomeImageProvider()
 let buttonAssets = CloseButtonAssets(normal: UIImage(named:"close_normal")!, highlighted: UIImage(named: "close_highlighted"))
 let configuration = ImageViewerConfiguration(imageSize: CGSize(width: 10, height: 10), closeButtonAssets: buttonAssets)
 
-let imageViewer = ImageViewer(imageProvider: imageProvider, configuration: configuration, displacedView: sender)
+let imageViewer = ImageViewerController(imageProvider: imageProvider, configuration: configuration, displacedView: sender)
 self.presentImageViewer(imageViewer)
 
 ```
