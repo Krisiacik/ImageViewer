@@ -10,56 +10,56 @@ import UIKit
 
 public enum GalleryPagingMode {
 
-    case Standard
-    case Carousel
+    case standard
+    case carousel
 }
 
 public typealias GalleryConfiguration = [GalleryConfigurationItem]
 
 public enum GalleryConfigurationItem {
 
-    case ImageDividerWidth(CGFloat)
-    case SpinnerStyle(UIActivityIndicatorViewStyle)
-    case SpinnerColor(UIColor)
-    case CloseButton(UIButton)
-    case SeeAllButton(UIButton)
-    case PagingMode(GalleryPagingMode)
-    case CloseLayout(ButtonLayout)
-    case SeeAllLayout(ButtonLayout)
-    case HeaderViewLayout(HeaderLayout)
-    case FooterViewLayout(FooterLayout)
-    case StatusBarHidden(Bool)
-    case HideDecorationViewsOnLaunch(Bool)
-    case BackgroundColor(UIColor)
+    case imageDividerWidth(CGFloat)
+    case spinnerStyle(UIActivityIndicatorViewStyle)
+    case spinnerColor(UIColor)
+    case closeButton(UIButton)
+    case seeAllButton(UIButton)
+    case pagingMode(GalleryPagingMode)
+    case closeLayout(ButtonLayout)
+    case seeAllLayout(ButtonLayout)
+    case headerViewLayout(HeaderLayout)
+    case footerViewLayout(FooterLayout)
+    case statusBarHidden(Bool)
+    case hideDecorationViewsOnLaunch(Bool)
+    case backgroundColor(UIColor)
 }
 
 func defaultGalleryConfiguration() -> GalleryConfiguration {
 
-    let dividerWidth = GalleryConfigurationItem.ImageDividerWidth(10)
-    let spinnerColor = GalleryConfigurationItem.SpinnerColor(UIColor.white)
-    let spinnerStyle = GalleryConfigurationItem.SpinnerStyle(UIActivityIndicatorViewStyle.white)
+    let dividerWidth = GalleryConfigurationItem.imageDividerWidth(10)
+    let spinnerColor = GalleryConfigurationItem.spinnerColor(UIColor.white)
+    let spinnerStyle = GalleryConfigurationItem.spinnerStyle(UIActivityIndicatorViewStyle.white)
 
     let closeButton = UIButton(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 50, height: 50)))
     closeButton.setImage(UIImage(named: "close_normal"), for: UIControlState.normal)
     closeButton.setImage(UIImage(named: "close_highlighted"), for: UIControlState.highlighted)
-    let closeButtonConfig = GalleryConfigurationItem.CloseButton(closeButton)
+    let closeButtonConfig = GalleryConfigurationItem.closeButton(closeButton)
 
     let seeAllButton = UIButton(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 100, height: 50)))
     seeAllButton.setTitle("See All", for: .normal)
-    let seeAllButtonConfig = GalleryConfigurationItem.SeeAllButton(seeAllButton)
+    let seeAllButtonConfig = GalleryConfigurationItem.seeAllButton(seeAllButton)
 
-    let pagingMode = GalleryConfigurationItem.PagingMode(GalleryPagingMode.Standard)
+    let pagingMode = GalleryConfigurationItem.pagingMode(GalleryPagingMode.standard)
 
-    let closeLayout = GalleryConfigurationItem.CloseLayout(ButtonLayout.PinRight(8, 16))
-    let seeAllLayout = GalleryConfigurationItem.CloseLayout(ButtonLayout.PinLeft(8, 16))
-    let headerLayout = GalleryConfigurationItem.HeaderViewLayout(HeaderLayout.Center(25))
-    let footerLayout = GalleryConfigurationItem.FooterViewLayout(FooterLayout.Center(25))
+    let closeLayout = GalleryConfigurationItem.closeLayout(ButtonLayout.pinRight(8, 16))
+    let seeAllLayout = GalleryConfigurationItem.closeLayout(ButtonLayout.pinLeft(8, 16))
+    let headerLayout = GalleryConfigurationItem.headerViewLayout(HeaderLayout.center(25))
+    let footerLayout = GalleryConfigurationItem.footerViewLayout(FooterLayout.center(25))
 
-    let statusBarHidden = GalleryConfigurationItem.StatusBarHidden(true)
+    let statusBarHidden = GalleryConfigurationItem.statusBarHidden(true)
 
-    let hideDecorationViews = GalleryConfigurationItem.HideDecorationViewsOnLaunch(true)
+    let hideDecorationViews = GalleryConfigurationItem.hideDecorationViewsOnLaunch(true)
 
-    let backgroundColor = GalleryConfigurationItem.BackgroundColor(.black)
+    let backgroundColor = GalleryConfigurationItem.backgroundColor(.black)
 
     return [dividerWidth, spinnerStyle, spinnerColor, closeButtonConfig, seeAllButtonConfig, pagingMode, headerLayout, footerLayout, closeLayout, seeAllLayout, statusBarHidden, hideDecorationViews, backgroundColor]
 }

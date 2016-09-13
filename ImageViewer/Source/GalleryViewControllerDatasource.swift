@@ -10,15 +10,15 @@ import UIKit
 
 final class GalleryViewControllerDatasource: NSObject, UIPageViewControllerDataSource {
     
-    private let imageControllerFactory: ImageViewControllerFactory
-    private let imageCount: Int
-    private let galleryPagingMode: GalleryPagingMode
+    fileprivate let imageControllerFactory: ImageViewControllerFactory
+    fileprivate let imageCount: Int
+    fileprivate let galleryPagingMode: GalleryPagingMode
     
     init(imageControllerFactory: ImageViewControllerFactory, imageCount: Int, galleryPagingMode: GalleryPagingMode) {
         
         self.imageControllerFactory = imageControllerFactory
         self.imageCount = imageCount
-        self.galleryPagingMode =  (imageCount > 1) ? galleryPagingMode : GalleryPagingMode.Standard
+        self.galleryPagingMode =  (imageCount > 1) ? galleryPagingMode : GalleryPagingMode.standard
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
@@ -28,10 +28,10 @@ final class GalleryViewControllerDatasource: NSObject, UIPageViewControllerDataS
         
         switch galleryPagingMode {
             
-        case .Standard:
+        case .standard:
             return (currentController.index > 0) ? imageControllerFactory.createImageViewController(previousIndex) : nil
             
-        case .Carousel:
+        case .carousel:
             return imageControllerFactory.createImageViewController(previousIndex)
         }
     }
@@ -43,10 +43,10 @@ final class GalleryViewControllerDatasource: NSObject, UIPageViewControllerDataS
         
         switch galleryPagingMode {
             
-        case .Standard:
+        case .standard:
             return (currentController.index < imageCount - 1) ? imageControllerFactory.createImageViewController(nextIndex) : nil
             
-        case .Carousel:
+        case .carousel:
             return imageControllerFactory.createImageViewController(nextIndex)
         }
     }

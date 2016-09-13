@@ -35,7 +35,7 @@ class CounterView: UIView {
     
     func configureLabel() {
         
-        countLabel.textAlignment = .Center
+        countLabel.textAlignment = .center
         self.addSubview(countLabel)
     }
     
@@ -44,7 +44,7 @@ class CounterView: UIView {
         let stringTemplate = "%d of %d"
         let countString = String(format: stringTemplate, arguments: [currentIndex + 1, count])
         
-        countLabel.attributedText = NSAttributedString(string: countString, attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(17), NSForegroundColorAttributeName: UIColor.whiteColor()])
+        countLabel.attributedText = NSAttributedString(string: countString, attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 17), NSForegroundColorAttributeName: UIColor.white])
     }
     
     override func layoutSubviews() {

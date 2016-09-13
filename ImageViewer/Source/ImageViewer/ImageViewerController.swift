@@ -42,39 +42,39 @@ import AVFoundation
 public final class ImageViewerController: UIViewController, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
     
     /// UI
-    private var scrollView = UIScrollView()
-    private var overlayView = UIView()
-    private var closeButton = UIButton()
-    private var imageView = UIImageView()
-    private let displacedView: UIView
-    private var applicationWindow: UIWindow? {
+    fileprivate var scrollView = UIScrollView()
+    fileprivate var overlayView = UIView()
+    fileprivate var closeButton = UIButton()
+    fileprivate var imageView = UIImageView()
+    fileprivate let displacedView: UIView
+    fileprivate var applicationWindow: UIWindow? {
         return UIApplication.shared.delegate?.window?.flatMap { $0 }
     }
     
     /// LOCAL STATE
-    private var parentViewFrameInOurCoordinateSystem = CGRect.zero
-    private var isAnimating = false
-    private var shouldRotate = false
-    private var isSwipingToDismiss = false
-    private var dynamicTransparencyActive = false
-    private let imageProvider: ImageProvider
+    fileprivate var parentViewFrameInOurCoordinateSystem = CGRect.zero
+    fileprivate var isAnimating = false
+    fileprivate var shouldRotate = false
+    fileprivate var isSwipingToDismiss = false
+    fileprivate var dynamicTransparencyActive = false
+    fileprivate let imageProvider: ImageProvider
     
     /// LOCAL CONFIG
-    private let configuration: ImageViewerConfiguration
-    private var initialCloseButtonOrigin = CGPoint.zero
-    private var closeButtonSize = CGSize(width: 50, height: 50)
-    private let closeButtonPadding         = 8.0
-    private let showDuration               = 0.25
-    private let dismissDuration            = 0.25
-    private let showCloseButtonDuration    = 0.2
-    private let hideCloseButtonDuration    = 0.05
-    private let zoomDuration               = 0.2
-    private let thresholdVelocity: CGFloat = 1000 // Based on UX experiments
-    private let cutOffVelocity: CGFloat = 1000000 // we simply need some sufficiently large number, nobody can swipe faster than that
+    fileprivate let configuration: ImageViewerConfiguration
+    fileprivate var initialCloseButtonOrigin = CGPoint.zero
+    fileprivate var closeButtonSize = CGSize(width: 50, height: 50)
+    fileprivate let closeButtonPadding         = 8.0
+    fileprivate let showDuration               = 0.25
+    fileprivate let dismissDuration            = 0.25
+    fileprivate let showCloseButtonDuration    = 0.2
+    fileprivate let hideCloseButtonDuration    = 0.05
+    fileprivate let zoomDuration               = 0.2
+    fileprivate let thresholdVelocity: CGFloat = 1000 // Based on UX experiments
+    fileprivate let cutOffVelocity: CGFloat = 1000000 // we simply need some sufficiently large number, nobody can swipe faster than that
     /// TRANSITIONS
-    private let presentTransition: ImageViewerPresentTransition
-    private let dismissTransition: ImageViewerDismissTransition
-    private let swipeToDismissTransition: ImageViewerSwipeToDismissTransition
+    fileprivate let presentTransition: ImageViewerPresentTransition
+    fileprivate let dismissTransition: ImageViewerDismissTransition
+    fileprivate let swipeToDismissTransition: ImageViewerSwipeToDismissTransition
     
     /// LIFE CYCLE BLOCKS
     
@@ -94,8 +94,8 @@ public final class ImageViewerController: UIViewController, UIScrollViewDelegate
     public var dismissCompletionBlock: ((Void) -> Void)?
     
     /// INTERACTIONS
-    private let doubleTapRecognizer = UITapGestureRecognizer()
-    private let panGestureRecognizer = UIPanGestureRecognizer()
+    fileprivate let doubleTapRecognizer = UITapGestureRecognizer()
+    fileprivate let panGestureRecognizer = UIPanGestureRecognizer()
     
     // MARK: - Deinit
     
@@ -134,7 +134,7 @@ public final class ImageViewerController: UIViewController, UIScrollViewDelegate
     
     // MARK: - Configuration
     
-    private func configureCloseButton() {
+    fileprivate func configureCloseButton() {
         
         let closeButtonAssets = configuration.closeButtonAssets
         
@@ -144,7 +144,7 @@ public final class ImageViewerController: UIViewController, UIScrollViewDelegate
         closeButton.addTarget(self, action: #selector(ImageViewerController.close(_:)), for: .touchUpInside)
     }
     
-    private func configureGestureRecognizers() {
+    fileprivate func configureGestureRecognizers() {
         
         doubleTapRecognizer.addTarget(self, action: #selector(ImageViewerController.scrollViewDidDoubleTap(_:)))
         doubleTapRecognizer.numberOfTapsRequired = 2
@@ -154,7 +154,7 @@ public final class ImageViewerController: UIViewController, UIScrollViewDelegate
         view.addGestureRecognizer(panGestureRecognizer)
     }
     
-    private func configureImageView() {
+    fileprivate func configureImageView() {
         
         parentViewFrameInOurCoordinateSystem = applicationWindow!.convert(displacedView.bounds, from: displacedView).integral
         
@@ -163,7 +163,7 @@ public final class ImageViewerController: UIViewController, UIScrollViewDelegate
         imageView.image = screenshotFromView(displacedView)
     }
     
-    private func configureScrollView() {
+    fileprivate func configureScrollView() {
         
         scrollView.addObserver(self, forKeyPath: "contentOffset", options: NSKeyValueObservingOptions.new, context: nil)
         scrollView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -219,11 +219,11 @@ public final class ImageViewerController: UIViewController, UIScrollViewDelegate
     
     // MARK: - Transitioning Delegate
     
-    public func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return presentTransition
     }
     
-    public func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return isSwipingToDismiss ? swipeToDismissTransition : dismissTransition
     }
     
