@@ -24,7 +24,7 @@ final class GalleryCloseTransition: NSObject, UIViewControllerAnimatedTransition
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
         
-        let transitionContainerView = transitionContext.containerView()!
+        let transitionContainerView = transitionContext.containerView()
         let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)!
         transitionContainerView.addSubview(fromViewController.view)
         
