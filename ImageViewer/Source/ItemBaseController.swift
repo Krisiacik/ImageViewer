@@ -493,6 +493,8 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
 
                 UIView.animateWithDuration(reverseDisplacementDuration, animations: { [weak self] in
 
+                    self?.scrollView.zoomScale = 1
+
                     //rotate the image view
                     self?.itemView.transform = deviceRotationTransform()
 
