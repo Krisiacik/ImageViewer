@@ -187,15 +187,10 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
         self.delegate?.itemControllerWillDisappear(self)
     }
 
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        let bounds = self.view.bounds
-        scrollView.frame = bounds
+        scrollView.frame = self.view.bounds
 
         if let size = itemView.image?.size where size != CGSize.zero {
 

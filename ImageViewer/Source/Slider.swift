@@ -25,7 +25,7 @@ class Slider: UISlider {
     }
 
     override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
-        super.touchesCancelled(touches, withEvent: event)
+        super.touchesCancelled(touches!, withEvent: event)
 
         isSliding = false
     }

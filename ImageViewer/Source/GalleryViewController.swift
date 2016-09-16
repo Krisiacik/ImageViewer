@@ -23,7 +23,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
     private weak var initialItemController: ItemController?
 
     ///LOCAL STATE
-    ///represents the current page index
+    ///represents the current page index, updated when the root view of the view controller representing the page stops animating inside visible bounds and stays on screen.
     var currentIndex: Int
     ///Picks up the initial value from configuration, if provided. Subseqently also works as local state for the setting.
     private var decorationViewsHidden = false
@@ -62,7 +62,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
 
     @available(*, unavailable)
     required public init?(coder: NSCoder) { fatalError() }
-
+ 
     public init(startIndex: Int, itemsDatasource: GalleryItemsDatasource, displacedViewsDatasource: GalleryDisplacedViewsDatasource? = nil, configuration: GalleryConfiguration = []) {
 
         self.currentIndex = startIndex
@@ -149,7 +149,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
-    func configureOverlayView() {
+    private func configureOverlayView() {
 
         overlayView.bounds.size = UIScreen.mainScreen().bounds.insetBy(dx: -UIScreen.mainScreen().bounds.width / 2, dy: -UIScreen.mainScreen().bounds.height / 2).size
 
@@ -160,7 +160,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         }
     }
 
-    func configureHeaderView() {
+    private func configureHeaderView() {
 
         if let header = headerView {
             header.alpha = 0
@@ -168,7 +168,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         }
     }
 
-    func configureFooterView() {
+    private func configureFooterView() {
 
         if let footer = footerView {
             footer.alpha = 0
@@ -176,7 +176,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         }
     }
 
-    func configureCloseButton() {
+    private func configureCloseButton() {
 
         closeButton?.addTarget(self, action: #selector(GalleryViewController.closeInteractively), forControlEvents: .TouchUpInside)
 
@@ -186,7 +186,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         }
     }
 
-    func configureThumbnailsButton() {
+    private func configureThumbnailsButton() {
         
         thumbnailsButton?.addTarget(self, action: #selector(GalleryViewController.showThumbnails), forControlEvents: .TouchUpInside)
         
@@ -196,13 +196,13 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         }
     }
     
-    func configureScrubber() {
+    private func configureScrubber() {
 
         scrubber.alpha = 0
         self.view.addSubview(scrubber)
     }
 
-    override public func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
 
         configureHeaderView()
@@ -361,7 +361,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
     
     //Thumbnails
     
-    func showThumbnails() {
+    @objc private func showThumbnails() {
         
         let thumbnailsController = ThumbnailsViewController(itemsDatasource: self.itemsDatasource)
         
@@ -372,9 +372,11 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
             thumbnailsController.closeButton = seeAllCloseButton
             thumbnailsController.closeLayout = closeLayout
         }
-        thumbnailsController.onItemSelected = { index in
-            self.page(toIndex: index)
+        thumbnailsController.onItemSelected = { [weak self] index in
+
+            self?.page(toIndex: index)
         }
+
         presentViewController(thumbnailsController, animated: true, completion: nil)
     }
     
@@ -405,7 +407,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
 
     // MARK: - Animations
 
-    func rotate() {
+    @objc private func rotate() {
 
         /// If the app supports rotation on global level, we don't need to rotate here manually because the rotation
         /// of key Window will rotate all app's content with it via affine transform and from the perspective of the
@@ -439,7 +441,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
     }
 
     /// Invoked when closed via close button
-    func closeInteractively() {
+    @objc private func closeInteractively() {
 
         closeDecorationViews(closedCompletion)
     }
@@ -471,10 +473,10 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
 
                         weakself.overlayView.dismiss()
 
-                        }, completion: {
+                        }, completion: { [weak self] in
 
-                            weakself.isAnimating = true
-                            weakself.closeGallery(false, completion: completion)
+                            self?.isAnimating = true
+                            self?.closeGallery(false, completion: completion)
                     })
                 }
             })
@@ -485,6 +487,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         self.overlayView.removeFromSuperview()
 
         self.modalTransitionStyle = .CrossDissolve
+
         self.dismissViewControllerAnimated(animated) {
 
             UIApplication.applicationWindow.windowLevel = UIWindowLevelNormal
@@ -492,7 +495,7 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
         }
     }
 
-    func animateDecorationViews(visible visible: Bool) {
+    private func animateDecorationViews(visible visible: Bool) {
 
         let targetAlpha: CGFloat = (visible) ? 1 : 0
 

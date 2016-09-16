@@ -60,7 +60,7 @@ func screenshotFromView(view: UIView) -> UIImage {
     
     UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, UIScreen.mainScreen().scale)
     view.drawViewHierarchyInRect(view.bounds, afterScreenUpdates: false)
-    image = UIGraphicsGetImageFromCurrentImageContext()
+    image = UIGraphicsGetImageFromCurrentImageContext()!
     UIGraphicsEndImageContext()
     
     return image
