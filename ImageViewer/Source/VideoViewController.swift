@@ -25,18 +25,11 @@ class VideoViewController: ItemBaseController<VideoView> {
 
     init(index: Int, itemCount: Int, fetchImageBlock: FetchImageBlock, videoURL: NSURL, scrubber: VideoScrubber, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
-        print("VideoViewController init 🎬")
-
         self.videoURL = videoURL
         self.scrubber = scrubber
         self.player = AVPlayer(URL: self.videoURL)
 
         super.init(index: index, itemCount: itemCount, fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitialController)
-    }
-
-    deinit {
-        print("VideoViewController deinit 🔫")
-
     }
 
     override func viewDidLoad() {

@@ -19,14 +19,7 @@ final class GalleryPagingDatasource: NSObject, UIPageViewControllerDataSource {
     private let itemCount: Int
     private unowned var scrubber: VideoScrubber
 
-    deinit {
-
-        print("GalleryPagingDatasource deinit 💣")
-    }
-
     init(itemsDatasource: GalleryItemsDatasource, displacedViewsDatasource: GalleryDisplacedViewsDatasource?, scrubber: VideoScrubber, configuration: GalleryConfiguration) {
-
-        print("GalleryPagingDatasource init 📖")
 
         self.itemsDatasource = itemsDatasource
         self.displacedViewsDatasource = displacedViewsDatasource

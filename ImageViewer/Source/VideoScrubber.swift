@@ -74,8 +74,6 @@ public class VideoScrubber: UIControl {
 
         super.init(frame: frame)
         setup()
-
-        print("VideoScrubber init 🎞")
     }
 
     public required init?(coder aDecoder: NSCoder) {
