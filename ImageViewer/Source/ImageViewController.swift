@@ -14,6 +14,13 @@ class ImageViewController: ItemBaseController<UIImageView> {
 
     override init(index: Int, itemCount: Int, fetchImageBlock: FetchImageBlock, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
+        print("ImageViewController init 🏔")
+
         super.init(index: index, itemCount: itemCount, fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitialController)
+    }
+
+    deinit {
+
+        print("ImageViewController deinit 🔫")
     }
 }

@@ -62,8 +62,10 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
 
     @available(*, unavailable)
     required public init?(coder: NSCoder) { fatalError() }
- 
+
     public init(startIndex: Int, itemsDatasource: GalleryItemsDatasource, displacedViewsDatasource: GalleryDisplacedViewsDatasource? = nil, configuration: GalleryConfiguration = []) {
+
+        print("GalleryViewController init 🌅")
 
         self.currentIndex = startIndex
         self.itemsDatasource = itemsDatasource
@@ -146,7 +148,9 @@ public class GalleryViewController: UIPageViewController, ItemControllerDelegate
     }
 
     deinit {
+
         NSNotificationCenter.defaultCenter().removeObserver(self)
+        print("GalleryViewController deinit 💣")
     }
 
     private func configureOverlayView() {

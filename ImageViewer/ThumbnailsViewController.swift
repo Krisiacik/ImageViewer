@@ -17,7 +17,7 @@ class ThumbnailsViewController: UICollectionViewController, UICollectionViewDele
 
     var onItemSelected: (Int -> Void)?
     let layout = UICollectionViewFlowLayout()
-    var itemsDatasource: GalleryItemsDatasource!
+    weak var itemsDatasource: GalleryItemsDatasource!
     var closeButton: UIButton?
     var closeLayout: ButtonLayout?
 

@@ -49,8 +49,6 @@ public class VideoScrubber: UIControl {
 
         didSet {
 
-            print(player)
-
             if let player = player {
 
                 ///KVO
@@ -78,6 +76,8 @@ public class VideoScrubber: UIControl {
 
         super.init(frame: frame)
         setup()
+
+        print("VideoScrubber init 🎞")
     }
 
     public required init?(coder aDecoder: NSCoder) {
@@ -97,6 +97,8 @@ public class VideoScrubber: UIControl {
             player?.removeTimeObserver(periodicObserver)
             self.periodicObserver = nil
         }
+
+        print("VideoScrubber deinit 💣")
     }
 
     func didEndPlaying() {
@@ -107,10 +109,6 @@ public class VideoScrubber: UIControl {
     }
 
     func setup() {
-
-//        self.backgroundColor = UIColor.greenColor()
-//        self.playButton.backgroundColor = UIColor.redColor()
-//        self.pauseButton.backgroundColor = UIColor.redColor()
 
         self.clipsToBounds = true
         pauseButton.hidden = true

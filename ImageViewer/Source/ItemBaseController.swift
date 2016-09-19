@@ -20,8 +20,8 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
     let scrollView = UIScrollView()
 
     //DELEGATE / DATASOURCE
-    var delegate: ItemControllerDelegate?
-    var displacedViewsDatasource: GalleryDisplacedViewsDatasource?
+    weak var delegate: ItemControllerDelegate?
+    weak var displacedViewsDatasource: GalleryDisplacedViewsDatasource?
 
     //STATE
     let index: Int
@@ -259,7 +259,7 @@ class ItemBaseController<T: UIView where T: ItemView>: UIViewController, ItemCon
         switch recognizer.state {
 
         case .Began:
-            swipeToDismissTransition = GallerySwipeToDismissTransition(presentingViewController: self.presentingViewController, scrollView: self.scrollView)
+            swipeToDismissTransition = GallerySwipeToDismissTransition(scrollView: self.scrollView)
 
 
         case .Changed:

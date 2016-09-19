@@ -37,6 +37,8 @@ class BlurView: UIView {
     convenience init() {
 
         self.init(frame: CGRect.zero)
+
+        print("BlurView init 🌁")
     }
 
     override init(frame: CGRect) {
@@ -50,6 +52,11 @@ class BlurView: UIView {
         self.addSubview(blurringViewContainer)
         blurringViewContainer.addSubview(blurringView)
         self.addSubview(colorView)
+    }
+
+    deinit {
+
+        print("BlurView deinit 💣")
     }
     
     @available (iOS, unavailable)

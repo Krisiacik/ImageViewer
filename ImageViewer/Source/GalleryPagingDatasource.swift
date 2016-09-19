@@ -10,15 +10,23 @@ import UIKit
 
 final class GalleryPagingDatasource: NSObject, UIPageViewControllerDataSource {
 
-    var itemControllerDelegate: ItemControllerDelegate?
-    private let itemsDatasource: GalleryItemsDatasource
-    private var displacedViewsDatasource: GalleryDisplacedViewsDatasource?
+    weak var itemControllerDelegate: ItemControllerDelegate?
+    private weak var itemsDatasource: GalleryItemsDatasource?
+    private weak var displacedViewsDatasource: GalleryDisplacedViewsDatasource?
+
     private let configuration: GalleryConfiguration
-    private let itemCount: Int
     private var pagingMode = GalleryPagingMode.Standard
+    private let itemCount: Int
     private unowned var scrubber: VideoScrubber
 
+    deinit {
+
+        print("GalleryPagingDatasource deinit 💣")
+    }
+
     init(itemsDatasource: GalleryItemsDatasource, displacedViewsDatasource: GalleryDisplacedViewsDatasource?, scrubber: VideoScrubber, configuration: GalleryConfiguration) {
+
+        print("GalleryPagingDatasource init 📖")
 
         self.itemsDatasource = itemsDatasource
         self.displacedViewsDatasource = displacedViewsDatasource
@@ -71,13 +79,15 @@ final class GalleryPagingDatasource: NSObject, UIPageViewControllerDataSource {
 
     func createItemController(itemIndex: Int, isInitial: Bool = false) -> UIViewController {
 
+        guard let itemsDatasource = itemsDatasource else { return UIViewController() }
+
         let item = itemsDatasource.provideGalleryItem(itemIndex)
 
         switch item {
 
         case .Image(let fetchImageBlock):
 
-            let imageController = ImageViewController(index: itemIndex, itemCount: self.itemsDatasource.itemCount(), fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitial)
+            let imageController = ImageViewController(index: itemIndex, itemCount: itemsDatasource.itemCount(), fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitial)
             imageController.delegate = itemControllerDelegate
             imageController.displacedViewsDatasource = displacedViewsDatasource
 
@@ -85,7 +95,7 @@ final class GalleryPagingDatasource: NSObject, UIPageViewControllerDataSource {
 
         case .Video(let fetchImageBlock, let videoURL):
 
-            let videoController = VideoViewController(index: itemIndex, itemCount: self.itemsDatasource.itemCount(), fetchImageBlock: fetchImageBlock, videoURL: videoURL, scrubber: scrubber, configuration: configuration, isInitialController: isInitial)
+            let videoController = VideoViewController(index: itemIndex, itemCount: itemsDatasource.itemCount(), fetchImageBlock: fetchImageBlock, videoURL: videoURL, scrubber: scrubber, configuration: configuration, isInitialController: isInitial)
 
             videoController.delegate = itemControllerDelegate
             videoController.displacedViewsDatasource = displacedViewsDatasource

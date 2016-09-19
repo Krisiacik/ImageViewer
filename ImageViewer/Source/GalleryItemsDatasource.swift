@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol GalleryItemsDatasource {
+public protocol GalleryItemsDatasource: class {
     
     func itemCount() -> Int
     func provideGalleryItem(index: Int) -> GalleryItem
