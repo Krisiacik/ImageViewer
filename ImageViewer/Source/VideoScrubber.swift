@@ -32,7 +32,6 @@ public class VideoScrubber: UIControl {
                     ///KVO
                     player.removeObserver(self, forKeyPath: "status")
                     player.removeObserver(self, forKeyPath: "rate")
-                    scrubber.removeObserver(self, forKeyPath: "isSliding")
 
                     ///NC
                     NSNotificationCenter.defaultCenter().removeObserver(self)
@@ -54,7 +53,6 @@ public class VideoScrubber: UIControl {
                 ///KVO
                 player.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.New, context: nil)
                 player.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.New, context: nil)
-                scrubber.addObserver(self, forKeyPath: "isSliding", options: NSKeyValueObservingOptions.New, context: nil)
 
                 ///NC
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didEndPlaying), name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
@@ -128,6 +126,8 @@ public class VideoScrubber: UIControl {
         scrubber.addTarget(self, action: #selector(seekToTime), forControlEvents: [UIControlEvents.TouchUpInside, UIControlEvents.TouchUpOutside])
 
         self.addSubviews(playButton, pauseButton, replayButton, scrubber, timeLabel)
+
+        scrubber.addObserver(self, forKeyPath: "isSliding", options: NSKeyValueObservingOptions.New, context: nil)
     }
 
     public override func layoutSubviews() {
