@@ -1,92 +1,36 @@
-# ImageViewer
+# ImageViewer 3.0
 
 <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat"></a>
 <a href="https://github.com/cocoapods/cocoapods"><img src="https://img.shields.io/cocoapods/v/ImageViewer.svg"></a>
 ![](https://travis-ci.org/MailOnline/ImageViewer.svg?branch=master)
-[![Swift 2.2](https://img.shields.io/badge/Swift-2.2-orange.svg?style=flat)](https://developer.apple.com/swift/)
+[![Swift 2.3](https://img.shields.io/badge/Swift-2.2-orange.svg?style=flat)](https://developer.apple.com/swift/)
 [![Platforms iOS](https://img.shields.io/badge/Platforms-iOS-lightgray.svg?style=flat)](https://developer.apple.com/swift/)
 [![License MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat)](https://opensource.org/licenses/MIT)
 
-ImageViewer 2.0 represents a major update to our single-image cappable ImageViewer 1.2. Version 2 brings multiple image support in a carousel-like scrollable gallery fashion. We delivered some of the improvements to which we committed in our version 1.x roadmap.
-Showing multiple images raised overall complexity but also provided us with an opportunity to add new features around the content-rich visual presentation. 
 
-#### Gallery Mode
-
-![](Documentation/gallery.gif)
+ImageViewer 3.0 is our biggest release yet both in terms of codebase and feature evolution. We tackled the inevitable step - video playback. Video content is deliberately treated exactly the same way as images incl. pinch to zoom, doubleTap or swipe-to-dismiss. 
+We have completely redesigned the way content is displacedTM :) from the parent canvas to ImageViewer. Images and videos now seamlessly morph from aspectFill and other aspect-ratio-breaking modes to aspectFit FullScreen. A new built-in Thumbnails screen allows you to handle large sets of images and videos. 
+The number of configuration options has almost trippled. You can tweak every aspect of the complex displacement animation composition incl. speed & timing. Images with transparency are now equally supported. Main backround layer alows for semitransparent color and blur.
 
 
-#### Single image mode
-
-![](Documentation/single.gif)
-
-#### Setup
-
-CocoaPods:
-
-```
-# source 'https://github.com/CocoaPods/Specs.git'
-# use_frameworks!
-# platform :ios, "8.0"
-
-pod "ImageViewer"
-```
-
-Carthage:
-
-```
-github "MailOnline/ImageViewer"
-```
-
-#### Gallery Usage
-
-```swift
-
-let imageProvider = SomeImageProvider()
-
-let frame = CGRect(x: 0, y: 0, width: 200, height: 24)
-let headerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: images.count)
-let footerView = CounterView(frame: frame, currentIndex: displacedView.tag, count: images.count)
-
-let galleryViewController = GalleryViewController(imageProvider: imageProvider, displacedView: displacedView, imageCount: images.count, startIndex: displacedView.tag)
-galleryViewController.headerView = headerView
-galleryViewController.footerView = footerView
-
-galleryViewController.launchedCompletion = { print("LAUNCHED") }
-galleryViewController.closedCompletion = { print("CLOSED") }
-galleryViewController.swipedToDismissCompletion = { print("SWIPE-DISMISSED") }
-
-galleryViewController.landedPageAtIndexCompletion = { index in
-
-print("LANDED AT INDEX: \(index)")
-
-headerView.currentIndex = index
-footerView.currentIndex = index
-}
-
-self.presentImageGallery(galleryViewController)
-
-```
-#### Single Image Usage
-
-```swift
-
-let imageProvider = SomeImageProvider()
-let buttonAssets = CloseButtonAssets(normal: UIImage(named:"close_normal")!, highlighted: UIImage(named: "close_highlighted"))
-let configuration = ImageViewerConfiguration(imageSize: CGSize(width: 10, height: 10), closeButtonAssets: buttonAssets)
-
-let imageViewer = ImageViewerController(imageProvider: imageProvider, configuration: configuration, displacedView: sender)
-self.presentImageViewer(imageViewer)
-
-```
-
-* `imageProvider`: An object that is able to provide an image via a callback `UIImage? -> Void`.
-* `configuration`: Contains information about the assets that will be used for the close button and the image to be displayed's size.
-* `displacedView`: The view that is about to be displayed in fullscreen. 
+Complete list of features:
 
 
-#### Whats' NEW
+#### 3.0
 
-Besides keeping all the features from version 1.2 below, here is a complete list of additions in 2.0:
+* `Video support`: Show videos in the gallery. Both localy stored file and streaming is supported via video URL.
+* `Thumbnails screen`: Modal screen to select any image or video immediately. 
+* `Composited background`: Background is now composed from two layers - the blur and the color layer. Blur intensity, color and the level of transparency for both layers is handled separately.
+* `Block-based image fetching`: Now it's completely up to you to handle fetching the way you want..just pass a block that does it'.
+* `Rotation mode`: Option to rotate now can be set to be app based or always.
+* `Spring bouncing`: Displacement can optionaly include a spring bounce effect same as in iOS photos app.
+* `Panorama support`: Very wide panorama images will still be scaled to aspectFill after double tap to zoom, even if the resize would result in a scale that eceeds maximumZoomScale. 
+* `Config option - Displacement animation`: Multiple options to customize the duration and time positioning of displacement animation.
+* `Config option - Background`: Customize the bacground color, blur and transparency.
+* `Config option - Gesture timing`: You can now set the duration in secs for double tap to zoom gesture, decoration views hide/show animation, rotation.
+* `Config option - Custom buttons`: Thumbnails and Close buttons can now be customized.
+* `Config option - Maximum zoom scale`: Set the macimum zoom scale for any image or video.
+
 
 #### 2.0
 
@@ -119,38 +63,40 @@ Besides keeping all the features from version 1.2 below, here is a complete list
 * `Rotation support`: ImageViewer 1.2 supports rotation regardless of rotation support in the host app. 
 
 
-#### Upgrade path
+#### Swift
 
-Regardless of how you set up ImageViewer as a dependency (fixed to a particular commit, version 1.2 or the tip of master) you don't need to do anything to keep it working as before. We have implemented the new functionality with a set of new classes and the overlap between 1.2 and 2.0 versions (from public API's perspective) is minimal.
-To expand and use the gallery functionality, you will have to write a few line of code though.
-
+The swift version right now is 2.3. Stay tuned for 3.0.
 
 
-#### Roadmap 
+#### Single image mode
 
-- [X] Setup Travis
-- [X] Clean up internal logic (refactoring mostly)
-- [X] Remove the XIB file and create the UI with code
-- [X] ~~Use UITraitCollection for rotation~~. `traitCollectionDidChange` is not called if only Portrait is enabled at a project configuration level
-- Investigation
- - [X] Investigate the usage of custom transitions
- - [X] Investigate a more idiomatic way of dealing with the orientation changes
-- [X] Change anchor points to improve rotations animation paths   
-- [ ] UI Testing
-- [X] Expand the ImageViewer to a Gallery
-- [ ] Consider UIVisualEffectView for the Close button as default option 
-- [ ] Consider a global thumbnail view in a grid like fashion sitting on top of images for quick jump to images.
+This mode is no longer supported by a separate internal codebase on API level. If you want to show one item at the time, simply provide only one.
 
-#### Caveats
+#### Setup
 
-Because `ImageViewer` was created with a given configuration in mind, it might be limiting factor for certain apps:
+CocoaPods:
 
-* Currently the library will only behave correctly in apps that have rotation disabled (only Portrait). Since we are applying transformations and listening for `UIDeviceOrientationDidChangeNotification`. We have a couple of ideas on how to solve this problem and provide a more predictable behaviour. Given all this,  you shouldn't use for an iPad app.
-* ~~`ImageViewer` is currently a `UIViewController` subclass, we are considering making it a `UIView`, as we find the later lifecycle more reliable. We are adding `ImageViewer`'s root view to the `UIWindow`'s `subViews` and itself as a `childViewController` of the `window.rootViewController`. We are still looking into a way of making this part a bit more idiomatic, while maintaining the great fullscreen look.~~ 
-* We are seeing some issues with the animations due to different aspect ratio between the `displacedView` and the fullscreen `UIImageView`. We aren't sure if it's worth to fix this, as we don't run into this problem.
+```
+# source 'https://github.com/CocoaPods/Specs.git'
+# use_frameworks!
+# platform :ios, "8.0"
 
+pod "ImageViewer"
+```
+
+Carthage:
+
+```
+github "MailOnline/ImageViewer"
+```
+
+#### Gallery Usage
+
+```
+
+```
 
 ## License
 ImageViewer is licensed under the MIT License, Version 2.0. [View the license file](LICENSE)
 
-Copyright (c) 2015 MailOnline
+Copyright (c) 2016 MailOnline
