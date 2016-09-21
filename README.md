@@ -1,7 +1,7 @@
 <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat"></a>
 <a href="https://github.com/cocoapods/cocoapods"><img src="https://img.shields.io/cocoapods/v/ImageViewer.svg"></a>
 ![](https://travis-ci.org/MailOnline/ImageViewer.svg?branch=master)
-[![Swift 2.3](https://img.shields.io/badge/Swift-2.2-orange.svg?style=flat)](https://developer.apple.com/swift/)
+[![Swift 2.3](https://img.shields.io/badge/Swift-2.3-orange.svg?style=flat)](https://developer.apple.com/swift/)
 [![Platforms iOS](https://img.shields.io/badge/Platforms-iOS-lightgray.svg?style=flat)](https://developer.apple.com/swift/)
 [![License MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat)](https://opensource.org/licenses/MIT)
 
@@ -9,14 +9,11 @@
 # ImageViewer 3.0
 
 
-
 ImageViewer 3.0 is our biggest release yet both in terms of codebase and feature evolution. We tackled the inevitable step - **video playback**. Video content is deliberately treated exactly the same way as images incl. pinch to zoom, doubleTap or swipe-to-dismiss.
 
 We have completely redesigned the way content is displacedTM :) from the parent canvas to ImageViewer. Images and videos now seamlessly **morph** from aspectFill and other aspect-ratio-breaking modes to aspectFit FullScreen. A new built-in **Thumbnails screen** allows you to handle large sets of images and videos.
 
 The number of **configuration options** has almost trippled. You can tweak every aspect of the complex displacement animation composition incl. speed & timing. Images with **transparency** are now equally supported. Main backround layer alows for semitransparent color and **blur**.
-
-
 
 
 ## Complete list of features:
@@ -100,6 +97,8 @@ github "MailOnline/ImageViewer"
 #### Gallery Usage
 
 ```
+    let galleryViewController = GalleryViewController(startIndex: displacedViewIndex, itemsDatasource: self, displacedViewsDatasource: self, configuration: galleryConfiguration)
+    self.presentImageGallery(galleryViewController)
 
 ```
 

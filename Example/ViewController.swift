@@ -36,11 +36,11 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
 
         let frame = CGRect(x: 0, y: 0, width: 200, height: 24)
         let headerView = CounterView(frame: frame, currentIndex: displacedViewIndex, count: imageViews.count)
-//        let footerView = CounterView(frame: frame, currentIndex: displacedViewIndex, count: images.count)
+        let footerView = CounterView(frame: frame, currentIndex: displacedViewIndex, count: imageViews.count)
 
         let galleryViewController = GalleryViewController(startIndex: displacedViewIndex, itemsDatasource: self, displacedViewsDatasource: self, configuration: galleryConfiguration())
         galleryViewController.headerView = headerView
-//        galleryViewController.footerView = footerView
+        galleryViewController.footerView = footerView
 
         galleryViewController.launchedCompletion = {
             //print("LAUNCHED") 
