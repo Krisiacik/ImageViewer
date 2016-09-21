@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -13,115 +14,165 @@
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
-                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Single Image" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Pa-eG-yKR">
-                                <rect key="frame" x="20" y="20" width="99" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WRv-58-cYl">
-                                <rect key="frame" x="20" y="49" width="102" height="58"/>
-                                <state key="normal" backgroundImage="image_small"/>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="coc-LS-cRe" customClass="DisplaceableView" customModule="Example" customModuleProvider="target">
+                                <rect key="frame" x="16" y="28" width="200" height="102"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="102" id="MT7-qF-GTg"/>
+                                    <constraint firstAttribute="width" constant="200" id="ZyX-67-9J6"/>
+                                </constraints>
                                 <connections>
-                                    <action selector="showSingleImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kdW-lW-YeZ"/>
+                                    <outletCollection property="gestureRecognizers" destination="EsF-my-zdw" appends="YES" id="EMM-bN-jpd"/>
                                 </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Gallery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e2Q-nC-lSR">
-                                <rect key="frame" x="20" y="112" width="54" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Asb-C9-sGn">
-                                <rect key="frame" x="20" y="141" width="86" height="54"/>
-                                <state key="normal" backgroundImage="0"/>
-                                <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qGK-lk-XgN"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vjF-Ww-f3O">
-                                <rect key="frame" x="20" y="203" width="68" height="38"/>
-                                <state key="normal" backgroundImage="1"/>
-                                <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="p3L-rK-q6l"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ybD-W4-tqi">
-                                <rect key="frame" x="20" y="249" width="105" height="78"/>
-                                <state key="normal" backgroundImage="2"/>
-                                <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="enQ-Ci-Y34"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CJl-WL-vk9">
-                                <rect key="frame" x="189" y="356" width="47" height="29"/>
-                                <state key="normal" backgroundImage="3"/>
-                                <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ouv-ci-sRd"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZtP-5M-x0L">
-                                <rect key="frame" x="20" y="335" width="163" height="108"/>
-                                <state key="normal" backgroundImage="4"/>
-                                <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="a7r-FT-uUm"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fd6-Vz-POJ">
-                                <rect key="frame" x="35" y="445" width="201" height="83"/>
-                                <state key="normal" backgroundImage="5"/>
-                                <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1YS-ou-fMt"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="6" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bne-tn-gLP">
-                                <rect key="frame" x="189" y="393" width="68" height="50"/>
-                                <state key="normal" backgroundImage="6"/>
-                                <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GGP-zD-vjj"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="7" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UDT-vb-Md5">
-                                <rect key="frame" x="139" y="160" width="118" height="167"/>
-                                <state key="normal" backgroundImage="7"/>
-                                <connections>
-                                    <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7kw-yy-QHA"/>
-                                </connections>
-                            </button>
-                            <imageView autoresizesSubviews="NO" clipsSubviews="YES" tag="8" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="8" translatesAutoresizingMaskIntoConstraints="NO" id="1oI-Qo-LkP">
-                                <rect key="frame" x="20" y="540" width="100" height="50"/>
                             </imageView>
-                            <imageView clipsSubviews="YES" tag="9" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="9" translatesAutoresizingMaskIntoConstraints="NO" id="qCv-3T-NrD" userLabel="Giraffe Image View">
-                                <rect key="frame" x="244" y="500" width="100" height="100"/>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="9" translatesAutoresizingMaskIntoConstraints="NO" id="fu6-tO-ZRV" customClass="DisplaceableView" customModule="Example" customModuleProvider="target">
+                                <rect key="frame" x="224" y="28" width="80" height="102"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="102" id="dPz-y8-Z6Y"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="UGV-jv-W16" appends="YES" id="2MU-vV-yVS"/>
+                                </connections>
+                            </imageView>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="2" translatesAutoresizingMaskIntoConstraints="NO" id="272-lL-lW4" customClass="DisplaceableView" customModule="Example" customModuleProvider="target">
+                                <rect key="frame" x="16" y="138" width="127" height="116"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="116" id="Y0l-M2-S7Y"/>
+                                    <constraint firstAttribute="width" constant="127" id="l2w-EU-Slf"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="0HP-vJ-viK" appends="YES" id="whT-qN-1rs"/>
+                                </connections>
+                            </imageView>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="3" translatesAutoresizingMaskIntoConstraints="NO" id="9Vs-Br-5DO" customClass="DisplaceableView" customModule="Example" customModuleProvider="target">
+                                <rect key="frame" x="151" y="138" width="153" height="116"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="116" id="He9-TL-9k0"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="slK-TT-Zr2" appends="YES" id="v7L-oa-1cV"/>
+                                </connections>
+                            </imageView>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="8" translatesAutoresizingMaskIntoConstraints="NO" id="JMP-xp-mLE" customClass="DisplaceableView" customModule="Example" customModuleProvider="target">
+                                <rect key="frame" x="16" y="262" width="161" height="175"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="175" id="jwj-PS-Jo7"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="psv-ej-Rbn" appends="YES" id="UsK-Mb-EnH"/>
+                                </connections>
+                            </imageView>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="5" translatesAutoresizingMaskIntoConstraints="NO" id="e0P-yL-Aev" customClass="DisplaceableView" customModule="Example" customModuleProvider="target">
+                                <rect key="frame" x="185" y="262" width="119" height="175"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="175" id="0g5-fZ-sGn"/>
+                                    <constraint firstAttribute="width" constant="119" id="Tln-Ga-DtY"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="bK7-7F-jNM" appends="YES" id="J9h-Ds-YOh"/>
+                                </connections>
+                            </imageView>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="6" translatesAutoresizingMaskIntoConstraints="NO" id="FkF-T8-MIe" customClass="DisplaceableView" customModule="Example" customModuleProvider="target">
+                                <rect key="frame" x="16" y="445" width="288" height="110"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="0dc-20-whm" appends="YES" id="iCR-D1-RHn"/>
+                                </connections>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="JMP-xp-mLE" firstAttribute="top" secondItem="9Vs-Br-5DO" secondAttribute="bottom" constant="8" id="3R1-ra-0LG"/>
+                            <constraint firstItem="272-lL-lW4" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="6Ee-Yt-GWf"/>
+                            <constraint firstItem="FkF-T8-MIe" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="6Px-4i-KGU"/>
+                            <constraint firstItem="coc-LS-cRe" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Bul-oP-IVo"/>
+                            <constraint firstItem="fu6-tO-ZRV" firstAttribute="leading" secondItem="coc-LS-cRe" secondAttribute="trailing" constant="8" id="OV2-yg-lfL"/>
+                            <constraint firstItem="FkF-T8-MIe" firstAttribute="top" secondItem="e0P-yL-Aev" secondAttribute="bottom" constant="8" id="QCa-1r-tV9"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="e0P-yL-Aev" secondAttribute="trailing" id="VVE-5j-zhV"/>
+                            <constraint firstItem="fu6-tO-ZRV" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="YYl-qX-u02"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="9Vs-Br-5DO" secondAttribute="trailing" id="cDy-4B-gS4"/>
+                            <constraint firstItem="9Vs-Br-5DO" firstAttribute="leading" secondItem="272-lL-lW4" secondAttribute="trailing" constant="8" id="dOW-QE-qeF"/>
+                            <constraint firstItem="JMP-xp-mLE" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="fUV-Tk-hfV"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="FkF-T8-MIe" secondAttribute="bottom" constant="13" id="fWL-V7-ihy"/>
+                            <constraint firstItem="272-lL-lW4" firstAttribute="top" secondItem="coc-LS-cRe" secondAttribute="bottom" constant="8" id="g0z-Ct-o6e"/>
+                            <constraint firstItem="fu6-tO-ZRV" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="lNa-Tm-2t6"/>
+                            <constraint firstItem="e0P-yL-Aev" firstAttribute="top" secondItem="9Vs-Br-5DO" secondAttribute="bottom" constant="8" id="lbP-2M-BuH"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="FkF-T8-MIe" secondAttribute="trailing" id="nQC-GW-eOd"/>
+                            <constraint firstItem="coc-LS-cRe" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="r7o-jp-GMW"/>
+                            <constraint firstItem="9Vs-Br-5DO" firstAttribute="top" secondItem="fu6-tO-ZRV" secondAttribute="bottom" constant="8" id="z5g-Rj-vnJ"/>
+                            <constraint firstItem="e0P-yL-Aev" firstAttribute="leading" secondItem="JMP-xp-mLE" secondAttribute="trailing" constant="8" id="zvY-yn-dal"/>
+                        </constraints>
                     </view>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="568"/>
                     <connections>
-                        <outlet property="giraffeImageView" destination="qCv-3T-NrD" id="F57-sm-Bbm"/>
-                        <outlet property="panoramaImageView" destination="1oI-Qo-LkP" id="HV2-dO-eZY"/>
+                        <outlet property="image1" destination="coc-LS-cRe" id="V33-DX-Npk"/>
+                        <outlet property="image2" destination="fu6-tO-ZRV" id="l7j-ac-X0p"/>
+                        <outlet property="image3" destination="272-lL-lW4" id="KPw-6M-3al"/>
+                        <outlet property="image4" destination="9Vs-Br-5DO" id="SDC-iv-vXP"/>
+                        <outlet property="image5" destination="JMP-xp-mLE" id="pmt-7i-IXz"/>
+                        <outlet property="image6" destination="e0P-yL-Aev" id="9Q3-XK-waM"/>
+                        <outlet property="image7" destination="FkF-T8-MIe" id="SXw-cQ-O65"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="EsF-my-zdw">
+                    <connections>
+                        <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="l88-nV-n0M"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="UGV-jv-W16">
+                    <connections>
+                        <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="tr1-Sr-C2v"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="0HP-vJ-viK">
+                    <connections>
+                        <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="DVI-Az-Ve4"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="slK-TT-Zr2">
+                    <connections>
+                        <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="NvW-ij-qi0"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="psv-ej-Rbn">
+                    <connections>
+                        <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="X51-rB-3Y6"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="bK7-7F-jNM">
+                    <connections>
+                        <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="msr-u0-aq7"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="0dc-20-whm">
+                    <connections>
+                        <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="DJp-pa-mR9"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-182" y="109"/>
+            <point key="canvasLocation" x="-148" y="180"/>
         </scene>
     </scenes>
     <resources>
-        <image name="0" width="640" height="400"/>
-        <image name="1" width="455" height="256"/>
-        <image name="2" width="166" height="124"/>
-        <image name="3" width="560" height="350"/>
-        <image name="4" width="341" height="227"/>
-        <image name="5" width="206" height="85"/>
-        <image name="6" width="200" height="145"/>
-        <image name="7" width="341" height="482"/>
-        <image name="8" width="1073" height="200"/>
-        <image name="9" width="106" height="213"/>
-        <image name="image_small" width="256" height="144"/>
+        <image name="0" width="540" height="960"/>
+        <image name="2" width="250" height="187"/>
+        <image name="3" width="320" height="568"/>
+        <image name="5" width="309" height="128"/>
+        <image name="6" width="300" height="218"/>
+        <image name="8" width="1609" height="300"/>
+        <image name="9" width="160" height="320"/>
     </resources>
 </document>
