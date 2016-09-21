@@ -8,11 +8,15 @@
 
 # ImageViewer 3.0
 
+
+
 ImageViewer 3.0 is our biggest release yet both in terms of codebase and feature evolution. We tackled the inevitable step - **video playback**. Video content is deliberately treated exactly the same way as images incl. pinch to zoom, doubleTap or swipe-to-dismiss.
 
 We have completely redesigned the way content is displacedTM :) from the parent canvas to ImageViewer. Images and videos now seamlessly **morph** from aspectFill and other aspect-ratio-breaking modes to aspectFit FullScreen. A new built-in **Thumbnails screen** allows you to handle large sets of images and videos.
 
 The number of **configuration options** has almost trippled. You can tweak every aspect of the complex displacement animation composition incl. speed & timing. Images with **transparency** are now equally supported. Main backround layer alows for semitransparent color and **blur**.
+
+
 
 
 ## Complete list of features:
