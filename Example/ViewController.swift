@@ -43,19 +43,19 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
         galleryViewController.footerView = footerView
 
         galleryViewController.launchedCompletion = {
-            //print("LAUNCHED") 
+            print("LAUNCHED")
         }
-        galleryViewController.closedCompletion = { //print("CLOSED") 
+        galleryViewController.closedCompletion = { print("CLOSED")
         }
-        galleryViewController.swipedToDismissCompletion = { //print("SWIPE-DISMISSED") 
+        galleryViewController.swipedToDismissCompletion = { print("SWIPE-DISMISSED")
         }
 
         galleryViewController.landedPageAtIndexCompletion = { index in
 
-            //print("LANDED AT INDEX: \(index)")
+            print("LANDED AT INDEX: \(index)")
 
             headerView.currentIndex = index
-            //footerView.currentIndex = index
+            footerView.currentIndex = index
         }
 
         self.presentImageGallery(galleryViewController)
@@ -73,15 +73,9 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
 
     func provideGalleryItem(index: Int) -> GalleryItem {
 
-
-//        let image = images[index].image ?? UIImage(named: "0")!
-//
-//        return GalleryItem.Image { $0(image) }
-//    }
-
         if index == 2 {
 
-            return GalleryItem.Video(fetchPreviewImageBlock: { $0(UIImage(named: "2")!)} , videoURL: NSURL(string: "http:video.dailymail.co.uk/video/mol/2016/07/15/1458458950652835194/1024x576_1458458950652835194.mp4")!)
+            return GalleryItem.Video(fetchPreviewImageBlock: { $0(UIImage(named: "2")!)} , videoURL: NSURL(string: "http://video.dailymail.co.uk/video/mol/test/2016/09/21/5739239377694275356/1024x576_MP4_5739239377694275356.mp4")!)
         }
         else {
 
