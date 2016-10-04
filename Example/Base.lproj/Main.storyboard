@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -14,60 +15,164 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jdg-OI-jGr">
-                                <rect key="frame" x="172" y="20" width="256" height="144"/>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="coc-LS-cRe" customClass="DisplaceableView" customModule="Example" customModuleProvider="target">
+                                <rect key="frame" x="16" y="28" width="200" height="102"/>
+                                <gestureRecognizers/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="256" id="cR1-Av-9Wf"/>
-                                    <constraint firstAttribute="height" constant="144" id="u0n-uo-eUP"/>
+                                    <constraint firstAttribute="height" constant="102" id="MT7-qF-GTg"/>
+                                    <constraint firstAttribute="width" constant="200" id="ZyX-67-9J6"/>
                                 </constraints>
-                                <state key="normal" title="Button" image="image_small"/>
                                 <connections>
-                                    <action selector="showViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="e6g-m3-fsn"/>
+                                    <outletCollection property="gestureRecognizers" destination="EsF-my-zdw" appends="YES" id="EMM-bN-jpd"/>
                                 </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="msT-C2-wTG">
-                                <rect key="frame" x="172" y="436" width="256" height="144"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="9" translatesAutoresizingMaskIntoConstraints="NO" id="fu6-tO-ZRV" customClass="DisplaceableView" customModule="Example" customModuleProvider="target">
+                                <rect key="frame" x="224" y="28" width="80" height="102"/>
+                                <gestureRecognizers/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="144" id="A5O-Ul-Lz1"/>
-                                    <constraint firstAttribute="width" constant="256" id="Wxz-UV-6ts"/>
+                                    <constraint firstAttribute="height" constant="102" id="dPz-y8-Z6Y"/>
                                 </constraints>
-                                <state key="normal" title="Button" image="image_small"/>
                                 <connections>
-                                    <action selector="showViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ahi-4i-mt8"/>
+                                    <outletCollection property="gestureRecognizers" destination="UGV-jv-W16" appends="YES" id="2MU-vV-yVS"/>
                                 </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Afc-5R-dCh">
-                                <rect key="frame" x="172" y="234" width="256" height="144"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="2" translatesAutoresizingMaskIntoConstraints="NO" id="272-lL-lW4" customClass="DisplaceableView" customModule="Example" customModuleProvider="target">
+                                <rect key="frame" x="16" y="138" width="127" height="116"/>
+                                <gestureRecognizers/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="144" id="6Dl-NX-09W"/>
-                                    <constraint firstAttribute="width" constant="256" id="H9Y-0s-CSS"/>
+                                    <constraint firstAttribute="height" constant="116" id="Y0l-M2-S7Y"/>
+                                    <constraint firstAttribute="width" constant="127" id="l2w-EU-Slf"/>
                                 </constraints>
-                                <state key="normal" title="Button" image="image_small"/>
                                 <connections>
-                                    <action selector="showViewer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eq1-9S-WCA"/>
+                                    <outletCollection property="gestureRecognizers" destination="0HP-vJ-viK" appends="YES" id="whT-qN-1rs"/>
                                 </connections>
-                            </button>
+                            </imageView>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="3" translatesAutoresizingMaskIntoConstraints="NO" id="9Vs-Br-5DO" customClass="DisplaceableView" customModule="Example" customModuleProvider="target">
+                                <rect key="frame" x="151" y="138" width="153" height="116"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="116" id="He9-TL-9k0"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="slK-TT-Zr2" appends="YES" id="v7L-oa-1cV"/>
+                                </connections>
+                            </imageView>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="8" translatesAutoresizingMaskIntoConstraints="NO" id="JMP-xp-mLE" customClass="DisplaceableView" customModule="Example" customModuleProvider="target">
+                                <rect key="frame" x="16" y="262" width="161" height="175"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="175" id="jwj-PS-Jo7"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="psv-ej-Rbn" appends="YES" id="UsK-Mb-EnH"/>
+                                </connections>
+                            </imageView>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="5" translatesAutoresizingMaskIntoConstraints="NO" id="e0P-yL-Aev" customClass="DisplaceableView" customModule="Example" customModuleProvider="target">
+                                <rect key="frame" x="185" y="262" width="119" height="175"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="175" id="0g5-fZ-sGn"/>
+                                    <constraint firstAttribute="width" constant="119" id="Tln-Ga-DtY"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="bK7-7F-jNM" appends="YES" id="J9h-Ds-YOh"/>
+                                </connections>
+                            </imageView>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="6" translatesAutoresizingMaskIntoConstraints="NO" id="FkF-T8-MIe" customClass="DisplaceableView" customModule="Example" customModuleProvider="target">
+                                <rect key="frame" x="16" y="445" width="288" height="110"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="0dc-20-whm" appends="YES" id="iCR-D1-RHn"/>
+                                </connections>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Afc-5R-dCh" firstAttribute="leading" secondItem="Jdg-OI-jGr" secondAttribute="leading" id="1Ft-GS-hak"/>
-                            <constraint firstItem="Afc-5R-dCh" firstAttribute="top" secondItem="Jdg-OI-jGr" secondAttribute="bottom" constant="70" id="4UB-CL-3Kt"/>
-                            <constraint firstItem="msT-C2-wTG" firstAttribute="top" secondItem="Afc-5R-dCh" secondAttribute="bottom" constant="58" id="CFj-bn-ACe"/>
-                            <constraint firstItem="Afc-5R-dCh" firstAttribute="leading" secondItem="msT-C2-wTG" secondAttribute="leading" id="LPr-C7-fEO"/>
-                            <constraint firstItem="Jdg-OI-jGr" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="PRW-SS-Zb4"/>
-                            <constraint firstItem="Jdg-OI-jGr" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="pfC-SE-JZ7"/>
+                            <constraint firstItem="JMP-xp-mLE" firstAttribute="top" secondItem="9Vs-Br-5DO" secondAttribute="bottom" constant="8" id="3R1-ra-0LG"/>
+                            <constraint firstItem="272-lL-lW4" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="6Ee-Yt-GWf"/>
+                            <constraint firstItem="FkF-T8-MIe" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="6Px-4i-KGU"/>
+                            <constraint firstItem="coc-LS-cRe" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Bul-oP-IVo"/>
+                            <constraint firstItem="fu6-tO-ZRV" firstAttribute="leading" secondItem="coc-LS-cRe" secondAttribute="trailing" constant="8" id="OV2-yg-lfL"/>
+                            <constraint firstItem="FkF-T8-MIe" firstAttribute="top" secondItem="e0P-yL-Aev" secondAttribute="bottom" constant="8" id="QCa-1r-tV9"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="e0P-yL-Aev" secondAttribute="trailing" id="VVE-5j-zhV"/>
+                            <constraint firstItem="fu6-tO-ZRV" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="YYl-qX-u02"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="9Vs-Br-5DO" secondAttribute="trailing" id="cDy-4B-gS4"/>
+                            <constraint firstItem="9Vs-Br-5DO" firstAttribute="leading" secondItem="272-lL-lW4" secondAttribute="trailing" constant="8" id="dOW-QE-qeF"/>
+                            <constraint firstItem="JMP-xp-mLE" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="fUV-Tk-hfV"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="FkF-T8-MIe" secondAttribute="bottom" constant="13" id="fWL-V7-ihy"/>
+                            <constraint firstItem="272-lL-lW4" firstAttribute="top" secondItem="coc-LS-cRe" secondAttribute="bottom" constant="8" id="g0z-Ct-o6e"/>
+                            <constraint firstItem="fu6-tO-ZRV" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="lNa-Tm-2t6"/>
+                            <constraint firstItem="e0P-yL-Aev" firstAttribute="top" secondItem="9Vs-Br-5DO" secondAttribute="bottom" constant="8" id="lbP-2M-BuH"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="FkF-T8-MIe" secondAttribute="trailing" id="nQC-GW-eOd"/>
+                            <constraint firstItem="coc-LS-cRe" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="r7o-jp-GMW"/>
+                            <constraint firstItem="9Vs-Br-5DO" firstAttribute="top" secondItem="fu6-tO-ZRV" secondAttribute="bottom" constant="8" id="z5g-Rj-vnJ"/>
+                            <constraint firstItem="e0P-yL-Aev" firstAttribute="leading" secondItem="JMP-xp-mLE" secondAttribute="trailing" constant="8" id="zvY-yn-dal"/>
                         </constraints>
                     </view>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="568"/>
+                    <connections>
+                        <outlet property="image1" destination="coc-LS-cRe" id="V33-DX-Npk"/>
+                        <outlet property="image2" destination="fu6-tO-ZRV" id="l7j-ac-X0p"/>
+                        <outlet property="image3" destination="272-lL-lW4" id="KPw-6M-3al"/>
+                        <outlet property="image4" destination="9Vs-Br-5DO" id="SDC-iv-vXP"/>
+                        <outlet property="image5" destination="JMP-xp-mLE" id="pmt-7i-IXz"/>
+                        <outlet property="image6" destination="e0P-yL-Aev" id="9Q3-XK-waM"/>
+                        <outlet property="image7" destination="FkF-T8-MIe" id="SXw-cQ-O65"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="EsF-my-zdw">
+                    <connections>
+                        <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="l88-nV-n0M"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="UGV-jv-W16">
+                    <connections>
+                        <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="tr1-Sr-C2v"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="0HP-vJ-viK">
+                    <connections>
+                        <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="DVI-Az-Ve4"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="slK-TT-Zr2">
+                    <connections>
+                        <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="NvW-ij-qi0"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="psv-ej-Rbn">
+                    <connections>
+                        <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="X51-rB-3Y6"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="bK7-7F-jNM">
+                    <connections>
+                        <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="msr-u0-aq7"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="0dc-20-whm">
+                    <connections>
+                        <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="DJp-pa-mR9"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="345" y="274"/>
+            <point key="canvasLocation" x="-148" y="180"/>
         </scene>
     </scenes>
     <resources>
-        <image name="image_small" width="256" height="144"/>
+        <image name="0" width="540" height="960"/>
+        <image name="2" width="250" height="187"/>
+        <image name="3" width="320" height="568"/>
+        <image name="5" width="309" height="128"/>
+        <image name="6" width="300" height="218"/>
+        <image name="8" width="1609" height="300"/>
+        <image name="9" width="160" height="320"/>
     </resources>
 </document>
