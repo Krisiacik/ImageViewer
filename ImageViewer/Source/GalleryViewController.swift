@@ -360,7 +360,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         scrubber.frame.origin.y = (footerView?.frame.origin.y ?? self.view.bounds.maxY) - scrubber.bounds.height
     }
     
-    //Thumbnails
+    //ThumbnailsimageBlock
     
     @objc fileprivate func showThumbnails() {
         
