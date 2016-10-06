@@ -9,7 +9,7 @@
 import UIKit
 
 public typealias ImageCompletion = (UIImage?) -> Void
-public typealias FetchImageBlock = (ImageCompletion) -> Void
+public typealias FetchImageBlock = (@escaping ImageCompletion) -> Void
 
 public enum GalleryItem {
     
