@@ -11,13 +11,13 @@ import UIKit
 extension UIApplication {
 
     static var applicationWindow: UIWindow {
-        return (UIApplication.sharedApplication().delegate?.window?.flatMap { $0 })!
+        return (UIApplication.shared.delegate?.window?.flatMap { $0 })!
     }
 
     static var isPortraitOnly: Bool {
 
-        let orientations = UIApplication.sharedApplication().supportedInterfaceOrientationsForWindow(nil)
+        let orientations = UIApplication.shared.supportedInterfaceOrientations(for: nil)
 
-        return !(orientations.contains(.LandscapeLeft) || orientations.contains(.LandscapeRight) || orientations.contains(.Landscape))
+        return !(orientations.contains(.landscapeLeft) || orientations.contains(.landscapeRight) || orientations.contains(.landscape))
     }
 }

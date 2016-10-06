@@ -11,27 +11,27 @@ import UIKit
 class BlurView: UIView {
 
 
-    var blurPresentDuration: NSTimeInterval = 0.5
-    var blurPresentDelay: NSTimeInterval = 0
+    var blurPresentDuration: TimeInterval = 0.5
+    var blurPresentDelay: TimeInterval = 0
 
-    var colorPresentDuration: NSTimeInterval = 0.25
-    var colorPresentDelay: NSTimeInterval = 0
+    var colorPresentDuration: TimeInterval = 0.25
+    var colorPresentDelay: TimeInterval = 0
 
-    var blurDismissDuration: NSTimeInterval = 0.1
-    var blurDismissDelay: NSTimeInterval = 0.4
+    var blurDismissDuration: TimeInterval = 0.1
+    var blurDismissDelay: TimeInterval = 0.4
 
-    var colorDismissDuration: NSTimeInterval = 0.45
-    var colorDismissDelay: NSTimeInterval = 0
+    var colorDismissDuration: TimeInterval = 0.45
+    var colorDismissDelay: TimeInterval = 0
 
     var blurTargetOpacity: CGFloat = 1
     var colorTargetOpacity: CGFloat = 1
 
-    var overlayColor = UIColor.blackColor() {
+    var overlayColor = UIColor.black {
         didSet { colorView.backgroundColor = overlayColor }
     }
 
     let blurringViewContainer = UIView() //serves as a transparency container for the blurringView as it's not recommended by Apple to apply transparency directly to the UIVisualEffectsView
-    let blurringView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
+    let blurringView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
     let colorView = UIView()
 
     convenience init() {
@@ -65,13 +65,13 @@ class BlurView: UIView {
 
     func present() {
 
-        UIView.animateWithDuration(blurPresentDuration, delay: blurPresentDelay, options: .CurveLinear, animations: { [weak self] in
+        UIView.animate(withDuration: blurPresentDuration, delay: blurPresentDelay, options: .curveLinear, animations: { [weak self] in
 
             self?.blurringViewContainer.alpha = self!.blurTargetOpacity
 
             }, completion: nil)
 
-        UIView.animateWithDuration(colorPresentDuration, delay: colorPresentDelay, options: .CurveLinear, animations: { [weak self] in
+        UIView.animate(withDuration: colorPresentDuration, delay: colorPresentDelay, options: .curveLinear, animations: { [weak self] in
 
             self?.colorView.alpha = self!.colorTargetOpacity
 
@@ -80,13 +80,13 @@ class BlurView: UIView {
 
     func dismiss() {
 
-        UIView.animateWithDuration(blurDismissDuration, delay: blurDismissDelay, options: .CurveLinear, animations: { [weak self] in
+        UIView.animate(withDuration: blurDismissDuration, delay: blurDismissDelay, options: .curveLinear, animations: { [weak self] in
 
             self?.blurringViewContainer.alpha = 0
 
             }, completion: nil)
 
-        UIView.animateWithDuration(colorDismissDuration, delay: colorDismissDelay, options: .CurveLinear, animations: { [weak self] in
+        UIView.animate(withDuration: colorDismissDuration, delay: colorDismissDelay, options: .curveLinear, animations: { [weak self] in
 
             self?.colorView.alpha = 0
 
