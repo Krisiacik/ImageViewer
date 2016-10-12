@@ -170,8 +170,7 @@
 				A35F0CED1D74B89D00DA94CB /* ThumbnailCell.swift */,
 				A35F0CEE1D74B89D00DA94CB /* ThumbnailsViewController.swift */,
 			);
-			name = "Thumbnails Controller";
-			path = ..;
+			path = "Thumbnails Controller";
 			sourceTree = "<group>";
 		};
 		C7897CE31C1350B7006447FB /* Example */ = {
