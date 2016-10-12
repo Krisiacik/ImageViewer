@@ -29,7 +29,7 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
     let itemCount: Int
     var swipingToDismiss: SwipeToDismiss?
     fileprivate var isAnimating = false
-    var fetchImageBlock: FetchImageBlock
+    fileprivate var fetchImageBlock: FetchImageBlock
 
     //CONFIGURATION
     fileprivate var presentationStyle = GalleryPresentationStyle.displacement
