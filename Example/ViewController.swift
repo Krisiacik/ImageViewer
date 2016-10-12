@@ -28,7 +28,7 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
         imageViews += [image1, image2, image3, image4, image5, image6, image7]
     }
 
-    @IBAction func showGalleryImageViewer(sender: UITapGestureRecognizer) {
+    @IBAction func showGalleryImageViewer(_ sender: UITapGestureRecognizer) {
 
         guard let displacedView = sender.view as? UIImageView else { return }
 
