@@ -18,12 +18,12 @@ extension CGPoint {
 
 enum Direction {
     
-    case Left, Right, Up, Down, None
+    case left, right, up, down, none
 }
 
 enum Orientation {
     
-    case Vertical, Horizontal, None
+    case vertical, horizontal, none
 }
 
 ///Movement can be expressed as a vector in 2D coordinate space where the implied unit is 1 second and the vector point from 0,0 to an actual CGPoint value represents direction and speed. Then we can calculate convenient properties describing the nature of movement.
@@ -31,42 +31,42 @@ extension CGPoint {
     
     var direction: Direction {
         
-        guard !(self.x == 0 && self.y == 0) else { return .None }
+        guard !(self.x == 0 && self.y == 0) else { return .none }
         
         if (abs(self.x) > abs(self.y) && self.x > 0) {
             
-            return .Right
+            return .right
         }
         else if (abs(self.x) > abs(self.y) && self.x <= 0) {
             
-            return .Left
+            return .left
         }
             
         else if (abs(self.x) <= abs(self.y) && self.y > 0) {
             
-            return .Up
+            return .up
         }
             
         else if (abs(self.x) <= abs(self.y) && self.y <= 0) {
             
-            return .Down
+            return .down
         }
             
         else {
             
-            return .None
+            return .none
         }
     }
     
     var orientation: Orientation {
         
-        guard self.direction != .None else { return .None }
+        guard self.direction != .none else { return .none }
         
-        if self.direction == .Left || self.direction == .Right {
-            return .Horizontal
+        if self.direction == .left || self.direction == .right {
+            return .horizontal
         }
         else {
-            return .Vertical
+            return .vertical
         }
     }
 }

@@ -11,13 +11,13 @@ import UIKit
 final class GalleryPagingDatasource: NSObject, UIPageViewControllerDataSource {
 
     weak var itemControllerDelegate: ItemControllerDelegate?
-    private weak var itemsDatasource: GalleryItemsDatasource?
-    private weak var displacedViewsDatasource: GalleryDisplacedViewsDatasource?
+    fileprivate weak var itemsDatasource: GalleryItemsDatasource?
+    fileprivate weak var displacedViewsDatasource: GalleryDisplacedViewsDatasource?
 
-    private let configuration: GalleryConfiguration
-    private var pagingMode = GalleryPagingMode.Standard
-    private let itemCount: Int
-    private unowned var scrubber: VideoScrubber
+    fileprivate let configuration: GalleryConfiguration
+    fileprivate var pagingMode = GalleryPagingMode.standard
+    fileprivate let itemCount: Int
+    fileprivate unowned var scrubber: VideoScrubber
 
     init(itemsDatasource: GalleryItemsDatasource, displacedViewsDatasource: GalleryDisplacedViewsDatasource?, scrubber: VideoScrubber, configuration: GalleryConfiguration) {
 
@@ -33,44 +33,44 @@ final class GalleryPagingDatasource: NSObject, UIPageViewControllerDataSource {
 
                 switch item {
 
-                case .PagingMode(let mode): pagingMode = mode
+                case .pagingMode(let mode): pagingMode = mode
                 default: break
                 }
             }
         }
     }
 
-    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
 
         guard let currentController = viewController as? ItemController else { return nil }
         let previousIndex = (currentController.index == 0) ? itemCount - 1 : currentController.index - 1
 
         switch pagingMode {
 
-        case .Standard:
+        case .standard:
             return (currentController.index > 0) ? self.createItemController(previousIndex) : nil
 
-        case .Carousel:
+        case .carousel:
             return self.createItemController(previousIndex)
         }
     }
 
-    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
 
         guard let currentController = viewController as? ItemController  else { return nil }
         let nextIndex = (currentController.index == itemCount - 1) ? 0 : currentController.index + 1
 
         switch pagingMode {
 
-        case .Standard:
+        case .standard:
             return (currentController.index < itemCount - 1) ? self.createItemController(nextIndex) : nil
 
-        case .Carousel:
+        case .carousel:
             return self.createItemController(nextIndex)
         }
     }
 
-    func createItemController(itemIndex: Int, isInitial: Bool = false) -> UIViewController {
+    func createItemController(_ itemIndex: Int, isInitial: Bool = false) -> UIViewController {
 
         guard let itemsDatasource = itemsDatasource else { return UIViewController() }
 
@@ -78,7 +78,7 @@ final class GalleryPagingDatasource: NSObject, UIPageViewControllerDataSource {
 
         switch item {
 
-        case .Image(let fetchImageBlock):
+        case .image(let fetchImageBlock):
 
             let imageController = ImageViewController(index: itemIndex, itemCount: itemsDatasource.itemCount(), fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitial)
             imageController.delegate = itemControllerDelegate
@@ -86,7 +86,7 @@ final class GalleryPagingDatasource: NSObject, UIPageViewControllerDataSource {
 
             return imageController
 
-        case .Video(let fetchImageBlock, let videoURL):
+        case .video(let fetchImageBlock, let videoURL):
 
             let videoController = VideoViewController(index: itemIndex, itemCount: itemsDatasource.itemCount(), fetchImageBlock: fetchImageBlock, videoURL: videoURL, scrubber: scrubber, configuration: configuration, isInitialController: isInitial)
 
