@@ -28,11 +28,11 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
         imageViews += [image1, image2, image3, image4, image5, image6, image7]
     }
 
-    @IBAction func showGalleryImageViewer(sender: UITapGestureRecognizer) {
+    @IBAction func showGalleryImageViewer(_ sender: UITapGestureRecognizer) {
 
         guard let displacedView = sender.view as? UIImageView else { return }
 
-        guard let displacedViewIndex = imageViews.indexOf(displacedView) else { return }
+        guard let displacedViewIndex = imageViews.index(of: displacedView) else { return }
 
         let frame = CGRect(x: 0, y: 0, width: 200, height: 24)
         let headerView = CounterView(frame: frame, currentIndex: displacedViewIndex, count: imageViews.count)
@@ -68,20 +68,20 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
 
     func provideDisplacementItem(atIndex index: Int) -> DisplaceableView? {
 
-        return imageViews[index] ?? nil
+        return imageViews[index] 
     }
 
-    func provideGalleryItem(index: Int) -> GalleryItem {
+    func provideGalleryItem(_ index: Int) -> GalleryItem {
 
         if index == 2 {
 
-            return GalleryItem.Video(fetchPreviewImageBlock: { $0(UIImage(named: "2")!)} , videoURL: NSURL(string: "http://video.dailymail.co.uk/video/mol/test/2016/09/21/5739239377694275356/1024x576_MP4_5739239377694275356.mp4")!)
+            return GalleryItem.video(fetchPreviewImageBlock: { $0(UIImage(named: "2")!)} , videoURL: NSURL(string: "http://video.dailymail.co.uk/video/mol/test/2016/09/21/5739239377694275356/1024x576_MP4_5739239377694275356.mp4")! as URL)
         }
         else {
 
             let image = imageViews[index].image ?? UIImage(named: "0")!
             
-            return GalleryItem.Image { $0(image) }
+            return GalleryItem.image { $0(image) }
         }
     }
 
@@ -89,42 +89,42 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
 
         return [
 
-            GalleryConfigurationItem.PagingMode(.Standard),
-            GalleryConfigurationItem.PresentationStyle(.Displacement),
-            GalleryConfigurationItem.HideDecorationViewsOnLaunch(false),
+            GalleryConfigurationItem.pagingMode(.standard),
+            GalleryConfigurationItem.presentationStyle(.displacement),
+            GalleryConfigurationItem.hideDecorationViewsOnLaunch(false),
 
-            GalleryConfigurationItem.OverlayColor(UIColor(white: 0.035, alpha: 1)),
-            GalleryConfigurationItem.OverlayColorOpacity(1),
-            GalleryConfigurationItem.OverlayBlurOpacity(1),
-            GalleryConfigurationItem.OverlayBlurStyle(UIBlurEffectStyle.Light),
+            GalleryConfigurationItem.overlayColor(UIColor(white: 0.035, alpha: 1)),
+            GalleryConfigurationItem.overlayColorOpacity(1),
+            GalleryConfigurationItem.overlayBlurOpacity(1),
+            GalleryConfigurationItem.overlayBlurStyle(UIBlurEffectStyle.light),
 
-            GalleryConfigurationItem.MaximumZoolScale(8),
-            GalleryConfigurationItem.SwipeToDismissThresholdVelocity(500),
+            GalleryConfigurationItem.maximumZoolScale(8),
+            GalleryConfigurationItem.swipeToDismissThresholdVelocity(500),
 
-            GalleryConfigurationItem.DoubleTapToZoomDuration(0.15),
+            GalleryConfigurationItem.doubleTapToZoomDuration(0.15),
 
-            GalleryConfigurationItem.BlurPresentDuration(0.5),
-            GalleryConfigurationItem.BlurPresentDelay(0),
-            GalleryConfigurationItem.ColorPresentDuration(0.25),
-            GalleryConfigurationItem.ColorPresentDelay(0),
+            GalleryConfigurationItem.blurPresentDuration(0.5),
+            GalleryConfigurationItem.blurPresentDelay(0),
+            GalleryConfigurationItem.colorPresentDuration(0.25),
+            GalleryConfigurationItem.colorPresentDelay(0),
 
-            GalleryConfigurationItem.BlurDismissDuration(0.1),
-            GalleryConfigurationItem.BlurDismissDelay(0.4),
-            GalleryConfigurationItem.ColorDismissDuration(0.45),
-            GalleryConfigurationItem.ColorDismissDelay(0),
+            GalleryConfigurationItem.blurDismissDuration(0.1),
+            GalleryConfigurationItem.blurDismissDelay(0.4),
+            GalleryConfigurationItem.colorDismissDuration(0.45),
+            GalleryConfigurationItem.colorDismissDelay(0),
 
-            GalleryConfigurationItem.ItemFadeDuration(0.3),
-            GalleryConfigurationItem.DecorationViewsFadeDuration(0.15),
-            GalleryConfigurationItem.RotationDuration(0.15),
+            GalleryConfigurationItem.itemFadeDuration(0.3),
+            GalleryConfigurationItem.decorationViewsFadeDuration(0.15),
+            GalleryConfigurationItem.rotationDuration(0.15),
 
-            GalleryConfigurationItem.DisplacementDuration(0.55),
-            GalleryConfigurationItem.ReverseDisplacementDuration(0.25),
-            GalleryConfigurationItem.DisplacementTransitionStyle(.SpringBounce(0.7)),
-            GalleryConfigurationItem.DisplacementTimingCurve(.Linear),
+            GalleryConfigurationItem.displacementDuration(0.55),
+            GalleryConfigurationItem.reverseDisplacementDuration(0.25),
+            GalleryConfigurationItem.displacementTransitionStyle(.springBounce(0.7)),
+            GalleryConfigurationItem.displacementTimingCurve(.linear),
 
-            GalleryConfigurationItem.StatusBarHidden(true),
-            GalleryConfigurationItem.DisplacementKeepOriginalInPlace(false),
-            GalleryConfigurationItem.DisplacementInsetMargin(50)
+            GalleryConfigurationItem.statusBarHidden(true),
+            GalleryConfigurationItem.displacementKeepOriginalInPlace(false),
+            GalleryConfigurationItem.displacementInsetMargin(50)
         ]
     }
 }

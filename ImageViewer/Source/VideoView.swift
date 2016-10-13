@@ -32,13 +32,13 @@ class VideoView: UIView {
                 videoLayer.player = player
                 videoLayer.videoGravity = AVLayerVideoGravityResizeAspect
 
-                player.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.New, context: nil)
-                player.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.New, context: nil)
+                player.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.new, context: nil)
+                player.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.new, context: nil)
             }
         }
     }
 
-    override class func layerClass() -> AnyClass {
+    override class var layerClass : AnyClass {
         return AVPlayerLayer.self
     }
 
@@ -51,8 +51,8 @@ class VideoView: UIView {
 
         self.addSubview(previewImageView)
 
-        previewImageView.contentMode = .ScaleAspectFill
-        previewImageView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        previewImageView.contentMode = .scaleAspectFill
+        previewImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         previewImageView.clipsToBounds = true
     }
 
@@ -66,19 +66,19 @@ class VideoView: UIView {
         player?.removeObserver(self, forKeyPath: "rate")
     }
 
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
 
         if let status = self.player?.status, let rate = self.player?.rate  {
 
-            if status == .ReadyToPlay && rate != 0 {
+            if status == .readyToPlay && rate != 0 {
 
-                UIView.animateWithDuration(0.3) { [weak self] in
+                UIView.animate(withDuration: 0.3, animations: { [weak self] in
 
                     if let weakself = self {
 
                         weakself.previewImageView.alpha = 0
                     }
-                }
+                }) 
             }
         }
     }

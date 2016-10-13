@@ -8,15 +8,15 @@
 
 import UIKit
 
-typealias Duration = NSTimeInterval
+typealias Duration = TimeInterval
 
 @objc protocol ItemController: class {
 
     var index: Int { get }
     var isInitialController: Bool { get set }
 
-    func presentItem(alongsideAnimation alongsideAnimation: () -> Void, completion: () -> Void)
-    func dismissItem(alongsideAnimation alongsideAnimation: () -> Void, completion: () -> Void)
+    func presentItem(alongsideAnimation: () -> Void, completion: @escaping () -> Void)
+    func dismissItem(alongsideAnimation: () -> Void, completion: @escaping () -> Void)
 
-    optional func closeDecorationViews(duration: NSTimeInterval)
+    @objc optional func closeDecorationViews(_ duration: TimeInterval)
 }
