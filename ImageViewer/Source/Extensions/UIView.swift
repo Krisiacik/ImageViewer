@@ -17,23 +17,23 @@ extension UIView {
 
     func frame(inCoordinatesOfView parentView: UIView) -> CGRect {
 
-        let frameInWindow = UIApplication.applicationWindow.convertRect(self.bounds, fromView: self)
-        return parentView.convertRect(frameInWindow, fromView: UIApplication.applicationWindow)
+        let frameInWindow = UIApplication.applicationWindow.convert(self.bounds, from: self)
+        return parentView.convert(frameInWindow, from: UIApplication.applicationWindow)
     }
 
-    func addSubviews(subviews: UIView...) {
+    func addSubviews(_ subviews: UIView...) {
 
         for view in subviews { self.addSubview(view) }
     }
 
-    static func animateWithDuration(duration: NSTimeInterval, delay: NSTimeInterval, animations: () -> Void) {
+    static func animateWithDuration(_ duration: TimeInterval, delay: TimeInterval, animations: @escaping () -> Void) {
 
-        UIView.animateWithDuration(duration, delay: delay, options: UIViewAnimationOptions.CurveEaseInOut, animations: animations, completion: nil)
+        UIView.animate(withDuration: duration, delay: delay, options: UIViewAnimationOptions(), animations: animations, completion: nil)
     }
 
-    static func animateWithDuration(duration: NSTimeInterval, delay: NSTimeInterval, animations: () -> Void, completion: ((Bool) -> Void)?) {
+    static func animateWithDuration(_ duration: TimeInterval, delay: TimeInterval, animations: @escaping () -> Void, completion: ((Bool) -> Void)?) {
 
-        UIView.animateWithDuration(duration, delay: delay, options: UIViewAnimationOptions.CurveEaseInOut, animations: animations, completion: completion)
+        UIView.animate(withDuration: duration, delay: delay, options: UIViewAnimationOptions(), animations: animations, completion: completion)
     }
 }
 
@@ -41,6 +41,6 @@ extension DisplaceableView {
 
     func frameInCoordinatesOfScreen() -> CGRect {
 
-        return UIView().convertRect(self.bounds, toCoordinateSpace: UIScreen.mainScreen().coordinateSpace)
+        return UIView().convert(self.bounds, to: UIScreen.main.coordinateSpace)
     }
 }

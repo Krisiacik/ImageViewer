@@ -14,8 +14,8 @@ class ThumbnailCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        imageView.backgroundColor = UIColor.clearColor()
-        imageView.contentMode = .ScaleAspectFit
+        imageView.backgroundColor = UIColor.clear
+        imageView.contentMode = .scaleAspectFit
         self.contentView.addSubview(imageView)
     }
 

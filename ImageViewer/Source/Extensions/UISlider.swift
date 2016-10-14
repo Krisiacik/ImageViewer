@@ -10,24 +10,24 @@ import UIKit
 
 extension Slider {
 
-    static func createSlider(width: CGFloat, height: CGFloat, pointerDiameter: CGFloat, barHeight: CGFloat) -> Slider {
+    static func createSlider(_ width: CGFloat, height: CGFloat, pointerDiameter: CGFloat, barHeight: CGFloat) -> Slider {
 
         let slider = Slider(frame: CGRect(x: 0, y: 0, width: width, height: height))
 
-        slider.setThumbImage(CAShapeLayer.circle(UIColor.whiteColor(), diameter: pointerDiameter).toImage(), forState: UIControlState.Normal)
+        slider.setThumbImage(CAShapeLayer.circle(UIColor.white, diameter: pointerDiameter).toImage(), for: UIControlState())
 
         let tileImageFrame = CGRect(origin: CGPoint.zero, size: CGSize(width: 1, height: barHeight))
 
         let minTrackImage = CALayer()
-        minTrackImage.backgroundColor = UIColor.whiteColor().CGColor
+        minTrackImage.backgroundColor = UIColor.white.cgColor
         minTrackImage.frame = tileImageFrame
 
         let maxTrackImage = CALayer()
-        maxTrackImage.backgroundColor = UIColor.darkGrayColor().CGColor
+        maxTrackImage.backgroundColor = UIColor.darkGray.cgColor
         maxTrackImage.frame = tileImageFrame
 
-        slider.setMinimumTrackImage(minTrackImage.toImage(), forState: UIControlState.Normal)
-        slider.setMaximumTrackImage(maxTrackImage.toImage(), forState: UIControlState.Normal)
+        slider.setMinimumTrackImage(minTrackImage.toImage(), for: UIControlState())
+        slider.setMaximumTrackImage(maxTrackImage.toImage(), for: UIControlState())
         
         return slider
     }
