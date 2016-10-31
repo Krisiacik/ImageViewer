@@ -9,12 +9,12 @@
 /* Begin PBXBuildFile section */
 		4CD1C49C1C16FF64008D5F84 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD1C49B1C16FF64008D5F84 /* CGPoint.swift */; };
 		4CD1C49D1C16FF64008D5F84 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD1C49B1C16FF64008D5F84 /* CGPoint.swift */; };
+		553779811DC7B12C00E30FB4 /* ThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5537797F1DC7B12C00E30FB4 /* ThumbnailCell.swift */; };
+		553779821DC7B12C00E30FB4 /* ThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5537797F1DC7B12C00E30FB4 /* ThumbnailCell.swift */; };
+		553779831DC7B12C00E30FB4 /* ThumbnailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553779801DC7B12C00E30FB4 /* ThumbnailsViewController.swift */; };
+		553779841DC7B12C00E30FB4 /* ThumbnailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553779801DC7B12C00E30FB4 /* ThumbnailsViewController.swift */; };
 		A32D40041D45C4DE00AB5ADA /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32D40031D45C4DE00AB5ADA /* Bool.swift */; };
 		A32D40051D45C50800AB5ADA /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32D40031D45C4DE00AB5ADA /* Bool.swift */; };
-		A35F0CEF1D74B89D00DA94CB /* ThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35F0CED1D74B89D00DA94CB /* ThumbnailCell.swift */; };
-		A35F0CF01D74B89D00DA94CB /* ThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35F0CED1D74B89D00DA94CB /* ThumbnailCell.swift */; };
-		A35F0CF11D74B89D00DA94CB /* ThumbnailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35F0CEE1D74B89D00DA94CB /* ThumbnailsViewController.swift */; };
-		A35F0CF21D74B89D00DA94CB /* ThumbnailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35F0CEE1D74B89D00DA94CB /* ThumbnailsViewController.swift */; };
 		C7897CE51C1350B7006447FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7897CE41C1350B7006447FB /* AppDelegate.swift */; };
 		C7897CE71C1350B7006447FB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7897CE61C1350B7006447FB /* ViewController.swift */; };
 		C7897CEA1C1350B7006447FB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7897CE81C1350B7006447FB /* Main.storyboard */; };
@@ -89,9 +89,9 @@
 
 /* Begin PBXFileReference section */
 		4CD1C49B1C16FF64008D5F84 /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
+		5537797F1DC7B12C00E30FB4 /* ThumbnailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ThumbnailCell.swift; path = Source/ThumbnailCell.swift; sourceTree = "<group>"; };
+		553779801DC7B12C00E30FB4 /* ThumbnailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ThumbnailsViewController.swift; path = Source/ThumbnailsViewController.swift; sourceTree = "<group>"; };
 		A32D40031D45C4DE00AB5ADA /* Bool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
-		A35F0CED1D74B89D00DA94CB /* ThumbnailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailCell.swift; sourceTree = "<group>"; };
-		A35F0CEE1D74B89D00DA94CB /* ThumbnailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailsViewController.swift; sourceTree = "<group>"; };
 		A393838A1D91EE7200AC9893 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7897CE21C1350B7006447FB /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7897CE41C1350B7006447FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -167,8 +167,8 @@
 		A35F0CEC1D74B88B00DA94CB /* Thumbnails Controller */ = {
 			isa = PBXGroup;
 			children = (
-				A35F0CED1D74B89D00DA94CB /* ThumbnailCell.swift */,
-				A35F0CEE1D74B89D00DA94CB /* ThumbnailsViewController.swift */,
+				5537797F1DC7B12C00E30FB4 /* ThumbnailCell.swift */,
+				553779801DC7B12C00E30FB4 /* ThumbnailsViewController.swift */,
 			);
 			name = "Thumbnails Controller";
 			path = ..;
@@ -436,11 +436,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = MailOnline;
 				TargetAttributes = {
 					C7897CE11C1350B7006447FB = {
 						CreatedOnToolsVersion = 7.1.1;
+						LastSwiftMigration = 0810;
 					};
 					C7DABE471C12245B00F5BD7B = {
 						CreatedOnToolsVersion = 7.1.1;
@@ -513,17 +514,17 @@
 				EBA0A9531C89C653005B8DD3 /* GalleryConfiguration.swift in Sources */,
 				EB3464F01D4B9066009494B5 /* CALayer.swift in Sources */,
 				EB17B3811D4A6E7F00EED1DA /* UIButton.swift in Sources */,
-				A35F0CEF1D74B89D00DA94CB /* ThumbnailCell.swift in Sources */,
 				EB1DB6E61D3E500B00DC9064 /* UIImageView.swift in Sources */,
-				A35F0CF11D74B89D00DA94CB /* ThumbnailsViewController.swift in Sources */,
 				EBAF4C661D3937BC0039CA93 /* VideoViewController.swift in Sources */,
 				A32D40051D45C50800AB5ADA /* Bool.swift in Sources */,
 				EB40C3731C9C5BF1004EA215 /* UIViewController.swift in Sources */,
 				EBE627061D2688890095999A /* GalleryViewController.swift in Sources */,
 				EB1DB6EC1D3E74A000DC9064 /* CGRect.swift in Sources */,
+				553779831DC7B12C00E30FB4 /* ThumbnailsViewController.swift in Sources */,
 				EB5253F41C8DCE9800EAA4A4 /* CounterView.swift in Sources */,
 				EBE627121D268AB70095999A /* GalleryItem.swift in Sources */,
 				EB7B7E4F1C8F260A006834F7 /* LayoutEnums.swift in Sources */,
+				553779811DC7B12C00E30FB4 /* ThumbnailCell.swift in Sources */,
 				EB60EE591D590E8B00CC5BA8 /* Slider.swift in Sources */,
 				EB60EE561D58EB4800CC5BA8 /* VideoScrubber.swift in Sources */,
 				C7897CE71C1350B7006447FB /* ViewController.swift in Sources */,
@@ -547,8 +548,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				553779841DC7B12C00E30FB4 /* ThumbnailsViewController.swift in Sources */,
 				EB1CEC221C84A64100BB27B8 /* UIView.swift in Sources */,
 				EBE627131D268AB70095999A /* GalleryItem.swift in Sources */,
+				553779821DC7B12C00E30FB4 /* ThumbnailCell.swift in Sources */,
 				EB1DB6ED1D3E74A000DC9064 /* CGRect.swift in Sources */,
 				EBAF4C671D3937BC0039CA93 /* VideoViewController.swift in Sources */,
 				EB1DB6E71D3E500B00DC9064 /* UIImageView.swift in Sources */,
@@ -559,11 +562,9 @@
 				EB3464F61D4BAA19009494B5 /* UISlider.swift in Sources */,
 				EB60EE571D58EB4800CC5BA8 /* VideoScrubber.swift in Sources */,
 				EBA76F721D4F855C0094931F /* ItemBaseController.swift in Sources */,
-				A35F0CF01D74B89D00DA94CB /* ThumbnailCell.swift in Sources */,
 				EB6F46551D4660AC00984035 /* VideoView.swift in Sources */,
 				EBE627071D2688890095999A /* GalleryViewController.swift in Sources */,
 				EB17B3821D4A6E7F00EED1DA /* UIButton.swift in Sources */,
-				A35F0CF21D74B89D00DA94CB /* ThumbnailsViewController.swift in Sources */,
 				EB40C3781C9C5C48004EA215 /* GalleryItemsDatasource.swift in Sources */,
 				EBAF4C611D391C720039CA93 /* GalleryPagingDatasource.swift in Sources */,
 				EB1CEC1F1C84A54600BB27B8 /* UtilityFunctions.swift in Sources */,
@@ -624,6 +625,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = mailonline.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -636,6 +638,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = mailonline.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
@@ -735,6 +738,7 @@
 		C7DABE511C12245B00F5BD7B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -751,6 +755,7 @@
 		C7DABE521C12245B00F5BD7B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
