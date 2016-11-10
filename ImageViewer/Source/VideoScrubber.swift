@@ -93,8 +93,6 @@ open class VideoScrubber: UIControl {
             player?.removeTimeObserver(periodicObserver)
             self.periodicObserver = nil
         }
-
-        print("VideoScrubber deinit 💣")
     }
 
     func didEndPlaying() {
