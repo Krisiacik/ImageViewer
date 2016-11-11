@@ -45,6 +45,7 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
     fileprivate var thresholdVelocity: CGFloat = 500 // The speed of swipe needs to be at least this amount of pixels per second for the swipe to finish dismissal.
     fileprivate var displacementKeepOriginalInPlace = false
     fileprivate var displacementInsetMargin: CGFloat = 50
+    fileprivate var swipeToDismissHorizontally = true
 
     /// INTERACTIONS
     fileprivate let singleTapRecognizer = UITapGestureRecognizer()
@@ -79,7 +80,8 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
             case .itemFadeDuration(let duration):                   itemFadeDuration = duration
             case .displacementKeepOriginalInPlace(let keep):        displacementKeepOriginalInPlace = keep
             case .displacementInsetMargin(let margin):              displacementInsetMargin = margin
-
+            case .swipeToDismissHorizontally(let enabled):          swipeToDismissHorizontally = enabled
+                
             case .displacementTransitionStyle(let style):
 
                 switch style {
@@ -544,7 +546,7 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
         /// A special case for horizontal "swipe to dismiss" is when the gallery has carousel mode OFF, then it is possible to reach the beginning or the end of image set while paging. PAging will stop at index = 0 or at index.max. In this case we allow to jump out from the gallery also via horizontal swipe to dismiss.
         if (self.index == 0 && velocity.direction == .right) || (self.index == self.itemCount - 1 && velocity.direction == .left) {
             
-            return (pagingMode == .standard)
+            return (pagingMode == .standard && swipeToDismissHorizontally == true)
         }
         
         return false

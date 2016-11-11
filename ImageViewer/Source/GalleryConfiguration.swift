@@ -126,6 +126,9 @@ public enum GalleryConfigurationItem {
     ///The minimum velocity needed for the image to continue on its swipe-to-dismiss path instead of returning to its original position. The velocity is in scalar units per second, which in our case represents points on screen per second. When the thumb moves on screen and eventually is lifted, it traveled along a path and the speed represents the number of points it traveled in the last 1000 msec before it was lifted.
     case swipeToDismissThresholdVelocity(CGFloat)
 
+    ///Allows to turn on/off horizontal swipe to dismiss when first or last item reached.
+    case swipeToDismissHorizontally(Bool)
+    
     ///Allows to set rotation support support with relation to rotation support in the hosting app.
     case rotationMode(GalleryRotationMode)
 }
