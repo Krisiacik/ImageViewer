@@ -166,8 +166,13 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
         super.viewDidLoad()
 
         createViewHierarchy()
-        
-        fetchImageBlock { [weak self] image in //DON'T Forget offloading the main thread
+
+        fetchImage()
+    }
+
+    func fetchImage() {
+
+        fetchImageBlock { [weak self] image in
 
             if let image = image {
 
