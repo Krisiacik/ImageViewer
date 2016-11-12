@@ -171,10 +171,12 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
 
             if let image = image {
 
-                self?.itemView.image = image
+                DispatchQueue.main.async {
+                    self?.itemView.image = image
 
-                self?.view.setNeedsLayout()
-                self?.view.layoutIfNeeded()
+                    self?.view.setNeedsLayout()
+                    self?.view.layoutIfNeeded()
+                }
             }
         }
     }
