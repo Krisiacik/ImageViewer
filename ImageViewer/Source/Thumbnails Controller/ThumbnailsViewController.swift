@@ -125,8 +125,18 @@ class ThumbnailsViewController: UICollectionViewController, UICollectionViewDele
                     cell.imageView.image = image
                 }
             }
+
+        case .custom(let fetchImageBlock, _):
+
+            fetchImageBlock() { image in
+
+                if let image = image {
+
+                    cell.imageView.image = image
+                }
+            }
         }
-        
+
         return cell
     }
 

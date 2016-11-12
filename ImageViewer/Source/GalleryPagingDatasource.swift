@@ -94,6 +94,10 @@ final class GalleryPagingDatasource: NSObject, UIPageViewControllerDataSource {
             videoController.displacedViewsDatasource = displacedViewsDatasource
 
             return videoController
+
+        case .custom(let fetchImageBlock, let getViewController):
+
+            return getViewController(itemIndex, itemsDatasource.itemCount(), fetchImageBlock, configuration, isInitial)
         }
     }
 }
