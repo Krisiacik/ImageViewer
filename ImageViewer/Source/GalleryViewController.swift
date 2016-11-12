@@ -406,6 +406,15 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         }
     }
 
+    open func reload(atIndex index: Int) {
+
+        guard index >= 0 && index < self.itemsDatasource.itemCount() else { return }
+
+        guard let firstVC = viewControllers?.first, let itemController = firstVC as? ItemController else { return }
+
+        itemController.fetchImage()
+    }
+
     // MARK: - Animations
 
     @objc fileprivate func rotate() {

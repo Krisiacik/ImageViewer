@@ -15,6 +15,8 @@ typealias Duration = TimeInterval
     var index: Int { get }
     var isInitialController: Bool { get set }
 
+    func fetchImage()
+
     func presentItem(alongsideAnimation: () -> Void, completion: @escaping () -> Void)
     func dismissItem(alongsideAnimation: () -> Void, completion: @escaping () -> Void)
 
