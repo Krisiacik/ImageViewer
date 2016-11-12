@@ -143,45 +143,10 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
     }
 }
 
-/// Extend an external UIView to use it as part of a custom ItemView UIViewController
-class FLSomeAnimatedImage: UIView {
-
-    let myImageView = UIImageView()
-
-    init() {
-        super.init(frame: UIScreen.main.bounds)
-        let width = myCustomImage.size.width
-        let height = myCustomImage.size.height
-        myImageView.frame = CGRect(x: 0, y: 0, width: width, height: height)
-        myImageView.contentMode = .center
-        myImageView.image = myCustomImage
-        addSubview(myImageView)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    // Imaginery custom view
-    var myCustomImage: UIImage = {
-        return UIImage(named: "8")!
-    }()
+// Some external custom UIImageView we want to show in the gallery
+class FLSomeAnimatedImage: UIImageView {
 }
 
-extension FLSomeAnimatedImage: ItemView {
-
-    var image: UIImage? {
-        get {
-            // obviously something more meaningful here - grab an UIImage from the custom view
-            return myCustomImage
-        }
-        set {
-            // set the image returned from the FetchImageBlock on the custom view
-            myCustomImage = newValue ?? UIImage(named: "0")!
-        }
-    }
-}
-
-// Extend ImageBaseController so you get all the functionality for free
+// Extend ImageBaseController so we get all the functionality for free
 class AnimatedViewController: ItemBaseController<FLSomeAnimatedImage> {
 }
