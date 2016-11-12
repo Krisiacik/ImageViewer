@@ -47,6 +47,9 @@ public enum GalleryConfigurationItem {
     
     /// Sets the close button, header view and footer view visible/invisible on launch. Visibility of these three views is toggled by single tapping anywhere in the gallery area. This setting is global to Gallery.
     case hideDecorationViewsOnLaunch(Bool)
+    
+    ///Allows to turn on/off decoration views hiding via single tap.
+    case toggleDecorationViewsBySingleTap(Bool)
 
     /// Allows you to select between different types of initial gallery presentation style
     case presentationStyle(GalleryPresentationStyle)

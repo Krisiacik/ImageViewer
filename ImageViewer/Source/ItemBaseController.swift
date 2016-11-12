@@ -46,9 +46,10 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
     fileprivate var displacementKeepOriginalInPlace = false
     fileprivate var displacementInsetMargin: CGFloat = 50
     fileprivate var swipeToDismissHorizontally = true
+    fileprivate var toggleDecorationViewBySingleTap = true
 
     /// INTERACTIONS
-    fileprivate let singleTapRecognizer = UITapGestureRecognizer()
+    fileprivate var singleTapRecognizer: UITapGestureRecognizer?
     fileprivate let doubleTapRecognizer = UITapGestureRecognizer()
     fileprivate let swipeToDismissRecognizer = UIPanGestureRecognizer()
 
@@ -81,6 +82,7 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
             case .displacementKeepOriginalInPlace(let keep):        displacementKeepOriginalInPlace = keep
             case .displacementInsetMargin(let margin):              displacementInsetMargin = margin
             case .swipeToDismissHorizontally(let enabled):          swipeToDismissHorizontally = enabled
+            case .toggleDecorationViewsBySingleTap(let enabled):    toggleDecorationViewBySingleTap = enabled
                 
             case .displacementTransitionStyle(let style):
 
@@ -131,16 +133,22 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
 
     func configureGestureRecognizers() {
 
-        singleTapRecognizer.addTarget(self, action: #selector(scrollViewDidSingleTap))
-        singleTapRecognizer.numberOfTapsRequired = 1
-        scrollView.addGestureRecognizer(singleTapRecognizer)
-
         doubleTapRecognizer.addTarget(self, action: #selector(scrollViewDidDoubleTap(_:)))
         doubleTapRecognizer.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(doubleTapRecognizer)
+        
+        if toggleDecorationViewBySingleTap == true {
+            
+            let singleTapRecognizer = UITapGestureRecognizer()
 
-        singleTapRecognizer.require(toFail: doubleTapRecognizer)
-
+            singleTapRecognizer.addTarget(self, action: #selector(scrollViewDidSingleTap))
+            singleTapRecognizer.numberOfTapsRequired = 1
+            scrollView.addGestureRecognizer(singleTapRecognizer)
+            singleTapRecognizer.require(toFail: doubleTapRecognizer)
+            
+            self.singleTapRecognizer = singleTapRecognizer
+        }
+        
         swipeToDismissRecognizer.addTarget(self, action: #selector(scrollViewDidSwipeToDismiss))
         swipeToDismissRecognizer.delegate = self
         view.addGestureRecognizer(swipeToDismissRecognizer)
