@@ -13,7 +13,7 @@ public protocol ItemView {
     var image: UIImage? { get set }
 }
 
-class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGestureRecognizerDelegate, UIScrollViewDelegate where T: ItemView {
+public class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGestureRecognizerDelegate, UIScrollViewDelegate where T: ItemView {
 
     //UI
     var itemView = T()
@@ -24,8 +24,8 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
     weak var displacedViewsDatasource: GalleryDisplacedViewsDatasource?
 
     //STATE
-    let index: Int
-    var isInitialController = false
+    public let index: Int
+    public var isInitialController = false
     let itemCount: Int
     var swipingToDismiss: SwipeToDismiss?
     fileprivate var isAnimating = false
@@ -107,7 +107,7 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
     }
 
     @available (*, unavailable)
-    required init?(coder aDecoder: NSCoder) { fatalError() }
+    required public init?(coder aDecoder: NSCoder) { fatalError() }
 
     deinit {
 
@@ -162,7 +162,7 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
 
     // MARK: - View Controller Lifecycle
 
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
 
         createViewHierarchy()
@@ -170,7 +170,7 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
         fetchImage()
     }
 
-    func fetchImage() {
+    public func fetchImage() {
 
         fetchImageBlock { [weak self] image in
 
@@ -186,25 +186,25 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         self.delegate?.itemControllerWillAppear(self)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
+    override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         self.delegate?.itemControllerDidAppear(self)
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
+    override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         self.delegate?.itemControllerWillDisappear(self)
     }
 
-    override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
         scrollView.frame = self.view.bounds
@@ -220,14 +220,14 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
         }
     }
 
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+    public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
 
         return itemView
     }
 
     // MARK: - Scroll View delegate methods
 
-    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+    public func scrollViewDidZoom(_ scrollView: UIScrollView) {
 
         itemView.center = contentCenter(forBoundingSize: scrollView.bounds.size, contentSize: scrollView.contentSize)
     }
@@ -399,7 +399,7 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
 
     // MARK: - Present/Dismiss transitions
 
-    func presentItem(alongsideAnimation: () -> Void, completion: @escaping () -> Void) {
+    public func presentItem(alongsideAnimation: () -> Void, completion: @escaping () -> Void) {
 
         guard isAnimating == false else { return }
         isAnimating = true
@@ -486,7 +486,7 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
         return isVisibleEnough ? displacedView : nil
     }
 
-    func dismissItem(alongsideAnimation: () -> Void, completion: @escaping () -> Void) {
+    public func dismissItem(alongsideAnimation: () -> Void, completion: @escaping () -> Void) {
 
         guard isAnimating == false else { return }
         isAnimating = true
@@ -545,7 +545,7 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
 
     ///This resolves which of the two pan gesture recognizers should kick in. There is one built in the GalleryViewController (as it is a UIPageViewController subclass), and another one is added as part of item controller. When we pan, we need to decide whether it constitutes a horizontal paging gesture, or a horizontal swipe-to-dismiss gesture.
     /// All the logic is from the perspective of SwipeToDismissRecognizer - should it kick in (or let the paging recognizer page)?
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
 
         /// We only care about the swipe to dismiss gesture recognizer, not the built-in pan recogizner that handles paging.
         guard gestureRecognizer == swipeToDismissRecognizer else { return false }
@@ -568,7 +568,7 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
     }
     
     //Reports the continuous progress of Swipe To Dismiss to the  Gallery View Controller
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+    override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         
         guard let swipingToDissmissInProgress = swipingToDismiss else { return }
         guard keyPath == "contentOffset" else { return }

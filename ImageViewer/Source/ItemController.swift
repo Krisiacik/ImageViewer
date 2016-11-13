@@ -10,7 +10,7 @@ import UIKit
 
 typealias Duration = TimeInterval
 
-@objc protocol ItemController: class {
+@objc public protocol ItemController: class {
 
     var index: Int { get }
     var isInitialController: Bool { get set }

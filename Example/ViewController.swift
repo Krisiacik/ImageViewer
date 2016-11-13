@@ -42,13 +42,9 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
         galleryViewController.headerView = headerView
         galleryViewController.footerView = footerView
 
-        galleryViewController.launchedCompletion = {
-            print("LAUNCHED")
-        }
-        galleryViewController.closedCompletion = { print("CLOSED")
-        }
-        galleryViewController.swipedToDismissCompletion = { print("SWIPE-DISMISSED")
-        }
+        galleryViewController.launchedCompletion = { print("LAUNCHED") }
+        galleryViewController.closedCompletion = { print("CLOSED") }
+        galleryViewController.swipedToDismissCompletion = { print("SWIPE-DISMISSED") }
 
         galleryViewController.landedPageAtIndexCompletion = { index in
 
@@ -79,14 +75,14 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
         }
         if index == 4 {
 
-            let myFetchImageBlock: FetchImageBlock = { $0(UIImage(named: "8")!) }
+            let myFetchImageBlock: FetchImageBlock = { [weak self] in $0(self?.imageViews[index].image!) }
 
-            let getViewController: GetViewControllerCompletion = { index, itemCount, fetchImageBlock, configuration, isInitialController in
+            let itemViewControllerBlock: ItemViewControllerBlock = { index, itemCount, fetchImageBlock, configuration, isInitialController in
 
                 return AnimatedViewController(index: index, itemCount: itemCount, fetchImageBlock: myFetchImageBlock, configuration: configuration, isInitialController: isInitialController)
             }
 
-            return GalleryItem.custom(fetchImageBlock: myFetchImageBlock, getViewController: getViewController)
+            return GalleryItem.custom(fetchImageBlock: myFetchImageBlock, itemViewControllerBlock: itemViewControllerBlock)
         }
         else {
 
