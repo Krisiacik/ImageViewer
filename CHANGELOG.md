@@ -14,3 +14,8 @@
 ## Version 3.1
 
 * Swift 2.3 support.
+
+Not published to CocoaPods yet, use tag directly:
+```ruby
+pod 'ImageViewer', :git => 'git@github.com:MailOnline/ImageViewer.git', :tag => '3.1'
+```

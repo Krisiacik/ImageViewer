@@ -78,11 +78,11 @@ ImageViewer 4.0 is Swift 3 ready! 🎉
 
 If you use earlier version of Swift - refer to a table below:
 
-| Swift version | ImageViewer version |
-| ------------- | ------------------- |
-| 3.X           | >= 4.0              |
-| 2.3           | 3.1                 |
-| 2.2           | <= 2.1              |
+| Swift version | ImageViewer version               |
+| ------------- | --------------------------------- |
+| 3.X           | >= 4.0                            |
+| 2.3           | 3.1 [⚠️](CHANGELOG.md#version-31) |
+| 2.2           | <= 2.1                            |
 
 ### CocoaPods
 
