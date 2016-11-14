@@ -1,7 +1,8 @@
-<a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat"></a>
-<a href="https://github.com/cocoapods/cocoapods"><img src="https://img.shields.io/cocoapods/v/ImageViewer.svg"></a>
-![](https://travis-ci.org/MailOnline/ImageViewer.svg?branch=master)
+
+[![CI Status](http://img.shields.io/travis/MailOnline/ImageViewer.svg?style=flat)](https://travis-ci.org/MailOnline/ImageViewer)
 [![Swift 3.0](https://img.shields.io/badge/Swift-3.0-orange.svg?style=flat)](https://developer.apple.com/swift/)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Version](https://img.shields.io/cocoapods/v/ImageViewer.svg?style=flat)](http://cocoadocs.org/docsets/ImageViewer)
 [![Platforms iOS](https://img.shields.io/badge/Platforms-iOS-lightgray.svg?style=flat)](https://developer.apple.com/swift/)
 [![License MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat)](https://opensource.org/licenses/MIT)
 
@@ -69,39 +70,45 @@ The number of **configuration options** has almost trippled. You can tweak every
 * `Swipe to dismiss`: Close the viewer by vertically swiping and *throwing* the image away.
 * `Rotation support`: ImageViewer 1.2 supports rotation regardless of rotation support in the host app.
 
-## Swift
+## Setup
+
+### ImageViewer version vs Swift version.
 
 ImageViewer 4.0 is Swift 3 ready! 🎉
 
-Still on Swift 2.3? Use ImageViewer 3.0!
+If you use earlier version of Swift - refer to a table below:
 
-## Setup
+| Swift version | ImageViewer version               |
+| ------------- | --------------------------------- |
+| 3.X           | >= 4.0                            |
+| 2.3           | 3.1 [⚠️](CHANGELOG.md#version-31) |
+| 2.2           | <= 2.1                            |
 
 ### CocoaPods
 
-```
+```ruby
 # source 'https://github.com/CocoaPods/Specs.git'
 # use_frameworks!
 # platform :ios, "8.0"
 
-pod "ImageViewer"
+pod 'ImageViewer'
 ```
 
 ### Carthage
 
-```
+```ruby
 github "MailOnline/ImageViewer"
 ```
 
 ## Sample Usage
 
-```
-    let galleryViewController = GalleryViewController(startIndex: displacedViewIndex, itemsDatasource: self, displacedViewsDatasource: self, configuration: galleryConfiguration)
-    self.presentImageGallery(galleryViewController)
-
+```swift
+let galleryViewController = GalleryViewController(startIndex: displacedViewIndex, itemsDatasource: self, displacedViewsDatasource: self, configuration: galleryConfiguration)
+self.presentImageGallery(galleryViewController)
 ```
 
 ## License
-ImageViewer is licensed under the MIT License, Version 2.0. [View the license file](LICENSE)
+
+ImageViewer is licensed under the MIT License, Version 2.0. See the [LICENSE](LICENSE) file for more info.
 
 Copyright (c) 2016 MailOnline
