@@ -100,7 +100,7 @@ class VideoViewController: ItemBaseController<VideoView> {
         }) 
     }
 
-    func closeDecorationViews(_ duration: TimeInterval) {
+    override func closeDecorationViews(_ duration: TimeInterval) {
 
         UIView.animate(withDuration: duration, animations: { [weak self] in
 

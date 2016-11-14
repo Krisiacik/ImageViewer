@@ -463,7 +463,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         if let itemController = self.viewControllers?.first as? ItemController {
 
-            itemController.closeDecorationViews?(decorationViewsFadeDuration)
+            itemController.closeDecorationViews(decorationViewsFadeDuration)
         }
 
         UIView.animate(withDuration: decorationViewsFadeDuration, animations: { [weak self] in
@@ -526,7 +526,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         }) 
     }
 
-    func itemControllerWillAppear(_ controller: ItemController) {
+    public func itemControllerWillAppear(_ controller: ItemController) {
 
         if let videoController = controller as? VideoViewController {
 
@@ -534,7 +534,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         }
     }
 
-    func itemControllerWillDisappear(_ controller: ItemController) {
+    public func itemControllerWillDisappear(_ controller: ItemController) {
 
         if let _ = controller as? VideoViewController {
 
@@ -547,7 +547,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         }
     }
 
-    func itemControllerDidAppear(_ controller: ItemController) {
+    public func itemControllerDidAppear(_ controller: ItemController) {
 
         self.currentIndex = controller.index
         self.landedPageAtIndexCompletion?(self.currentIndex)
@@ -566,13 +566,13 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         }
     }
     
-    func itemControllerDidSingleTap(_ controller: ItemController) {
+    public func itemControllerDidSingleTap(_ controller: ItemController) {
         
         self.decorationViewsHidden.flip()
         animateDecorationViews(visible: !self.decorationViewsHidden)
     }
     
-    func itemController(_ controller: ItemController, didSwipeToDismissWithDistanceToEdge distance: CGFloat) {
+    public func itemController(_ controller: ItemController, didSwipeToDismissWithDistanceToEdge distance: CGFloat) {
         
         if decorationViewsHidden == false {
             
@@ -592,7 +592,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         self.overlayView.colorView.alpha = 1 - distance
     }
     
-    func itemControllerDidFinishSwipeToDismissSuccesfully() {
+    public func itemControllerDidFinishSwipeToDismissSuccesfully() {
         
         self.swipedToDismissCompletion?()
         self.overlayView.removeFromSuperview()

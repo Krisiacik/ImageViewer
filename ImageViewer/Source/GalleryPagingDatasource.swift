@@ -95,9 +95,14 @@ final class GalleryPagingDatasource: NSObject, UIPageViewControllerDataSource {
 
             return videoController
 
-        case .custom(let fetchImageBlock, let getViewController):
+        case .custom(let fetchImageBlock, let itemViewControllerBlock):
 
-            return getViewController(itemIndex, itemsDatasource.itemCount(), fetchImageBlock, configuration, isInitial)
+            guard let itemController = itemViewControllerBlock(itemIndex, itemsDatasource.itemCount(), fetchImageBlock, configuration, isInitial) as? ItemController, let vc = itemController as? UIViewController else { return UIViewController() }
+
+            itemController.delegate = itemControllerDelegate
+            itemController.displacedViewsDatasource = displacedViewsDatasource
+
+            return vc
         }
     }
 }

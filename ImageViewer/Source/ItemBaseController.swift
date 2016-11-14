@@ -20,8 +20,8 @@ public class ItemBaseController<T: UIView>: UIViewController, ItemController, UI
     let scrollView = UIScrollView()
 
     //DELEGATE / DATASOURCE
-    weak var delegate: ItemControllerDelegate?
-    weak var displacedViewsDatasource: GalleryDisplacedViewsDatasource?
+    weak public var delegate: ItemControllerDelegate?
+    weak public var displacedViewsDatasource: GalleryDisplacedViewsDatasource?
 
     //STATE
     public let index: Int
@@ -592,5 +592,10 @@ public class ItemBaseController<T: UIView>: UIViewController, ItemController, UI
         if let delegate = self.delegate {
             delegate.itemController(self, didSwipeToDismissWithDistanceToEdge: percentDistance)
         }
+    }
+
+
+    public func closeDecorationViews(_ duration: TimeInterval) {
+        // stub
     }
 }
