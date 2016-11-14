@@ -246,6 +246,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
                     }
 
                     weakself.isAnimating = false
+                    
+                    weakself.launchedCompletion?()
                 }
             })
     }
