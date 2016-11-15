@@ -18,6 +18,7 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
     //UI
     var itemView = T()
     let scrollView = UIScrollView()
+    let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .white)
 
     //DELEGATE / DATASOURCE
     weak var delegate: ItemControllerDelegate?
@@ -83,6 +84,8 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
             case .displacementInsetMargin(let margin):              displacementInsetMargin = margin
             case .swipeToDismissHorizontally(let enabled):          swipeToDismissHorizontally = enabled
             case .toggleDecorationViewsBySingleTap(let enabled):    toggleDecorationViewBySingleTap = enabled
+            case .spinnerColor(let color):                          activityIndicatorView.color = color
+            case .spinnerStyle(let style):                          activityIndicatorView.activityIndicatorViewStyle = style
                 
             case .displacementTransitionStyle(let style):
 
@@ -104,6 +107,8 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
 
         configureScrollView()
         configureGestureRecognizers()
+        
+        activityIndicatorView.hidesWhenStopped = true
     }
 
     @available (*, unavailable)
@@ -158,6 +163,9 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
 
         self.view.addSubview(scrollView)
         scrollView.addSubview(itemView)
+        
+        activityIndicatorView.startAnimating()
+        view.addSubview(activityIndicatorView)
     }
 
     // MARK: - View Controller Lifecycle
@@ -177,6 +185,8 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
             if let image = image {
 
                 DispatchQueue.main.async {
+                    self?.activityIndicatorView.stopAnimating()
+                    
                     self?.itemView.image = image
 
                     self?.view.setNeedsLayout()
@@ -208,6 +218,7 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
         super.viewDidLayoutSubviews()
 
         scrollView.frame = self.view.bounds
+        activityIndicatorView.center = view.boundsCenter
 
         if let size = itemView.image?.size , size != CGSize.zero {
 
