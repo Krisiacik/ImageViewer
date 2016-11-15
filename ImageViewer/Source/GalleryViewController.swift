@@ -210,7 +210,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         configureThumbnailsButton()
         configureScrubber()
         
-        view.clipsToBounds = false
+        self.view.clipsToBounds = false
     }
 
     open override func viewDidAppear(_ animated: Bool) {
