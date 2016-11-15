@@ -149,16 +149,17 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         NotificationCenter.default.removeObserver(self)
     }
-
+    
     fileprivate func configureOverlayView() {
 
+        /// Make the overlay view occupy the whole screen
         overlayView.bounds.size = UIScreen.main.bounds.insetBy(dx: -UIScreen.main.bounds.width / 2, dy: -UIScreen.main.bounds.height / 2).size
-
-        if let controller = self.presentingViewController {
-
-            overlayView.center = controller.view.boundsCenter
-            controller.view.addSubview(overlayView)
-        }
+        overlayView.center = CGPoint(x: (UIScreen.main.bounds.width / 2), y: (UIScreen.main.bounds.height / 2))
+        
+        /// Add the overlay to the back of the gallery view controller instead of the original one
+        /// This fixes the problem of not opening the gallery in fullScreen when it's originated on a Modal controller
+        self.view.addSubview(overlayView)
+        self.view.sendSubview(toBack: overlayView)
     }
 
     fileprivate func configureHeaderView() {
