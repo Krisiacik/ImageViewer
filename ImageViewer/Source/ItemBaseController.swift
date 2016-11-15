@@ -164,7 +164,6 @@ class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGesture
         self.view.addSubview(scrollView)
         scrollView.addSubview(itemView)
         
-            
         activityIndicatorView.startAnimating()
         view.addSubview(activityIndicatorView)
     }
