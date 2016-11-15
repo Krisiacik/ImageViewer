@@ -149,7 +149,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     fileprivate func configureOverlayView() {
 
         overlayView.bounds.size = UIScreen.main.bounds.insetBy(dx: -UIScreen.main.bounds.width / 2, dy: -UIScreen.main.bounds.height / 2).size
