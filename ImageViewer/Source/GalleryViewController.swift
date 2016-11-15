@@ -153,12 +153,10 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     fileprivate func configureOverlayView() {
 
         overlayView.bounds.size = UIScreen.main.bounds.insetBy(dx: -UIScreen.main.bounds.width / 2, dy: -UIScreen.main.bounds.height / 2).size
-
-        if let controller = self.presentingViewController {
-
-            overlayView.center = controller.view.boundsCenter
-            controller.view.addSubview(overlayView)
-        }
+        overlayView.center = CGPoint(x: (UIScreen.main.bounds.width / 2), y: (UIScreen.main.bounds.height / 2))
+        
+        self.view.addSubview(overlayView)
+        self.view.sendSubview(toBack: overlayView)
     }
 
     fileprivate func configureHeaderView() {
