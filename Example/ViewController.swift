@@ -42,13 +42,9 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
         galleryViewController.headerView = headerView
         galleryViewController.footerView = footerView
 
-        galleryViewController.launchedCompletion = {
-            print("LAUNCHED")
-        }
-        galleryViewController.closedCompletion = { print("CLOSED")
-        }
-        galleryViewController.swipedToDismissCompletion = { print("SWIPE-DISMISSED")
-        }
+        galleryViewController.launchedCompletion = { print("LAUNCHED") }
+        galleryViewController.closedCompletion = { print("CLOSED") }
+        galleryViewController.swipedToDismissCompletion = { print("SWIPE-DISMISSED") }
 
         galleryViewController.landedPageAtIndexCompletion = { index in
 
@@ -76,6 +72,17 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
         if index == 2 {
             
             return GalleryItem.video(fetchPreviewImageBlock: { $0(UIImage(named: "2")!)} , videoURL: URL(string: "http://video.dailymail.co.uk/video/mol/test/2016/09/21/5739239377694275356/1024x576_MP4_5739239377694275356.mp4")!)
+        }
+        if index == 4 {
+
+            let myFetchImageBlock: FetchImageBlock = { [weak self] in $0(self?.imageViews[index].image!) }
+
+            let itemViewControllerBlock: ItemViewControllerBlock = { index, itemCount, fetchImageBlock, configuration, isInitialController in
+
+                return AnimatedViewController(index: index, itemCount: itemCount, fetchImageBlock: myFetchImageBlock, configuration: configuration, isInitialController: isInitialController)
+            }
+
+            return GalleryItem.custom(fetchImageBlock: myFetchImageBlock, itemViewControllerBlock: itemViewControllerBlock)
         }
         else {
 
@@ -130,4 +137,12 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
             GalleryConfigurationItem.displacementInsetMargin(50)
         ]
     }
+}
+
+// Some external custom UIImageView we want to show in the gallery
+class FLSomeAnimatedImage: UIImageView {
+}
+
+// Extend ImageBaseController so we get all the functionality for free
+class AnimatedViewController: ItemBaseController<FLSomeAnimatedImage> {
 }
