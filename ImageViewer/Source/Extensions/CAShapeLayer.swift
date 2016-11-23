@@ -79,4 +79,38 @@ extension CAShapeLayer {
         
         return circle
     }
+    
+    static func closeShape(edgeLength: CGFloat) -> CAShapeLayer {
+        
+        let container = CAShapeLayer()
+        container.bounds.size = CGSize(width: edgeLength + 4, height: edgeLength + 4)
+        container.frame.origin = CGPoint.zero
+        
+        let linePath = UIBezierPath()
+        linePath.move(to: CGPoint(x: 0, y: 0))
+        linePath.addLine(to: CGPoint(x: edgeLength, y: edgeLength))
+        linePath.move(to: CGPoint(x: 0, y: edgeLength))
+        linePath.addLine(to: CGPoint(x: edgeLength, y: 0))
+        
+        let elementBorder = CAShapeLayer()
+        elementBorder.bounds.size = CGSize(width: edgeLength, height: edgeLength)
+        elementBorder.position = CGPoint(x: container.bounds.midX, y: container.bounds.midY)
+        elementBorder.lineCap = kCALineCapRound
+        elementBorder.path = linePath.cgPath
+        elementBorder.strokeColor = UIColor.darkGray.cgColor
+        elementBorder.lineWidth = 2.5
+        
+        let elementFill = CAShapeLayer()
+        elementFill.bounds.size = CGSize(width: edgeLength, height: edgeLength)
+        elementFill.position = CGPoint(x: container.bounds.midX, y: container.bounds.midY)
+        elementFill.lineCap = kCALineCapRound
+        elementFill.path = linePath.cgPath
+        elementFill.strokeColor = UIColor.white.cgColor
+        elementFill.lineWidth = 2
+        
+        container.addSublayer(elementBorder)
+        container.addSublayer(elementFill)
+        
+        return container
+    }
 }
