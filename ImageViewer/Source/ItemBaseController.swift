@@ -13,7 +13,7 @@ public protocol ItemView {
     var image: UIImage? { get set }
 }
 
-public class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGestureRecognizerDelegate, UIScrollViewDelegate where T: ItemView {
+open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGestureRecognizerDelegate, UIScrollViewDelegate where T: ItemView {
 
     //UI
     var itemView = T()
@@ -60,7 +60,7 @@ public class ItemBaseController<T: UIView>: UIViewController, ItemController, UI
 
     // MARK: - Initializers
 
-    init(index: Int, itemCount: Int, fetchImageBlock: @escaping FetchImageBlock, configuration: GalleryConfiguration, isInitialController: Bool = false) {
+    public init(index: Int, itemCount: Int, fetchImageBlock: @escaping FetchImageBlock, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
         self.index = index
         self.itemCount = itemCount
@@ -170,7 +170,7 @@ public class ItemBaseController<T: UIView>: UIViewController, ItemController, UI
 
     // MARK: - View Controller Lifecycle
 
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
 
         createViewHierarchy()
@@ -196,25 +196,25 @@ public class ItemBaseController<T: UIView>: UIViewController, ItemController, UI
         }
     }
 
-    override public func viewWillAppear(_ animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         self.delegate?.itemControllerWillAppear(self)
     }
 
-    override public func viewDidAppear(_ animated: Bool) {
+    override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         self.delegate?.itemControllerDidAppear(self)
     }
 
-    override public func viewWillDisappear(_ animated: Bool) {
+    override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         self.delegate?.itemControllerWillDisappear(self)
     }
 
-    override public func viewDidLayoutSubviews() {
+    override open func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
         scrollView.frame = self.view.bounds
@@ -579,7 +579,7 @@ public class ItemBaseController<T: UIView>: UIViewController, ItemController, UI
     }
     
     //Reports the continuous progress of Swipe To Dismiss to the  Gallery View Controller
-    override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+    override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         
         guard let swipingToDissmissInProgress = swipingToDismiss else { return }
         guard keyPath == "contentOffset" else { return }
