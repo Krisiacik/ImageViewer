@@ -26,7 +26,7 @@ func aspectFitContentSize(forBoundingSize boundingSize: CGSize, contentSize: CGS
 func aspectFillZoomScale(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGFloat {
     
     let aspectFitSize = aspectFitContentSize(forBoundingSize: boundingSize, contentSize: contentSize)
-    return (boundingSize.width == aspectFitSize.width) ? (boundingSize.height / aspectFitSize.height): (boundingSize.width / aspectFitSize.width)
+    return (floor(boundingSize.width) == floor(aspectFitSize.width)) ? (boundingSize.height / aspectFitSize.height): (boundingSize.width / aspectFitSize.width)
 }
 
 func contentCenter(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGPoint {
