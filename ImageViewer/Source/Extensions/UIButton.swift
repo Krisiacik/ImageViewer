@@ -106,4 +106,12 @@ extension UIButton {
 
         return button
     }
+
+    static func deleteButton() -> UIButton {
+
+        let button = UIButton(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 80, height: 50)))
+        button.setTitle("Delete", for: UIControlState())
+
+        return button
+    }
 }

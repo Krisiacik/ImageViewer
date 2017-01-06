@@ -18,6 +18,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     open var footerView: UIView?
     fileprivate var closeButton: UIButton? = UIButton.closeButton()
     fileprivate var thumbnailsButton: UIButton? = UIButton.thumbnailsButton()
+    fileprivate var deleteButton: UIButton? = UIButton.deleteButton()
     fileprivate let scrubber = VideoScrubber()
 
     fileprivate weak var initialItemController: ItemController?
@@ -30,9 +31,10 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     fileprivate var isAnimating = false
     fileprivate var initialPresentationDone = false
 
-    // DATASOURCE
-    fileprivate let itemsDataSource:           GalleryItemsDataSource
-    fileprivate let pagingDataSource:          GalleryPagingDataSource
+    // DATASOURCE/DELEGATE
+    fileprivate let itemsDelegate: GalleryItemsDelegate?
+    fileprivate let itemsDataSource: GalleryItemsDataSource
+    fileprivate let pagingDataSource: GalleryPagingDataSource
 
     // CONFIGURATION
     fileprivate var spineDividerWidth:         Float = 10
@@ -41,6 +43,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     fileprivate var footerLayout = FooterLayout.center(25)
     fileprivate var closeLayout = ButtonLayout.pinRight(8, 16)
     fileprivate var thumbnailsLayout = ButtonLayout.pinLeft(8, 16)
+    fileprivate var deleteLayout = ButtonLayout.pinRight(8, 66)
     fileprivate var statusBarHidden = true
     fileprivate var overlayAccelerationFactor: CGFloat = 1
     fileprivate var rotationDuration = 0.15
@@ -63,9 +66,10 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     @available(*, unavailable)
     required public init?(coder: NSCoder) { fatalError() }
 
-    public init(startIndex: Int, itemsDataSource: GalleryItemsDataSource, displacedViewsDataSource: GalleryDisplacedViewsDataSource? = nil, configuration: GalleryConfiguration = []) {
+    public init(startIndex: Int, itemsDataSource: GalleryItemsDataSource, itemsDelegate: GalleryItemsDelegate? = nil, displacedViewsDataSource: GalleryDisplacedViewsDataSource? = nil, configuration: GalleryConfiguration = []) {
 
         self.currentIndex = startIndex
+        self.itemsDelegate = itemsDelegate
         self.itemsDataSource = itemsDataSource
 
         ///Only those options relevant to the paging GalleryViewController are explicitly handled here, the rest is handled by ItemViewControllers
@@ -115,7 +119,16 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
                 case .builtIn:              break
                 }
 
-            default: break
+            case .deleteButtonMode(let buttonMode):
+
+                switch buttonMode {
+
+                case .none:                 deleteButton = nil
+                case .custom(let button):   deleteButton = button
+                case .builtIn:              break
+                }
+
+                default: break
             }
         }
 
@@ -177,9 +190,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
     fileprivate func configureCloseButton() {
 
-        closeButton?.addTarget(self, action: #selector(GalleryViewController.closeInteractively), for: .touchUpInside)
-
         if let closeButton = closeButton {
+            closeButton.addTarget(self, action: #selector(GalleryViewController.closeInteractively), for: .touchUpInside)
             closeButton.alpha = 0
             self.view.addSubview(closeButton)
         }
@@ -187,11 +199,19 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
     fileprivate func configureThumbnailsButton() {
 
-        thumbnailsButton?.addTarget(self, action: #selector(GalleryViewController.showThumbnails), for: .touchUpInside)
-
         if let thumbnailsButton = thumbnailsButton {
+            thumbnailsButton.addTarget(self, action: #selector(GalleryViewController.showThumbnails), for: .touchUpInside)
             thumbnailsButton.alpha = 0
             self.view.addSubview(thumbnailsButton)
+        }
+    }
+
+    fileprivate func configureDeleteButton() {
+
+        if let deleteButton = deleteButton {
+            deleteButton.addTarget(self, action: #selector(GalleryViewController.deleteItem), for: .touchUpInside)
+            deleteButton.alpha = 0
+            self.view.addSubview(deleteButton)
         }
     }
 
@@ -208,6 +228,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         configureFooterView()
         configureCloseButton()
         configureThumbnailsButton()
+        configureDeleteButton()
         configureScrubber()
 
         self.view.clipsToBounds = false
@@ -268,6 +289,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         layoutButton(closeButton, layout: closeLayout)
         layoutButton(thumbnailsButton, layout: thumbnailsLayout)
+        layoutButton(deleteButton, layout: deleteLayout)
         layoutHeaderView()
         layoutFooterView()
         layoutScrubber()
@@ -362,6 +384,14 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         scrubber.frame.origin.y = (footerView?.frame.origin.y ?? self.view.bounds.maxY) - scrubber.bounds.height
     }
 
+    @objc fileprivate func deleteItem() {
+
+        itemsDelegate?.removeGalleryItem(at: currentIndex)
+        removePage(atIndex: currentIndex)
+    }
+
+    //ThumbnailsimageBlock
+
     @objc fileprivate func showThumbnails() {
 
         let thumbnailsController = ThumbnailsViewController(itemsDataSource: self.itemsDataSource)
@@ -404,6 +434,20 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
                     })
             })
         }
+    }
+
+    func removePage(atIndex index: Int) {
+
+        // If removing last item, go back, otherwise, go forward
+
+        let direction: UIPageViewControllerNavigationDirection = index < self.itemsDataSource.itemCount() ? .forward : .reverse
+
+        let newIndex = direction == .forward ? index : index - 1
+
+        if newIndex < 0 { close(); return }
+
+        let vc = self.pagingDataSource.createItemController(newIndex)
+        setViewControllers([vc], direction: direction, animated: true, completion: nil)
     }
 
     open func reload(atIndex index: Int) {
@@ -472,6 +516,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             self?.footerView?.alpha = 0.0
             self?.closeButton?.alpha = 0.0
             self?.thumbnailsButton?.alpha = 0.0
+            self?.deleteButton?.alpha = 0.0
             self?.scrubber.alpha = 0.0
 
             }, completion: { [weak self] done in
@@ -515,6 +560,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             self?.footerView?.alpha = targetAlpha
             self?.closeButton?.alpha = targetAlpha
             self?.thumbnailsButton?.alpha = targetAlpha
+            self?.deleteButton?.alpha = targetAlpha
 
             if let _ = self?.viewControllers?.first as? VideoViewController {
 
@@ -580,6 +626,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
             closeButton?.alpha = alpha
             thumbnailsButton?.alpha = alpha
+            deleteButton?.alpha = alpha
             headerView?.alpha = alpha
             footerView?.alpha = alpha
 
