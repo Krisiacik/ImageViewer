@@ -238,16 +238,16 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
             }, completion: { [weak self] in
 
-                if let weakself = self {
+                if let strongSelf = self {
 
-                    if weakself.decorationViewsHidden == false {
+                    if strongSelf.decorationViewsHidden == false {
 
-                        weakself.animateDecorationViews(visible: true)
+                        strongSelf.animateDecorationViews(visible: true)
                     }
 
-                    weakself.isAnimating = false
-                    weakself.launchedCompletion?()
+                    strongSelf.isAnimating = false
 
+                    strongSelf.launchedCompletion?()
                 }
             })
     }
@@ -476,12 +476,12 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
             }, completion: { [weak self] done in
 
-                if let weakself = self,
-                    let itemController = weakself.viewControllers?.first as? ItemController {
+                if let strongSelf = self,
+                    let itemController = strongSelf.viewControllers?.first as? ItemController {
 
                     itemController.dismissItem(alongsideAnimation: {
 
-                        weakself.overlayView.dismiss()
+                        strongSelf.overlayView.dismiss()
 
                         }, completion: { [weak self] in
 
