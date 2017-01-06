@@ -10,11 +10,11 @@ import UIKit
 
 open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
-    //UI
+    // UI
     fileprivate let overlayView = BlurView()
     /// A custom view on the top of the gallery with layout using default (or custom) pinning settings for header.
     open var headerView: UIView?
-    /// A custom view at the bottom of the gallery with layout using default (or custom) pinning settingsfor footer.
+    /// A custom view at the bottom of the gallery with layout using default (or custom) pinning settings for footer.
     open var footerView: UIView?
     fileprivate var closeButton: UIButton? = UIButton.closeButton()
     fileprivate var thumbnailsButton: UIButton? = UIButton.thumbnailsButton()
@@ -22,19 +22,19 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
     fileprivate weak var initialItemController: ItemController?
 
-    ///LOCAL STATE
-    ///represents the current page index, updated when the root view of the view controller representing the page stops animating inside visible bounds and stays on screen.
+    // LOCAL STATE
+    // represents the current page index, updated when the root view of the view controller representing the page stops animating inside visible bounds and stays on screen.
     var currentIndex: Int
-    ///Picks up the initial value from configuration, if provided. Subseqently also works as local state for the setting.
+    // Picks up the initial value from configuration, if provided. Subsequently also works as local state for the setting.
     fileprivate var decorationViewsHidden = false
     fileprivate var isAnimating = false
     fileprivate var initialPresentationDone = false
 
-    //DATASOURCE
+    // DATASOURCE
     fileprivate let itemsDatasource: GalleryItemsDatasource
     fileprivate let pagingDatasource: GalleryPagingDatasource
 
-    /// CONFIGURATION
+    // CONFIGURATION
     fileprivate var spineDividerWidth: Float = 10
     fileprivate var galleryPagingMode = GalleryPagingMode.standard
     fileprivate var headerLayout = HeaderLayout.center(25)
@@ -49,14 +49,14 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     fileprivate var decorationViewsFadeDuration = 0.15
 
     /// COMPLETION BLOCKS
-    /// If set ,the block is executed right after the initial launch animations finish.
+    /// If set, the block is executed right after the initial launch animations finish.
     open var launchedCompletion: (() -> Void)?
-    /// If set, called everytime ANY animation stops in the page controller stops and the viewer passes a page index of the page that is currently on screen
+    /// If set, called every time ANY animation stops in the page controller stops and the viewer passes a page index of the page that is currently on screen
     open var landedPageAtIndexCompletion: ((Int) -> Void)?
     /// If set, launched after all animations finish when the close button is pressed.
     open var closedCompletion: (() -> Void)?
     /// If set, launched after all animations finish when the close() method is invoked via public API.
-    open var programaticallyClosedCompletion: (() -> Void)?
+    open var programmaticallyClosedCompletion: (() -> Void)?
     /// If set, launched after all animations finish when the swipe-to-dismiss (applies to all directions and cases) gesture is used.
     open var swipedToDismissCompletion: (() -> Void)?
 
@@ -68,7 +68,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         self.currentIndex = startIndex
         self.itemsDatasource = itemsDatasource
 
-        ///Only those options relevant to the paging GalleryViewController are explicitely handled here, the rest is handled by ItemViewControllers
+        ///Only those options relevant to the paging GalleryViewController are explicitly handled here, the rest is handled by ItemViewControllers
         for item in configuration {
 
             switch item {
@@ -444,10 +444,10 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         }
     }
 
-    /// Invoked when closed programatically
+    /// Invoked when closed programmatically
     open func close() {
 
-        closeDecorationViews(programaticallyClosedCompletion)
+        closeDecorationViews(programmaticallyClosedCompletion)
     }
 
     /// Invoked when closed via close button
@@ -591,8 +591,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         self.overlayView.blurringView.alpha = 1 - distance
         self.overlayView.colorView.alpha = 1 - distance
     }
-    public func itemControllerDidFinishSwipeToDismissSuccesfully() {
 
+    public func itemControllerDidFinishSwipeToDismissSuccessfully() {
 
         self.swipedToDismissCompletion?()
         self.overlayView.removeFromSuperview()

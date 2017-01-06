@@ -16,7 +16,7 @@ ImageViewer 3.0 is our biggest release yet both in terms of codebase and feature
 
 We have completely redesigned the way content is displaced™ :) from the parent canvas to ImageViewer. Images and videos now seamlessly **morph** from aspectFill and other aspect-ratio-breaking modes to aspectFit FullScreen. A new built-in **Thumbnails screen** allows you to handle large sets of images and videos.
 
-The number of **configuration options** has almost trippled. You can tweak every aspect of the complex displacement animation composition including speed & timing. Images with **transparency** are now equally supported. Main backround layer alows for semitransparent color and **blur**.
+The number of **configuration options** has almost tripled. You can tweak every aspect of the complex displacement animation composition including speed & timing. Images with **transparency** are now equally supported. Main background layer allows for semitransparent color and **blur**.
 
 ## Complete list of features
 
@@ -27,7 +27,7 @@ The number of **configuration options** has almost trippled. You can tweak every
 * `Composited background`: Background is now composed from two layers - the blur and the color layer. Blur intensity, color and the level of transparency for both layers is handled separately.
 * `Block-based image fetching`: Now it's completely up to you to handle fetching the way you want... just pass a block that does it.
 * `Rotation mode`: Option to rotate now can be set to be app based or always.
-* `Spring bouncing`: Displacement can optionaly include a spring bounce effect same as in the iOS Photos app.
+* `Spring bouncing`: Displacement can optionally include a spring bounce effect same as in the iOS Photos app.
 * `Panorama support`: Very wide panorama images will still be scaled to aspectFill after double tap to zoom, even if the resize would result in a scale that exceeds maximumZoomScale.
 
 #### Config options
@@ -63,7 +63,7 @@ The number of **configuration options** has almost trippled. You can tweak every
 
 ### v1.2
 
-* `Displace image`: The image you tap will visually detach from its parrent view and will become part of the full screen presentation. In our context, you can imagine an image as part of an article and when it's tapped, the image is animated into full screen.
+* `Displace image`: The image you tap will visually detach from its parent view and will become part of the full screen presentation. In our context, you can imagine an image as part of an article and when it's tapped, the image is animated into full screen.
 * `Double tap to zoom`: Double tapping the image will toggle between Aspect Fit and Aspect Fill zoom scale.
 * `Focused zoom`: When you double tap an image that is Aspect Fit, it will zoom in specifically focusing into the tap area.
 * `Pinch to zoom`: Use the well know two finger gesture to zoom in and out.

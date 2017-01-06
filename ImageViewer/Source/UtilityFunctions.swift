@@ -9,9 +9,9 @@
 import UIKit
 import AVFoundation
 
-/// returns a size that aspect-fits into the bounding size. Example -> We have some view of 
-/// certain size and the question is, what would have to be its size, so that it would fit 
-/// it into some rect of some size ..given we wuold want to keep the content rects aspect ratio.
+/// returns a size that aspect-fits into the bounding size. Example -> We have some view of
+/// certain size and the question is, what would have to be its size, so that it would fit
+/// it into some rect of some size ..given we would want to keep the content rects aspect ratio.
 
 func aspectFitSize(forContentOfSize contentSize: CGSize, inBounds bounds: CGSize) -> CGSize {
 
@@ -34,14 +34,14 @@ func contentCenter(forBoundingSize boundingSize: CGSize, contentSize: CGSize) ->
     /// When the zoom scale changes i.e. the image is zoomed in or out, the hypothetical center
     /// of content view changes too. But the default Apple implementation is keeping the last center
     /// value which doesn't make much sense. If the image ratio is not matching the screen
-    /// ratio, there will be some empty space horizontaly or verticaly. This needs to be calculated
+    /// ratio, there will be some empty space horizontally or vertically. This needs to be calculated
     /// so that we can get the correct new center value. When these are added, edges of contentView
-    /// are aligned in realtime and always aligned with corners of scrollview.
-    
-    let horizontalOffest = (boundingSize.width > contentSize.width) ? ((boundingSize.width - contentSize.width) * 0.5): 0.0
-    let verticalOffset = (boundingSize.height > contentSize.height) ? ((boundingSize.height - contentSize.height) * 0.5): 0.0
-    
-    return CGPoint(x: contentSize.width * 0.5 + horizontalOffest,  y: contentSize.height * 0.5 + verticalOffset)
+    /// are aligned in realtime and always aligned with corners of scrollView.
+
+    let horizontalOffset = (boundingSize.width > contentSize.width) ? ((boundingSize.width - contentSize.width) * 0.5): 0.0
+    let verticalOffset   = (boundingSize.height > contentSize.height) ? ((boundingSize.height - contentSize.height) * 0.5): 0.0
+
+    return CGPoint(x: contentSize.width * 0.5 + horizontalOffset, y: contentSize.height * 0.5 + verticalOffset)
 }
 
 func zoomRect(ForScrollView scrollView: UIScrollView, scale: CGFloat, center: CGPoint) -> CGRect {
@@ -66,7 +66,7 @@ func screenshotFromView(_ view: UIView) -> UIImage {
     return image
 }
 
-//the transform needed to rotate a view that matches device screen orientation to match window orientation.
+// the transform needed to rotate a view that matches device screen orientation to match window orientation.
 func windowRotationTransform() -> CGAffineTransform {
 
     let angleInDegrees = rotationAngleToMatchDeviceOrientation(UIDevice.current.orientation)
@@ -75,7 +75,7 @@ func windowRotationTransform() -> CGAffineTransform {
     return CGAffineTransform(rotationAngle: angleInRadians)
 }
 
-//the transform needed to rotate a view that matches window orientation to match devices screen orientation.
+// the transform needed to rotate a view that matches window orientation to match devices screen orientation.
 func deviceRotationTransform() -> CGAffineTransform {
 
     let angleInDegrees = rotationAngleToMatchDeviceOrientation(UIDevice.current.orientation)

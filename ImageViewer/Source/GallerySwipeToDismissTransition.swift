@@ -29,8 +29,8 @@ final class GallerySwipeToDismissTransition {
     }
 
     func finishInteractiveTransition(_ swipeDirection: SwipeToDismiss, touchPoint: CGFloat,  targetOffset: CGFloat, escapeVelocity: CGFloat, completion: (() -> Void)?) {
-        /// In units of "vertical velocity". for example if we have a vertical velocity of 50 units (which are points really) per second
 
+        /// In units of "vertical velocity". For example if we have a vertical velocity of 50 units (which are points really) per second
         /// and the distance to travel is 175 units, then our spring velocity is 3.5. I.e. we will travel 3.5 units in 1 second.
         let springVelocity = fabs(escapeVelocity / (targetOffset - touchPoint))
 

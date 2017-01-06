@@ -108,7 +108,7 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
             GalleryConfigurationItem.overlayBlurOpacity(1),
             GalleryConfigurationItem.overlayBlurStyle(UIBlurEffectStyle.light),
 
-            GalleryConfigurationItem.maximumZoolScale(8),
+            GalleryConfigurationItem.maximumZoomScale(8),
             GalleryConfigurationItem.swipeToDismissThresholdVelocity(500),
 
             GalleryConfigurationItem.doubleTapToZoomDuration(0.15),

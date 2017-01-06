@@ -12,7 +12,7 @@ import XCTest
 /*
 We are testing what is the fitting size of an image on phone's screen. We have these combinations:
 
-Phone - portrait (no need for landscape as tests are geometrically symetrical)
+Phone - portrait (no need for landscape as tests are geometrically symmetrical)
 Image - portrait, landscape, square ie.e both sides smaller, one side larger, both sides larger
 sizes identical
 
@@ -84,8 +84,8 @@ class AspectFitSizeFunctionTest: XCTestCase {
 
         XCTAssertEqual(expectedSize, aspectFitSize)
     }
-    func test_LandscapeImage_horizontalyLarger_onPortraitScreen() {
 
+    func test_LandscapeImage_horizontallyLarger_onPortraitScreen() {
 
         let imageSize       = CGSize(width: 800, height: 600)
         let expectedSize    = CGSize(width: 320, height: 240)
@@ -93,8 +93,8 @@ class AspectFitSizeFunctionTest: XCTestCase {
 
         XCTAssertEqual(expectedSize, aspectFitSize)
     }
-    func test_PotraitImage_BothSidesSmaller_onPortraitScreen() {
 
+    func test_PortraitImage_BothSidesSmaller_onPortraitScreen() {
 
         let imageSize       = CGSize(width: 160, height: 200)
         let expectedSize    = CGSize(width: 320, height: 400)
@@ -102,8 +102,8 @@ class AspectFitSizeFunctionTest: XCTestCase {
 
         XCTAssertEqual(expectedSize, aspectFitSize)
     }
-    func test_PotraitImage_BothSidesLarger_onPortraitScreen() {
 
+    func test_PortraitImage_BothSidesLarger_onPortraitScreen() {
 
         let imageSize       = CGSize(width: 480, height: 960)
         let expectedSize    = CGSize(width: 240, height: 480)
@@ -111,8 +111,8 @@ class AspectFitSizeFunctionTest: XCTestCase {
 
         XCTAssertEqual(expectedSize, aspectFitSize)
     }
-    func test_PotraitImage_VerticalyLarger_onPortraitScreen() {
 
+    func test_PortraitImage_VerticallyLarger_onPortraitScreen() {
 
         let imageSize       = CGSize(width: 320, height: 600)
         let expectedSize    = CGSize(width: 256, height: 480)
