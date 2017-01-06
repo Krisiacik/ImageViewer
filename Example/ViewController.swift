@@ -70,7 +70,7 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
     func provideGalleryItem(_ index: Int) -> GalleryItem {
 
         if index == 2 {
-            
+
             return GalleryItem.video(fetchPreviewImageBlock: { $0(UIImage(named: "2")!)} , videoURL: URL(string: "http://video.dailymail.co.uk/video/mol/test/2016/09/21/5739239377694275356/1024x576_MP4_5739239377694275356.mp4")!)
         }
         if index == 4 {
@@ -87,7 +87,7 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
         else {
 
             let image = imageViews[index].image ?? UIImage(named: "0")!
-            
+
             return GalleryItem.image { $0(image) }
         }
     }
@@ -99,8 +99,8 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
             GalleryConfigurationItem.pagingMode(.standard),
             GalleryConfigurationItem.presentationStyle(.displacement),
             GalleryConfigurationItem.hideDecorationViewsOnLaunch(false),
-            
-            GalleryConfigurationItem.swipeToDismissHorizontally(false),
+
+            GalleryConfigurationItem.swipeToDismissMode(.vertical),
             GalleryConfigurationItem.toggleDecorationViewsBySingleTap(false),
 
             GalleryConfigurationItem.overlayColor(UIColor(white: 0.035, alpha: 1)),

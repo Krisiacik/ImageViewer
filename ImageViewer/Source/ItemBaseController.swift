@@ -46,7 +46,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
     fileprivate var thresholdVelocity: CGFloat = 500 // The speed of swipe needs to be at least this amount of pixels per second for the swipe to finish dismissal.
     fileprivate var displacementKeepOriginalInPlace = false
     fileprivate var displacementInsetMargin: CGFloat = 50
-    fileprivate var swipeToDismissHorizontally = true
+    fileprivate var swipeToDismissMode = GallerySwipeToDismissMode.always
     fileprivate var toggleDecorationViewBySingleTap = true
 
     /// INTERACTIONS
@@ -82,11 +82,11 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
             case .itemFadeDuration(let duration):                   itemFadeDuration = duration
             case .displacementKeepOriginalInPlace(let keep):        displacementKeepOriginalInPlace = keep
             case .displacementInsetMargin(let margin):              displacementInsetMargin = margin
-            case .swipeToDismissHorizontally(let enabled):          swipeToDismissHorizontally = enabled
+            case .swipeToDismissMode(let mode):                     swipeToDismissMode = mode
             case .toggleDecorationViewsBySingleTap(let enabled):    toggleDecorationViewBySingleTap = enabled
             case .spinnerColor(let color):                          activityIndicatorView.color = color
             case .spinnerStyle(let style):                          activityIndicatorView.activityIndicatorViewStyle = style
-                
+
             case .displacementTransitionStyle(let style):
 
                 switch style {
@@ -107,7 +107,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
         configureScrollView()
         configureGestureRecognizers()
-        
+
         activityIndicatorView.hidesWhenStopped = true
     }
 
@@ -141,29 +141,32 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
         doubleTapRecognizer.addTarget(self, action: #selector(scrollViewDidDoubleTap(_:)))
         doubleTapRecognizer.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(doubleTapRecognizer)
-        
+
         if toggleDecorationViewBySingleTap == true {
-            
+
             let singleTapRecognizer = UITapGestureRecognizer()
 
             singleTapRecognizer.addTarget(self, action: #selector(scrollViewDidSingleTap))
             singleTapRecognizer.numberOfTapsRequired = 1
             scrollView.addGestureRecognizer(singleTapRecognizer)
             singleTapRecognizer.require(toFail: doubleTapRecognizer)
-            
+
             self.singleTapRecognizer = singleTapRecognizer
         }
-        
-        swipeToDismissRecognizer.addTarget(self, action: #selector(scrollViewDidSwipeToDismiss))
-        swipeToDismissRecognizer.delegate = self
-        view.addGestureRecognizer(swipeToDismissRecognizer)
+
+        if swipeToDismissMode != .never {
+
+            swipeToDismissRecognizer.addTarget(self, action: #selector(scrollViewDidSwipeToDismiss))
+            swipeToDismissRecognizer.delegate = self
+            view.addGestureRecognizer(swipeToDismissRecognizer)
+        }
     }
 
     fileprivate func createViewHierarchy() {
 
         self.view.addSubview(scrollView)
         scrollView.addSubview(itemView)
-        
+
         activityIndicatorView.startAnimating()
         view.addSubview(activityIndicatorView)
     }
@@ -186,7 +189,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
                 DispatchQueue.main.async {
                     self?.activityIndicatorView.stopAnimating()
-                    
+
                     self?.itemView.image = image
 
                     self?.view.setNeedsLayout()
@@ -405,7 +408,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
                 self?.isAnimating = false
             }
-        }) 
+        })
     }
 
     // MARK: - Present/Dismiss transitions
@@ -455,7 +458,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
                         self?.itemView.isHidden = false
                         displacedView.hidden = false
                         animatedImageView.removeFromSuperview()
-                        
+
                         self?.isAnimating = false
                         completion()
                     })
@@ -475,7 +478,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
             completion()
             self?.isAnimating = false
-            }) 
+            })
         }
     }
 
@@ -509,7 +512,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
         case .displacement:
 
             if var displacedView = self.findVisibleDisplacedView() {
-                
+
                 if displacementKeepOriginalInPlace == false {
                     displacedView.hidden = true
                 }
@@ -531,7 +534,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
                         self?.isAnimating = false
                         displacedView.hidden = false
-                        
+
                         completion()
                 })
             }
@@ -548,7 +551,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
                 self?.isAnimating = false
                 completion()
-            }) 
+            })
         }
     }
 
@@ -567,39 +570,39 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
         guard velocity.orientation != .none else { return false }
 
         /// We continue if the swipe is horizontal, otherwise it's Vertical and it is swipe to dismiss.
-        guard velocity.orientation == .horizontal else { return true }
+        guard velocity.orientation == .horizontal else { return swipeToDismissMode.contains(.vertical) }
 
         /// A special case for horizontal "swipe to dismiss" is when the gallery has carousel mode OFF, then it is possible to reach the beginning or the end of image set while paging. PAging will stop at index = 0 or at index.max. In this case we allow to jump out from the gallery also via horizontal swipe to dismiss.
         if (self.index == 0 && velocity.direction == .right) || (self.index == self.itemCount - 1 && velocity.direction == .left) {
-            
-            return (pagingMode == .standard && swipeToDismissHorizontally == true)
+
+            return (pagingMode == .standard && swipeToDismissMode.contains(.horizontal))
         }
-        
+
         return false
     }
-    
+
     //Reports the continuous progress of Swipe To Dismiss to the  Gallery View Controller
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        
+
         guard let swipingToDissmissInProgress = swipingToDismiss else { return }
         guard keyPath == "contentOffset" else { return }
-        
+
         let distanceToEdge: CGFloat
         let percentDistance: CGFloat
-        
+
         switch swipingToDissmissInProgress {
-            
+
         case .horizontal:
-            
+
             distanceToEdge = (scrollView.bounds.width / 2) + (itemView.bounds.width / 2)
             percentDistance = fabs(scrollView.contentOffset.x / distanceToEdge)
-            
+
         case .vertical:
-            
+
             distanceToEdge = (scrollView.bounds.height / 2) + (itemView.bounds.height / 2)
             percentDistance = fabs(scrollView.contentOffset.y / distanceToEdge)
         }
-        
+
         if let delegate = self.delegate {
             delegate.itemController(self, didSwipeToDismissWithDistanceToEdge: percentDistance)
         }
