@@ -41,7 +41,7 @@ The number of **configuration options** has almost tripled. You can tweak every 
 ### v2.0
 
 * `Multiple Images`: Show as many images as you want in a single run.
-* `Intelligent memory handling`: Thanks to behind the scenes used `UIPageViewController`'s datasource handling, you will never experience memory warnings caused by this component. The underlying view controllers that support detail image manipulation are loaded lazily and there is never more than 4-5 of them occupying precious memory space.
+* `Intelligent memory handling`: Thanks to behind the scenes used `UIPageViewController`'s dataSource handling, you will never experience memory warnings caused by this component. The underlying view controllers that support detail image manipulation are loaded lazily and there is never more than 4-5 of them occupying precious memory space.
 * `Asynchronous background thread image loading`: In ImageViewer 1.2 you had to designate an object that conformed to our ImageProvider protocol, the viewer would then ask your object to provide an image. This protocol is now extended with a function to ask for an image at a particular index. We now guarantee that the process will not block the main thread and thus the UI.
 * `Completions blocks`: To be able to hook up onto the presentation lifecycle - i.e. launch, image landing, close & swipe to dismiss states - we provide convenient completion blocks. These are exposed as optional properties and are not part of designated initializer.
 * `Decoration views`: You can now set your own Close button implementation. Additionally the viewer has a concept of header and footer views. These are both opaque from the viewer's perspective, they can be any UIView subclass. Both are exposed as optional properties. They sit on top of individual images. See our built-in project example using a simple image counter as a centred header view.
@@ -103,7 +103,7 @@ github "MailOnline/ImageViewer"
 ## Sample Usage
 
 ```swift
-let galleryViewController = GalleryViewController(startIndex: displacedViewIndex, itemsDatasource: self, displacedViewsDatasource: self, configuration: galleryConfiguration)
+let galleryViewController = GalleryViewController(startIndex: displacedViewIndex, itemsDataSource: self, displacedViewsDataSource: self, configuration: galleryConfiguration)
 self.presentImageGallery(galleryViewController)
 ```
 

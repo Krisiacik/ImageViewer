@@ -17,12 +17,12 @@ class ThumbnailsViewController: UICollectionViewController, UICollectionViewDele
 
     var onItemSelected: ((Int) -> Void)?
     let layout = UICollectionViewFlowLayout()
-    weak var itemsDatasource: GalleryItemsDatasource!
+    weak var itemsDataSource: GalleryItemsDataSource!
     var closeButton: UIButton?
     var closeLayout: ButtonLayout?
 
-    required init(itemsDatasource: GalleryItemsDatasource) {
-        self.itemsDatasource = itemsDatasource
+    required init(itemsDataSource: GalleryItemsDataSource) {
+        self.itemsDataSource = itemsDataSource
 
         super.init(collectionViewLayout: layout)
 
@@ -95,14 +95,14 @@ class ThumbnailsViewController: UICollectionViewController, UICollectionViewDele
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return itemsDatasource.itemCount()
+        return itemsDataSource.itemCount()
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ThumbnailCell
 
-        let item = itemsDatasource.provideGalleryItem((indexPath as NSIndexPath).row)
+        let item = itemsDataSource.provideGalleryItem((indexPath as NSIndexPath).row)
 
         switch item {
 

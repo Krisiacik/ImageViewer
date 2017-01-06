@@ -21,8 +21,8 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
     let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .white)
 
     //DELEGATE / DATASOURCE
-    weak public var delegate: ItemControllerDelegate?
-    weak public var displacedViewsDatasource: GalleryDisplacedViewsDatasource?
+    weak public var delegate:                 ItemControllerDelegate?
+    weak public var displacedViewsDataSource: GalleryDisplacedViewsDataSource?
 
     //STATE
     public let index: Int
@@ -420,7 +420,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
         alongsideAnimation()
 
-        if var displacedView = displacedViewsDatasource?.provideDisplacementItem(atIndex: index),
+        if var displacedView = displacedViewsDataSource?.provideDisplacementItem(atIndex: index),
             let image = displacedView.image {
 
             if presentationStyle == .displacement {
@@ -491,7 +491,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
     func findVisibleDisplacedView() -> DisplaceableView? {
 
-        guard let displacedView = displacedViewsDatasource?.provideDisplacementItem(atIndex: index) else { return nil }
+        guard let displacedView = displacedViewsDataSource?.provideDisplacementItem(atIndex: index) else { return nil }
 
         let displacedViewFrame = displacedView.frameInCoordinatesOfScreen()
         let validAreaFrame = self.view.frame.insetBy(dx: displacementInsetMargin, dy: displacementInsetMargin)

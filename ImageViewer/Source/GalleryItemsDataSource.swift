@@ -1,5 +1,5 @@
 //
-//  GalleryDatasource.swift
+//  GalleryItemsDataSource.swift
 //  ImageViewer
 //
 //  Created by Kristian Angyal on 18/03/2016.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol GalleryItemsDatasource: class {
+public protocol GalleryItemsDataSource: class {
 
     func itemCount() -> Int
     func provideGalleryItem(_ index: Int) -> GalleryItem
