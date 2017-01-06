@@ -105,11 +105,11 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
                 case .custom(let button):   closeButton = button
                 case .builtIn:              break
                 }
-                
+
             case .thumbnailsButtonMode(let buttonMode):
-                
+
                 switch buttonMode {
-                    
+
                 case .none:                 thumbnailsButton = nil
                 case .custom(let button):   thumbnailsButton = button
                 case .builtIn:              break
@@ -154,7 +154,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         overlayView.bounds.size = UIScreen.main.bounds.insetBy(dx: -UIScreen.main.bounds.width / 2, dy: -UIScreen.main.bounds.height / 2).size
         overlayView.center = CGPoint(x: (UIScreen.main.bounds.width / 2), y: (UIScreen.main.bounds.height / 2))
-        
+
         self.view.addSubview(overlayView)
         self.view.sendSubview(toBack: overlayView)
     }
@@ -186,15 +186,15 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     }
 
     fileprivate func configureThumbnailsButton() {
-        
+
         thumbnailsButton?.addTarget(self, action: #selector(GalleryViewController.showThumbnails), for: .touchUpInside)
-        
+
         if let thumbnailsButton = thumbnailsButton {
             thumbnailsButton.alpha = 0
             self.view.addSubview(thumbnailsButton)
         }
     }
-    
+
     fileprivate func configureScrubber() {
 
         scrubber.alpha = 0
@@ -209,7 +209,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         configureCloseButton()
         configureThumbnailsButton()
         configureScrubber()
-        
+
         self.view.clipsToBounds = false
     }
 
@@ -217,13 +217,13 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         super.viewDidAppear(animated)
 
         guard initialPresentationDone == false else { return }
-        
+
         ///We have to call this here (not sooner), because it adds the overlay view to the presenting controller and the presentingController property is set only at this moment in the VC lifecycle.
         configureOverlayView()
 
         ///The initial presentation animations and transitions
         presentInitially()
-        
+
         initialPresentationDone = true
     }
 
@@ -246,8 +246,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
                     }
 
                     weakself.isAnimating = false
-                    
                     weakself.launchedCompletion?()
+
                 }
             })
     }
@@ -272,21 +272,21 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         layoutFooterView()
         layoutScrubber()
     }
-    
+
     fileprivate func layoutButton(_ button: UIButton?, layout: ButtonLayout) {
-        
+
         guard let button = button else { return }
-        
+
         switch layout {
-            
+
         case .pinRight(let marginTop, let marginRight):
-            
+
             button.autoresizingMask = [.flexibleBottomMargin, .flexibleLeftMargin]
             button.frame.origin.x = self.view.bounds.size.width - marginRight - button.bounds.size.width
             button.frame.origin.y = marginTop
-            
+
         case .pinLeft(let marginTop, let marginLeft):
-            
+
             button.autoresizingMask = [.flexibleBottomMargin, .flexibleRightMargin]
             button.frame.origin.x = marginLeft
             button.frame.origin.y = marginTop
@@ -361,13 +361,11 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         scrubber.center = self.view.boundsCenter
         scrubber.frame.origin.y = (footerView?.frame.origin.y ?? self.view.bounds.maxY) - scrubber.bounds.height
     }
-    
-    //ThumbnailsimageBlock
-    
+
     @objc fileprivate func showThumbnails() {
-        
+
         let thumbnailsController = ThumbnailsViewController(itemsDatasource: self.itemsDatasource)
-        
+
         if let closeButton = closeButton {
             let seeAllCloseButton = UIButton(frame: CGRect(origin: CGPoint.zero, size: closeButton.bounds.size))
             seeAllCloseButton.setImage(closeButton.image(for: UIControlState()), for: UIControlState())
@@ -382,14 +380,14 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         present(thumbnailsController, animated: true, completion: nil)
     }
-    
+
     open func page(toIndex index: Int) {
-        
+
         guard currentIndex != index && index >= 0 && index < self.itemsDatasource.itemCount() else { return }
-        
+
         let imageViewController = self.pagingDatasource.createItemController(index)
         let direction: UIPageViewControllerNavigationDirection = index > currentIndex ? .forward : .reverse
-        
+
         // workaround to make UIPageViewController happy
         if direction == .forward {
             let previousVC = self.pagingDatasource.createItemController(index - 1)
@@ -517,15 +515,15 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             self?.footerView?.alpha = targetAlpha
             self?.closeButton?.alpha = targetAlpha
             self?.thumbnailsButton?.alpha = targetAlpha
-            
+
             if let _ = self?.viewControllers?.first as? VideoViewController {
 
                 UIView.animate(withDuration: 0.3, animations: { [weak self] in
 
                     self?.scrubber.alpha = targetAlpha
-                }) 
+                })
             }
-        }) 
+        })
     }
 
     public func itemControllerWillAppear(_ controller: ItemController) {
@@ -545,7 +543,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             UIView.animate(withDuration: 0.3, animations: { [weak self] in
 
                 self?.scrubber.alpha = 0
-            }) 
+            })
         }
     }
 
@@ -555,31 +553,31 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         self.landedPageAtIndexCompletion?(self.currentIndex)
         self.headerView?.sizeToFit()
         self.footerView?.sizeToFit()
-        
+
         if let _ = controller as? VideoViewController {
-            
+
             if scrubber.alpha == 0 && decorationViewsHidden == false {
-                
+
                 UIView.animate(withDuration: 0.3, animations: { [weak self] in
-                    
+
                     self?.scrubber.alpha = 1
-                }) 
+                })
             }
         }
     }
-    
+
     public func itemControllerDidSingleTap(_ controller: ItemController) {
-        
+
         self.decorationViewsHidden.flip()
         animateDecorationViews(visible: !self.decorationViewsHidden)
     }
-    
+
     public func itemController(_ controller: ItemController, didSwipeToDismissWithDistanceToEdge distance: CGFloat) {
-        
+
         if decorationViewsHidden == false {
-            
+
             let alpha = 1 - distance * swipeToDismissFadeOutAccelerationFactor
-            
+
             closeButton?.alpha = alpha
             thumbnailsButton?.alpha = alpha
             headerView?.alpha = alpha
@@ -589,13 +587,13 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
                 scrubber.alpha = alpha
             }
         }
-        
+
         self.overlayView.blurringView.alpha = 1 - distance
         self.overlayView.colorView.alpha = 1 - distance
     }
-    
     public func itemControllerDidFinishSwipeToDismissSuccesfully() {
-        
+
+
         self.swipedToDismissCompletion?()
         self.overlayView.removeFromSuperview()
         self.dismiss(animated: false, completion: nil)

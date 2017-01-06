@@ -608,7 +608,6 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
         }
     }
 
-
     public func closeDecorationViews(_ duration: TimeInterval) {
         // stub
     }

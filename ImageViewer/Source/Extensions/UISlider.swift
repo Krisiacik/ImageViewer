@@ -28,7 +28,7 @@ extension Slider {
 
         slider.setMinimumTrackImage(minTrackImage.toImage(), for: UIControlState())
         slider.setMaximumTrackImage(maxTrackImage.toImage(), for: UIControlState())
-        
+
         return slider
     }
 }

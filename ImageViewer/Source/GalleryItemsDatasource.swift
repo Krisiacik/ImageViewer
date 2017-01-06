@@ -9,7 +9,7 @@
 import UIKit
 
 public protocol GalleryItemsDatasource: class {
-    
+
     func itemCount() -> Int
     func provideGalleryItem(_ index: Int) -> GalleryItem
 }

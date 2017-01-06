@@ -99,25 +99,25 @@ class ThumbnailsViewController: UICollectionViewController, UICollectionViewDele
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
+
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ThumbnailCell
-        
+
         let item = itemsDatasource.provideGalleryItem((indexPath as NSIndexPath).row)
 
         switch item {
-            
+
         case .image(let fetchImageBlock):
-            
+
             fetchImageBlock() { image in
-                
+
                 if let image = image {
-                    
+
                     cell.imageView.image = image
                 }
             }
-            
+
         case .video(let fetchImageBlock, _):
-            
+
             fetchImageBlock() { image in
 
                 if let image = image {

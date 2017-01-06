@@ -44,7 +44,7 @@ extension UIButton {
         let innerCircleDiameter = (sqrt(3) / 6) * triangleEdgeLength
 
         button.imageEdgeInsets.left = altitude / 2 - innerCircleDiameter
-        
+
         return button
     }
 
@@ -77,7 +77,6 @@ extension UIButton {
         let button = UIButton(type: UIButtonType.custom)
         button.contentHorizontalAlignment = .center
 
-
         let elementHeight = min(20, height)
         let elementSize = CGSize(width: elementHeight * 0.3, height: elementHeight)
         let distance: CGFloat = elementHeight * 0.2
@@ -87,7 +86,7 @@ extension UIButton {
 
         let pauseImageHighlighted = CAShapeLayer.pauseShape(UIColor.white.withAlphaComponent(0.7), elementSize: elementSize, elementDistance: distance).toImage()
         button.setImage(pauseImageHighlighted, for: UIControlState.highlighted)
-        
+
         return button
     }
 
@@ -100,27 +99,11 @@ extension UIButton {
     }
 
     static func thumbnailsButton() -> UIButton {
-        
+
         let button = UIButton(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 80, height: 50)))
         button.setTitle("See All", for: UIControlState())
         //button.titleLabel?.textColor = UIColor.redColor()
-        
+
         return button
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

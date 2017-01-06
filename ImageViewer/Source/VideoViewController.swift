@@ -97,7 +97,7 @@ class VideoViewController: ItemBaseController<VideoView> {
         }, completion: { [weak self] _ in
 
             self?.embeddedPlayButton.isHidden = true
-        }) 
+        })
     }
 
     override func closeDecorationViews(_ duration: TimeInterval) {
@@ -106,7 +106,7 @@ class VideoViewController: ItemBaseController<VideoView> {
 
             self?.embeddedPlayButton.alpha = 0
             self?.itemView.previewImageView.alpha = 1
-        }) 
+        })
     }
 
     override func presentItem(alongsideAnimation: () -> Void, completion: @escaping () -> Void) {
@@ -115,7 +115,7 @@ class VideoViewController: ItemBaseController<VideoView> {
 
             UIView.animate(withDuration: 0.15, animations: { [weak self] in
                 self?.embeddedPlayButton.alpha = 1
-            }) 
+            })
         }
 
         super.presentItem(alongsideAnimation: alongsideAnimation) {
@@ -148,7 +148,7 @@ class VideoViewController: ItemBaseController<VideoView> {
     func handleSwipeToDismissTransition() {
 
         guard let _ = swipingToDismiss else { return }
-        
+
         embeddedPlayButton.center.y = view.center.y - scrollView.contentOffset.y
     }
 
@@ -159,16 +159,16 @@ class VideoViewController: ItemBaseController<VideoView> {
             UIView.animate(withDuration: 0.3, animations: { [weak self] in
 
                 self?.embeddedPlayButton.alpha = 0
-            }) 
+            })
         }
     }
-    
+
     override func remoteControlReceived(with event: UIEvent?) {
 
         if let event = event {
-            
+
             if event.type == UIEventType.remoteControl {
-                
+
                 switch event.subtype {
 
                 case .remoteControlTogglePlayPause:

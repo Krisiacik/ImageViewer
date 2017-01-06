@@ -78,9 +78,8 @@ class VideoView: UIView {
 
                         weakself.previewImageView.alpha = 0
                     }
-                }) 
+                })
             }
         }
     }
 }
-
