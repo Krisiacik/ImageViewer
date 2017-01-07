@@ -55,7 +55,7 @@ public enum GalleryConfigurationItem {
     case presentationStyle(GalleryPresentationStyle)
 
     ///Allows to set maximum magnification factor for the image
-    case maximumZoolScale(CGFloat)
+    case maximumZoomScale(CGFloat)
 
     ///Sets the duration of the animation when item is double tapped and transitions between ScaleToAspectFit & ScaleToAspectFill sizes.
     case doubleTapToZoomDuration(TimeInterval)
@@ -87,7 +87,7 @@ public enum GalleryConfigurationItem {
     ///Transition delay for the color layer component of the overlay when Gallery is being dismissed.
     case colorDismissDelay(TimeInterval)
 
-    ///Transition duration for the item when the fade-in/fade-out effect is used globaly for items while Gallery is being presented /dismissed.
+    ///Transition duration for the item when the fade-in/fade-out effect is used globally for items while Gallery is being presented /dismissed.
     case itemFadeDuration(TimeInterval)
 
     ///Transition duration for decoration views when they fade-in/fade-out after single tap.
@@ -102,13 +102,13 @@ public enum GalleryConfigurationItem {
     /// Duration of the displacement effect when gallery is being dismissed.
     case reverseDisplacementDuration(TimeInterval)
 
-    ///Setting this to true is useful when your overlay layer is not fully opaque and you have multiple images on screen at once. The problem is image 1 is going to be displaced (gallery is being presented) and you can see that it is missing in the parent canvas because it "left the canvas" and the canvas bleeds its content through the overlay layer. However when you page to a different image and you decide to dismiss the gallery, that different image is going to be returned (using reveserse displacement). Thats look a bit strange because it is reverse displacing but it actually is already present in the parent canvas whereas the original image 1 is still missing there. Thre is no meaningful way to manage these deisplaced views. This setting helps to avoid it his problem by keeping the originals in place while still using the displacement effect.
+    ///Setting this to true is useful when your overlay layer is not fully opaque and you have multiple images on screen at once. The problem is image 1 is going to be displaced (gallery is being presented) and you can see that it is missing in the parent canvas because it "left the canvas" and the canvas bleeds its content through the overlay layer. However when you page to a different image and you decide to dismiss the gallery, that different image is going to be returned (using reverse displacement). That looks a bit strange because it is reverse displacing but it actually is already present in the parent canvas whereas the original image 1 is still missing there. There is no meaningful way to manage these displaced views. This setting helps to avoid it his problem by keeping the originals in place while still using the displacement effect.
     case displacementKeepOriginalInPlace(Bool)
 
     ///Provides the most typical timing curves for the displacement transition.
     case displacementTimingCurve(UIViewAnimationCurve)
 
-    ///Alows to optionaly set a spring bounce when the displacement transition finishes.
+    ///Allows to optionally set a spring bounce when the displacement transition finishes.
     case displacementTransitionStyle(GalleryDisplacementStyle)
 
     ///For the image to be reverse displaced, it must be visible in the parent view frame on screen, otherwise it's pointless to do the reverse displacement animation as we would be animating to out of bounds of the screen. However, there might be edge cases where only a tiny percentage of image is visible on screen, so reverse-displacing to that might not be desirable / visually pleasing. To address this problem, we can define a valid area that will be smaller by a given margin and sit centered inside the parent frame. For example, setting a value of 20 means the reverse displaced image must be in a rect that is inside the parent frame and the margin on all sides is to the parent frame is 20 points.
@@ -141,7 +141,7 @@ public enum GalleryRotationMode {
     ///Gallery will rotate to orientations supported in the application.
     case applicationBased
 
-    ///Galleyr will rotate regardless of the rotation setting in the application.
+    ///Gallery will rotate regardless of the rotation setting in the application.
     case always
 }
 

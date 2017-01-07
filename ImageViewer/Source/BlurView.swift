@@ -10,7 +10,6 @@ import UIKit
 
 class BlurView: UIView {
 
-
     var blurPresentDuration: TimeInterval = 0.5
     var blurPresentDelay: TimeInterval = 0
 
@@ -51,10 +50,10 @@ class BlurView: UIView {
         blurringViewContainer.addSubview(blurringView)
         self.addSubview(colorView)
     }
-    
+
     @available (iOS, unavailable)
     required init?(coder aDecoder: NSCoder) { fatalError() }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
 

@@ -10,7 +10,7 @@ import UIKit
 
 extension UIImageView: DisplaceableView {}
 
-class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplacedViewsDatasource {
+class ViewController: UIViewController, GalleryItemsDataSource, GalleryDisplacedViewsDataSource {
 
     @IBOutlet weak var image1: UIImageView!
     @IBOutlet weak var image2: UIImageView!
@@ -38,7 +38,7 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
         let headerView = CounterView(frame: frame, currentIndex: displacedViewIndex, count: imageViews.count)
         let footerView = CounterView(frame: frame, currentIndex: displacedViewIndex, count: imageViews.count)
 
-        let galleryViewController = GalleryViewController(startIndex: displacedViewIndex, itemsDatasource: self, displacedViewsDatasource: self, configuration: galleryConfiguration())
+        let galleryViewController = GalleryViewController(startIndex: displacedViewIndex, itemsDataSource: self, displacedViewsDataSource: self, configuration: galleryConfiguration())
         galleryViewController.headerView = headerView
         galleryViewController.footerView = footerView
 
@@ -108,7 +108,7 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
             GalleryConfigurationItem.overlayBlurOpacity(1),
             GalleryConfigurationItem.overlayBlurStyle(UIBlurEffectStyle.light),
 
-            GalleryConfigurationItem.maximumZoolScale(8),
+            GalleryConfigurationItem.maximumZoomScale(8),
             GalleryConfigurationItem.swipeToDismissThresholdVelocity(500),
 
             GalleryConfigurationItem.doubleTapToZoomDuration(0.15),

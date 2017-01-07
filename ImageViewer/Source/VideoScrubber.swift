@@ -58,12 +58,9 @@ open class VideoScrubber: UIControl {
                 NotificationCenter.default.addObserver(self, selector: #selector(didEndPlaying), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
 
                 ///TIMER
-                periodicObserver = player.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 1), queue: nil) { [weak self] time in
-
-                    if let weakself = self {
-                        weakself.update()
-                    }
-                } as AnyObject?
+                periodicObserver = player.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 1), queue: nil, using: { [weak self] time in
+                    self?.update()
+                }) as AnyObject?
 
                 self.update()
             }
@@ -227,11 +224,11 @@ open class VideoScrubber: UIControl {
 
             UIView.animate(withDuration: 0.9, animations: { [weak self] in
 
-                if let weakself = self {
+                if let strongSelf = self {
 
-                    weakself.scrubber.value = Float(progress) * weakself.scrubber.maximumValue
+                    strongSelf.scrubber.value = Float(progress) * strongSelf.scrubber.maximumValue
                 }
-            }) 
+            })
         }
     }
 
@@ -250,15 +247,15 @@ open class VideoScrubber: UIControl {
             timeLabel.attributedText = NSAttributedString(string: "--:--", attributes: [NSForegroundColorAttributeName : UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 12)])
         }
     }
-    
+
     func stringFromTimeInterval(_ interval:TimeInterval) -> String {
-        
+
         let timeInterval = NSInteger(interval)
-        
+
         let seconds = timeInterval % 60
         let minutes = (timeInterval / 60) % 60
         //let hours = (timeInterval / 3600)
-        
+
         return NSString(format: "%0.2d:%0.2d",minutes,seconds) as String
         //return NSString(format: "%0.2d:%0.2d:%0.2d",hours,minutes,seconds) as String
     }

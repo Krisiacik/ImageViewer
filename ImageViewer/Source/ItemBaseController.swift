@@ -21,8 +21,8 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
     let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .white)
 
     //DELEGATE / DATASOURCE
-    weak public var delegate: ItemControllerDelegate?
-    weak public var displacedViewsDatasource: GalleryDisplacedViewsDatasource?
+    weak public var delegate:                 ItemControllerDelegate?
+    weak public var displacedViewsDataSource: GalleryDisplacedViewsDataSource?
 
     //STATE
     public let index: Int
@@ -78,7 +78,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
             case .displacementDuration(let duration):               displacementDuration = duration
             case .reverseDisplacementDuration(let duration):        reverseDisplacementDuration = duration
             case .displacementTimingCurve(let curve):               displacementTimingCurve = curve
-            case .maximumZoolScale(let scale):                      maximumZoomScale = scale
+            case .maximumZoomScale(let scale):                      maximumZoomScale = scale
             case .itemFadeDuration(let duration):                   itemFadeDuration = duration
             case .displacementKeepOriginalInPlace(let keep):        displacementKeepOriginalInPlace = keep
             case .displacementInsetMargin(let margin):              displacementInsetMargin = margin
@@ -275,7 +275,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
     func scrollViewDidSwipeToDismiss(_ recognizer: UIPanGestureRecognizer) {
 
-        /// a swipe gesture on image view that has no image (it was not yet loaded,so we see a spinner) doesn't make sense
+        /// a swipe gesture on image view that has no image (it was not yet loaded, so we see a spinner) doesn't make sense
         guard itemView.image != nil else {  return }
 
         /// A deliberate UX decision...you have to zoom back in to scale 1 to be able to swipe to dismiss. It is difficult for the user to swipe to dismiss from images larger then screen bounds because almost all the time it's not swiping to dismiss but instead panning a zoomed in picture on the canvas.
@@ -338,7 +338,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
             UIApplication.applicationWindow.windowLevel = UIWindowLevelNormal
             self?.swipingToDismiss = nil
-            self?.delegate?.itemControllerDidFinishSwipeToDismissSuccesfully()
+            self?.delegate?.itemControllerDidFinishSwipeToDismissSuccessfully()
         }
 
         switch (swipeOrientation, index) {
@@ -376,7 +376,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
                                                                   escapeVelocity: velocity.x,
                                                                   completion: swipeToDismissCompletionBlock)
 
-        ///If nonoe of the above select cases, we cancel.
+        ///If none of the above select cases, we cancel.
         default:
 
             swipeToDismissTransition?.cancelTransition() { [weak self] in
@@ -420,15 +420,15 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
         alongsideAnimation()
 
-        if var displacedView = displacedViewsDatasource?.provideDisplacementItem(atIndex: index),
+        if var displacedView = displacedViewsDataSource?.provideDisplacementItem(atIndex: index),
             let image = displacedView.image {
 
             if presentationStyle == .displacement {
 
-                //Prepare the animated imageview
+                //Prepare the animated imageView
                 let animatedImageView = displacedView.imageView()
 
-                //rotate the imageview to starting angle
+                //rotate the imageView to starting angle
                 if UIApplication.isPortraitOnly == true {
                     animatedImageView.transform = deviceRotationTransform()
                 }
@@ -448,7 +448,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
                     if UIApplication.isPortraitOnly == true {
                         animatedImageView.transform = CGAffineTransform.identity
                     }
-                    /// Animate it into the center (with optionaly rotating) - that basically includes changing the size and position
+                    /// Animate it into the center (with optionally rotating) - that basically includes changing the size and position
 
                     animatedImageView.bounds.size = self?.displacementTargetSize(forSize: image.size) ?? image.size
                     animatedImageView.center = self?.view.boundsCenter ?? CGPoint.zero
@@ -491,7 +491,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
     func findVisibleDisplacedView() -> DisplaceableView? {
 
-        guard let displacedView = displacedViewsDatasource?.provideDisplacementItem(atIndex: index) else { return nil }
+        guard let displacedView = displacedViewsDataSource?.provideDisplacementItem(atIndex: index) else { return nil }
 
         let displacedViewFrame = displacedView.frameInCoordinatesOfScreen()
         let validAreaFrame = self.view.frame.insetBy(dx: displacementInsetMargin, dy: displacementInsetMargin)
@@ -555,13 +555,13 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
         }
     }
 
-    // MARK: - Arkane stuff
+    // MARK: - Arcane stuff
 
-    ///This resolves which of the two pan gesture recognizers should kick in. There is one built in the GalleryViewController (as it is a UIPageViewController subclass), and another one is added as part of item controller. When we pan, we need to decide whether it constitutes a horizontal paging gesture, or a horizontal swipe-to-dismiss gesture.
+    /// This resolves which of the two pan gesture recognizers should kick in. There is one built in the GalleryViewController (as it is a UIPageViewController subclass), and another one is added as part of item controller. When we pan, we need to decide whether it constitutes a horizontal paging gesture, or a horizontal swipe-to-dismiss gesture.
     /// All the logic is from the perspective of SwipeToDismissRecognizer - should it kick in (or let the paging recognizer page)?
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
 
-        /// We only care about the swipe to dismiss gesture recognizer, not the built-in pan recogizner that handles paging.
+        /// We only care about the swipe to dismiss gesture recognizer, not the built-in pan recognizer that handles paging.
         guard gestureRecognizer == swipeToDismissRecognizer else { return false }
 
         /// The velocity vector will help us make the right decision
@@ -572,7 +572,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
         /// We continue if the swipe is horizontal, otherwise it's Vertical and it is swipe to dismiss.
         guard velocity.orientation == .horizontal else { return swipeToDismissMode.contains(.vertical) }
 
-        /// A special case for horizontal "swipe to dismiss" is when the gallery has carousel mode OFF, then it is possible to reach the beginning or the end of image set while paging. PAging will stop at index = 0 or at index.max. In this case we allow to jump out from the gallery also via horizontal swipe to dismiss.
+        /// A special case for horizontal "swipe to dismiss" is when the gallery has carousel mode OFF, then it is possible to reach the beginning or the end of image set while paging. Paging will stop at index = 0 or at index.max. In this case we allow to jump out from the gallery also via horizontal swipe to dismiss.
         if (self.index == 0 && velocity.direction == .right) || (self.index == self.itemCount - 1 && velocity.direction == .left) {
 
             return (pagingMode == .standard && swipeToDismissMode.contains(.horizontal))
@@ -581,16 +581,16 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
         return false
     }
 
-    //Reports the continuous progress of Swipe To Dismiss to the  Gallery View Controller
+    // Reports the continuous progress of Swipe To Dismiss to the Gallery View Controller
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
 
-        guard let swipingToDissmissInProgress = swipingToDismiss else { return }
+        guard let swipingToDismissInProgress = swipingToDismiss else { return }
         guard keyPath == "contentOffset" else { return }
 
         let distanceToEdge: CGFloat
         let percentDistance: CGFloat
 
-        switch swipingToDissmissInProgress {
+        switch swipingToDismissInProgress {
 
         case .horizontal:
 
@@ -607,7 +607,6 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
             delegate.itemController(self, didSwipeToDismissWithDistanceToEdge: percentDistance)
         }
     }
-
 
     public func closeDecorationViews(_ duration: TimeInterval) {
         // stub
