@@ -16,7 +16,7 @@ final class GalleryPagingDataSource: NSObject, UIPageViewControllerDataSource {
 
     fileprivate let configuration: GalleryConfiguration
     fileprivate var pagingMode = GalleryPagingMode.standard
-    fileprivate var itemCount: Int { return itemsDataSource!.itemCount() }
+    fileprivate var itemCount: Int { return itemsDataSource?.itemCount() ?? 0 }
     fileprivate unowned var scrubber: VideoScrubber
 
     init(itemsDataSource: GalleryItemsDataSource, displacedViewsDataSource: GalleryDisplacedViewsDataSource?, scrubber: VideoScrubber, configuration: GalleryConfiguration) {

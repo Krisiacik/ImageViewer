@@ -10,6 +10,12 @@ import UIKit
 
 extension UIImageView: DisplaceableView {}
 
+struct DataItem {
+
+    let imageView: UIImageView
+    let galleryItem: GalleryItem
+}
+
 class ViewController: UIViewController {
 
     @IBOutlet weak var image1: UIImageView!
@@ -20,23 +26,23 @@ class ViewController: UIViewController {
     @IBOutlet weak var image6: UIImageView!
     @IBOutlet weak var image7: UIImageView!
 
-    var imageViews: [UIImageView]              = []
-    var items:      [UIImageView: GalleryItem] = [:]
+    var items: [DataItem] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        imageViews += [image1, image2, image3, image4, image5, image6, image7]
+        let imageViews = [image1, image2, image3, image4, image5, image6, image7]
 
-        for index in 0..<imageViews.count {
+        for (index, imageView) in imageViews.enumerated() {
 
-            let imageView = imageViews[index]
+            guard let imageView = imageView else { continue }
+            var galleryItem: GalleryItem!
 
             switch index {
 
             case 2:
 
-                items[imageView] = GalleryItem.video(fetchPreviewImageBlock: { $0(UIImage(named: "2")!) }, videoURL: URL (string: "http://video.dailymail.co.uk/video/mol/test/2016/09/21/5739239377694275356/1024x576_MP4_5739239377694275356.mp4")!)
+                galleryItem = GalleryItem.video(fetchPreviewImageBlock: { $0(UIImage(named: "2")!) }, videoURL: URL (string: "http://video.dailymail.co.uk/video/mol/test/2016/09/21/5739239377694275356/1024x576_MP4_5739239377694275356.mp4")!)
 
             case 4:
 
@@ -47,13 +53,15 @@ class ViewController: UIViewController {
                     return AnimatedViewController(index: index, itemCount: itemCount, fetchImageBlock: myFetchImageBlock, configuration: configuration, isInitialController: isInitialController)
                 }
 
-                items[imageView] = GalleryItem.custom(fetchImageBlock: myFetchImageBlock, itemViewControllerBlock: itemViewControllerBlock)
+                galleryItem = GalleryItem.custom(fetchImageBlock: myFetchImageBlock, itemViewControllerBlock: itemViewControllerBlock)
 
             default:
 
                 let image = imageView.image ?? UIImage(named: "0")!
-                items[imageView] = GalleryItem.image { $0(image) }
+                galleryItem = GalleryItem.image { $0(image) }
             }
+
+            items.append(DataItem(imageView: imageView, galleryItem: galleryItem))
         }
     }
 
@@ -61,11 +69,11 @@ class ViewController: UIViewController {
 
         guard let displacedView = sender.view as? UIImageView else { return }
 
-        guard let displacedViewIndex = imageViews.index(of: displacedView) else { return }
+        guard let displacedViewIndex = items.index(where: { $0.imageView == displacedView }) else { return }
 
         let frame = CGRect(x: 0, y: 0, width: 200, height: 24)
-        let headerView = CounterView(frame: frame, currentIndex: displacedViewIndex, count: imageViews.count)
-        let footerView = CounterView(frame: frame, currentIndex: displacedViewIndex, count: imageViews.count)
+        let headerView = CounterView(frame: frame, currentIndex: displacedViewIndex, count: items.count)
+        let footerView = CounterView(frame: frame, currentIndex: displacedViewIndex, count: items.count)
 
         let galleryViewController = GalleryViewController(startIndex: displacedViewIndex, itemsDataSource: self, itemsDelegate: self, displacedViewsDataSource: self, configuration: galleryConfiguration())
         galleryViewController.headerView = headerView
@@ -79,9 +87,9 @@ class ViewController: UIViewController {
 
             print("LANDED AT INDEX: \(index)")
 
-            headerView.count = self.imageViews.count
+            headerView.count = self.items.count
             headerView.currentIndex = index
-            footerView.count = self.imageViews.count
+            footerView.count = self.items.count
             footerView.currentIndex = index
         }
 
@@ -141,7 +149,7 @@ extension ViewController: GalleryDisplacedViewsDataSource {
 
     func provideDisplacementItem(atIndex index: Int) -> DisplaceableView? {
 
-        return index < imageViews.count ? imageViews[index] : nil
+        return index < items.count ? items[index].imageView : nil
     }
 }
 
@@ -149,13 +157,12 @@ extension ViewController: GalleryItemsDataSource {
 
     func itemCount() -> Int {
 
-        return imageViews.count
+        return items.count
     }
 
     func provideGalleryItem(_ index: Int) -> GalleryItem {
 
-        let imageView = imageViews[index]
-        return items[imageView]!
+        return items[index].galleryItem
     }
 }
 
@@ -165,9 +172,9 @@ extension ViewController: GalleryItemsDelegate {
 
         print("remove item at \(index)")
 
-        let imageView = imageViews[index]
+        let imageView = items[index].imageView
         imageView.removeFromSuperview()
-        imageViews.remove(at: index)
+        items.remove(at: index)
     }
 }
 
