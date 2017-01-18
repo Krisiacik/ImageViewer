@@ -20,7 +20,8 @@ class VideoViewController: ItemBaseController<VideoView> {
     let player: AVPlayer
     unowned let scrubber: VideoScrubber
 
-    let fullHDScreenSize = CGSize(width: 1920, height: 1080)
+    let fullHDScreenSizeLandscape = CGSize(width: 1920, height: 1080)
+    let fullHDScreenSizePortrait = CGSize(width: 1080, height: 1920)
     let embeddedPlayButton = UIButton.circlePlayButton(70)
 
     init(index: Int, itemCount: Int, fetchImageBlock: @escaping FetchImageBlock, videoURL: URL, scrubber: VideoScrubber, configuration: GalleryConfiguration, isInitialController: Bool = false) {
@@ -81,7 +82,8 @@ class VideoViewController: ItemBaseController<VideoView> {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        itemView.bounds.size = aspectFitSize(forContentOfSize: fullHDScreenSize, inBounds: self.scrollView.bounds.size)
+        let isLandscape = itemView.bounds.width >= itemView.bounds.height
+        itemView.bounds.size = aspectFitSize(forContentOfSize: isLandscape ? fullHDScreenSizeLandscape : fullHDScreenSizePortrait, inBounds: self.scrollView.bounds.size)
         itemView.center = scrollView.boundsCenter
     }
 
@@ -127,7 +129,8 @@ class VideoViewController: ItemBaseController<VideoView> {
 
     override func displacementTargetSize(forSize size: CGSize) -> CGSize {
 
-        return aspectFitSize(forContentOfSize: fullHDScreenSize, inBounds: rotationAdjustedBounds().size)
+        let isLandscape = itemView.bounds.width >= itemView.bounds.height
+        return aspectFitSize(forContentOfSize: isLandscape ? fullHDScreenSizeLandscape : fullHDScreenSizePortrait, inBounds: rotationAdjustedBounds().size)
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
