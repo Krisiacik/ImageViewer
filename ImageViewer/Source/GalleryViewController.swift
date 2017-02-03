@@ -115,7 +115,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             case .seeAllCloseButtonMode(let buttonMode):
                 
                 switch buttonMode {
-                    
+
                 case .none:                 seeAllCloseButton = nil
                 case .custom(let button):   seeAllCloseButton = button
                 case .builtIn:              break
