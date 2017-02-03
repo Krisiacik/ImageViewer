@@ -17,7 +17,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     /// A custom view at the bottom of the gallery with layout using default (or custom) pinning settings for footer.
     open var footerView: UIView?
     fileprivate var closeButton: UIButton? = UIButton.closeButton()
-    fileprivate var seeAllCloseButton: UIButton? = UIButton.closeButton()
+    fileprivate var seeAllCloseButton: UIButton? = nil
     fileprivate var thumbnailsButton: UIButton? = UIButton.thumbnailsButton()
     fileprivate var deleteButton: UIButton? = UIButton.deleteButton()
     fileprivate let scrubber = VideoScrubber()
@@ -410,7 +410,14 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         if let closeButton = seeAllCloseButton {
             thumbnailsController.closeButton = closeButton
             thumbnailsController.closeLayout = seeAllCloseLayout
+        } else if let closeButton = closeButton {
+            let seeAllCloseButton = UIButton(frame: CGRect(origin: CGPoint.zero, size: closeButton.bounds.size))
+            seeAllCloseButton.setImage(closeButton.image(for: UIControlState()), for: UIControlState())
+            seeAllCloseButton.setImage(closeButton.image(for: .highlighted), for: .highlighted)
+            thumbnailsController.closeButton = seeAllCloseButton
+            thumbnailsController.closeLayout = closeLayout
         }
+        
         thumbnailsController.onItemSelected = { [weak self] index in
 
             self?.page(toIndex: index)
