@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2EE7247A1E48904D005FF56D /* MediaPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE724791E48904D005FF56D /* MediaPlayer.swift */; };
 		4CD1C49C1C16FF64008D5F84 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD1C49B1C16FF64008D5F84 /* CGPoint.swift */; };
 		4CD1C49D1C16FF64008D5F84 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD1C49B1C16FF64008D5F84 /* CGPoint.swift */; };
 		5AF0E6605E3B055280A902DF /* GalleryItemsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0EF3CAFE8B7972354F05D /* GalleryItemsDelegate.swift */; };
@@ -90,6 +91,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2EE724791E48904D005FF56D /* MediaPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPlayer.swift; sourceTree = "<group>"; };
 		4CD1C49B1C16FF64008D5F84 /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
 		5AF0EF3CAFE8B7972354F05D /* GalleryItemsDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryItemsDelegate.swift; sourceTree = "<group>"; };
 		A32D40031D45C4DE00AB5ADA /* Bool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 				C2573FA41DA6FED600DABB1E /* Thumbnails Controller */,
 				EBA90E411C8729EB000AA697 /* Transitions */,
 				EB1CEC1E1C84A54600BB27B8 /* UtilityFunctions.swift */,
+				2EE724791E48904D005FF56D /* MediaPlayer.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -566,6 +569,7 @@
 				EB3464F61D4BAA19009494B5 /* UISlider.swift in Sources */,
 				EB60EE571D58EB4800CC5BA8 /* VideoScrubber.swift in Sources */,
 				EBA76F721D4F855C0094931F /* ItemBaseController.swift in Sources */,
+				2EE7247A1E48904D005FF56D /* MediaPlayer.swift in Sources */,
 				EB6F46551D4660AC00984035 /* VideoView.swift in Sources */,
 				EBE627071D2688890095999A /* GalleryViewController.swift in Sources */,
 				EB17B3821D4A6E7F00EED1DA /* UIButton.swift in Sources */,

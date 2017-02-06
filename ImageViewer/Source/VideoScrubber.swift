@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import ImageViewer
 
 open class VideoScrubber: UIControl {
 
@@ -21,17 +22,17 @@ open class VideoScrubber: UIControl {
     fileprivate var periodicObserver: AnyObject?
     fileprivate var stoppedSlidingTimeStamp = Date()
 
-    weak var player: AVPlayer? {
+    weak var mediaPlayer: MediaPlayer? {
 
         willSet {
 
-            if newValue == nil {
+//            if newValue == nil {
 
-                if let player = player {
+                if let player = mediaPlayer {
 
                     ///KVO
-                    player.removeObserver(self, forKeyPath: "status")
-                    player.removeObserver(self, forKeyPath: "rate")
+//                    player.removeObserver(self, forKeyPath: "status")
+//                    player.removeObserver(self, forKeyPath: "rate")
 
                     ///NC
                     NotificationCenter.default.removeObserver(self)
@@ -39,26 +40,28 @@ open class VideoScrubber: UIControl {
                     ///TIMER
                     if let periodicObserver = self.periodicObserver {
 
-                        player.removeTimeObserver(periodicObserver)
+                        player.avPlayer.removeTimeObserver(periodicObserver)
                         self.periodicObserver = nil
                     }
+                    
+                    
                 }
-            }
+//            }
         }
 
         didSet {
 
-            if let player = player {
-
-                ///KVO
-                player.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.new, context: nil)
-                player.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.new, context: nil)
-
+            if let player = mediaPlayer {
+                
                 ///NC
                 NotificationCenter.default.addObserver(self, selector: #selector(didEndPlaying), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
-
+                
+                NotificationCenter.default.addObserver(self, selector: #selector(playerChanged), name: MediaPlayer.Notification.rate, object: player.avPlayer)
+                NotificationCenter.default.addObserver(self, selector: #selector(playerChanged), name: MediaPlayer.Notification.status, object: player.avPlayer)
+                
+                
                 ///TIMER
-                periodicObserver = player.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 1), queue: nil, using: { [weak self] time in
+                periodicObserver = player.avPlayer.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 1), queue: nil, using: { [weak self] time in
                     self?.update()
                 }) as AnyObject?
 
@@ -81,13 +84,15 @@ open class VideoScrubber: UIControl {
 
     deinit {
 
-        player?.removeObserver(self, forKeyPath: "status")
-        player?.removeObserver(self, forKeyPath: "rate")
+//        player?.removeObserver(self, forKeyPath: "status")
+//        player?.removeObserver(self, forKeyPath: "rate")
         scrubber.removeObserver(self, forKeyPath: "isSliding")
+        
+        NotificationCenter.default.removeObserver(self)
 
         if let periodicObserver = self.periodicObserver {
 
-            player?.removeTimeObserver(periodicObserver)
+            mediaPlayer?.avPlayer.removeTimeObserver(periodicObserver)
             self.periodicObserver = nil
         }
     }
@@ -140,6 +145,10 @@ open class VideoScrubber: UIControl {
         scrubber.frame.origin.x = playButton.frame.maxX
     }
 
+    @objc func playerChanged() {
+        self.update()
+    }
+    
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
 
         if keyPath == "isSliding" {
@@ -150,36 +159,36 @@ open class VideoScrubber: UIControl {
             }
         }
 
-        else if keyPath == "rate" || keyPath == "status" {
-
-            self.update()
-        }
+//        else if keyPath == "rate" || keyPath == "status" {
+//
+//            self.update()
+//        }
     }
 
     func play() {
 
-        self.player?.play()
+        self.mediaPlayer?.avPlayer.play()
     }
 
     func replay() {
 
-        self.player?.seek(to: CMTime(value:0 , timescale: 1))
-        self.player?.play()
+        self.mediaPlayer?.avPlayer.seek(to: CMTime(value:0 , timescale: 1))
+        self.mediaPlayer?.avPlayer.play()
     }
 
     func pause() {
 
-        self.player?.pause()
+        self.mediaPlayer?.avPlayer.pause()
     }
 
     func seekToTime() {
 
         let progress = scrubber.value / scrubber.maximumValue //naturally will be between 0 to 1
 
-        if let player = self.player, let currentItem =  player.currentItem {
+        if let player = self.mediaPlayer, let currentItem =  player.avPlayer.currentItem {
 
             let time = currentItem.duration.seconds * Double(progress)
-            player.seek(to: CMTime(seconds: time, preferredTimescale: 1))
+            player.avPlayer.seek(to: CMTime(seconds: time, preferredTimescale: 1))
         }
     }
 
@@ -193,9 +202,9 @@ open class VideoScrubber: UIControl {
 
     func updateButtons() {
 
-        if let player = self.player {
+        if let player = self.mediaPlayer {
 
-            self.playButton.isHidden = player.isPlaying()
+            self.playButton.isHidden = player.avPlayer.isPlaying()
             self.pauseButton.isHidden = !self.playButton.isHidden
             self.replayButton.isHidden = true
         }
@@ -203,7 +212,7 @@ open class VideoScrubber: UIControl {
 
     func updateDuration() {
 
-        if let duration = self.player?.currentItem?.duration {
+        if let duration = self.mediaPlayer?.avPlayer.currentItem?.duration {
 
             self.duration = (duration.isNumeric) ? duration.seconds : nil
         }
@@ -218,9 +227,9 @@ open class VideoScrubber: UIControl {
             return
         }
 
-        if let player = self.player, let duration = self.duration {
+        if let player = self.mediaPlayer, let duration = self.duration {
 
-            let progress = player.currentTime().seconds / duration
+            let progress = player.avPlayer.currentTime().seconds / duration
 
             UIView.animate(withDuration: 0.9, animations: { [weak self] in
 

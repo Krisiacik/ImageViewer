@@ -8,32 +8,35 @@
 
 import UIKit
 import AVFoundation
+import ImageViewer
 
 class VideoView: UIView {
 
     let previewImageView = UIImageView()
     var image: UIImage? { didSet { previewImageView.image = image } }
-    var player: AVPlayer? {
+    var mediaPlayer: MediaPlayer? {
 
         willSet {
 
             if newValue == nil {
-
-                player?.removeObserver(self, forKeyPath: "status")
-                player?.removeObserver(self, forKeyPath: "rate")
+                NotificationCenter.default.removeObserver(self)
+//                player?.removeObserver(self, forKeyPath: "status")
+//                player?.removeObserver(self, forKeyPath: "rate")
             }
         }
 
         didSet {
 
-            if  let player = self.player,
+            if  let player = self.mediaPlayer,
                 let videoLayer = self.layer as? AVPlayerLayer {
 
-                videoLayer.player = player
+                videoLayer.player = mediaPlayer?.avPlayer
                 videoLayer.videoGravity = AVLayerVideoGravityResizeAspect
 
-                player.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.new, context: nil)
-                player.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.new, context: nil)
+                NotificationCenter.default.addObserver(self, selector: #selector(playerChanged), name: MediaPlayer.Notification.rate, object: player.avPlayer)
+                NotificationCenter.default.addObserver(self, selector: #selector(playerChanged), name: MediaPlayer.Notification.status, object: player.avPlayer)
+//                player.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.new, context: nil)
+//                player.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.new, context: nil)
             }
         }
     }
@@ -61,25 +64,41 @@ class VideoView: UIView {
     }
 
     deinit {
-
-        player?.removeObserver(self, forKeyPath: "status")
-        player?.removeObserver(self, forKeyPath: "rate")
+        NotificationCenter.default.removeObserver(self)
+//        player?.removeObserver(self, forKeyPath: "status")
+//        player?.removeObserver(self, forKeyPath: "rate")
     }
 
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-
-        if let status = self.player?.status, let rate = self.player?.rate  {
-
+    @objc func playerChanged() {
+        if let status = self.mediaPlayer?.avPlayer.status, let rate = self.mediaPlayer?.avPlayer.rate  {
+            
             if status == .readyToPlay && rate != 0 {
-
+                
                 UIView.animate(withDuration: 0.3, animations: { [weak self] in
-
+                    
                     if let strongSelf = self {
-
+                        
                         strongSelf.previewImageView.alpha = 0
                     }
                 })
             }
         }
     }
+    
+//    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+//
+//        if let status = self.player?.status, let rate = self.player?.rate  {
+//
+//            if status == .readyToPlay && rate != 0 {
+//
+//                UIView.animate(withDuration: 0.3, animations: { [weak self] in
+//
+//                    if let strongSelf = self {
+//
+//                        strongSelf.previewImageView.alpha = 0
+//                    }
+//                })
+//            }
+//        }
+//    }
 }
