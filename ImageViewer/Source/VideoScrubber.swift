@@ -83,9 +83,6 @@ open class VideoScrubber: UIControl {
     }
 
     deinit {
-
-//        player?.removeObserver(self, forKeyPath: "status")
-//        player?.removeObserver(self, forKeyPath: "rate")
         scrubber.removeObserver(self, forKeyPath: "isSliding")
         
         NotificationCenter.default.removeObserver(self)
@@ -158,11 +155,6 @@ open class VideoScrubber: UIControl {
                 stoppedSlidingTimeStamp = Date()
             }
         }
-
-//        else if keyPath == "rate" || keyPath == "status" {
-//
-//            self.update()
-//        }
     }
 
     func play() {

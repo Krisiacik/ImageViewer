@@ -20,8 +20,6 @@ class VideoView: UIView {
 
             if newValue == nil {
                 NotificationCenter.default.removeObserver(self)
-//                player?.removeObserver(self, forKeyPath: "status")
-//                player?.removeObserver(self, forKeyPath: "rate")
             }
         }
 
@@ -35,8 +33,6 @@ class VideoView: UIView {
 
                 NotificationCenter.default.addObserver(self, selector: #selector(playerChanged), name: MediaPlayer.Notification.rate, object: player.avPlayer)
                 NotificationCenter.default.addObserver(self, selector: #selector(playerChanged), name: MediaPlayer.Notification.status, object: player.avPlayer)
-//                player.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.new, context: nil)
-//                player.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.new, context: nil)
             }
         }
     }
@@ -65,8 +61,6 @@ class VideoView: UIView {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
-//        player?.removeObserver(self, forKeyPath: "status")
-//        player?.removeObserver(self, forKeyPath: "rate")
     }
 
     @objc func playerChanged() {
@@ -84,21 +78,4 @@ class VideoView: UIView {
             }
         }
     }
-    
-//    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-//
-//        if let status = self.player?.status, let rate = self.player?.rate  {
-//
-//            if status == .readyToPlay && rate != 0 {
-//
-//                UIView.animate(withDuration: 0.3, animations: { [weak self] in
-//
-//                    if let strongSelf = self {
-//
-//                        strongSelf.previewImageView.alpha = 0
-//                    }
-//                })
-//            }
-//        }
-//    }
 }

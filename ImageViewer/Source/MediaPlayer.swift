@@ -62,9 +62,6 @@ public class MediaPlayer: NSObject {
         } else if keyPath == "status" {
             changePlayerStatus()
         }
-//        else {
-//            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-//        }
     }
 
 }
