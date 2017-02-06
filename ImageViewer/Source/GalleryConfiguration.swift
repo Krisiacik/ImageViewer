@@ -39,14 +39,23 @@ public enum GalleryConfigurationItem {
     /// Layout behaviour for the Thumbnails button.
     case thumbnailsLayout(ButtonLayout)
 
+    /// Option to show a spinner over the thumbnail image that is loading
+    case thumbnailsActivityIndicator(Bool)
+    
     /// Layout behaviour for the Delete button.
     case deleteLayout(ButtonLayout)
 
     /// This spinner is shown when we page to an image page, but the image itself is still loading.
     case spinnerStyle(UIActivityIndicatorViewStyle)
-
+    
     /// Tint color for the spinner.
     case spinnerColor(UIColor)
+    
+    /// This spinner is shown when we are loading thumbnails
+    case thumbnailsSpinnerStyle(UIActivityIndicatorViewStyle)
+    
+    /// Tint color for the thumbnails spinner.
+    case thumbnailsSpinnerColor(UIColor)
 
     /// Layout behaviour for optional header view.
     case headerViewLayout(HeaderLayout)
@@ -146,6 +155,9 @@ public enum GalleryConfigurationItem {
 
     ///Allows to set rotation support support with relation to rotation support in the hosting app.
     case rotationMode(GalleryRotationMode)
+    
+    ///Allows to set a placeholder image which will be visible during the load of GalleryItem
+    case placeHolderImage(UIImage?)
 }
 
 public enum GalleryRotationMode {
