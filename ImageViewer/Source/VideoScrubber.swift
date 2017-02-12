@@ -25,28 +25,16 @@ open class VideoScrubber: UIControl {
     weak var mediaPlayer: MediaPlayer? {
 
         willSet {
-
-//            if newValue == nil {
-
                 if let player = mediaPlayer {
-
-                    ///KVO
-//                    player.removeObserver(self, forKeyPath: "status")
-//                    player.removeObserver(self, forKeyPath: "rate")
-
                     ///NC
                     NotificationCenter.default.removeObserver(self)
 
                     ///TIMER
                     if let periodicObserver = self.periodicObserver {
-
                         player.avPlayer.removeTimeObserver(periodicObserver)
                         self.periodicObserver = nil
                     }
-                    
-                    
                 }
-//            }
         }
 
         didSet {
@@ -56,8 +44,8 @@ open class VideoScrubber: UIControl {
                 ///NC
                 NotificationCenter.default.addObserver(self, selector: #selector(didEndPlaying), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
                 
-                NotificationCenter.default.addObserver(self, selector: #selector(playerChanged), name: MediaPlayer.Notification.rate, object: player.avPlayer)
-                NotificationCenter.default.addObserver(self, selector: #selector(playerChanged), name: MediaPlayer.Notification.status, object: player.avPlayer)
+                NotificationCenter.default.addObserver(self, selector: #selector(playerChanged), name: Notification.rate, object: player.avPlayer)
+                NotificationCenter.default.addObserver(self, selector: #selector(playerChanged), name: Notification.status, object: player.avPlayer)
                 
                 
                 ///TIMER
@@ -88,7 +76,6 @@ open class VideoScrubber: UIControl {
         NotificationCenter.default.removeObserver(self)
 
         if let periodicObserver = self.periodicObserver {
-
             mediaPlayer?.avPlayer.removeTimeObserver(periodicObserver)
             self.periodicObserver = nil
         }
@@ -151,19 +138,16 @@ open class VideoScrubber: UIControl {
         if keyPath == "isSliding" {
 
             if scrubber.isSliding == false {
-
                 stoppedSlidingTimeStamp = Date()
             }
         }
     }
 
     func play() {
-
         self.mediaPlayer?.avPlayer.play()
     }
 
     func replay() {
-
         self.mediaPlayer?.avPlayer.seek(to: CMTime(value:0 , timescale: 1))
         self.mediaPlayer?.avPlayer.play()
     }

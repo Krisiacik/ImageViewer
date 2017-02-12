@@ -17,22 +17,19 @@ class VideoView: UIView {
     var mediaPlayer: MediaPlayer? {
 
         willSet {
-
             if newValue == nil {
                 NotificationCenter.default.removeObserver(self)
             }
         }
 
         didSet {
-
             if  let player = self.mediaPlayer,
                 let videoLayer = self.layer as? AVPlayerLayer {
-
                 videoLayer.player = mediaPlayer?.avPlayer
                 videoLayer.videoGravity = AVLayerVideoGravityResizeAspect
 
-                NotificationCenter.default.addObserver(self, selector: #selector(playerChanged), name: MediaPlayer.Notification.rate, object: player.avPlayer)
-                NotificationCenter.default.addObserver(self, selector: #selector(playerChanged), name: MediaPlayer.Notification.status, object: player.avPlayer)
+                NotificationCenter.default.addObserver(self, selector: #selector(playerChanged), name: Notification.rate, object: player.avPlayer)
+                NotificationCenter.default.addObserver(self, selector: #selector(playerChanged), name: Notification.status, object: player.avPlayer)
             }
         }
     }
@@ -65,13 +62,9 @@ class VideoView: UIView {
 
     @objc func playerChanged() {
         if let status = self.mediaPlayer?.avPlayer.status, let rate = self.mediaPlayer?.avPlayer.rate  {
-            
             if status == .readyToPlay && rate != 0 {
-                
                 UIView.animate(withDuration: 0.3, animations: { [weak self] in
-                    
                     if let strongSelf = self {
-                        
                         strongSelf.previewImageView.alpha = 0
                     }
                 })

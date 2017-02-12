@@ -9,19 +9,18 @@
 import Foundation
 import AVFoundation
 
-public class MediaPlayer: NSObject {
-    
-    public struct Notification {
-        public static var status: NSNotification.Name {
-            return NSNotification.Name(rawValue: "media-player-status-notif")
-        }
-        public static var rate: NSNotification.Name {
-            return NSNotification.Name(rawValue: "media-player-rate-notif")
-        }
+public struct Notification {
+    public static var status: NSNotification.Name {
+        return NSNotification.Name(rawValue: "media-player-status-notif")
     }
-    
+    public static var rate: NSNotification.Name {
+        return NSNotification.Name(rawValue: "media-player-rate-notif")
+    }
+}
+
+public class MediaPlayer: NSObject {
     public let avPlayer: AVPlayer
-    
+
     public init(avPlayer: AVPlayer) {
         self.avPlayer = avPlayer
         super.init()
@@ -29,14 +28,12 @@ public class MediaPlayer: NSObject {
         //observer to avplayer properties
         self.avPlayer.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.new, context: nil)
         self.avPlayer.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.new, context: nil)
-
     }
     
     deinit {
         //Remove observers
         self.avPlayer.removeObserver(self, forKeyPath: "status")
         self.avPlayer.removeObserver(self, forKeyPath: "rate")
-
     }
     
     //-------------------------------
@@ -51,17 +48,11 @@ public class MediaPlayer: NSObject {
         NotificationCenter.default.post(name: Notification.rate, object: avPlayer)
     }
     
-    //-------------------------------
-    //MARK: - KVO
-    //-------------------------------
-    
     override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        
         if keyPath == "rate" {
             changePlayerRate()
         } else if keyPath == "status" {
             changePlayerStatus()
         }
     }
-
 }

@@ -32,8 +32,8 @@ class VideoViewController: ItemBaseController<VideoView> {
         
         super.init(index: index, itemCount: itemCount, fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitialController)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(playerChanged), name: MediaPlayer.Notification.rate, object: mediaPlayer.avPlayer)
-        NotificationCenter.default.addObserver(self, selector: #selector(playerChanged), name: MediaPlayer.Notification.status, object: mediaPlayer.avPlayer)
+        NotificationCenter.default.addObserver(self, selector: #selector(playerChanged), name: Notification.rate, object: mediaPlayer.avPlayer)
+        NotificationCenter.default.addObserver(self, selector: #selector(playerChanged), name: Notification.status, object: mediaPlayer.avPlayer)
     }
     
     deinit {
