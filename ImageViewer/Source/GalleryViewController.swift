@@ -102,7 +102,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             case .blurDismissDelay(let delay):                  overlayView.blurDismissDelay = delay
             case .colorDismissDuration(let duration):           overlayView.colorDismissDuration = duration
             case .colorDismissDelay(let delay):                 overlayView.colorDismissDelay = delay
-
+            case .videoControlsColor(let color):                scrubber.tintColor = color
             case .closeButtonMode(let buttonMode):
 
                 switch buttonMode {

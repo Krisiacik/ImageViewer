@@ -149,6 +149,9 @@ public enum GalleryConfigurationItem {
     
     ///Allows auto play video after gallery presented
     case videoAutoPlay(Bool)
+
+    /// Tint color of video controls
+    case videoControlsColor(UIColor)
 }
 
 public enum GalleryRotationMode {
