@@ -33,10 +33,12 @@ extension UIButton {
         button.bounds.size = CGSize(width: width, height: height)
         button.contentHorizontalAlignment = .center
 
-        let playShapeNormal = CAShapeLayer.playShape(UIColor.red, triangleEdgeLength: triangleEdgeLength).toImage()
+        //UIColor.red
+        let playShapeNormal = CAShapeLayer.playShape(UIColor.white, triangleEdgeLength: triangleEdgeLength).toImage()
         button.setImage(playShapeNormal, for: .normal)
 
-        let playShapeHighlighted = CAShapeLayer.playShape(UIColor.red.withAlphaComponent(0.7), triangleEdgeLength: triangleEdgeLength).toImage()
+        //UIColor.red.withAlphaComponent(0.7)
+        let playShapeHighlighted = CAShapeLayer.playShape(UIColor.white.withAlphaComponent(0.7), triangleEdgeLength: triangleEdgeLength).toImage()
         button.setImage(playShapeHighlighted, for: .highlighted)
 
         ///the geometric center of equilateral triangle is not the same as the geometric center of its smallest bounding rect. There is some offset between the two centers to the left when the triangle points to the right. We have to shift the triangle to the right by that offset.
