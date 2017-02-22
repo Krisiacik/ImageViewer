@@ -589,17 +589,13 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
     public func itemControllerWillAppear(_ controller: ItemController) {
 
-        if let videoController = controller as? VideoViewController {
-
-            scrubber.player = videoController.player
-        }
     }
 
     public func itemControllerWillDisappear(_ controller: ItemController) {
 
         if let _ = controller as? VideoViewController {
 
-            scrubber.player = nil
+            scrubber.mediaPlayer = nil
 
             UIView.animate(withDuration: 0.3, animations: { [weak self] in
 
@@ -615,8 +611,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         self.headerView?.sizeToFit()
         self.footerView?.sizeToFit()
 
-        if let _ = controller as? VideoViewController {
-
+        if let videoController = controller as? VideoViewController {
+            scrubber.mediaPlayer = videoController.mediaPlayer
             if scrubber.alpha == 0 && decorationViewsHidden == false {
 
                 UIView.animate(withDuration: 0.3, animations: { [weak self] in

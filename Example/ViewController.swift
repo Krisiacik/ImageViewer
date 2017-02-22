@@ -56,7 +56,6 @@ class ViewController: UIViewController {
                 galleryItem = GalleryItem.custom(fetchImageBlock: myFetchImageBlock, itemViewControllerBlock: itemViewControllerBlock)
 
             default:
-
                 let image = imageView.image ?? UIImage(named: "0")!
                 galleryItem = GalleryItem.image { $0(image) }
             }
