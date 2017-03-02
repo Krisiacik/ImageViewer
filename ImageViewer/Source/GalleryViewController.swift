@@ -397,8 +397,14 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
     @objc fileprivate func deleteItem() {
 
+        deleteButton?.isEnabled = false
+
         itemsDelegate?.removeGalleryItem(at: currentIndex)
         removePage(atIndex: currentIndex)
+        {
+            [weak self] in
+            self?.deleteButton?.isEnabled = true
+        }
     }
 
     //ThumbnailsimageBlock
@@ -451,7 +457,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         }
     }
 
-    func removePage(atIndex index: Int) {
+    func removePage(atIndex index: Int, completion: @escaping () -> Void) {
 
         // If removing last item, go back, otherwise, go forward
 
@@ -462,7 +468,11 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         if newIndex < 0 { close(); return }
 
         let vc = self.pagingDataSource.createItemController(newIndex)
-        setViewControllers([vc], direction: direction, animated: true, completion: nil)
+        setViewControllers([vc], direction: direction, animated: true)
+        {
+            _ in
+            completion()
+        }
     }
 
     open func reload(atIndex index: Int) {
