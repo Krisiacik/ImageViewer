@@ -159,6 +159,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
             swipeToDismissRecognizer.addTarget(self, action: #selector(scrollViewDidSwipeToDismiss))
             swipeToDismissRecognizer.delegate = self
             view.addGestureRecognizer(swipeToDismissRecognizer)
+            swipeToDismissRecognizer.require(toFail: doubleTapRecognizer)
         }
     }
 
