@@ -627,7 +627,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         }
     }
 
-    public func itemControllerDidSingleTap(_ controller: ItemController) {
+    open func itemControllerDidSingleTap(_ controller: ItemController) {
 
         self.decorationViewsHidden.flip()
         animateDecorationViews(visible: !self.decorationViewsHidden)
