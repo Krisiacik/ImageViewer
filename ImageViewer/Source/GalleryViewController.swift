@@ -26,7 +26,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
     // LOCAL STATE
     // represents the current page index, updated when the root view of the view controller representing the page stops animating inside visible bounds and stays on screen.
-    var currentIndex: Int
+    public var currentIndex: Int
     // Picks up the initial value from configuration, if provided. Subsequently also works as local state for the setting.
     fileprivate var decorationViewsHidden = false
     fileprivate var isAnimating = false
