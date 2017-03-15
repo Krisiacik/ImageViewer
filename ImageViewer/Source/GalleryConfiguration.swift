@@ -146,6 +146,9 @@ public enum GalleryConfigurationItem {
 
     ///Allows to set rotation support support with relation to rotation support in the hosting app.
     case rotationMode(GalleryRotationMode)
+    
+    ///Allows video player move on next video after current finished
+    case continuePlayVideoOnEnd(Bool)
 }
 
 public enum GalleryRotationMode {
