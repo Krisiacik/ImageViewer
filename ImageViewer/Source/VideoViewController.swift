@@ -23,12 +23,26 @@ class VideoViewController: ItemBaseController<VideoView> {
     let fullHDScreenSizeLandscape = CGSize(width: 1920, height: 1080)
     let fullHDScreenSizePortrait = CGSize(width: 1080, height: 1920)
     let embeddedPlayButton = UIButton.circlePlayButton(70)
+    
+    private var autoPlayStarted: Bool = false
+    private var autoPlayEnabled: Bool = false
 
     init(index: Int, itemCount: Int, fetchImageBlock: @escaping FetchImageBlock, videoURL: URL, scrubber: VideoScrubber, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
         self.videoURL = videoURL
         self.scrubber = scrubber
         self.player = AVPlayer(url: self.videoURL)
+        
+        ///Only those options relevant to the paging VideoViewController are explicitly handled here, the rest is handled by ItemViewControllers
+        for item in configuration {
+            
+            switch item {
+                
+            case .videoAutoPlay(let enabled):                   autoPlayEnabled = enabled
+                
+            default: break
+            }
+        }
 
         super.init(index: index, itemCount: itemCount, fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitialController)
     }
@@ -71,6 +85,7 @@ class VideoViewController: ItemBaseController<VideoView> {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        performAutoPlay()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -205,5 +220,15 @@ class VideoViewController: ItemBaseController<VideoView> {
                 }
             }
         }
+    }
+    
+    private func performAutoPlay() {
+        guard autoPlayEnabled else { return }
+        guard autoPlayStarted == false else { return }
+        
+        autoPlayStarted = true
+        //playVideoInitially()
+        embeddedPlayButton.isHidden = true
+        scrubber.play()
     }
 }

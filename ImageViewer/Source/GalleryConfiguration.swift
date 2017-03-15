@@ -146,6 +146,9 @@ public enum GalleryConfigurationItem {
 
     ///Allows to set rotation support support with relation to rotation support in the hosting app.
     case rotationMode(GalleryRotationMode)
+    
+    ///Allows auto play video after gallery presented
+    case videoAutoPlay(Bool)
 }
 
 public enum GalleryRotationMode {

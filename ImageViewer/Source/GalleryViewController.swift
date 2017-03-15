@@ -615,8 +615,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         self.headerView?.sizeToFit()
         self.footerView?.sizeToFit()
 
-        if let _ = controller as? VideoViewController {
-
+        if let videoController = controller as? VideoViewController {            
+            scrubber.player = videoController.player
             if scrubber.alpha == 0 && decorationViewsHidden == false {
 
                 UIView.animate(withDuration: 0.3, animations: { [weak self] in
