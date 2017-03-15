@@ -52,7 +52,7 @@ final class GalleryPresentTransition: NSObject, UIViewControllerAnimatedTransiti
 
     private func animateDisplacedView(transitionContext: UIViewControllerContextTransitioning, onComplete: (Void -> Void)? = nil) {
         /// Get the temporary container view that facilitates all the animations
-        let transitionContainerView = transitionContext.containerView()! //Apple, Apple..
+        let transitionContainerView = transitionContext.containerView() //Apple, Apple..
 
         /// Get the target controller's root view and add it to the scene
         let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
