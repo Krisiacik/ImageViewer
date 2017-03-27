@@ -38,7 +38,8 @@ class VideoViewController: ItemBaseController<VideoView> {
             
             switch item {
                 
-            case .videoAutoPlay(let enabled):                   autoPlayEnabled = enabled
+            case .videoAutoPlay(let enabled):
+                autoPlayEnabled = enabled
                 
             default: break
             }
@@ -227,7 +228,6 @@ class VideoViewController: ItemBaseController<VideoView> {
         guard autoPlayStarted == false else { return }
         
         autoPlayStarted = true
-        //playVideoInitially()
         embeddedPlayButton.isHidden = true
         scrubber.play()
     }
