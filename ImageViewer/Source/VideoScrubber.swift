@@ -24,24 +24,20 @@ open class VideoScrubber: UIControl {
     weak var player: AVPlayer? {
 
         willSet {
-
-            if newValue == nil {
-
-                if let player = player {
-
-                    ///KVO
-                    player.removeObserver(self, forKeyPath: "status")
-                    player.removeObserver(self, forKeyPath: "rate")
-
-                    ///NC
-                    NotificationCenter.default.removeObserver(self)
-
-                    ///TIMER
-                    if let periodicObserver = self.periodicObserver {
-
-                        player.removeTimeObserver(periodicObserver)
-                        self.periodicObserver = nil
-                    }
+            if let player = player {
+                
+                ///KVO
+                player.removeObserver(self, forKeyPath: "status")
+                player.removeObserver(self, forKeyPath: "rate")
+                
+                ///NC
+                NotificationCenter.default.removeObserver(self)
+                
+                ///TIMER
+                if let periodicObserver = self.periodicObserver {
+                    
+                    player.removeTimeObserver(periodicObserver)
+                    self.periodicObserver = nil
                 }
             }
         }
