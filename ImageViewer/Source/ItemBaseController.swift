@@ -190,7 +190,11 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
                 DispatchQueue.main.async {
                     self?.activityIndicatorView.stopAnimating()
 
-                    self?.itemView.image = image
+                    var itemView = self?.itemView
+                    itemView?.image = image
+                    itemView?.isAccessibilityElement = image.isAccessibilityElement
+                    itemView?.accessibilityLabel = image.accessibilityLabel
+                    itemView?.accessibilityTraits = image.accessibilityTraits
 
                     self?.view.setNeedsLayout()
                     self?.view.layoutIfNeeded()
