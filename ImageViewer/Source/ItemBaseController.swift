@@ -279,9 +279,6 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
     func scrollViewDidSwipeToDismiss(_ recognizer: UIPanGestureRecognizer) {
 
-        /// a swipe gesture on image view that has no image (it was not yet loaded, so we see a spinner) doesn't make sense
-        guard itemView.image != nil else {  return }
-
         /// A deliberate UX decision...you have to zoom back in to scale 1 to be able to swipe to dismiss. It is difficult for the user to swipe to dismiss from images larger then screen bounds because almost all the time it's not swiping to dismiss but instead panning a zoomed in picture on the canvas.
         guard scrollView.zoomScale == scrollView.minimumZoomScale else { return }
 
