@@ -8,11 +8,13 @@
 
 import UIKit
 
-public typealias ImageCompletion = UIImage? -> Void
-public typealias FetchImageBlock = ImageCompletion -> Void
+public typealias ImageCompletion = (UIImage?) -> Void
+public typealias FetchImageBlock = (@escaping ImageCompletion) -> Void
+public typealias ItemViewControllerBlock = (_ index: Int, _ itemCount: Int, _ fetchImageBlock: FetchImageBlock, _ configuration: GalleryConfiguration, _ isInitialController: Bool) -> UIViewController
 
 public enum GalleryItem {
-    
-    case Image(fetchImageBlock: FetchImageBlock)
-    case Video(fetchPreviewImageBlock: FetchImageBlock, videoURL: NSURL)
+
+    case image(fetchImageBlock: FetchImageBlock)
+    case video(fetchPreviewImageBlock: FetchImageBlock, videoURL: URL)
+    case custom(fetchImageBlock: FetchImageBlock, itemViewControllerBlock: ItemViewControllerBlock)
 }

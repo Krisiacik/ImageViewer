@@ -14,11 +14,10 @@ extension CALayer {
 
         UIGraphicsBeginImageContextWithOptions(self.frame.size, false, 0)
         let context = UIGraphicsGetCurrentContext()
-        self.renderInContext(context!)
+        self.render(in: context!)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        
+
         return image!
     }
 }
-        

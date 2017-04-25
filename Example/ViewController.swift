@@ -10,7 +10,13 @@ import UIKit
 
 extension UIImageView: DisplaceableView {}
 
-class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplacedViewsDatasource {
+struct DataItem {
+
+    let imageView: UIImageView
+    let galleryItem: GalleryItem
+}
+
+class ViewController: UIViewController {
 
     @IBOutlet weak var image1: UIImageView!
     @IBOutlet weak var image2: UIImageView!
@@ -20,111 +26,162 @@ class ViewController: UIViewController, GalleryItemsDatasource, GalleryDisplaced
     @IBOutlet weak var image6: UIImageView!
     @IBOutlet weak var image7: UIImageView!
 
-    var imageViews: [UIImageView] = []
+    var items: [DataItem] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        imageViews += [image1, image2, image3, image4, image5, image6, image7]
+        let imageViews = [image1, image2, image3, image4, image5, image6, image7]
+
+        for (index, imageView) in imageViews.enumerated() {
+
+            guard let imageView = imageView else { continue }
+            var galleryItem: GalleryItem!
+
+            switch index {
+
+            case 2:
+
+                galleryItem = GalleryItem.video(fetchPreviewImageBlock: { $0(UIImage(named: "2")!) }, videoURL: URL (string: "http://video.dailymail.co.uk/video/mol/test/2016/09/21/5739239377694275356/1024x576_MP4_5739239377694275356.mp4")!)
+
+            case 4:
+
+                let myFetchImageBlock: FetchImageBlock = { $0(imageView.image!) }
+
+                let itemViewControllerBlock: ItemViewControllerBlock = { index, itemCount, fetchImageBlock, configuration, isInitialController in
+
+                    return AnimatedViewController(index: index, itemCount: itemCount, fetchImageBlock: myFetchImageBlock, configuration: configuration, isInitialController: isInitialController)
+                }
+
+                galleryItem = GalleryItem.custom(fetchImageBlock: myFetchImageBlock, itemViewControllerBlock: itemViewControllerBlock)
+
+            default:
+
+                let image = imageView.image ?? UIImage(named: "0")!
+                galleryItem = GalleryItem.image { $0(image) }
+            }
+
+            items.append(DataItem(imageView: imageView, galleryItem: galleryItem))
+        }
     }
 
-    @IBAction func showGalleryImageViewer(sender: UITapGestureRecognizer) {
+    @IBAction func showGalleryImageViewer(_ sender: UITapGestureRecognizer) {
 
         guard let displacedView = sender.view as? UIImageView else { return }
 
-        guard let displacedViewIndex = imageViews.indexOf(displacedView) else { return }
+        guard let displacedViewIndex = items.index(where: { $0.imageView == displacedView }) else { return }
 
         let frame = CGRect(x: 0, y: 0, width: 200, height: 24)
-        let headerView = CounterView(frame: frame, currentIndex: displacedViewIndex, count: imageViews.count)
-        let footerView = CounterView(frame: frame, currentIndex: displacedViewIndex, count: imageViews.count)
+        let headerView = CounterView(frame: frame, currentIndex: displacedViewIndex, count: items.count)
+        let footerView = CounterView(frame: frame, currentIndex: displacedViewIndex, count: items.count)
 
-        let galleryViewController = GalleryViewController(startIndex: displacedViewIndex, itemsDatasource: self, displacedViewsDatasource: self, configuration: galleryConfiguration())
+        let galleryViewController = GalleryViewController(startIndex: displacedViewIndex, itemsDataSource: self, itemsDelegate: self, displacedViewsDataSource: self, configuration: galleryConfiguration())
         galleryViewController.headerView = headerView
         galleryViewController.footerView = footerView
 
-        galleryViewController.launchedCompletion = {
-            print("LAUNCHED")
-        }
-        galleryViewController.closedCompletion = { print("CLOSED")
-        }
-        galleryViewController.swipedToDismissCompletion = { print("SWIPE-DISMISSED")
-        }
+        galleryViewController.launchedCompletion = { print("LAUNCHED") }
+        galleryViewController.closedCompletion = { print("CLOSED") }
+        galleryViewController.swipedToDismissCompletion = { print("SWIPE-DISMISSED") }
 
         galleryViewController.landedPageAtIndexCompletion = { index in
 
             print("LANDED AT INDEX: \(index)")
 
+            headerView.count = self.items.count
             headerView.currentIndex = index
+            footerView.count = self.items.count
             footerView.currentIndex = index
         }
 
         self.presentImageGallery(galleryViewController)
     }
 
-    func itemCount() -> Int {
-
-        return imageViews.count
-    }
-
-    func provideDisplacementItem(atIndex index: Int) -> DisplaceableView? {
-
-        return imageViews[index] ?? nil
-    }
-
-    func provideGalleryItem(index: Int) -> GalleryItem {
-
-        if index == 2 {
-
-            return GalleryItem.Video(fetchPreviewImageBlock: { $0(UIImage(named: "2")!)} , videoURL: NSURL(string: "http://video.dailymail.co.uk/video/mol/test/2016/09/21/5739239377694275356/1024x576_MP4_5739239377694275356.mp4")!)
-        }
-        else {
-
-            let image = imageViews[index].image ?? UIImage(named: "0")!
-            
-            return GalleryItem.Image { $0(image) }
-        }
-    }
-
     func galleryConfiguration() -> GalleryConfiguration {
 
         return [
 
-            GalleryConfigurationItem.PagingMode(.Standard),
-            GalleryConfigurationItem.PresentationStyle(.Displacement),
-            GalleryConfigurationItem.HideDecorationViewsOnLaunch(false),
+            GalleryConfigurationItem.closeButtonMode(.builtIn),
 
-            GalleryConfigurationItem.OverlayColor(UIColor(white: 0.035, alpha: 1)),
-            GalleryConfigurationItem.OverlayColorOpacity(1),
-            GalleryConfigurationItem.OverlayBlurOpacity(1),
-            GalleryConfigurationItem.OverlayBlurStyle(UIBlurEffectStyle.Light),
+            GalleryConfigurationItem.pagingMode(.standard),
+            GalleryConfigurationItem.presentationStyle(.displacement),
+            GalleryConfigurationItem.hideDecorationViewsOnLaunch(false),
 
-            GalleryConfigurationItem.MaximumZoolScale(8),
-            GalleryConfigurationItem.SwipeToDismissThresholdVelocity(500),
+            GalleryConfigurationItem.swipeToDismissMode(.vertical),
+            GalleryConfigurationItem.toggleDecorationViewsBySingleTap(false),
 
-            GalleryConfigurationItem.DoubleTapToZoomDuration(0.15),
+            GalleryConfigurationItem.overlayColor(UIColor(white: 0.035, alpha: 1)),
+            GalleryConfigurationItem.overlayColorOpacity(1),
+            GalleryConfigurationItem.overlayBlurOpacity(1),
+            GalleryConfigurationItem.overlayBlurStyle(UIBlurEffectStyle.light),
 
-            GalleryConfigurationItem.BlurPresentDuration(0.5),
-            GalleryConfigurationItem.BlurPresentDelay(0),
-            GalleryConfigurationItem.ColorPresentDuration(0.25),
-            GalleryConfigurationItem.ColorPresentDelay(0),
+            GalleryConfigurationItem.maximumZoomScale(8),
+            GalleryConfigurationItem.swipeToDismissThresholdVelocity(500),
 
-            GalleryConfigurationItem.BlurDismissDuration(0.1),
-            GalleryConfigurationItem.BlurDismissDelay(0.4),
-            GalleryConfigurationItem.ColorDismissDuration(0.45),
-            GalleryConfigurationItem.ColorDismissDelay(0),
+            GalleryConfigurationItem.doubleTapToZoomDuration(0.15),
 
-            GalleryConfigurationItem.ItemFadeDuration(0.3),
-            GalleryConfigurationItem.DecorationViewsFadeDuration(0.15),
-            GalleryConfigurationItem.RotationDuration(0.15),
+            GalleryConfigurationItem.blurPresentDuration(0.5),
+            GalleryConfigurationItem.blurPresentDelay(0),
+            GalleryConfigurationItem.colorPresentDuration(0.25),
+            GalleryConfigurationItem.colorPresentDelay(0),
 
-            GalleryConfigurationItem.DisplacementDuration(0.55),
-            GalleryConfigurationItem.ReverseDisplacementDuration(0.25),
-            GalleryConfigurationItem.DisplacementTransitionStyle(.SpringBounce(0.7)),
-            GalleryConfigurationItem.DisplacementTimingCurve(.Linear),
+            GalleryConfigurationItem.blurDismissDuration(0.1),
+            GalleryConfigurationItem.blurDismissDelay(0.4),
+            GalleryConfigurationItem.colorDismissDuration(0.45),
+            GalleryConfigurationItem.colorDismissDelay(0),
 
-            GalleryConfigurationItem.StatusBarHidden(true),
-            GalleryConfigurationItem.DisplacementKeepOriginalInPlace(false),
-            GalleryConfigurationItem.DisplacementInsetMargin(50)
+            GalleryConfigurationItem.itemFadeDuration(0.3),
+            GalleryConfigurationItem.decorationViewsFadeDuration(0.15),
+            GalleryConfigurationItem.rotationDuration(0.15),
+
+            GalleryConfigurationItem.displacementDuration(0.55),
+            GalleryConfigurationItem.reverseDisplacementDuration(0.25),
+            GalleryConfigurationItem.displacementTransitionStyle(.springBounce(0.7)),
+            GalleryConfigurationItem.displacementTimingCurve(.linear),
+
+            GalleryConfigurationItem.statusBarHidden(true),
+            GalleryConfigurationItem.displacementKeepOriginalInPlace(false),
+            GalleryConfigurationItem.displacementInsetMargin(50)
         ]
     }
+}
+
+extension ViewController: GalleryDisplacedViewsDataSource {
+
+    func provideDisplacementItem(atIndex index: Int) -> DisplaceableView? {
+
+        return index < items.count ? items[index].imageView : nil
+    }
+}
+
+extension ViewController: GalleryItemsDataSource {
+
+    func itemCount() -> Int {
+
+        return items.count
+    }
+
+    func provideGalleryItem(_ index: Int) -> GalleryItem {
+
+        return items[index].galleryItem
+    }
+}
+
+extension ViewController: GalleryItemsDelegate {
+
+    func removeGalleryItem(at index: Int) {
+
+        print("remove item at \(index)")
+
+        let imageView = items[index].imageView
+        imageView.removeFromSuperview()
+        items.remove(at: index)
+    }
+}
+
+// Some external custom UIImageView we want to show in the gallery
+class FLSomeAnimatedImage: UIImageView {
+}
+
+// Extend ImageBaseController so we get all the functionality for free
+class AnimatedViewController: ItemBaseController<FLSomeAnimatedImage> {
 }

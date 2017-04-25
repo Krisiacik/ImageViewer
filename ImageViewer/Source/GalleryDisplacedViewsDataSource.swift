@@ -1,5 +1,5 @@
 //
-//  GalleryDisplacedViewsDatasource.swift
+//  GalleryDisplacedViewsDataSource.swift
 //  ImageViewer
 //
 //  Created by Kristian Angyal on 01/07/2016.
@@ -17,10 +17,10 @@ public protocol DisplaceableView {
     var contentMode: UIViewContentMode { get }
     var hidden: Bool { get set }
 
-    func convertPoint(point: CGPoint, toView view: UIView?) -> CGPoint
+    func convertPoint(_ point: CGPoint, toView view: UIView?) -> CGPoint
 }
 
-public protocol GalleryDisplacedViewsDatasource: class {
-    
+public protocol GalleryDisplacedViewsDataSource: class {
+
     func provideDisplacementItem(atIndex index: Int) -> DisplaceableView?
 }

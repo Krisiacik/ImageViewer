@@ -9,121 +9,121 @@
 import UIKit
 import AVFoundation
 
-/// returns a size that aspect-fits into the bounding size. Example -> We have some view of 
-/// certain size and the question is, what would have to be its size, so that it would fit 
-/// it into some rect of some size ..given we wuold want to keep the content rects aspect ratio.
+/// returns a size that aspect-fits into the bounding size. Example -> We have some view of
+/// certain size and the question is, what would have to be its size, so that it would fit
+/// it into some rect of some size ..given we would want to keep the content rects aspect ratio.
 
 func aspectFitSize(forContentOfSize contentSize: CGSize, inBounds bounds: CGSize) -> CGSize {
-    
-    return AVMakeRectWithAspectRatioInsideRect(contentSize, CGRect(origin: CGPointZero, size: bounds)).size
+
+    return AVMakeRect(aspectRatio: contentSize, insideRect: CGRect(origin: CGPoint.zero, size: bounds)).size
 }
 
 func aspectFitContentSize(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGSize {
-    
-    return AVMakeRectWithAspectRatioInsideRect(contentSize, CGRect(origin: CGPointZero, size: boundingSize)).size
+
+    return AVMakeRect(aspectRatio: contentSize, insideRect: CGRect(origin: CGPoint.zero, size: boundingSize)).size
 }
 
 func aspectFillZoomScale(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGFloat {
-    
+
     let aspectFitSize = aspectFitContentSize(forBoundingSize: boundingSize, contentSize: contentSize)
-    return (boundingSize.width == aspectFitSize.width) ? (boundingSize.height / aspectFitSize.height): (boundingSize.width / aspectFitSize.width)
+    return (floor(boundingSize.width) == floor(aspectFitSize.width)) ? (boundingSize.height / aspectFitSize.height): (boundingSize.width / aspectFitSize.width)
 }
 
 func contentCenter(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGPoint {
-    
+
     /// When the zoom scale changes i.e. the image is zoomed in or out, the hypothetical center
     /// of content view changes too. But the default Apple implementation is keeping the last center
     /// value which doesn't make much sense. If the image ratio is not matching the screen
-    /// ratio, there will be some empty space horizontaly or verticaly. This needs to be calculated
+    /// ratio, there will be some empty space horizontally or vertically. This needs to be calculated
     /// so that we can get the correct new center value. When these are added, edges of contentView
-    /// are aligned in realtime and always aligned with corners of scrollview.
-    
-    let horizontalOffest = (boundingSize.width > contentSize.width) ? ((boundingSize.width - contentSize.width) * 0.5): 0.0
-    let verticalOffset = (boundingSize.height > contentSize.height) ? ((boundingSize.height - contentSize.height) * 0.5): 0.0
-    
-    return CGPoint(x: contentSize.width * 0.5 + horizontalOffest,  y: contentSize.height * 0.5 + verticalOffset)
+    /// are aligned in realtime and always aligned with corners of scrollView.
+
+    let horizontalOffset = (boundingSize.width > contentSize.width) ? ((boundingSize.width - contentSize.width) * 0.5): 0.0
+    let verticalOffset   = (boundingSize.height > contentSize.height) ? ((boundingSize.height - contentSize.height) * 0.5): 0.0
+
+    return CGPoint(x: contentSize.width * 0.5 + horizontalOffset, y: contentSize.height * 0.5 + verticalOffset)
 }
 
 func zoomRect(ForScrollView scrollView: UIScrollView, scale: CGFloat, center: CGPoint) -> CGRect {
-    
+
     let width = scrollView.frame.size.width  / scale
     let height = scrollView.frame.size.height / scale
     let originX = center.x - (width / 2.0)
     let originY = center.y - (height / 2.0)
-    
+
     return CGRect(x: originX, y: originY, width: width, height: height)
 }
 
-func screenshotFromView(view: UIView) -> UIImage {
-    
+func screenshotFromView(_ view: UIView) -> UIImage {
+
     let image: UIImage
-    
-    UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, UIScreen.mainScreen().scale)
-    view.drawViewHierarchyInRect(view.bounds, afterScreenUpdates: false)
+
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, UIScreen.main.scale)
+    view.drawHierarchy(in: view.bounds, afterScreenUpdates: false)
     image = UIGraphicsGetImageFromCurrentImageContext()!
     UIGraphicsEndImageContext()
-    
+
     return image
 }
 
-//the transform needed to rotate a view that matches device screen orientation to match window orientation.
+// the transform needed to rotate a view that matches device screen orientation to match window orientation.
 func windowRotationTransform() -> CGAffineTransform {
 
-    let angleInDegrees = rotationAngleToMatchDeviceOrientation(UIDevice.currentDevice().orientation)
+    let angleInDegrees = rotationAngleToMatchDeviceOrientation(UIDevice.current.orientation)
     let angleInRadians = degreesToRadians(angleInDegrees)
 
-    return CGAffineTransformMakeRotation(angleInRadians)
+    return CGAffineTransform(rotationAngle: angleInRadians)
 }
 
-//the transform needed to rotate a view that matches window orientation to match devices screen orientation.
+// the transform needed to rotate a view that matches window orientation to match devices screen orientation.
 func deviceRotationTransform() -> CGAffineTransform {
 
-    let angleInDegrees = rotationAngleToMatchDeviceOrientation(UIDevice.currentDevice().orientation)
+    let angleInDegrees = rotationAngleToMatchDeviceOrientation(UIDevice.current.orientation)
     let angleInRadians = degreesToRadians(angleInDegrees)
 
-    return CGAffineTransformMakeRotation(-angleInRadians)
+    return CGAffineTransform(rotationAngle: -angleInRadians)
 }
 
-func degreesToRadians(degree: CGFloat) -> CGFloat {
+func degreesToRadians(_ degree: CGFloat) -> CGFloat {
     return CGFloat(M_PI) * degree / 180
 }
 
-private func rotationAngleToMatchDeviceOrientation(orientation: UIDeviceOrientation) -> CGFloat {
-    
+private func rotationAngleToMatchDeviceOrientation(_ orientation: UIDeviceOrientation) -> CGFloat {
+
     var desiredRotationAngle: CGFloat = 0
-    
+
     switch orientation {
-    case .LandscapeLeft:                    desiredRotationAngle = 90
-    case .LandscapeRight:                   desiredRotationAngle = -90
-    case .PortraitUpsideDown:               desiredRotationAngle = 180
+    case .landscapeLeft:                    desiredRotationAngle = 90
+    case .landscapeRight:                   desiredRotationAngle = -90
+    case .portraitUpsideDown:               desiredRotationAngle = 180
     default:                                desiredRotationAngle = 0
     }
-    
+
     return desiredRotationAngle
 }
 
 func rotationAdjustedBounds() -> CGRect {
-    
-    let applicationWindow = UIApplication.sharedApplication().delegate?.window?.flatMap { $0 }
-    guard let window = applicationWindow else { return UIScreen.mainScreen().bounds }
-    
+
+    let applicationWindow = UIApplication.shared.delegate?.window?.flatMap { $0 }
+    guard let window = applicationWindow else { return UIScreen.main.bounds }
+
     if UIApplication.isPortraitOnly {
-        
-        return (UIDevice.currentDevice().orientation.isLandscape) ? CGRect(origin: CGPointZero, size: window.bounds.size.inverted()): window.bounds
+
+        return (UIDevice.current.orientation.isLandscape) ? CGRect(origin: CGPoint.zero, size: window.bounds.size.inverted()): window.bounds
     }
-    
+
     return window.bounds
 }
 
 func maximumZoomScale(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGFloat {
-    
+
     /// we want to allow the image to always cover 4x the area of screen
     return min(boundingSize.width, boundingSize.height) / min(contentSize.width, contentSize.height) * 4
 }
 
-func rotationAdjustedCenter(view: UIView) -> CGPoint {
-    
+func rotationAdjustedCenter(_ view: UIView) -> CGPoint {
+
     guard UIApplication.isPortraitOnly else { return view.center }
-    
-    return (UIDevice.currentDevice().orientation.isLandscape) ? view.center.inverted() : view.center
+
+    return (UIDevice.current.orientation.isLandscape) ? view.center.inverted() : view.center
 }

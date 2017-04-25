@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-public class VideoScrubber: UIControl {
+open class VideoScrubber: UIControl {
 
     let playButton = UIButton.playButton(width: 50, height: 40)
     let pauseButton = UIButton.pauseButton(width: 50, height: 40)
@@ -17,31 +17,27 @@ public class VideoScrubber: UIControl {
 
     let scrubber = Slider.createSlider(320, height: 20, pointerDiameter: 10, barHeight: 2)
     let timeLabel = UILabel(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 50, height: 20)))
-    var duration: NSTimeInterval?
-    private var periodicObserver: AnyObject?
-    private var stoppedSlidingTimeStamp = NSDate()
+    var duration: TimeInterval?
+    fileprivate var periodicObserver: AnyObject?
+    fileprivate var stoppedSlidingTimeStamp = Date()
 
     weak var player: AVPlayer? {
 
         willSet {
-
-            if newValue == nil {
-
-                if let player = player {
-
-                    ///KVO
-                    player.removeObserver(self, forKeyPath: "status")
-                    player.removeObserver(self, forKeyPath: "rate")
-
-                    ///NC
-                    NSNotificationCenter.defaultCenter().removeObserver(self)
-
-                    ///TIMER
-                    if let periodicObserver = self.periodicObserver {
-
-                        player.removeTimeObserver(periodicObserver)
-                        self.periodicObserver = nil
-                    }
+            if let player = player {
+                
+                ///KVO
+                player.removeObserver(self, forKeyPath: "status")
+                player.removeObserver(self, forKeyPath: "rate")
+                
+                ///NC
+                NotificationCenter.default.removeObserver(self)
+                
+                ///TIMER
+                if let periodicObserver = self.periodicObserver {
+                    
+                    player.removeTimeObserver(periodicObserver)
+                    self.periodicObserver = nil
                 }
             }
         }
@@ -51,19 +47,16 @@ public class VideoScrubber: UIControl {
             if let player = player {
 
                 ///KVO
-                player.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.New, context: nil)
-                player.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.New, context: nil)
+                player.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.new, context: nil)
+                player.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.new, context: nil)
 
                 ///NC
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didEndPlaying), name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
+                NotificationCenter.default.addObserver(self, selector: #selector(didEndPlaying), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
 
                 ///TIMER
-                periodicObserver = player.addPeriodicTimeObserverForInterval(CMTime(value: 1, timescale: 1), queue: nil) { [weak self] time in
-
-                    if let weakself = self {
-                        weakself.update()
-                    }
-                }
+                periodicObserver = player.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 1), queue: nil, using: { [weak self] time in
+                    self?.update()
+                }) as AnyObject?
 
                 self.update()
             }
@@ -93,42 +86,40 @@ public class VideoScrubber: UIControl {
             player?.removeTimeObserver(periodicObserver)
             self.periodicObserver = nil
         }
-
-        print("VideoScrubber deinit 💣")
     }
 
     func didEndPlaying() {
 
-        self.playButton.hidden = true
-        self.pauseButton.hidden = true
-        self.replayButton.hidden = false
+        self.playButton.isHidden = true
+        self.pauseButton.isHidden = true
+        self.replayButton.isHidden = false
     }
 
     func setup() {
 
         self.clipsToBounds = true
-        pauseButton.hidden = true
-        replayButton.hidden = true
+        pauseButton.isHidden = true
+        replayButton.isHidden = true
 
         scrubber.minimumValue = 0
         scrubber.maximumValue = 1000
         scrubber.value = 0
 
-        timeLabel.attributedText = NSAttributedString(string: "--:--", attributes: [NSForegroundColorAttributeName : UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(12)])
-        timeLabel.textAlignment =  .Center
+        timeLabel.attributedText = NSAttributedString(string: "--:--", attributes: [NSForegroundColorAttributeName : UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 12)])
+        timeLabel.textAlignment =  .center
 
-        playButton.addTarget(self, action: #selector(play), forControlEvents: UIControlEvents.TouchUpInside)
-        pauseButton.addTarget(self, action: #selector(pause), forControlEvents: UIControlEvents.TouchUpInside)
-        replayButton.addTarget(self, action: #selector(replay), forControlEvents: UIControlEvents.TouchUpInside)
-        scrubber.addTarget(self, action: #selector(updateCurrentTime), forControlEvents: UIControlEvents.ValueChanged)
-        scrubber.addTarget(self, action: #selector(seekToTime), forControlEvents: [UIControlEvents.TouchUpInside, UIControlEvents.TouchUpOutside])
+        playButton.addTarget(self, action: #selector(play), for: UIControlEvents.touchUpInside)
+        pauseButton.addTarget(self, action: #selector(pause), for: UIControlEvents.touchUpInside)
+        replayButton.addTarget(self, action: #selector(replay), for: UIControlEvents.touchUpInside)
+        scrubber.addTarget(self, action: #selector(updateCurrentTime), for: UIControlEvents.valueChanged)
+        scrubber.addTarget(self, action: #selector(seekToTime), for: [UIControlEvents.touchUpInside, UIControlEvents.touchUpOutside])
 
         self.addSubviews(playButton, pauseButton, replayButton, scrubber, timeLabel)
 
-        scrubber.addObserver(self, forKeyPath: "isSliding", options: NSKeyValueObservingOptions.New, context: nil)
+        scrubber.addObserver(self, forKeyPath: "isSliding", options: NSKeyValueObservingOptions.new, context: nil)
     }
 
-    public override func layoutSubviews() {
+    open override func layoutSubviews() {
         super.layoutSubviews()
 
         playButton.center = self.boundsCenter
@@ -145,13 +136,13 @@ public class VideoScrubber: UIControl {
         scrubber.frame.origin.x = playButton.frame.maxX
     }
 
-    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String: AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
 
         if keyPath == "isSliding" {
 
             if scrubber.isSliding == false {
 
-                stoppedSlidingTimeStamp = NSDate()
+                stoppedSlidingTimeStamp = Date()
             }
         }
 
@@ -168,7 +159,7 @@ public class VideoScrubber: UIControl {
 
     func replay() {
 
-        self.player?.seekToTime(CMTime(value:0 , timescale: 1))
+        self.player?.seek(to: CMTime(value:0 , timescale: 1))
         self.player?.play()
     }
 
@@ -184,7 +175,7 @@ public class VideoScrubber: UIControl {
         if let player = self.player, let currentItem =  player.currentItem {
 
             let time = currentItem.duration.seconds * Double(progress)
-            player.seekToTime(CMTime(seconds: time, preferredTimescale: 1))
+            player.seek(to: CMTime(seconds: time, preferredTimescale: 1))
         }
     }
 
@@ -200,9 +191,9 @@ public class VideoScrubber: UIControl {
 
         if let player = self.player {
 
-            self.playButton.hidden = player.isPlaying()
-            self.pauseButton.hidden = !self.playButton.hidden
-            self.replayButton.hidden = true
+            self.playButton.isHidden = player.isPlaying()
+            self.pauseButton.isHidden = !self.playButton.isHidden
+            self.replayButton.isHidden = true
         }
     }
 
@@ -218,49 +209,49 @@ public class VideoScrubber: UIControl {
 
         guard scrubber.isSliding == false else { return }
 
-        let timeElapsed = NSDate().timeIntervalSinceDate( stoppedSlidingTimeStamp)
+        let timeElapsed = Date().timeIntervalSince( stoppedSlidingTimeStamp)
         guard timeElapsed > 1 else {
             return
         }
 
-        if let player = self.player, duration = self.duration {
+        if let player = self.player, let duration = self.duration {
 
             let progress = player.currentTime().seconds / duration
 
-            UIView.animateWithDuration(0.9) { [weak self] in
+            UIView.animate(withDuration: 0.9, animations: { [weak self] in
 
-                if let weakself = self {
+                if let strongSelf = self {
 
-                    weakself.scrubber.value = Float(progress) * weakself.scrubber.maximumValue
+                    strongSelf.scrubber.value = Float(progress) * strongSelf.scrubber.maximumValue
                 }
-            }
+            })
         }
     }
 
     func updateCurrentTime() {
 
-        if let duration = self.duration where self.duration != nil {
+        if let duration = self.duration , self.duration != nil {
 
             let sliderProgress = scrubber.value / scrubber.maximumValue
             let currentTime = Double(sliderProgress) * duration
 
-            let timeString = stringFromTimeInterval(currentTime as NSTimeInterval)
+            let timeString = stringFromTimeInterval(currentTime as TimeInterval)
 
-            timeLabel.attributedText = NSAttributedString(string: timeString, attributes: [NSForegroundColorAttributeName : UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(12)])
+            timeLabel.attributedText = NSAttributedString(string: timeString, attributes: [NSForegroundColorAttributeName : UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 12)])
         }
         else {
-            timeLabel.attributedText = NSAttributedString(string: "--:--", attributes: [NSForegroundColorAttributeName : UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(12)])
+            timeLabel.attributedText = NSAttributedString(string: "--:--", attributes: [NSForegroundColorAttributeName : UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 12)])
         }
     }
-    
-    func stringFromTimeInterval(interval:NSTimeInterval) -> String {
-        
+
+    func stringFromTimeInterval(_ interval:TimeInterval) -> String {
+
         let timeInterval = NSInteger(interval)
-        
+
         let seconds = timeInterval % 60
         let minutes = (timeInterval / 60) % 60
         //let hours = (timeInterval / 3600)
-        
+
         return NSString(format: "%0.2d:%0.2d",minutes,seconds) as String
         //return NSString(format: "%0.2d:%0.2d:%0.2d",hours,minutes,seconds) as String
     }
