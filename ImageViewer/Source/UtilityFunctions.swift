@@ -85,7 +85,7 @@ func deviceRotationTransform() -> CGAffineTransform {
 }
 
 func degreesToRadians(_ degree: CGFloat) -> CGFloat {
-    return CGFloat(M_PI) * degree / 180
+    return CGFloat(Double.pi) * degree / 180
 }
 
 private func rotationAngleToMatchDeviceOrientation(_ orientation: UIDeviceOrientation) -> CGFloat {
