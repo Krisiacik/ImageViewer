@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		13BDF0711E573C78009C458F /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BDF0701E573C78009C458F /* UIColor.swift */; };
+		13BDF0721E573D10009C458F /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BDF0701E573C78009C458F /* UIColor.swift */; };
 		4CD1C49C1C16FF64008D5F84 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD1C49B1C16FF64008D5F84 /* CGPoint.swift */; };
 		4CD1C49D1C16FF64008D5F84 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD1C49B1C16FF64008D5F84 /* CGPoint.swift */; };
 		5AF0E6605E3B055280A902DF /* GalleryItemsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0EF3CAFE8B7972354F05D /* GalleryItemsDelegate.swift */; };
@@ -90,6 +92,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		13BDF0701E573C78009C458F /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		4CD1C49B1C16FF64008D5F84 /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
 		5AF0EF3CAFE8B7972354F05D /* GalleryItemsDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryItemsDelegate.swift; sourceTree = "<group>"; };
 		A32D40031D45C4DE00AB5ADA /* Bool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
@@ -263,6 +266,7 @@
 				EB3464EE1D4B8E88009494B5 /* CALayer.swift */,
 				EB17B3771D4A51D200EED1DA /* UIBezierPath.swift */,
 				EB3464F41D4BAA19009494B5 /* UISlider.swift */,
+				13BDF0701E573C78009C458F /* UIColor.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -535,6 +539,7 @@
 				EB6F46561D46640D00984035 /* VideoView.swift in Sources */,
 				EB8BEC7A1D3D1CB500DCE3EC /* ItemControllerDelegate.swift in Sources */,
 				EBA90E431C875225000AA697 /* ImageFadeInHandler.swift in Sources */,
+				13BDF0721E573D10009C458F /* UIColor.swift in Sources */,
 				4CD1C49C1C16FF64008D5F84 /* CGPoint.swift in Sources */,
 				EBA76F711D4F855C0094931F /* ItemBaseController.swift in Sources */,
 				EB4DEBC01C84A6FD00D5F897 /* UIView.swift in Sources */,
@@ -574,6 +579,7 @@
 				EB1CEC1F1C84A54600BB27B8 /* UtilityFunctions.swift in Sources */,
 				A32D40041D45C4DE00AB5ADA /* Bool.swift in Sources */,
 				C7DABE641C12276800F5BD7B /* CGSize.swift in Sources */,
+				13BDF0711E573C78009C458F /* UIColor.swift in Sources */,
 				EBA0A9541C89C653005B8DD3 /* GalleryConfiguration.swift in Sources */,
 				EB17B3791D4A51D200EED1DA /* UIBezierPath.swift in Sources */,
 				EB1DB6EA1D3E595D00DC9064 /* UIApplication.swift in Sources */,

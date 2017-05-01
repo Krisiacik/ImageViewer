@@ -97,6 +97,7 @@ open class VideoScrubber: UIControl {
 
     func setup() {
 
+        self.tintColor = .white
         self.clipsToBounds = true
         pauseButton.isHidden = true
         replayButton.isHidden = true
@@ -105,7 +106,7 @@ open class VideoScrubber: UIControl {
         scrubber.maximumValue = 1000
         scrubber.value = 0
 
-        timeLabel.attributedText = NSAttributedString(string: "--:--", attributes: [NSForegroundColorAttributeName : UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 12)])
+        timeLabel.attributedText = NSAttributedString(string: "--:--", attributes: [NSForegroundColorAttributeName : self.tintColor, NSFontAttributeName : UIFont.systemFont(ofSize: 12)])
         timeLabel.textAlignment =  .center
 
         playButton.addTarget(self, action: #selector(play), for: UIControlEvents.touchUpInside)
@@ -237,10 +238,10 @@ open class VideoScrubber: UIControl {
 
             let timeString = stringFromTimeInterval(currentTime as TimeInterval)
 
-            timeLabel.attributedText = NSAttributedString(string: timeString, attributes: [NSForegroundColorAttributeName : UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 12)])
+            timeLabel.attributedText = NSAttributedString(string: timeString, attributes: [NSForegroundColorAttributeName : self.tintColor, NSFontAttributeName : UIFont.systemFont(ofSize: 12)])
         }
         else {
-            timeLabel.attributedText = NSAttributedString(string: "--:--", attributes: [NSForegroundColorAttributeName : UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 12)])
+            timeLabel.attributedText = NSAttributedString(string: "--:--", attributes: [NSForegroundColorAttributeName : self.tintColor, NSFontAttributeName : UIFont.systemFont(ofSize: 12)])
         }
     }
 
@@ -254,5 +255,48 @@ open class VideoScrubber: UIControl {
 
         return NSString(format: "%0.2d:%0.2d",minutes,seconds) as String
         //return NSString(format: "%0.2d:%0.2d:%0.2d",hours,minutes,seconds) as String
+    }
+    
+    override open func tintColorDidChange() {
+        timeLabel.attributedText = NSAttributedString(string: "--:--", attributes: [NSForegroundColorAttributeName : self.tintColor, NSFontAttributeName : UIFont.systemFont(ofSize: 12)])
+        
+        let playButtonImage = playButton.imageView?.image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        playButton.imageView?.tintColor = self.tintColor
+        playButton.setImage(playButtonImage, for: .normal)
+        
+        if let playButtonImage = playButtonImage,
+            let highlightImage = self.image(playButtonImage, with: self.tintColor.shadeDarker()) as UIImage? {
+            playButton.setImage(highlightImage, for: .highlighted)
+        }
+        
+        let pauseButtonImage = pauseButton.imageView?.image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        pauseButton.imageView?.tintColor = self.tintColor
+        pauseButton.setImage(pauseButtonImage, for: .normal)
+        
+        if let pauseButtonImage = pauseButtonImage,
+            let highlightImage = self.image(pauseButtonImage, with: self.tintColor.shadeDarker()) as UIImage? {
+            pauseButton.setImage(highlightImage, for: .highlighted)
+        }
+        
+        let replayButtonImage = replayButton.imageView?.image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        replayButton.imageView?.tintColor = self.tintColor
+        replayButton.setImage(replayButtonImage, for: .normal)
+        
+        if let replayButtonImage = replayButtonImage,
+            let highlightImage = self.image(replayButtonImage, with: self.tintColor.shadeDarker()) as UIImage? {
+            replayButton.setImage(highlightImage, for: .highlighted)
+        }
+    }
+    
+    func image(_ image: UIImage, with color: UIColor) -> UIImage? {
+        UIGraphicsBeginImageContext(image.size)
+        let rect = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height)
+        let context = UIGraphicsGetCurrentContext()
+        context?.setFillColor(color.cgColor)
+        context?.clip(to: rect, mask: image.cgImage!)
+        context?.fill(CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
+        let fillImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return fillImage
     }
 }
