@@ -159,6 +159,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
             swipeToDismissRecognizer.addTarget(self, action: #selector(scrollViewDidSwipeToDismiss))
             swipeToDismissRecognizer.delegate = self
             view.addGestureRecognizer(swipeToDismissRecognizer)
+            swipeToDismissRecognizer.require(toFail: doubleTapRecognizer)
         }
     }
 
@@ -190,7 +191,11 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
                 DispatchQueue.main.async {
                     self?.activityIndicatorView.stopAnimating()
 
-                    self?.itemView.image = image
+                    var itemView = self?.itemView
+                    itemView?.image = image
+                    itemView?.isAccessibilityElement = image.isAccessibilityElement
+                    itemView?.accessibilityLabel = image.accessibilityLabel
+                    itemView?.accessibilityTraits = image.accessibilityTraits
 
                     self?.view.setNeedsLayout()
                     self?.view.layoutIfNeeded()
@@ -274,9 +279,6 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
     }
 
     func scrollViewDidSwipeToDismiss(_ recognizer: UIPanGestureRecognizer) {
-
-        /// a swipe gesture on image view that has no image (it was not yet loaded, so we see a spinner) doesn't make sense
-        guard itemView.image != nil else {  return }
 
         /// A deliberate UX decision...you have to zoom back in to scale 1 to be able to swipe to dismiss. It is difficult for the user to swipe to dismiss from images larger then screen bounds because almost all the time it's not swiping to dismiss but instead panning a zoomed in picture on the canvas.
         guard scrollView.zoomScale == scrollView.minimumZoomScale else { return }
@@ -522,8 +524,10 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
                     self?.scrollView.zoomScale = 1
 
                     //rotate the image view
-                    self?.itemView.transform = deviceRotationTransform()
-
+                    if UIApplication.isPortraitOnly == true {
+                        self?.itemView.transform = deviceRotationTransform()
+                    }
+                    
                     //position the image view to starting center
                     self?.itemView.bounds = displacedView.bounds
                     self?.itemView.center = displacedView.convertPoint(displacedView.boundsCenter, toView: self!.view)

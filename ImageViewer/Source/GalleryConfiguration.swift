@@ -147,8 +147,14 @@ public enum GalleryConfigurationItem {
     ///Allows to set rotation support support with relation to rotation support in the hosting app.
     case rotationMode(GalleryRotationMode)
     
-    ///Allows video player move on next video after current finished
+    ///Allows the video player to automatically continue playing the next video
     case continuePlayVideoOnEnd(Bool)
+
+    ///Allows auto play video after gallery presented
+    case videoAutoPlay(Bool)
+
+    ///Tint color of video controls
+    case videoControlsColor(UIColor)
 }
 
 public enum GalleryRotationMode {

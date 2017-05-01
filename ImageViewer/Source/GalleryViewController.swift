@@ -26,7 +26,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
     // LOCAL STATE
     // represents the current page index, updated when the root view of the view controller representing the page stops animating inside visible bounds and stays on screen.
-    var currentIndex: Int
+    public var currentIndex: Int
     // Picks up the initial value from configuration, if provided. Subsequently also works as local state for the setting.
     fileprivate var decorationViewsHidden = false
     fileprivate var isAnimating = false
@@ -104,7 +104,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             case .colorDismissDuration(let duration):           overlayView.colorDismissDuration = duration
             case .colorDismissDelay(let delay):                 overlayView.colorDismissDelay = delay
             case .continuePlayVideoOnEnd(let enabled):          continueNextVideoOnFinish = enabled
-
+            case .videoControlsColor(let color):                scrubber.tintColor = color
             case .closeButtonMode(let buttonMode):
 
                 switch buttonMode {
@@ -408,8 +408,16 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
     @objc fileprivate func deleteItem() {
 
+        deleteButton?.isEnabled = false
+        view.isUserInteractionEnabled = false
+
         itemsDelegate?.removeGalleryItem(at: currentIndex)
-        removePage(atIndex: currentIndex)
+        removePage(atIndex: currentIndex) {
+
+            [weak self] in
+            self?.deleteButton?.isEnabled = true
+            self?.view.isUserInteractionEnabled = true
+        }
     }
 
     //ThumbnailsimageBlock
@@ -462,7 +470,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         }
     }
 
-    func removePage(atIndex index: Int) {
+    func removePage(atIndex index: Int, completion: @escaping () -> Void) {
 
         // If removing last item, go back, otherwise, go forward
 
@@ -473,7 +481,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         if newIndex < 0 { close(); return }
 
         let vc = self.pagingDataSource.createItemController(newIndex)
-        setViewControllers([vc], direction: direction, animated: true, completion: nil)
+        setViewControllers([vc], direction: direction, animated: true) { _ in completion() }
     }
 
     open func reload(atIndex index: Int) {
@@ -626,8 +634,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         self.headerView?.sizeToFit()
         self.footerView?.sizeToFit()
 
-        if let _ = controller as? VideoViewController {
-
+        if let videoController = controller as? VideoViewController {            
+            scrubber.player = videoController.player
             if scrubber.alpha == 0 && decorationViewsHidden == false {
 
                 UIView.animate(withDuration: 0.3, animations: { [weak self] in
@@ -638,7 +646,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         }
     }
 
-    public func itemControllerDidSingleTap(_ controller: ItemController) {
+    open func itemControllerDidSingleTap(_ controller: ItemController) {
 
         self.decorationViewsHidden.flip()
         animateDecorationViews(visible: !self.decorationViewsHidden)
