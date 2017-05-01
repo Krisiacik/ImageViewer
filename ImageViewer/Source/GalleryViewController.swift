@@ -104,6 +104,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             case .colorDismissDuration(let duration):           overlayView.colorDismissDuration = duration
             case .colorDismissDelay(let delay):                 overlayView.colorDismissDelay = delay
             case .continuePlayVideoOnEnd(let enabled):          continueNextVideoOnFinish = enabled
+            case .seeAllCloseLayout(let layout):                seeAllCloseLayout = layout
             case .videoControlsColor(let color):                scrubber.tintColor = color
             case .closeButtonMode(let buttonMode):
 
