@@ -181,7 +181,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         NotificationCenter.default.removeObserver(self)
     }
     
-    func didEndPlaying() {
+    @objc func didEndPlaying() {
         page(toIndex: currentIndex+1)
     }
 

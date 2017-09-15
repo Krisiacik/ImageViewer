@@ -37,7 +37,7 @@ class ThumbnailsViewController: UICollectionViewController, UICollectionViewDele
         NotificationCenter.default.removeObserver(self)
     }
 
-    func rotate() {
+    @objc func rotate() {
         guard UIApplication.isPortraitOnly else { return }
 
         guard UIDevice.current.orientation.isFlat == false &&
@@ -90,7 +90,7 @@ class ThumbnailsViewController: UICollectionViewController, UICollectionViewDele
         self.view.addSubview(closeButton)
     }
 
-    func close() {
+    @objc func close() {
         self.dismiss(animated: true, completion: nil)
     }
 
