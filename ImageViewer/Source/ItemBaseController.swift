@@ -48,9 +48,11 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
     fileprivate var displacementInsetMargin: CGFloat = 50
     fileprivate var swipeToDismissMode = GallerySwipeToDismissMode.always
     fileprivate var toggleDecorationViewBySingleTap = true
+    fileprivate var activityViewByLongTap = true
 
     /// INTERACTIONS
     fileprivate var singleTapRecognizer: UITapGestureRecognizer?
+    fileprivate var longPressRecognizer: UILongPressGestureRecognizer?
     fileprivate let doubleTapRecognizer = UITapGestureRecognizer()
     fileprivate let swipeToDismissRecognizer = UIPanGestureRecognizer()
 
@@ -86,6 +88,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
             case .toggleDecorationViewsBySingleTap(let enabled):    toggleDecorationViewBySingleTap = enabled
             case .spinnerColor(let color):                          activityIndicatorView.color = color
             case .spinnerStyle(let style):                          activityIndicatorView.activityIndicatorViewStyle = style
+            case .activityViewByLongTap(let enabled):               activityViewByLongTap = enabled
 
             case .displacementTransitionStyle(let style):
 
@@ -152,6 +155,16 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
             singleTapRecognizer.require(toFail: doubleTapRecognizer)
 
             self.singleTapRecognizer = singleTapRecognizer
+        }
+      
+        if activityViewByLongTap == true {
+
+          let longPressRecognizer = UILongPressGestureRecognizer()
+          
+          longPressRecognizer.addTarget(self, action: #selector(itemControllerDidLongPress))
+          scrollView.addGestureRecognizer(longPressRecognizer)
+          
+          self.longPressRecognizer = longPressRecognizer
         }
 
         if swipeToDismissMode != .never {
@@ -254,6 +267,11 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
     func scrollViewDidSingleTap() {
 
         self.delegate?.itemControllerDidSingleTap(self)
+    }
+
+    func itemControllerDidLongPress() {
+    
+        self.delegate?.itemControllerDidLongPress(self, with: itemView)
     }
 
     func scrollViewDidDoubleTap(_ recognizer: UITapGestureRecognizer) {

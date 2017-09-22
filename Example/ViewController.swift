@@ -108,6 +108,7 @@ class ViewController: UIViewController {
 
             GalleryConfigurationItem.swipeToDismissMode(.vertical),
             GalleryConfigurationItem.toggleDecorationViewsBySingleTap(false),
+            GalleryConfigurationItem.activityViewByLongTap(false),
 
             GalleryConfigurationItem.overlayColor(UIColor(white: 0.035, alpha: 1)),
             GalleryConfigurationItem.overlayColorOpacity(1),
