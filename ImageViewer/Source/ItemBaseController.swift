@@ -48,7 +48,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
     fileprivate var displacementInsetMargin: CGFloat = 50
     fileprivate var swipeToDismissMode = GallerySwipeToDismissMode.always
     fileprivate var toggleDecorationViewBySingleTap = true
-    fileprivate var activityViewByLongTap = true
+    fileprivate var activityViewByLongPress = true
 
     /// INTERACTIONS
     fileprivate var singleTapRecognizer: UITapGestureRecognizer?
@@ -86,9 +86,9 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
             case .displacementInsetMargin(let margin):              displacementInsetMargin = margin
             case .swipeToDismissMode(let mode):                     swipeToDismissMode = mode
             case .toggleDecorationViewsBySingleTap(let enabled):    toggleDecorationViewBySingleTap = enabled
+            case .activityViewByLongPress(let enabled):             activityViewByLongPress = enabled
             case .spinnerColor(let color):                          activityIndicatorView.color = color
             case .spinnerStyle(let style):                          activityIndicatorView.activityIndicatorViewStyle = style
-            case .activityViewByLongTap(let enabled):               activityViewByLongTap = enabled
 
             case .displacementTransitionStyle(let style):
 
@@ -157,11 +157,11 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
             self.singleTapRecognizer = singleTapRecognizer
         }
       
-        if activityViewByLongTap == true {
+        if activityViewByLongPress == true {
 
           let longPressRecognizer = UILongPressGestureRecognizer()
           
-          longPressRecognizer.addTarget(self, action: #selector(itemControllerDidLongPress))
+          longPressRecognizer.addTarget(self, action: #selector(scrollViewDidLongPress))
           scrollView.addGestureRecognizer(longPressRecognizer)
           
           self.longPressRecognizer = longPressRecognizer
@@ -269,7 +269,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
         self.delegate?.itemControllerDidSingleTap(self)
     }
 
-    func itemControllerDidLongPress() {
+    func scrollViewDidLongPress() {
     
         self.delegate?.itemControllerDidLongPress(self, with: itemView)
     }
