@@ -182,7 +182,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         NotificationCenter.default.removeObserver(self)
     }
     
-    func didEndPlaying() {
+    @objc func didEndPlaying() {
         page(toIndex: currentIndex+1)
     }
 
@@ -654,7 +654,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         animateDecorationViews(visible: !self.decorationViewsHidden)
     }
   
-    open func itemControllerDidLongPress(_ controller: ItemController, with item: ItemView) {
+    open func itemControllerDidLongPress(_ controller: ItemController, in item: ItemView) {
         switch (controller, item) {
 
         case (_ as ImageViewController, let item as UIImageView):

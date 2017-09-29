@@ -10,7 +10,7 @@ import UIKit
 
 class Slider: UISlider {
 
-    dynamic var isSliding: Bool = false
+    @objc dynamic var isSliding: Bool = false
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)

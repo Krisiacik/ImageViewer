@@ -1,9 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -18,7 +22,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="coc-LS-cRe" customClass="DisplaceableView" customModule="Example" customModuleProvider="target">
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="coc-LS-cRe" customClass="DisplaceableView" customModule="ImageViewer">
                                 <rect key="frame" x="16" y="28" width="200" height="102"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -29,7 +33,7 @@
                                     <outletCollection property="gestureRecognizers" destination="EsF-my-zdw" appends="YES" id="EMM-bN-jpd"/>
                                 </connections>
                             </imageView>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="9" translatesAutoresizingMaskIntoConstraints="NO" id="fu6-tO-ZRV" customClass="DisplaceableView" customModule="Example" customModuleProvider="target">
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="9" translatesAutoresizingMaskIntoConstraints="NO" id="fu6-tO-ZRV" customClass="DisplaceableView" customModule="ImageViewer">
                                 <rect key="frame" x="224" y="28" width="80" height="102"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -39,7 +43,7 @@
                                     <outletCollection property="gestureRecognizers" destination="UGV-jv-W16" appends="YES" id="2MU-vV-yVS"/>
                                 </connections>
                             </imageView>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="2" translatesAutoresizingMaskIntoConstraints="NO" id="272-lL-lW4" customClass="DisplaceableView" customModule="Example" customModuleProvider="target">
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="2" translatesAutoresizingMaskIntoConstraints="NO" id="272-lL-lW4" customClass="DisplaceableView" customModule="ImageViewer">
                                 <rect key="frame" x="16" y="138" width="127" height="116"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -50,7 +54,7 @@
                                     <outletCollection property="gestureRecognizers" destination="0HP-vJ-viK" appends="YES" id="whT-qN-1rs"/>
                                 </connections>
                             </imageView>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="3" translatesAutoresizingMaskIntoConstraints="NO" id="9Vs-Br-5DO" customClass="DisplaceableView" customModule="Example" customModuleProvider="target">
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="3" translatesAutoresizingMaskIntoConstraints="NO" id="9Vs-Br-5DO" customClass="DisplaceableView" customModule="ImageViewer">
                                 <rect key="frame" x="151" y="138" width="153" height="116"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -60,7 +64,7 @@
                                     <outletCollection property="gestureRecognizers" destination="slK-TT-Zr2" appends="YES" id="v7L-oa-1cV"/>
                                 </connections>
                             </imageView>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="8" translatesAutoresizingMaskIntoConstraints="NO" id="JMP-xp-mLE" customClass="DisplaceableView" customModule="Example" customModuleProvider="target">
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="8" translatesAutoresizingMaskIntoConstraints="NO" id="JMP-xp-mLE" customClass="DisplaceableView" customModule="ImageViewer">
                                 <rect key="frame" x="16" y="262" width="161" height="175"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -70,7 +74,7 @@
                                     <outletCollection property="gestureRecognizers" destination="psv-ej-Rbn" appends="YES" id="UsK-Mb-EnH"/>
                                 </connections>
                             </imageView>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="5" translatesAutoresizingMaskIntoConstraints="NO" id="e0P-yL-Aev" customClass="DisplaceableView" customModule="Example" customModuleProvider="target">
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="5" translatesAutoresizingMaskIntoConstraints="NO" id="e0P-yL-Aev" customClass="DisplaceableView" customModule="ImageViewer">
                                 <rect key="frame" x="185" y="262" width="119" height="175"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -81,7 +85,7 @@
                                     <outletCollection property="gestureRecognizers" destination="bK7-7F-jNM" appends="YES" id="J9h-Ds-YOh"/>
                                 </connections>
                             </imageView>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="6" translatesAutoresizingMaskIntoConstraints="NO" id="FkF-T8-MIe" customClass="DisplaceableView" customModule="Example" customModuleProvider="target">
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="6" translatesAutoresizingMaskIntoConstraints="NO" id="FkF-T8-MIe" customClass="DisplaceableView" customModule="ImageViewer">
                                 <rect key="frame" x="16" y="445" width="288" height="110"/>
                                 <gestureRecognizers/>
                                 <connections>
@@ -89,7 +93,7 @@
                                 </connections>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="JMP-xp-mLE" firstAttribute="top" secondItem="9Vs-Br-5DO" secondAttribute="bottom" constant="8" id="3R1-ra-0LG"/>
                             <constraint firstItem="272-lL-lW4" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="6Ee-Yt-GWf"/>
@@ -113,7 +117,6 @@
                         </constraints>
                     </view>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="568"/>
                     <connections>
