@@ -1,6 +1,6 @@
 
 [![CI Status](http://img.shields.io/travis/MailOnline/ImageViewer.svg?style=flat)](https://travis-ci.org/MailOnline/ImageViewer)
-[![Swift 3.1](https://img.shields.io/badge/Swift-3.1-orange.svg?style=flat)](https://developer.apple.com/swift/)
+[![Swift 3.1](https://img.shields.io/badge/Swift-4.0-orange.svg?style=flat)](https://developer.apple.com/swift/)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Version](https://img.shields.io/cocoapods/v/ImageViewer.svg?style=flat)](http://cocoadocs.org/docsets/ImageViewer)
 [![Platforms iOS](https://img.shields.io/badge/Platforms-iOS-lightgray.svg?style=flat)](https://developer.apple.com/swift/)
@@ -49,13 +49,14 @@ extension ViewController: GalleryItemsDataSource {
 
 ### ImageViewer version vs Swift version.
 
-ImageViewer 4.0+ is Swift 3 ready! 🎉
+ImageViewer 5.0+ is Swift 4 ready! 🎉
 
 If you use earlier version of Swift - refer to the table below:
 
 | Swift version | ImageViewer version               |
 | ------------- | --------------------------------- |
-| 3.x           | >= 4.0                            |
+| 4.x           | >= 5.0                            |
+| 3.x           | 4.0                               |
 | 2.3           | 3.1 [⚠️](CHANGELOG.md#version-31) |
 | 2.2           | <= 2.1                            |
 
