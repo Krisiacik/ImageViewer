@@ -86,6 +86,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             case .headerViewLayout(let layout):                 headerLayout = layout
             case .footerViewLayout(let layout):                 footerLayout = layout
             case .closeLayout(let layout):                      closeLayout = layout
+            case .deleteLayout(let layout):                     deleteLayout = layout
             case .thumbnailsLayout(let layout):                 thumbnailsLayout = layout
             case .statusBarHidden(let hidden):                  statusBarHidden = hidden
             case .hideDecorationViewsOnLaunch(let hidden):      decorationViewsHidden = hidden
@@ -115,9 +116,9 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
                 case .custom(let button):   closeButton = button
                 case .builtIn:              break
                 }
-                
+
             case .seeAllCloseButtonMode(let buttonMode):
-                
+
                 switch buttonMode {
 
                 case .none:                 seeAllCloseButton = nil
@@ -171,7 +172,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         UIApplication.applicationWindow.windowLevel = (statusBarHidden) ? UIWindowLevelStatusBar + 1 : UIWindowLevelNormal
 
         NotificationCenter.default.addObserver(self, selector: #selector(GalleryViewController.rotate), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
-        
+
         if continueNextVideoOnFinish {
             NotificationCenter.default.addObserver(self, selector: #selector(didEndPlaying), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
         }
@@ -181,7 +182,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     @objc func didEndPlaying() {
         page(toIndex: currentIndex+1)
     }
@@ -256,6 +257,12 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         configureScrubber()
 
         self.view.clipsToBounds = false
+
+        // Despite the fact that the status bar is hidden, safeAreaInsets still has top = 20px
+        // so we subtract the same to compensate.
+        if #available(iOS 11.0, *) {
+            additionalSafeAreaInsets = UIEdgeInsets(top: -20, left: 0, bottom: 0, right: 0)
+        }
     }
 
     open override func viewDidAppear(_ animated: Bool) {
@@ -319,6 +326,17 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         layoutScrubber()
     }
 
+    private lazy var defaultInsets: UIEdgeInsets = {
+
+        [unowned self] in
+
+        if #available(iOS 11.0, *) {
+            return self.view.safeAreaInsets
+        }
+
+        return UIEdgeInsets()
+    }()
+
     fileprivate func layoutButton(_ button: UIButton?, layout: ButtonLayout) {
 
         guard let button = button else { return }
@@ -329,13 +347,13 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
             button.autoresizingMask = [.flexibleBottomMargin, .flexibleLeftMargin]
             button.frame.origin.x = self.view.bounds.size.width - marginRight - button.bounds.size.width
-            button.frame.origin.y = marginTop
+            button.frame.origin.y = defaultInsets.top + marginTop
 
         case .pinLeft(let marginTop, let marginLeft):
 
             button.autoresizingMask = [.flexibleBottomMargin, .flexibleRightMargin]
             button.frame.origin.x = marginLeft
-            button.frame.origin.y = marginTop
+            button.frame.origin.y = defaultInsets.top + marginTop
         }
     }
 
@@ -349,24 +367,24 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
             header.autoresizingMask = [.flexibleBottomMargin, .flexibleLeftMargin, .flexibleRightMargin]
             header.center = self.view.boundsCenter
-            header.frame.origin.y = marginTop
+            header.frame.origin.y = defaultInsets.top + marginTop
 
         case .pinBoth(let marginTop, let marginLeft,let marginRight):
 
             header.autoresizingMask = [.flexibleBottomMargin, .flexibleWidth]
             header.bounds.size.width = self.view.bounds.width - marginLeft - marginRight
             header.sizeToFit()
-            header.frame.origin = CGPoint(x: marginLeft, y: marginTop)
+            header.frame.origin = CGPoint(x: marginLeft, y: defaultInsets.top + marginTop)
 
         case .pinLeft(let marginTop, let marginLeft):
 
             header.autoresizingMask = [.flexibleBottomMargin, .flexibleRightMargin]
-            header.frame.origin = CGPoint(x: marginLeft, y: marginTop)
+            header.frame.origin = CGPoint(x: marginLeft, y: defaultInsets.top + marginTop)
 
         case .pinRight(let marginTop, let marginRight):
 
             header.autoresizingMask = [.flexibleBottomMargin, .flexibleLeftMargin]
-            header.frame.origin = CGPoint(x: self.view.bounds.width - marginRight - header.bounds.width, y: marginTop)
+            header.frame.origin = CGPoint(x: self.view.bounds.width - marginRight - header.bounds.width, y: defaultInsets.top + marginTop)
         }
     }
 
@@ -380,24 +398,24 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
             footer.autoresizingMask = [.flexibleTopMargin, .flexibleLeftMargin, .flexibleRightMargin]
             footer.center = self.view.boundsCenter
-            footer.frame.origin.y = self.view.bounds.height - footer.bounds.height - marginBottom
+            footer.frame.origin.y = self.view.bounds.height - footer.bounds.height - marginBottom - defaultInsets.bottom
 
         case .pinBoth(let marginBottom, let marginLeft,let marginRight):
 
             footer.autoresizingMask = [.flexibleTopMargin, .flexibleWidth]
             footer.frame.size.width = self.view.bounds.width - marginLeft - marginRight
             footer.sizeToFit()
-            footer.frame.origin = CGPoint(x: marginLeft, y: self.view.bounds.height - footer.bounds.height - marginBottom)
+            footer.frame.origin = CGPoint(x: marginLeft, y: self.view.bounds.height - footer.bounds.height - marginBottom - defaultInsets.bottom)
 
         case .pinLeft(let marginBottom, let marginLeft):
 
             footer.autoresizingMask = [.flexibleTopMargin, .flexibleRightMargin]
-            footer.frame.origin = CGPoint(x: marginLeft, y: self.view.bounds.height - footer.bounds.height - marginBottom)
+            footer.frame.origin = CGPoint(x: marginLeft, y: self.view.bounds.height - footer.bounds.height - marginBottom - defaultInsets.bottom)
 
         case .pinRight(let marginBottom, let marginRight):
 
             footer.autoresizingMask = [.flexibleTopMargin, .flexibleLeftMargin]
-            footer.frame.origin = CGPoint(x: self.view.bounds.width - marginRight - footer.bounds.width, y: self.view.bounds.height - footer.bounds.height - marginBottom)
+            footer.frame.origin = CGPoint(x: self.view.bounds.width - marginRight - footer.bounds.width, y: self.view.bounds.height - footer.bounds.height - marginBottom - defaultInsets.bottom)
         }
     }
 
@@ -438,7 +456,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             thumbnailsController.closeButton = seeAllCloseButton
             thumbnailsController.closeLayout = closeLayout
         }
-        
+
         thumbnailsController.onItemSelected = { [weak self] index in
 
             self?.page(toIndex: index)
@@ -636,7 +654,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         self.headerView?.sizeToFit()
         self.footerView?.sizeToFit()
 
-        if let videoController = controller as? VideoViewController {            
+        if let videoController = controller as? VideoViewController {
             scrubber.player = videoController.player
             if scrubber.alpha == 0 && decorationViewsHidden == false {
 
@@ -653,7 +671,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         self.decorationViewsHidden.flip()
         animateDecorationViews(visible: !self.decorationViewsHidden)
     }
-  
+
     open func itemControllerDidLongPress(_ controller: ItemController, in item: ItemView) {
         switch (controller, item) {
 
@@ -661,7 +679,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             guard let image = item.image else { return }
             let activityVC = UIActivityViewController(activityItems: [image], applicationActivities: nil)
             self.present(activityVC, animated: true)
-        
+
         case (_ as VideoViewController, let item as VideoView):
             guard let videoUrl = ((item.player?.currentItem?.asset) as? AVURLAsset)?.url else { return }
             let activityVC = UIActivityViewController(activityItems: [videoUrl], applicationActivities: nil)
