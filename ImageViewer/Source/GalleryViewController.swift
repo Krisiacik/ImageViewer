@@ -249,6 +249,12 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     open override func viewDidLoad() {
         super.viewDidLoad()
 
+        if #available(iOS 11.0, *) {
+            if (statusBarHidden || UIScreen.hasNotch) {
+                additionalSafeAreaInsets = UIEdgeInsets(top: -20, left: 0, bottom: 0, right: 0)
+            }
+        }
+
         configureHeaderView()
         configureFooterView()
         configureCloseButton()
@@ -257,12 +263,6 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         configureScrubber()
 
         self.view.clipsToBounds = false
-
-        // Despite the fact that the status bar is hidden, safeAreaInsets still has top = 20px
-        // so we subtract the same to compensate.
-        if #available(iOS 11.0, *) {
-            additionalSafeAreaInsets = UIEdgeInsets(top: -20, left: 0, bottom: 0, right: 0)
-        }
     }
 
     open override func viewDidAppear(_ animated: Bool) {
@@ -326,16 +326,13 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         layoutScrubber()
     }
 
-    private lazy var defaultInsets: UIEdgeInsets = {
-
-        [unowned self] in
-
+    private var defaultInsets: UIEdgeInsets {
         if #available(iOS 11.0, *) {
-            return self.view.safeAreaInsets
+            return view.safeAreaInsets
+        } else {
+            return UIEdgeInsets(top: statusBarHidden ? 0.0 : 20.0, left: 0.0, bottom: 0.0, right: 0.0)
         }
-
-        return UIEdgeInsets()
-    }()
+    }
 
     fileprivate func layoutButton(_ button: UIButton?, layout: ButtonLayout) {
 
