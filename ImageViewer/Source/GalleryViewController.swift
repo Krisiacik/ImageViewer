@@ -29,7 +29,13 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     // represents the current page index, updated when the root view of the view controller representing the page stops animating inside visible bounds and stays on screen.
     public var currentIndex: Int
     // Picks up the initial value from configuration, if provided. Subsequently also works as local state for the setting.
-    fileprivate var decorationViewsHidden = false
+    fileprivate var decorationViewsHidden = false {
+        didSet {
+            if #available(iOS 11.0, *) {
+                self.setNeedsUpdateOfHomeIndicatorAutoHidden()
+            }
+        }
+    }
     fileprivate var isAnimating = false
     fileprivate var initialPresentationDone = false
 
@@ -508,6 +514,10 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         guard let firstVC = viewControllers?.first, let itemController = firstVC as? ItemController else { return }
 
         itemController.fetchImage()
+    }
+    
+    override open func prefersHomeIndicatorAutoHidden() -> Bool {
+        return decorationViewsHidden
     }
 
     // MARK: - Animations
