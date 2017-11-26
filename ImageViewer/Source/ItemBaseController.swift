@@ -20,7 +20,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
     let scrollView = UIScrollView()
     let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .white)
     fileprivate var customActivityIndicatorView: UIView?
-    fileprivate var customActivityIndicatorCompletion: (() -> Void)?
+    fileprivate var customActivityIndicatorCompletion: ActivityIndicatorCompletion?
 
     //DELEGATE / DATASOURCE
     weak public var delegate:                 ItemControllerDelegate?

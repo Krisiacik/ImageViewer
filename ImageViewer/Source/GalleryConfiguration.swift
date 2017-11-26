@@ -9,6 +9,7 @@
 import UIKit
 
 public typealias GalleryConfiguration = [GalleryConfigurationItem]
+public typealias ActivityIndicatorCompletion = (() -> Void)
 
 public enum GalleryConfigurationItem {
 
@@ -183,7 +184,7 @@ public enum SpinnerMode {
     
     case none
     case system // UIActivityIndicatorView
-    case custom(UIView, () -> Void)
+    case custom(UIView, ActivityIndicatorCompletion)
 }
 
 public enum GalleryPagingMode {
