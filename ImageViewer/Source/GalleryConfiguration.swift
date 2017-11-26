@@ -9,6 +9,7 @@
 import UIKit
 
 public typealias GalleryConfiguration = [GalleryConfigurationItem]
+public typealias ActivityIndicatorCompletion = (() -> Void)
 
 public enum GalleryConfigurationItem {
 
@@ -47,6 +48,9 @@ public enum GalleryConfigurationItem {
 
     /// Tint color for the spinner.
     case spinnerColor(UIColor)
+
+    /// Option to hide spinner or set a custom spinner. SpinnerStyle and spinnerColor configurations will ignore for custom view. Default is SpinnerMode.system.
+    case spinnerMode(SpinnerMode)
 
     /// Layout behaviour for optional header view.
     case headerViewLayout(HeaderLayout)
@@ -174,6 +178,13 @@ public enum ButtonMode {
     case none
     case builtIn /// Standard Close or Thumbnails button.
     case custom(UIButton)
+}
+
+public enum SpinnerMode {
+    
+    case none
+    case system // UIActivityIndicatorView
+    case custom(UIView, ActivityIndicatorCompletion)
 }
 
 public enum GalleryPagingMode {

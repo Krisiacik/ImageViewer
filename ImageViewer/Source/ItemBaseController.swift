@@ -19,6 +19,8 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
     public var itemView = T()
     let scrollView = UIScrollView()
     let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .white)
+    fileprivate var customActivityIndicatorView: UIView?
+    fileprivate var customActivityIndicatorCompletion: ActivityIndicatorCompletion?
 
     //DELEGATE / DATASOURCE
     weak public var delegate:                 ItemControllerDelegate?
@@ -49,6 +51,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
     fileprivate var swipeToDismissMode = GallerySwipeToDismissMode.always
     fileprivate var toggleDecorationViewBySingleTap = true
     fileprivate var activityViewByLongPress = true
+    fileprivate var spinnerMode = SpinnerMode.system
 
     /// INTERACTIONS
     fileprivate var singleTapRecognizer: UITapGestureRecognizer?
@@ -89,6 +92,15 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
             case .activityViewByLongPress(let enabled):             activityViewByLongPress = enabled
             case .spinnerColor(let color):                          activityIndicatorView.color = color
             case .spinnerStyle(let style):                          activityIndicatorView.activityIndicatorViewStyle = style
+            case .spinnerMode(let mode):
+                self.spinnerMode = mode
+                switch mode {
+                case .custom(let view, let completion):
+                    self.customActivityIndicatorView = view
+                    self.customActivityIndicatorCompletion = completion
+                default:
+                    break
+                }
 
             case .displacementTransitionStyle(let style):
 
@@ -181,8 +193,18 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
         self.view.addSubview(scrollView)
         scrollView.addSubview(itemView)
 
-        activityIndicatorView.startAnimating()
-        view.addSubview(activityIndicatorView)
+        switch spinnerMode {
+        case .system:
+            activityIndicatorView.isHidden = false
+            activityIndicatorView.startAnimating()
+            view.addSubview(activityIndicatorView)
+        case .custom(_, _):
+            if let customIndicatorView = customActivityIndicatorView {
+                view.addSubview(customIndicatorView)
+            }
+        case .none:
+            activityIndicatorView.isHidden = true
+        }
     }
 
     // MARK: - View Controller Lifecycle
@@ -203,6 +225,10 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
                 DispatchQueue.main.async {
                     self?.activityIndicatorView.stopAnimating()
+
+                    if let customActivityIndicatorCompletion = self?.customActivityIndicatorCompletion {
+                        customActivityIndicatorCompletion()
+                    }
 
                     var itemView = self?.itemView
                     itemView?.image = image
@@ -240,6 +266,10 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
         scrollView.frame = self.view.bounds
         activityIndicatorView.center = view.boundsCenter
+
+        if let customActivityIndicatorView = self.customActivityIndicatorView {
+            customActivityIndicatorView.center = view.boundsCenter
+        }
 
         if let size = itemView.image?.size , size != CGSize.zero {
 
