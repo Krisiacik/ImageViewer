@@ -13,6 +13,8 @@
 		4CD1C49D1C16FF64008D5F84 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD1C49B1C16FF64008D5F84 /* CGPoint.swift */; };
 		5AF0E6605E3B055280A902DF /* GalleryItemsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0EF3CAFE8B7972354F05D /* GalleryItemsDelegate.swift */; };
 		5AF0EB5F09D47E20BE670D89 /* GalleryItemsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0EF3CAFE8B7972354F05D /* GalleryItemsDelegate.swift */; };
+		637822AC1FC4F54D00E839A4 /* UIScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637822AB1FC4F54D00E839A4 /* UIScreen.swift */; };
+		637822AD1FC4F73000E839A4 /* UIScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637822AB1FC4F54D00E839A4 /* UIScreen.swift */; };
 		A32D40041D45C4DE00AB5ADA /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32D40031D45C4DE00AB5ADA /* Bool.swift */; };
 		A32D40051D45C50800AB5ADA /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32D40031D45C4DE00AB5ADA /* Bool.swift */; };
 		C2573FA71DA6FED600DABB1E /* ThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2573FA51DA6FED600DABB1E /* ThumbnailCell.swift */; };
@@ -95,6 +97,7 @@
 		13BDF0701E573C78009C458F /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		4CD1C49B1C16FF64008D5F84 /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
 		5AF0EF3CAFE8B7972354F05D /* GalleryItemsDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryItemsDelegate.swift; sourceTree = "<group>"; };
+		637822AB1FC4F54D00E839A4 /* UIScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScreen.swift; sourceTree = "<group>"; };
 		A32D40031D45C4DE00AB5ADA /* Bool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
 		A393838A1D91EE7200AC9893 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2573FA51DA6FED600DABB1E /* ThumbnailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailCell.swift; sourceTree = "<group>"; };
@@ -200,6 +203,7 @@
 				C7DABE4A1C12245B00F5BD7B /* ImageViewer */,
 				EB1CEC141C84A4EE00BB27B8 /* ImageViewerTests */,
 				C7DABE491C12245B00F5BD7B /* Products */,
+				D72F02FF1F6C02D2009C8A39 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -267,8 +271,16 @@
 				EB17B3771D4A51D200EED1DA /* UIBezierPath.swift */,
 				EB3464F41D4BAA19009494B5 /* UISlider.swift */,
 				13BDF0701E573C78009C458F /* UIColor.swift */,
+				637822AB1FC4F54D00E839A4 /* UIScreen.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		D72F02FF1F6C02D2009C8A39 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		EB1CEC141C84A4EE00BB27B8 /* ImageViewerTests */ = {
@@ -443,15 +455,16 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = MailOnline;
 				TargetAttributes = {
 					C7897CE11C1350B7006447FB = {
 						CreatedOnToolsVersion = 7.1.1;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0900;
 					};
 					C7DABE471C12245B00F5BD7B = {
 						CreatedOnToolsVersion = 7.1.1;
+						LastSwiftMigration = 0900;
 					};
 					EB1CEC121C84A4EE00BB27B8 = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -528,6 +541,7 @@
 				EB40C3731C9C5BF1004EA215 /* UIViewController.swift in Sources */,
 				EBE627061D2688890095999A /* GalleryViewController.swift in Sources */,
 				EB1DB6EC1D3E74A000DC9064 /* CGRect.swift in Sources */,
+				637822AD1FC4F73000E839A4 /* UIScreen.swift in Sources */,
 				EB5253F41C8DCE9800EAA4A4 /* CounterView.swift in Sources */,
 				EBE627121D268AB70095999A /* GalleryItem.swift in Sources */,
 				EB7B7E4F1C8F260A006834F7 /* LayoutEnums.swift in Sources */,
@@ -558,6 +572,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2573FA81DA6FED600DABB1E /* ThumbnailsViewController.swift in Sources */,
+				637822AC1FC4F54D00E839A4 /* UIScreen.swift in Sources */,
 				EB1CEC221C84A64100BB27B8 /* UIView.swift in Sources */,
 				EBE627131D268AB70095999A /* GalleryItem.swift in Sources */,
 				C2573FA71DA6FED600DABB1E /* ThumbnailCell.swift in Sources */,
@@ -636,7 +651,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = mailonline.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -649,7 +665,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = mailonline.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -662,14 +679,20 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_MODULE_DEBUGGING = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -714,14 +737,20 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_MODULE_DEBUGGING = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -766,6 +795,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = mailonline.ImageViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -783,6 +814,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = mailonline.ImageViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};

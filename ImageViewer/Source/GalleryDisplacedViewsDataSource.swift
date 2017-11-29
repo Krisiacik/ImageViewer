@@ -15,9 +15,9 @@ public protocol DisplaceableView {
     var center: CGPoint { get }
     var boundsCenter: CGPoint { get }
     var contentMode: UIViewContentMode { get }
-    var hidden: Bool { get set }
+    var isHidden: Bool { get set }
 
-    func convertPoint(_ point: CGPoint, toView view: UIView?) -> CGPoint
+    func convert(_ point: CGPoint, to view: UIView?) -> CGPoint
 }
 
 public protocol GalleryDisplacedViewsDataSource: class {

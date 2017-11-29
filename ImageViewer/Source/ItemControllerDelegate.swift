@@ -19,6 +19,7 @@ public protocol ItemControllerDelegate: class {
     func itemControllerDidFinishSwipeToDismissSuccessfully()
 
     func itemControllerDidSingleTap(_ controller: ItemController)
+    func itemControllerDidLongPress(_ controller: ItemController, in item: ItemView)
 
     func itemControllerWillAppear(_ controller: ItemController)
     func itemControllerWillDisappear(_ controller: ItemController)

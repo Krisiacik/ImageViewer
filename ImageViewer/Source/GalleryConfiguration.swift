@@ -63,6 +63,9 @@ public enum GalleryConfigurationItem {
     ///Allows to turn on/off decoration views hiding via single tap.
     case toggleDecorationViewsBySingleTap(Bool)
 
+    ///Allows to uiactivityviewcontroller with itemview via long press.
+    case activityViewByLongPress(Bool)
+
     /// Allows you to select between different types of initial gallery presentation style
     case presentationStyle(GalleryPresentationStyle)
 
