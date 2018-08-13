@@ -1,14 +1,14 @@
 
-[![CI Status](http://img.shields.io/travis/MailOnline/ImageViewer.svg?style=flat)](https://travis-ci.org/MailOnline/ImageViewer)
+[![CI Status](http://img.shields.io/travis/Krisiacik/ImageViewer.svg?style=flat)](https://travis-ci.org/Krisiacik/ImageViewer)
 [![Swift 3.1](https://img.shields.io/badge/Swift-4.0-orange.svg?style=flat)](https://developer.apple.com/swift/)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Version](https://img.shields.io/cocoapods/v/ImageViewer.svg?style=flat)](http://cocoadocs.org/docsets/ImageViewer)
 [![Platforms iOS](https://img.shields.io/badge/Platforms-iOS-lightgray.svg?style=flat)](https://developer.apple.com/swift/)
 [![License MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat)](https://opensource.org/licenses/MIT)
 
-![Single image view](https://github.com/MailOnline/ImageViewer/blob/master/Documentation/single.gif)
+![Single image view](https://github.com/Krisiacik/ImageViewer/blob/master/Documentation/single.gif)
 
-![Gallery](https://github.com/MailOnline/ImageViewer/blob/master/Documentation/gallery.gif)
+![Gallery](https://github.com/Krisiacik/ImageViewer/blob/master/Documentation/gallery.gif)
 
 For the latest changes see the [CHANGELOG](CHANGELOG.md)
 
@@ -23,12 +23,12 @@ pod 'ImageViewer'
 ### Carthage
 
 ```ruby
-github "MailOnline/ImageViewer"
+github "Krisiacik/ImageViewer"
 ```
 
 ## Sample Usage
 
-For a detailed example, see the [Example](https://github.com/MailOnline/ImageViewer/tree/master/Example)!
+For a detailed example, see the [Example](https://github.com/Krisiacik/ImageViewer/tree/master/Example)!
 
 ```swift
 // Show the ImageViewer with with the first item
