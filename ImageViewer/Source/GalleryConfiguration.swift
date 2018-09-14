@@ -43,7 +43,7 @@ public enum GalleryConfigurationItem {
     case deleteLayout(ButtonLayout)
 
     /// This spinner is shown when we page to an image page, but the image itself is still loading.
-    case spinnerStyle(UIActivityIndicatorViewStyle)
+    case spinnerStyle(UIActivityIndicatorView.Style)
 
     /// Tint color for the spinner.
     case spinnerColor(UIColor)
@@ -121,7 +121,7 @@ public enum GalleryConfigurationItem {
     case displacementKeepOriginalInPlace(Bool)
 
     ///Provides the most typical timing curves for the displacement transition.
-    case displacementTimingCurve(UIViewAnimationCurve)
+    case displacementTimingCurve(UIView.AnimationCurve)
 
     ///Allows to optionally set a spring bounce when the displacement transition finishes.
     case displacementTransitionStyle(GalleryDisplacementStyle)
@@ -133,7 +133,7 @@ public enum GalleryConfigurationItem {
     case overlayColor(UIColor)
 
     ///Allows to select the overall tone on the B&W scale of the blur layer in the overlay.
-    case overlayBlurStyle(UIBlurEffectStyle)
+    case overlayBlurStyle(UIBlurEffect.Style)
 
     ///The opacity of overlay layer when the displacement effect finishes anf the gallery is fully presented. Valid values are from 0 to 1 where 1 is full opacity i.e the overlay layer is fully opaque, 0 is completely transparent and effectively invisible.
     case overlayBlurOpacity(CGFloat)
