@@ -26,6 +26,8 @@ class VideoViewController: ItemBaseController<VideoView> {
     
     private var autoPlayStarted: Bool = false
     private var autoPlayEnabled: Bool = false
+    
+    private var videoLayerGravity: AVLayerVideoGravity? = nil
 
     init(index: Int, itemCount: Int, fetchImageBlock: @escaping FetchImageBlock, videoURL: URL, scrubber: VideoScrubber, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
@@ -40,7 +42,8 @@ class VideoViewController: ItemBaseController<VideoView> {
                 
             case .videoAutoPlay(let enabled):
                 autoPlayEnabled = enabled
-                
+            case .videoLayerGravity(let gravity):
+                videoLayerGravity = gravity
             default: break
             }
         }
@@ -61,6 +64,10 @@ class VideoViewController: ItemBaseController<VideoView> {
 
         self.itemView.player = player
         self.itemView.contentMode = .scaleAspectFill
+        
+        if let gravity = self.videoLayerGravity {
+            (self.itemView.layer as? AVPlayerLayer)?.videoGravity = gravity
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 public typealias GalleryConfiguration = [GalleryConfigurationItem]
 
@@ -158,6 +159,9 @@ public enum GalleryConfigurationItem {
 
     ///Tint color of video controls
     case videoControlsColor(UIColor)
+    
+    /// Change how the video is displayed within a layer’s bounds rectangle
+    case videoLayerGravity(AVLayerVideoGravity)
 }
 
 public enum GalleryRotationMode {
