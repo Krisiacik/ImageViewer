@@ -676,13 +676,28 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             guard let image = item.image else { return }
             let activityVC = UIActivityViewController(activityItems: [image], applicationActivities: nil)
             self.present(activityVC, animated: true)
+            if UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.pad {
+                self.prepareForIpad(source: self.view, to: activityVC)
+            }
 
         case (_ as VideoViewController, let item as VideoView):
             guard let videoUrl = ((item.player?.currentItem?.asset) as? AVURLAsset)?.url else { return }
             let activityVC = UIActivityViewController(activityItems: [videoUrl], applicationActivities: nil)
             self.present(activityVC, animated: true)
+            if UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.pad {
+                self.prepareForIpad(source: self.view, to: activityVC)
+            }
 
         default:  return
+        }
+    }
+
+    fileprivate func prepareForIpad(source: UIView, to activityVC: UIActivityViewController) {
+
+        if let popOver = activityVC.popoverPresentationController {
+            popOver.sourceView = source
+            popOver.sourceRect = CGRect(x: source.bounds.midX, y: source.bounds.midY, width: 0, height: 0)
+            popOver.permittedArrowDirections = []
         }
     }
 
