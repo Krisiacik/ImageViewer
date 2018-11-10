@@ -106,14 +106,14 @@ open class VideoScrubber: UIControl {
         scrubber.maximumValue = 1000
         scrubber.value = 0
 
-        timeLabel.attributedText = NSAttributedString(string: "--:--", attributes: [NSAttributedStringKey.foregroundColor : self.tintColor, NSAttributedStringKey.font : UIFont.systemFont(ofSize: 12)])
+        timeLabel.attributedText = NSAttributedString(string: "--:--", attributes: [NSAttributedString.Key.foregroundColor : self.tintColor, NSAttributedString.Key.font : UIFont.systemFont(ofSize: 12)])
         timeLabel.textAlignment =  .center
 
-        playButton.addTarget(self, action: #selector(play), for: UIControlEvents.touchUpInside)
-        pauseButton.addTarget(self, action: #selector(pause), for: UIControlEvents.touchUpInside)
-        replayButton.addTarget(self, action: #selector(replay), for: UIControlEvents.touchUpInside)
-        scrubber.addTarget(self, action: #selector(updateCurrentTime), for: UIControlEvents.valueChanged)
-        scrubber.addTarget(self, action: #selector(seekToTime), for: [UIControlEvents.touchUpInside, UIControlEvents.touchUpOutside])
+        playButton.addTarget(self, action: #selector(play), for: UIControl.Event.touchUpInside)
+        pauseButton.addTarget(self, action: #selector(pause), for: UIControl.Event.touchUpInside)
+        replayButton.addTarget(self, action: #selector(replay), for: UIControl.Event.touchUpInside)
+        scrubber.addTarget(self, action: #selector(updateCurrentTime), for: UIControl.Event.valueChanged)
+        scrubber.addTarget(self, action: #selector(seekToTime), for: [UIControl.Event.touchUpInside, UIControl.Event.touchUpOutside])
 
         self.addSubviews(playButton, pauseButton, replayButton, scrubber, timeLabel)
 
@@ -238,10 +238,10 @@ open class VideoScrubber: UIControl {
 
             let timeString = stringFromTimeInterval(currentTime as TimeInterval)
 
-            timeLabel.attributedText = NSAttributedString(string: timeString, attributes: [NSAttributedStringKey.foregroundColor : self.tintColor, NSAttributedStringKey.font : UIFont.systemFont(ofSize: 12)])
+            timeLabel.attributedText = NSAttributedString(string: timeString, attributes: [NSAttributedString.Key.foregroundColor : self.tintColor, NSAttributedString.Key.font : UIFont.systemFont(ofSize: 12)])
         }
         else {
-            timeLabel.attributedText = NSAttributedString(string: "--:--", attributes: [NSAttributedStringKey.foregroundColor : self.tintColor, NSAttributedStringKey.font : UIFont.systemFont(ofSize: 12)])
+            timeLabel.attributedText = NSAttributedString(string: "--:--", attributes: [NSAttributedString.Key.foregroundColor : self.tintColor, NSAttributedString.Key.font : UIFont.systemFont(ofSize: 12)])
         }
     }
 
@@ -258,9 +258,9 @@ open class VideoScrubber: UIControl {
     }
     
     override open func tintColorDidChange() {
-        timeLabel.attributedText = NSAttributedString(string: "--:--", attributes: [NSAttributedStringKey.foregroundColor : self.tintColor, NSAttributedStringKey.font : UIFont.systemFont(ofSize: 12)])
+        timeLabel.attributedText = NSAttributedString(string: "--:--", attributes: [NSAttributedString.Key.foregroundColor : self.tintColor, NSAttributedString.Key.font : UIFont.systemFont(ofSize: 12)])
         
-        let playButtonImage = playButton.imageView?.image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        let playButtonImage = playButton.imageView?.image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         playButton.imageView?.tintColor = self.tintColor
         playButton.setImage(playButtonImage, for: .normal)
         
@@ -269,7 +269,7 @@ open class VideoScrubber: UIControl {
             playButton.setImage(highlightImage, for: .highlighted)
         }
         
-        let pauseButtonImage = pauseButton.imageView?.image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        let pauseButtonImage = pauseButton.imageView?.image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         pauseButton.imageView?.tintColor = self.tintColor
         pauseButton.setImage(pauseButtonImage, for: .normal)
         
@@ -278,7 +278,7 @@ open class VideoScrubber: UIControl {
             pauseButton.setImage(highlightImage, for: .highlighted)
         }
         
-        let replayButtonImage = replayButton.imageView?.image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        let replayButtonImage = replayButton.imageView?.image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         replayButton.imageView?.tintColor = self.tintColor
         replayButton.setImage(replayButtonImage, for: .normal)
         
