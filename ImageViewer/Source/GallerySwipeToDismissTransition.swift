@@ -37,7 +37,7 @@ final class GallerySwipeToDismissTransition {
         /// How much time it will take to travel the remaining distance given the above speed.
         let expectedDuration = TimeInterval( fabs(targetOffset - touchPoint) / fabs(escapeVelocity))
 
-        UIView.animate(withDuration: expectedDuration * 0.65, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: springVelocity, options: UIViewAnimationOptions.curveLinear, animations: { [weak self] () -> Void in
+        UIView.animate(withDuration: expectedDuration * 0.65, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: springVelocity, options: UIView.AnimationOptions.curveLinear, animations: { [weak self] () -> Void in
 
             switch swipeDirection {
 
