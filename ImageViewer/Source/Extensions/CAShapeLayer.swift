@@ -95,7 +95,7 @@ extension CAShapeLayer {
         let elementBorder = CAShapeLayer()
         elementBorder.bounds.size = CGSize(width: edgeLength, height: edgeLength)
         elementBorder.position = CGPoint(x: container.bounds.midX, y: container.bounds.midY)
-        elementBorder.lineCap = kCALineCapRound
+        elementBorder.lineCap = CAShapeLayerLineCap.round
         elementBorder.path = linePath.cgPath
         elementBorder.strokeColor = UIColor.darkGray.cgColor
         elementBorder.lineWidth = 2.5
@@ -103,7 +103,7 @@ extension CAShapeLayer {
         let elementFill = CAShapeLayer()
         elementFill.bounds.size = CGSize(width: edgeLength, height: edgeLength)
         elementFill.position = CGPoint(x: container.bounds.midX, y: container.bounds.midY)
-        elementFill.lineCap = kCALineCapRound
+        elementFill.lineCap = CAShapeLayerLineCap.round
         elementFill.path = linePath.cgPath
         elementFill.strokeColor = UIColor.white.cgColor
         elementFill.lineWidth = 2

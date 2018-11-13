@@ -44,7 +44,7 @@ class CounterView: UIView {
         let stringTemplate = "%d of %d"
         let countString = String(format: stringTemplate, arguments: [currentIndex + 1, count])
 
-        countLabel.attributedText = NSAttributedString(string: countString, attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 17), NSAttributedStringKey.foregroundColor: UIColor.white])
+        countLabel.attributedText = NSAttributedString(string: countString, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 17), NSAttributedString.Key.foregroundColor: UIColor.white])
     }
 
     override func layoutSubviews() {
