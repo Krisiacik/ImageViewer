@@ -26,7 +26,7 @@ class ThumbnailsViewController: UICollectionViewController, UICollectionViewDele
 
         super.init(collectionViewLayout: layout)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(rotate), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(rotate), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -45,7 +45,7 @@ class ThumbnailsViewController: UICollectionViewController, UICollectionViewDele
 
         isAnimating = true
 
-        UIView.animate(withDuration: rotationAnimationDuration, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { [weak self] () -> Void in
+        UIView.animate(withDuration: rotationAnimationDuration, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: { [weak self] () -> Void in
             self?.view.transform = windowRotationTransform()
             self?.view.bounds = rotationAdjustedBounds()
             self?.view.setNeedsLayout()

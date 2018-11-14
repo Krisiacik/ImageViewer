@@ -31,7 +31,7 @@ github "MailOnline/ImageViewer"
 For a detailed example, see the [Example](https://github.com/MailOnline/ImageViewer/tree/master/Example)!
 
 ```swift
-// Show the ImageViewer with with the first item
+// Show the ImageViewer with the first item
 self.presentImageGallery(GalleryViewController(startIndex: 0, itemsDataSource: self))
 
 // The GalleryItemsDataSource provides the items to show

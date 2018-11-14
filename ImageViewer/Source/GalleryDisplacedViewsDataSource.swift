@@ -14,7 +14,7 @@ public protocol DisplaceableView {
     var bounds: CGRect { get }
     var center: CGPoint { get }
     var boundsCenter: CGPoint { get }
-    var contentMode: UIViewContentMode { get }
+    var contentMode: UIView.ContentMode { get }
     var isHidden: Bool { get set }
 
     func convert(_ point: CGPoint, to view: UIView?) -> CGPoint
