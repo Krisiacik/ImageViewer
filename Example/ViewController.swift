@@ -164,7 +164,7 @@ class ViewController: UIViewController {
             GalleryConfigurationItem.displacementKeepOriginalInPlace(false),
             GalleryConfigurationItem.displacementInsetMargin(50),
             
-            GalleryConfigurationItem.livePhotoBadge(UIView.livePhotoBadge())
+            GalleryConfigurationItem.livePhotoBadge({UIView.livePhotoBadge()})
             
             
         ]

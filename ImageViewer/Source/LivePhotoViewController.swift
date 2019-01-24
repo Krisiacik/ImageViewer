@@ -32,7 +32,7 @@ class LivePhotoViewController: ItemBaseController<LivePhotoView> {
     
     func fetchLivePhoto() {
         
-        if let livePhotoBadge = livePhotoBadge {
+        if let livePhotoBadge = livePhotoBadgeCreator?() {
             addLiveBadge(livePhotoBadge)
         }
         
