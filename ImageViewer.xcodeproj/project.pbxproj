@@ -354,9 +354,9 @@
 		EB6A56D21C85E41700BBDEF6 /* Item Controller */ = {
 			isa = PBXGroup;
 			children = (
-				1F0ED4B121F9D9A20039E43C /* LivePhoto */,
 				EBA76F771D4F96360094931F /* Base */,
 				EBA76F781D4F96610094931F /* Image */,
+				1F0ED4B121F9D9A20039E43C /* LivePhoto */,
 				EBA76F791D4F96670094931F /* Video */,
 			);
 			name = "Item Controller";
@@ -494,7 +494,9 @@
 				TargetAttributes = {
 					C7897CE11C1350B7006447FB = {
 						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = Q43BB65TA6;
 						LastSwiftMigration = 0900;
+						ProvisioningStyle = Automatic;
 					};
 					C7DABE471C12245B00F5BD7B = {
 						CreatedOnToolsVersion = 7.1.1;
@@ -688,11 +690,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q43BB65TA6;
 				INFOPLIST_FILE = Example/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = mailonline.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
 			};
@@ -702,11 +708,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q43BB65TA6;
 				INFOPLIST_FILE = Example/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = mailonline.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
 			};

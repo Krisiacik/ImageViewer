@@ -59,20 +59,26 @@ class ViewController: UIViewController {
                 
             case 7:
                 
-                let livePhotoItem = GalleryItem.livePhoto(fetchPreviewImageBlock: { $0(imageView.image!) }) { completion in
-                    
-                    let imgURL = Bundle.main.url(forResource: "livePhoto", withExtension: "jpeg")
-                    let movieURL = Bundle.main.url(forResource: "livePhoto", withExtension: "mov")
-                    let img = UIImage(named: "livePhoto.jpeg")
-                    
-                    PHLivePhoto.request(withResourceFileURLs: [imgURL!, movieURL!], placeholderImage: img, targetSize: img!.size, contentMode: PHImageContentMode.default) { (livePhoto, info) in
+                if #available(iOS 9.1, *) {
+                    let livePhotoItem = GalleryItem.livePhoto(fetchPreviewImageBlock: { $0(imageView.image!) }) { completion in
                         
-                        completion(livePhoto)
+                        let imgURL = Bundle.main.url(forResource: "livePhoto", withExtension: "jpeg")
+                        let movieURL = Bundle.main.url(forResource: "livePhoto", withExtension: "mov")
+                        let img = UIImage(named: "livePhoto.jpeg")
+                        
+                        PHLivePhoto.request(withResourceFileURLs: [imgURL!, movieURL!], placeholderImage: img, targetSize: img!.size, contentMode: PHImageContentMode.default) { (livePhoto, info) in
+                            
+                            completion(livePhoto)
+                        }
                     }
+                    
+                    galleryItem = livePhotoItem
+                    
+                } else {
+                    
+                    galleryItem = GalleryItem.image { completion in completion(UIImage(named: "livePhoto.jpeg")) }
                 }
-        
-                galleryItem = livePhotoItem
-
+    
             default:
 
                 let image = imageView.image ?? UIImage(named: "0")!
@@ -117,7 +123,7 @@ class ViewController: UIViewController {
 
     func galleryConfiguration() -> GalleryConfiguration {
 
-        return [
+        var conf = [
 
             GalleryConfigurationItem.closeButtonMode(.builtIn),
 
@@ -162,12 +168,14 @@ class ViewController: UIViewController {
 
             GalleryConfigurationItem.statusBarHidden(true),
             GalleryConfigurationItem.displacementKeepOriginalInPlace(false),
-            GalleryConfigurationItem.displacementInsetMargin(50),
-            
-            GalleryConfigurationItem.livePhotoBadge({UIView.livePhotoBadge()})
-            
-            
+            GalleryConfigurationItem.displacementInsetMargin(50)
         ]
+        
+        if #available(iOS 9.1, *) {
+            conf.append(GalleryConfigurationItem.livePhotoBadge({UIView.livePhotoBadge()}))
+        }
+        
+        return conf
     }
 }
 

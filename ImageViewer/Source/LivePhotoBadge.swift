@@ -10,6 +10,8 @@ import UIKit
 import PhotosUI
 
 extension UIView {
+    
+    @available(iOS 9.1, *)
     public class func livePhotoBadge() -> UIView {
         
         let darkColor = UIColor.init(white: 0, alpha: 0.7)
