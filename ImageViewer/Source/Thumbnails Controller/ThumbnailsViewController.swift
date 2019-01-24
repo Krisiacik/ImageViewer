@@ -106,12 +106,22 @@ class ThumbnailsViewController: UICollectionViewController, UICollectionViewDele
 
         switch item {
 
-        case .image(let fetchImageBlock):
-
+        case .livePhoto(let fetchImageBlock, _):
+            
             fetchImageBlock() { image in
-
+                
                 if let image = image {
-
+                    
+                    cell.imageView.image = image
+                }
+            }
+            
+        case .image(let fetchImageBlock):
+            
+            fetchImageBlock() { image in
+                
+                if let image = image {
+                    
                     cell.imageView.image = image
                 }
             }

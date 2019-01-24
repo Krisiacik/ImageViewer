@@ -158,6 +158,9 @@ public enum GalleryConfigurationItem {
 
     ///Tint color of video controls
     case videoControlsColor(UIColor)
+    
+    /// If set, live photos will display the given view
+    case livePhotoBadge(UIView?)
 }
 
 public enum GalleryRotationMode {

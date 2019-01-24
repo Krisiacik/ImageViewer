@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -85,11 +84,21 @@
                                     <outletCollection property="gestureRecognizers" destination="bK7-7F-jNM" appends="YES" id="J9h-Ds-YOh"/>
                                 </connections>
                             </imageView>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="6" translatesAutoresizingMaskIntoConstraints="NO" id="FkF-T8-MIe" customClass="DisplaceableView" customModule="ImageViewer">
-                                <rect key="frame" x="16" y="445" width="288" height="110"/>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="6" translatesAutoresizingMaskIntoConstraints="NO" id="FkF-T8-MIe" customClass="DisplaceableView" customModule="ImageViewer">
+                                <rect key="frame" x="16" y="445" width="127" height="110"/>
                                 <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="127" id="Vvz-Px-svl"/>
+                                </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="0dc-20-whm" appends="YES" id="iCR-D1-RHn"/>
+                                </connections>
+                            </imageView>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="livePhoto.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="iKK-h6-dd5" userLabel="Image8" customClass="DisplaceableView" customModule="ImageViewer">
+                                <rect key="frame" x="151" y="445" width="153" height="110"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Hxm-h7-hmv" appends="YES" id="gXG-W4-jBO"/>
                                 </connections>
                             </imageView>
                         </subviews>
@@ -97,10 +106,11 @@
                         <constraints>
                             <constraint firstItem="JMP-xp-mLE" firstAttribute="top" secondItem="9Vs-Br-5DO" secondAttribute="bottom" constant="8" id="3R1-ra-0LG"/>
                             <constraint firstItem="272-lL-lW4" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="6Ee-Yt-GWf"/>
-                            <constraint firstItem="FkF-T8-MIe" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="6Px-4i-KGU"/>
                             <constraint firstItem="coc-LS-cRe" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Bul-oP-IVo"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="iKK-h6-dd5" secondAttribute="trailing" id="NtT-VV-2Nc"/>
                             <constraint firstItem="fu6-tO-ZRV" firstAttribute="leading" secondItem="coc-LS-cRe" secondAttribute="trailing" constant="8" id="OV2-yg-lfL"/>
                             <constraint firstItem="FkF-T8-MIe" firstAttribute="top" secondItem="e0P-yL-Aev" secondAttribute="bottom" constant="8" id="QCa-1r-tV9"/>
+                            <constraint firstItem="FkF-T8-MIe" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="TjL-XV-VZq"/>
                             <constraint firstAttribute="trailingMargin" secondItem="e0P-yL-Aev" secondAttribute="trailing" id="VVE-5j-zhV"/>
                             <constraint firstItem="fu6-tO-ZRV" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="YYl-qX-u02"/>
                             <constraint firstAttribute="trailingMargin" secondItem="9Vs-Br-5DO" secondAttribute="trailing" id="cDy-4B-gS4"/>
@@ -110,9 +120,11 @@
                             <constraint firstItem="272-lL-lW4" firstAttribute="top" secondItem="coc-LS-cRe" secondAttribute="bottom" constant="8" id="g0z-Ct-o6e"/>
                             <constraint firstItem="fu6-tO-ZRV" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="lNa-Tm-2t6"/>
                             <constraint firstItem="e0P-yL-Aev" firstAttribute="top" secondItem="9Vs-Br-5DO" secondAttribute="bottom" constant="8" id="lbP-2M-BuH"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="FkF-T8-MIe" secondAttribute="trailing" id="nQC-GW-eOd"/>
+                            <constraint firstItem="iKK-h6-dd5" firstAttribute="top" secondItem="JMP-xp-mLE" secondAttribute="bottom" constant="8" id="nWC-Ve-JZG"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="iKK-h6-dd5" secondAttribute="bottom" constant="13" id="puN-CY-Odg"/>
                             <constraint firstItem="coc-LS-cRe" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="r7o-jp-GMW"/>
                             <constraint firstItem="9Vs-Br-5DO" firstAttribute="top" secondItem="fu6-tO-ZRV" secondAttribute="bottom" constant="8" id="z5g-Rj-vnJ"/>
+                            <constraint firstItem="iKK-h6-dd5" firstAttribute="leading" secondItem="FkF-T8-MIe" secondAttribute="trailing" constant="8" id="zdz-1r-HJM"/>
                             <constraint firstItem="e0P-yL-Aev" firstAttribute="leading" secondItem="JMP-xp-mLE" secondAttribute="trailing" constant="8" id="zvY-yn-dal"/>
                         </constraints>
                     </view>
@@ -127,6 +139,7 @@
                         <outlet property="image5" destination="JMP-xp-mLE" id="pmt-7i-IXz"/>
                         <outlet property="image6" destination="e0P-yL-Aev" id="9Q3-XK-waM"/>
                         <outlet property="image7" destination="FkF-T8-MIe" id="SXw-cQ-O65"/>
+                        <outlet property="image8" destination="iKK-h6-dd5" id="9CK-xG-Kcj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -165,17 +178,23 @@
                         <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="DJp-pa-mR9"/>
                     </connections>
                 </tapGestureRecognizer>
+                <tapGestureRecognizer id="Hxm-h7-hmv">
+                    <connections>
+                        <action selector="showGalleryImageViewer:" destination="BYZ-38-t0r" id="9Ft-qq-Og3"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-148" y="180"/>
+            <point key="canvasLocation" x="-236.80000000000001" y="161.91904047976013"/>
         </scene>
     </scenes>
     <resources>
-        <image name="0" width="540" height="960"/>
-        <image name="2" width="250" height="187"/>
-        <image name="3" width="320" height="568"/>
-        <image name="5" width="309" height="128"/>
-        <image name="6" width="300" height="218"/>
-        <image name="8" width="1609" height="300"/>
-        <image name="9" width="160" height="320"/>
+        <image name="0" width="810" height="1440"/>
+        <image name="2" width="120" height="89.760002136230469"/>
+        <image name="3" width="640" height="1136"/>
+        <image name="5" width="618" height="257"/>
+        <image name="6" width="600" height="437"/>
+        <image name="8" width="965.70001220703125" height="180"/>
+        <image name="9" width="320" height="640"/>
+        <image name="livePhoto.jpeg" width="4032" height="3024"/>
     </resources>
 </document>

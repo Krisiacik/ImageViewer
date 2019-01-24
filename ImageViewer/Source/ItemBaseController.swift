@@ -49,6 +49,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
     fileprivate var swipeToDismissMode = GallerySwipeToDismissMode.always
     fileprivate var toggleDecorationViewBySingleTap = true
     fileprivate var activityViewByLongPress = true
+    var livePhotoBadge: UIView?
 
     /// INTERACTIONS
     fileprivate var singleTapRecognizer: UITapGestureRecognizer?
@@ -89,6 +90,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
             case .activityViewByLongPress(let enabled):             activityViewByLongPress = enabled
             case .spinnerColor(let color):                          activityIndicatorView.color = color
             case .spinnerStyle(let style):                          activityIndicatorView.style = style
+            case .livePhotoBadge(let badge):                        livePhotoBadge = badge
 
             case .displacementTransitionStyle(let style):
 
@@ -191,7 +193,6 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
         super.viewDidLoad()
 
         createViewHierarchy()
-
         fetchImage()
     }
 
