@@ -537,8 +537,8 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
                 if displacementKeepOriginalInPlace == false {
                     displacedView.isHidden = true
                 }
-
-                UIView.animate(withDuration: reverseDisplacementDuration, animations: { [weak self] in
+                
+                UIView.animate(withDuration: reverseDisplacementDuration, delay: 0, options: [UIView.AnimationOptions.layoutSubviews], animations: { [weak self] in
 
                     self?.scrollView.zoomScale = 1
 

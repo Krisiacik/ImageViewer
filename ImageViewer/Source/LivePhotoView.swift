@@ -22,9 +22,14 @@ class LivePhotoView: UIView {
         super.init(frame: frame)
         addSubview(phLivePhotoView)
         
-        phLivePhotoView.contentMode = .scaleAspectFill
-        phLivePhotoView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        phLivePhotoView.clipsToBounds = true
+        phLivePhotoView.translatesAutoresizingMaskIntoConstraints = false
+
+        let top = phLivePhotoView.topAnchor.constraint(equalTo: self.topAnchor)
+        let bottom = phLivePhotoView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+        let leading = phLivePhotoView.leadingAnchor.constraint(equalTo: self.leadingAnchor)
+        let trailing = self.trailingAnchor.constraint(equalTo: phLivePhotoView.trailingAnchor, constant: 5)
+        NSLayoutConstraint.activate([top, bottom, leading, trailing])
+
     }
     
     required init?(coder aDecoder: NSCoder) {
