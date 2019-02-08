@@ -49,6 +49,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
     fileprivate var swipeToDismissMode = GallerySwipeToDismissMode.always
     fileprivate var toggleDecorationViewBySingleTap = true
     fileprivate var activityViewByLongPress = true
+    var livePhotoBadgeCreator: (()-> UIView)?
 
     /// INTERACTIONS
     fileprivate var singleTapRecognizer: UITapGestureRecognizer?
@@ -89,6 +90,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
             case .activityViewByLongPress(let enabled):             activityViewByLongPress = enabled
             case .spinnerColor(let color):                          activityIndicatorView.color = color
             case .spinnerStyle(let style):                          activityIndicatorView.style = style
+            case .livePhotoBadge(let badgeCreator):                 livePhotoBadgeCreator = badgeCreator
 
             case .displacementTransitionStyle(let style):
 
@@ -191,7 +193,6 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
         super.viewDidLoad()
 
         createViewHierarchy()
-
         fetchImage()
     }
 
@@ -536,8 +537,8 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
                 if displacementKeepOriginalInPlace == false {
                     displacedView.isHidden = true
                 }
-
-                UIView.animate(withDuration: reverseDisplacementDuration, animations: { [weak self] in
+                
+                UIView.animate(withDuration: reverseDisplacementDuration, delay: 0, options: [UIView.AnimationOptions.layoutSubviews], animations: { [weak self] in
 
                     self?.scrollView.zoomScale = 1
 

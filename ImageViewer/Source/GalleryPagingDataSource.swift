@@ -93,7 +93,21 @@ final class GalleryPagingDataSource: NSObject, UIPageViewControllerDataSource {
             videoController.displacedViewsDataSource = displacedViewsDataSource
 
             return videoController
-
+            
+        case .livePhoto(let fetchImageBlock, let fetchLivePhotoBlock):
+            
+            if #available(iOS 9.1, *) {
+                let videoController = LivePhotoViewController(index: itemIndex, itemCount: itemsDataSource.itemCount(), fetchImageBlock: fetchImageBlock, configuration: configuration, fetchLivePhotoBlock: fetchLivePhotoBlock, isInitialController: isInitial)
+                
+                videoController.delegate = itemControllerDelegate
+                videoController.displacedViewsDataSource = displacedViewsDataSource
+                
+                return videoController
+            } else {
+                // Fallback on earlier versions (could not happen)
+                return UIViewController()
+            }
+            
         case .custom(let fetchImageBlock, let itemViewControllerBlock):
 
             guard let itemController = itemViewControllerBlock(itemIndex, itemsDataSource.itemCount(), fetchImageBlock, configuration, isInitial) as? ItemController, let vc = itemController as? UIViewController else { return UIViewController() }

@@ -9,6 +9,15 @@
 /* Begin PBXBuildFile section */
 		13BDF0711E573C78009C458F /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BDF0701E573C78009C458F /* UIColor.swift */; };
 		13BDF0721E573D10009C458F /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BDF0701E573C78009C458F /* UIColor.swift */; };
+		1F0ED4B321F9D9BD0039E43C /* LivePhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0ED4B221F9D9BD0039E43C /* LivePhotoViewController.swift */; };
+		1F0ED4B421F9E4800039E43C /* GalleryPagingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF4C5F1D391C720039CA93 /* GalleryPagingDataSource.swift */; };
+		1F0ED4B521F9E4910039E43C /* LivePhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0ED4B221F9D9BD0039E43C /* LivePhotoViewController.swift */; };
+		1F0ED4B921F9FC8A0039E43C /* livePhoto.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 1F0ED4B721F9FC8A0039E43C /* livePhoto.jpeg */; };
+		1F0ED4BA21F9FC8A0039E43C /* livePhoto.mov in Resources */ = {isa = PBXBuildFile; fileRef = 1F0ED4B821F9FC8A0039E43C /* livePhoto.mov */; };
+		1F0ED4BC21F9FD9E0039E43C /* LivePhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0ED4BB21F9FD9E0039E43C /* LivePhotoView.swift */; };
+		1F0ED4BD21F9FDC50039E43C /* LivePhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0ED4BB21F9FD9E0039E43C /* LivePhotoView.swift */; };
+		1F0ED4BF21FA0A220039E43C /* LivePhotoBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0ED4BE21FA0A220039E43C /* LivePhotoBadge.swift */; };
+		1F0ED4C021FA0A650039E43C /* LivePhotoBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0ED4BE21FA0A220039E43C /* LivePhotoBadge.swift */; };
 		4CD1C49C1C16FF64008D5F84 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD1C49B1C16FF64008D5F84 /* CGPoint.swift */; };
 		4CD1C49D1C16FF64008D5F84 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD1C49B1C16FF64008D5F84 /* CGPoint.swift */; };
 		5AF0E6605E3B055280A902DF /* GalleryItemsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0EF3CAFE8B7972354F05D /* GalleryItemsDelegate.swift */; };
@@ -76,7 +85,6 @@
 		EBA8CB341D38E51500545E5B /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBFCB961D26CBA2007E7244 /* BlurView.swift */; };
 		EBA90E431C875225000AA697 /* ImageFadeInHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA90E421C875225000AA697 /* ImageFadeInHandler.swift */; };
 		EBA90E441C875225000AA697 /* ImageFadeInHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA90E421C875225000AA697 /* ImageFadeInHandler.swift */; };
-		EBAF4C601D391C720039CA93 /* GalleryPagingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF4C5F1D391C720039CA93 /* GalleryPagingDataSource.swift */; };
 		EBAF4C611D391C720039CA93 /* GalleryPagingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF4C5F1D391C720039CA93 /* GalleryPagingDataSource.swift */; };
 		EBAF4C631D3937AE0039CA93 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF4C621D3937AE0039CA93 /* ImageViewController.swift */; };
 		EBAF4C641D3937AE0039CA93 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF4C621D3937AE0039CA93 /* ImageViewController.swift */; };
@@ -95,6 +103,11 @@
 
 /* Begin PBXFileReference section */
 		13BDF0701E573C78009C458F /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		1F0ED4B221F9D9BD0039E43C /* LivePhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivePhotoViewController.swift; sourceTree = "<group>"; };
+		1F0ED4B721F9FC8A0039E43C /* livePhoto.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = livePhoto.jpeg; sourceTree = "<group>"; };
+		1F0ED4B821F9FC8A0039E43C /* livePhoto.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = livePhoto.mov; sourceTree = "<group>"; };
+		1F0ED4BB21F9FD9E0039E43C /* LivePhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivePhotoView.swift; sourceTree = "<group>"; };
+		1F0ED4BE21FA0A220039E43C /* LivePhotoBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivePhotoBadge.swift; sourceTree = "<group>"; };
 		4CD1C49B1C16FF64008D5F84 /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
 		5AF0EF3CAFE8B7972354F05D /* GalleryItemsDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryItemsDelegate.swift; sourceTree = "<group>"; };
 		637822AB1FC4F54D00E839A4 /* UIScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScreen.swift; sourceTree = "<group>"; };
@@ -173,6 +186,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1F0ED4B121F9D9A20039E43C /* LivePhoto */ = {
+			isa = PBXGroup;
+			children = (
+				1F0ED4B221F9D9BD0039E43C /* LivePhotoViewController.swift */,
+				1F0ED4BB21F9FD9E0039E43C /* LivePhotoView.swift */,
+				1F0ED4BE21FA0A220039E43C /* LivePhotoBadge.swift */,
+			);
+			name = LivePhoto;
+			sourceTree = "<group>";
+		};
+		1F0ED4B621F9FA6B0039E43C /* LivePhoto */ = {
+			isa = PBXGroup;
+			children = (
+				1F0ED4B721F9FC8A0039E43C /* livePhoto.jpeg */,
+				1F0ED4B821F9FC8A0039E43C /* livePhoto.mov */,
+			);
+			path = LivePhoto;
+			sourceTree = "<group>";
+		};
 		C2573FA41DA6FED600DABB1E /* Thumbnails Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -185,6 +217,7 @@
 		C7897CE31C1350B7006447FB /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				1F0ED4B621F9FA6B0039E43C /* LivePhoto */,
 				C7897CE41C1350B7006447FB /* AppDelegate.swift */,
 				C7897CE61C1350B7006447FB /* ViewController.swift */,
 				EB5253F31C8DCE9800EAA4A4 /* CounterView.swift */,
@@ -323,6 +356,7 @@
 			children = (
 				EBA76F771D4F96360094931F /* Base */,
 				EBA76F781D4F96610094931F /* Image */,
+				1F0ED4B121F9D9A20039E43C /* LivePhoto */,
 				EBA76F791D4F96670094931F /* Video */,
 			);
 			name = "Item Controller";
@@ -460,7 +494,9 @@
 				TargetAttributes = {
 					C7897CE11C1350B7006447FB = {
 						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = Q43BB65TA6;
 						LastSwiftMigration = 0900;
+						ProvisioningStyle = Automatic;
 					};
 					C7DABE471C12245B00F5BD7B = {
 						CreatedOnToolsVersion = 7.1.1;
@@ -497,8 +533,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7897CEF1C1350B7006447FB /* LaunchScreen.storyboard in Resources */,
+				1F0ED4BA21F9FC8A0039E43C /* livePhoto.mov in Resources */,
 				C7897CEC1C1350B7006447FB /* Assets.xcassets in Resources */,
 				C7897CEA1C1350B7006447FB /* Main.storyboard in Resources */,
+				1F0ED4B921F9FC8A0039E43C /* livePhoto.jpeg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,20 +561,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F0ED4BD21F9FDC50039E43C /* LivePhotoView.swift in Sources */,
 				C2573FAA1DA6FF3F00DABB1E /* ThumbnailCell.swift in Sources */,
 				C7897CF61C1356C6006447FB /* CGSize.swift in Sources */,
 				EB1DB6E91D3E595D00DC9064 /* UIApplication.swift in Sources */,
 				EBE627091D2689AD0095999A /* ItemController.swift in Sources */,
-				EBAF4C601D391C720039CA93 /* GalleryPagingDataSource.swift in Sources */,
 				EB17B3781D4A51D200EED1DA /* UIBezierPath.swift in Sources */,
 				EB4DEBC11C84A8B400D5F897 /* UtilityFunctions.swift in Sources */,
 				EB3464F51D4BAA19009494B5 /* UISlider.swift in Sources */,
 				EBA8CB341D38E51500545E5B /* BlurView.swift in Sources */,
 				EBA0A9531C89C653005B8DD3 /* GalleryConfiguration.swift in Sources */,
+				1F0ED4B521F9E4910039E43C /* LivePhotoViewController.swift in Sources */,
 				EB3464F01D4B9066009494B5 /* CALayer.swift in Sources */,
 				EB17B3811D4A6E7F00EED1DA /* UIButton.swift in Sources */,
 				EB1DB6E61D3E500B00DC9064 /* UIImageView.swift in Sources */,
 				EBAF4C661D3937BC0039CA93 /* VideoViewController.swift in Sources */,
+				1F0ED4B421F9E4800039E43C /* GalleryPagingDataSource.swift in Sources */,
 				A32D40051D45C50800AB5ADA /* Bool.swift in Sources */,
 				EB40C3731C9C5BF1004EA215 /* UIViewController.swift in Sources */,
 				EBE627061D2688890095999A /* GalleryViewController.swift in Sources */,
@@ -553,6 +593,7 @@
 				EB6F46561D46640D00984035 /* VideoView.swift in Sources */,
 				EB8BEC7A1D3D1CB500DCE3EC /* ItemControllerDelegate.swift in Sources */,
 				EBA90E431C875225000AA697 /* ImageFadeInHandler.swift in Sources */,
+				1F0ED4C021FA0A650039E43C /* LivePhotoBadge.swift in Sources */,
 				13BDF0721E573D10009C458F /* UIColor.swift in Sources */,
 				4CD1C49C1C16FF64008D5F84 /* CGPoint.swift in Sources */,
 				EBA76F711D4F855C0094931F /* ItemBaseController.swift in Sources */,
@@ -579,6 +620,7 @@
 				EB1DB6ED1D3E74A000DC9064 /* CGRect.swift in Sources */,
 				EBAF4C671D3937BC0039CA93 /* VideoViewController.swift in Sources */,
 				EB1DB6E71D3E500B00DC9064 /* UIImageView.swift in Sources */,
+				1F0ED4BF21FA0A220039E43C /* LivePhotoBadge.swift in Sources */,
 				4CD1C49D1C16FF64008D5F84 /* CGPoint.swift in Sources */,
 				EBE627101D268A7F0095999A /* GalleryDisplacedViewsDataSource.swift in Sources */,
 				EB243F921C889F88006DEF58 /* GallerySwipeToDismissTransition.swift in Sources */,
@@ -590,11 +632,13 @@
 				EBE627071D2688890095999A /* GalleryViewController.swift in Sources */,
 				EB17B3821D4A6E7F00EED1DA /* UIButton.swift in Sources */,
 				EB40C3781C9C5C48004EA215 /* GalleryItemsDataSource.swift in Sources */,
+				1F0ED4BC21F9FD9E0039E43C /* LivePhotoView.swift in Sources */,
 				EBAF4C611D391C720039CA93 /* GalleryPagingDataSource.swift in Sources */,
 				EB1CEC1F1C84A54600BB27B8 /* UtilityFunctions.swift in Sources */,
 				A32D40041D45C4DE00AB5ADA /* Bool.swift in Sources */,
 				C7DABE641C12276800F5BD7B /* CGSize.swift in Sources */,
 				13BDF0711E573C78009C458F /* UIColor.swift in Sources */,
+				1F0ED4B321F9D9BD0039E43C /* LivePhotoViewController.swift in Sources */,
 				EBA0A9541C89C653005B8DD3 /* GalleryConfiguration.swift in Sources */,
 				EB17B3791D4A51D200EED1DA /* UIBezierPath.swift in Sources */,
 				EB1DB6EA1D3E595D00DC9064 /* UIApplication.swift in Sources */,
@@ -646,11 +690,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q43BB65TA6;
 				INFOPLIST_FILE = Example/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = mailonline.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
 			};
@@ -660,11 +708,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q43BB65TA6;
 				INFOPLIST_FILE = Example/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = mailonline.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
 			};

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PhotosUI
 
 extension UIImageView: DisplaceableView {}
 
@@ -25,13 +26,14 @@ class ViewController: UIViewController {
     @IBOutlet weak var image5: UIImageView!
     @IBOutlet weak var image6: UIImageView!
     @IBOutlet weak var image7: UIImageView!
+    @IBOutlet weak var image8: UIImageView!
 
     var items: [DataItem] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let imageViews = [image1, image2, image3, image4, image5, image6, image7]
+        
+        let imageViews = [image1, image2, image3, image4, image5, image6, image7, image8]
 
         for (index, imageView) in imageViews.enumerated() {
 
@@ -54,7 +56,29 @@ class ViewController: UIViewController {
                 }
 
                 galleryItem = GalleryItem.custom(fetchImageBlock: myFetchImageBlock, itemViewControllerBlock: itemViewControllerBlock)
-
+                
+            case 7:
+                
+                if #available(iOS 9.1, *) {
+                    let livePhotoItem = GalleryItem.livePhoto(fetchPreviewImageBlock: { $0(imageView.image!) }) { completion in
+                        
+                        let imgURL = Bundle.main.url(forResource: "livePhoto", withExtension: "jpeg")
+                        let movieURL = Bundle.main.url(forResource: "livePhoto", withExtension: "mov")
+                        let img = UIImage(named: "livePhoto.jpeg")
+                        
+                        PHLivePhoto.request(withResourceFileURLs: [imgURL!, movieURL!], placeholderImage: img, targetSize: img!.size, contentMode: PHImageContentMode.default) { (livePhoto, info) in
+                            
+                            completion(livePhoto)
+                        }
+                    }
+                    
+                    galleryItem = livePhotoItem
+                    
+                } else {
+                    
+                    galleryItem = GalleryItem.image { completion in completion(UIImage(named: "livePhoto.jpeg")) }
+                }
+    
             default:
 
                 let image = imageView.image ?? UIImage(named: "0")!
@@ -63,6 +87,7 @@ class ViewController: UIViewController {
 
             items.append(DataItem(imageView: imageView, galleryItem: galleryItem))
         }
+
     }
 
     @IBAction func showGalleryImageViewer(_ sender: UITapGestureRecognizer) {
@@ -98,7 +123,7 @@ class ViewController: UIViewController {
 
     func galleryConfiguration() -> GalleryConfiguration {
 
-        return [
+        var conf = [
 
             GalleryConfigurationItem.closeButtonMode(.builtIn),
 
@@ -145,6 +170,12 @@ class ViewController: UIViewController {
             GalleryConfigurationItem.displacementKeepOriginalInPlace(false),
             GalleryConfigurationItem.displacementInsetMargin(50)
         ]
+        
+        if #available(iOS 9.1, *) {
+            conf.append(GalleryConfigurationItem.livePhotoBadge({UIView.livePhotoBadge()}))
+        }
+        
+        return conf
     }
 }
 
