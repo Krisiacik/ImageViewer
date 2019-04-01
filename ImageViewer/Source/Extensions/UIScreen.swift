@@ -9,7 +9,7 @@
 import UIKit
 
 public extension UIScreen {
-    public class var hasNotch: Bool {
+    class var hasNotch: Bool {
         // This will of course fail if Apple produces an notchless iPhone with these dimensions,
         // but is the simplest detection mechanism so far.
         return main.nativeBounds.size == CGSize(width: 1125, height: 2436)

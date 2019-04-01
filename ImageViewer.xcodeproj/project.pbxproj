@@ -464,7 +464,7 @@
 					};
 					C7DABE471C12245B00F5BD7B = {
 						CreatedOnToolsVersion = 7.1.1;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1020;
 					};
 					EB1CEC121C84A4EE00BB27B8 = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -476,6 +476,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -799,8 +800,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = mailonline.ImageViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -818,8 +818,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = mailonline.ImageViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
