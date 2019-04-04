@@ -36,7 +36,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     // DATASOURCE/DELEGATE
     fileprivate let itemsDelegate: GalleryItemsDelegate?
     fileprivate let itemsDataSource: GalleryItemsDataSource
-    fileprivate let pagingDataSource: GalleryPagingDataSource
+    fileprivate weak var pagingDataSource: GalleryPagingDataSource?
 
     // CONFIGURATION
     fileprivate var spineDividerWidth:         Float = 10
@@ -154,10 +154,10 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
                    navigationOrientation: UIPageViewController.NavigationOrientation.horizontal,
                    options: [UIPageViewController.OptionsKey.interPageSpacing : NSNumber(value: spineDividerWidth as Float)])
 
-        pagingDataSource.itemControllerDelegate = self
+        pagingDataSource?.itemControllerDelegate = self
 
         ///This feels out of place, one would expect even the first presented(paged) item controller to be provided by the paging dataSource but there is nothing we can do as Apple requires the first controller to be set via this "setViewControllers" method.
-        let initialController = pagingDataSource.createItemController(startIndex, isInitial: true)
+        let initialController = pagingDataSource!.createItemController(startIndex, isInitial: true)
         self.setViewControllers([initialController], direction: UIPageViewController.NavigationDirection.forward, animated: false, completion: nil)
 
         if let controller = initialController as? ItemController {
@@ -466,19 +466,20 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         guard currentIndex != index && index >= 0 && index < self.itemsDataSource.itemCount() else { return }
 
-        let imageViewController = self.pagingDataSource.createItemController(index)
+        guard let pagingDataSource = pagingDataSource else { return }
+        let imageViewController = pagingDataSource.createItemController(index)
         let direction: UIPageViewController.NavigationDirection = index > currentIndex ? .forward : .reverse
 
         // workaround to make UIPageViewController happy
         if direction == .forward {
-            let previousVC = self.pagingDataSource.createItemController(index - 1)
+            let previousVC = pagingDataSource.createItemController(index - 1)
             setViewControllers([previousVC], direction: direction, animated: true, completion: { finished in
                 DispatchQueue.main.async(execute: { [weak self] in
                     self?.setViewControllers([imageViewController], direction: direction, animated: false, completion: nil)
                     })
             })
         } else {
-            let nextVC = self.pagingDataSource.createItemController(index + 1)
+            let nextVC = pagingDataSource.createItemController(index + 1)
             setViewControllers([nextVC], direction: direction, animated: true, completion: { finished in
                 DispatchQueue.main.async(execute: { [weak self] in
                     self?.setViewControllers([imageViewController], direction: direction, animated: false, completion: nil)
@@ -497,7 +498,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         if newIndex < 0 { close(); return }
 
-        let vc = self.pagingDataSource.createItemController(newIndex)
+        guard let pagingDataSource = pagingDataSource else { return }
+        let vc = pagingDataSource.createItemController(newIndex)
         setViewControllers([vc], direction: direction, animated: true) { _ in completion() }
     }
 
