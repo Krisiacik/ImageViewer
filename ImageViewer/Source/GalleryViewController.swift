@@ -148,7 +148,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             }
         }
 
-        pagingDataSource = GalleryPagingDataSource(itemsDataSource: self.itemsDataSource!, displacedViewsDataSource: displacedViewsDataSource, scrubber: scrubber, configuration: configuration)
+        pagingDataSource = GalleryPagingDataSource(itemsDataSource:itemsDataSource, displacedViewsDataSource: displacedViewsDataSource, scrubber: scrubber, configuration: configuration)
 
         super.init(transitionStyle: UIPageViewController.TransitionStyle.scroll,
                    navigationOrientation: UIPageViewController.NavigationOrientation.horizontal,
