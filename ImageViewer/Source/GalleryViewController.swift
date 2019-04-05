@@ -69,7 +69,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     @available(*, unavailable)
     required public init?(coder: NSCoder) { fatalError() }
 
-    public init(startIndex: Int, itemsDataSource: GalleryItemsDataSource, itemsDelegate: GalleryItemsDelegate? = nil, displacedViewsDataSource: GalleryDisplacedViewsDataSource? = nil, configuration: GalleryConfiguration = []) {
+    public init(startIndex: Int, itemsDataSource: GalleryItemsDataSource? = nil, itemsDelegate: GalleryItemsDelegate? = nil, displacedViewsDataSource: GalleryDisplacedViewsDataSource? = nil, configuration: GalleryConfiguration = []) {
 
         self.currentIndex = startIndex
         self.itemsDelegate = itemsDelegate
@@ -148,7 +148,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             }
         }
 
-        pagingDataSource = GalleryPagingDataSource(itemsDataSource: itemsDataSource, displacedViewsDataSource: displacedViewsDataSource, scrubber: scrubber, configuration: configuration)
+        pagingDataSource = GalleryPagingDataSource(itemsDataSource: self.itemsDataSource!, displacedViewsDataSource: displacedViewsDataSource, scrubber: scrubber, configuration: configuration)
 
         super.init(transitionStyle: UIPageViewController.TransitionStyle.scroll,
                    navigationOrientation: UIPageViewController.NavigationOrientation.horizontal,
