@@ -35,8 +35,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
     // DATASOURCE/DELEGATE
     fileprivate weak var itemsDelegate: GalleryItemsDelegate?
-    fileprivate weak var itemsDataSource: GalleryItemsDataSource?
-    fileprivate weak var pagingDataSource: GalleryPagingDataSource?
+    fileprivate let itemsDataSource: GalleryItemsDataSource
+    fileprivate let pagingDataSource: GalleryPagingDataSource
 
     // CONFIGURATION
     fileprivate var spineDividerWidth:         Float = 10
@@ -69,7 +69,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     @available(*, unavailable)
     required public init?(coder: NSCoder) { fatalError() }
 
-    public init(startIndex: Int, itemsDataSource: GalleryItemsDataSource, itemsDelegate: GalleryItemsDelegate? = nil, displacedViewsDataSource: GalleryDisplacedViewsDataSource? = nil, configuration: GalleryConfiguration = []) {
+    public init(startIndex: Int, itemsDataSource: GalleryItemsDataSource, itemsDelegate: GalleryItemsDelegate?, displacedViewsDataSource: GalleryDisplacedViewsDataSource? = nil, configuration: GalleryConfiguration = []) {
 
         self.currentIndex = startIndex
         self.itemsDelegate = itemsDelegate
@@ -154,10 +154,10 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
                    navigationOrientation: UIPageViewController.NavigationOrientation.horizontal,
                    options: [UIPageViewController.OptionsKey.interPageSpacing : NSNumber(value: spineDividerWidth as Float)])
 
-        pagingDataSource?.itemControllerDelegate = self
+        pagingDataSource.itemControllerDelegate = self
 
         ///This feels out of place, one would expect even the first presented(paged) item controller to be provided by the paging dataSource but there is nothing we can do as Apple requires the first controller to be set via this "setViewControllers" method.
-        let initialController = pagingDataSource!.createItemController(startIndex, isInitial: true)
+        let initialController = pagingDataSource.createItemController(startIndex, isInitial: true)
         self.setViewControllers([initialController], direction: UIPageViewController.NavigationDirection.forward, animated: false, completion: nil)
 
         if let controller = initialController as? ItemController {
@@ -441,9 +441,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
     @objc fileprivate func showThumbnails() {
 
-        guard let itemsDataSource  =  self.itemsDataSource else {return}
-        
-        let thumbnailsController = ThumbnailsViewController(itemsDataSource: itemsDataSource)
+        let thumbnailsController = ThumbnailsViewController(itemsDataSource: self.itemsDataSource)
 
         if let closeButton = seeAllCloseButton {
             thumbnailsController.closeButton = closeButton
@@ -466,24 +464,21 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
     open func page(toIndex index: Int) {
 
-        guard let itemsDataSource  =  self.itemsDataSource else {return}
-        
-        guard currentIndex != index && index >= 0 && index < itemsDataSource.itemCount() else { return }
+        guard currentIndex != index && index >= 0 && index < self.itemsDataSource.itemCount() else { return }
 
-        guard let pagingDataSource = pagingDataSource else { return }
-        let imageViewController = pagingDataSource.createItemController(index)
+        let imageViewController = self.pagingDataSource.createItemController(index)
         let direction: UIPageViewController.NavigationDirection = index > currentIndex ? .forward : .reverse
 
         // workaround to make UIPageViewController happy
         if direction == .forward {
-            let previousVC = pagingDataSource.createItemController(index - 1)
+            let previousVC = self.pagingDataSource.createItemController(index - 1)
             setViewControllers([previousVC], direction: direction, animated: true, completion: { finished in
                 DispatchQueue.main.async(execute: { [weak self] in
                     self?.setViewControllers([imageViewController], direction: direction, animated: false, completion: nil)
                     })
             })
         } else {
-            let nextVC = pagingDataSource.createItemController(index + 1)
+            let nextVC = self.pagingDataSource.createItemController(index + 1)
             setViewControllers([nextVC], direction: direction, animated: true, completion: { finished in
                 DispatchQueue.main.async(execute: { [weak self] in
                     self?.setViewControllers([imageViewController], direction: direction, animated: false, completion: nil)
@@ -495,24 +490,20 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     func removePage(atIndex index: Int, completion: @escaping () -> Void) {
 
         // If removing last item, go back, otherwise, go forward
-        guard let itemsDataSource  =  self.itemsDataSource else {return}
-        
-        let direction: UIPageViewController.NavigationDirection = index < itemsDataSource.itemCount() ? .forward : .reverse
+
+        let direction: UIPageViewController.NavigationDirection = index < self.itemsDataSource.itemCount() ? .forward : .reverse
 
         let newIndex = direction == .forward ? index : index - 1
 
         if newIndex < 0 { close(); return }
 
-        guard let pagingDataSource = pagingDataSource else { return }
-        let vc = pagingDataSource.createItemController(newIndex)
+        let vc = self.pagingDataSource.createItemController(newIndex)
         setViewControllers([vc], direction: direction, animated: true) { _ in completion() }
     }
 
     open func reload(atIndex index: Int) {
-        
-        guard let itemsDataSource  =  self.itemsDataSource else {return}
 
-        guard index >= 0 && index < itemsDataSource.itemCount() else { return }
+        guard index >= 0 && index < self.itemsDataSource.itemCount() else { return }
 
         guard let firstVC = viewControllers?.first, let itemController = firstVC as? ItemController else { return }
 
