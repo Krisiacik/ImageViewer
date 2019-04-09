@@ -17,8 +17,8 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
     //UI
     open var itemView = T()
-    open let scrollView = UIScrollView()
-    open let activityIndicatorView = UIActivityIndicatorView(style: .white)
+    public let scrollView = UIScrollView()
+    public let activityIndicatorView = UIActivityIndicatorView(style: .white)
 
     //DELEGATE / DATASOURCE
     weak public var delegate:                 ItemControllerDelegate?
