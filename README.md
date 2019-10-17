@@ -55,6 +55,7 @@ If you use earlier version of Swift - refer to the table below:
 
 | Swift version | ImageViewer version               |
 | ------------- | --------------------------------- |
+| 5.x           | >= 6.0                            |
 | 4.x           | >= 5.0                            |
 | 3.x           | 4.0                               |
 | 2.3           | 3.1 [⚠️](CHANGELOG.md#version-31) |

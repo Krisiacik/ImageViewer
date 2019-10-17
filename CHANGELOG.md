@@ -1,5 +1,9 @@
 # ImageViewer
 
+## Version 6.0.0
+
+* Upgrade to Swift 5 and fix subsequent compiler warnings
+
 ## Version 4.1.0
 
 * Autoplay video ([PR #120](https://github.com/MailOnline/ImageViewer/pull/120)).
