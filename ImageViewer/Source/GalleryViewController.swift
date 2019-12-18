@@ -424,16 +424,21 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     }
 
     @objc fileprivate func deleteItem() {
+        
+        itemsDelegate?.shouldRemoveGalleryItem(at: currentIndex) {
+            [weak self] shouldRemove in
+            guard let self = self, shouldRemove else { return }
 
-        deleteButton?.isEnabled = false
-        view.isUserInteractionEnabled = false
+            self.deleteButton?.isEnabled = false
+            self.view.isUserInteractionEnabled = false
 
-        itemsDelegate?.removeGalleryItem(at: currentIndex)
-        removePage(atIndex: currentIndex) {
+            self.itemsDelegate?.removeGalleryItem(at: self.currentIndex)
+            self.removePage(atIndex: self.currentIndex) {
 
-            [weak self] in
-            self?.deleteButton?.isEnabled = true
-            self?.view.isUserInteractionEnabled = true
+                [weak self] in
+                self?.deleteButton?.isEnabled = true
+                self?.view.isUserInteractionEnabled = true
+            }
         }
     }
 
