@@ -200,7 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				C7897CE31C1350B7006447FB /* Example */,
-				C7DABE4A1C12245B00F5BD7B /* ImageViewer */,
+				C7DABE4A1C12245B00F5BD7B /* Sources */,
 				EB1CEC141C84A4EE00BB27B8 /* ImageViewerTests */,
 				C7DABE491C12245B00F5BD7B /* Products */,
 				D72F02FF1F6C02D2009C8A39 /* Frameworks */,
@@ -217,14 +217,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C7DABE4A1C12245B00F5BD7B /* ImageViewer */ = {
+		C7DABE4A1C12245B00F5BD7B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				EB1CEC171C84A4EE00BB27B8 /* Info.plist */,
-				C7DABE581C1224EA00F5BD7B /* Source */,
+				C7DABE581C1224EA00F5BD7B /* ImageViewer */,
 				C7DABE531C12248600F5BD7B /* Supporting Files */,
 			);
-			path = ImageViewer;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		C7DABE531C12248600F5BD7B /* Supporting Files */ = {
@@ -234,7 +234,7 @@
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		C7DABE581C1224EA00F5BD7B /* Source */ = {
+		C7DABE581C1224EA00F5BD7B /* ImageViewer */ = {
 			isa = PBXGroup;
 			children = (
 				EBBFCB961D26CBA2007E7244 /* BlurView.swift */,
@@ -250,7 +250,7 @@
 				EBA90E411C8729EB000AA697 /* Transitions */,
 				EB1CEC1E1C84A54600BB27B8 /* UtilityFunctions.swift */,
 			);
-			path = Source;
+			path = ImageViewer;
 			sourceTree = "<group>";
 		};
 		C7DABE5D1C12275C00F5BD7B /* Extensions */ = {

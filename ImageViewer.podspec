@@ -15,5 +15,5 @@ Pod::Spec.new do |s|
     s.swift_version = "5.0"
     s.ios.deployment_target = "8.0"
 
-    s.source_files  = "ImageViewer/Source/**/*"
+    s.source_files  = "Sources/ImageViewer/**/*"
 end
