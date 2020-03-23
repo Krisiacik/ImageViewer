@@ -116,7 +116,7 @@ class ThumbnailsViewController: UICollectionViewController, UICollectionViewDele
                 }
             }
 
-        case .video(let fetchImageBlock, _):
+        case .video(let fetchImageBlock, _),.rawVideo(fetchPreviewImageBlock: let fetchImageBlock, _):
 
             fetchImageBlock() { image in
 
