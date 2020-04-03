@@ -16,11 +16,9 @@ class VideoViewController: ItemBaseController<VideoView> {
 
     fileprivate let swipeToDismissFadeOutAccelerationFactor: CGFloat = 6
 
-    let videoURL: URL?
-    var fetchVideoBlock:FetchVideoBlock?
-    var player: AVPlayer!
+    let videoURL: URL
+    let player: AVPlayer
     unowned let scrubber: VideoScrubber
-
 
     let fullHDScreenSizeLandscape = CGSize(width: 1920, height: 1080)
     let fullHDScreenSizePortrait = CGSize(width: 1080, height: 1920)
@@ -33,8 +31,8 @@ class VideoViewController: ItemBaseController<VideoView> {
 
         self.videoURL = videoURL
         self.scrubber = scrubber
-        self.player = AVPlayer(url: videoURL)
-
+        self.player = AVPlayer(url: self.videoURL)
+        
         ///Only those options relevant to the paging VideoViewController are explicitly handled here, the rest is handled by ItemViewControllers
         for item in configuration {
             
@@ -48,44 +46,6 @@ class VideoViewController: ItemBaseController<VideoView> {
         }
 
         super.init(index: index, itemCount: itemCount, fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitialController)
-    }
-
-    init(index: Int, itemCount: Int, fetchImageBlock: @escaping FetchImageBlock, fetchVideoBlock: @escaping FetchVideoBlock, scrubber: VideoScrubber, configuration: GalleryConfiguration, isInitialController: Bool = false) {
-
-        self.fetchVideoBlock = fetchVideoBlock
-        self.videoURL = nil
-        self.scrubber = scrubber
-        self.player = nil
-//        self.player = AVPlayer(playerItem: AVPlayerItem(asset: s))
-            //AVPlayer(url: self.videoURL)
-
-        ///Only those options relevant to the paging VideoViewController are explicitly handled here, the rest is handled by ItemViewControllers
-        for item in configuration {
-
-            switch item {
-
-            case .videoAutoPlay(let enabled):
-                autoPlayEnabled = enabled
-
-            default: break
-            }
-        }
-
-        super.init(index: index, itemCount: itemCount, fetchImageBlock: fetchImageBlock, configuration: configuration, isInitialController: isInitialController)
-    }
-
-    public func fetchVideo() {
-
-        fetchVideoBlock? { [weak self] video in
-
-            if let video = video {
-
-                DispatchQueue.main.async {
-                    self?.activityIndicatorView.stopAnimating()
-                    self?.player = AVPlayer(playerItem: AVPlayerItem(asset: video))
-                }
-            }
-        }
     }
 
     override func viewDidLoad() {
