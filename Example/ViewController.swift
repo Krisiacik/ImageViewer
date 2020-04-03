@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVKit
 
 extension UIImageView: DisplaceableView {}
 
@@ -43,6 +44,11 @@ class ViewController: UIViewController {
             case 2:
 
                 galleryItem = GalleryItem.video(fetchPreviewImageBlock: { $0(UIImage(named: "2")!) }, videoURL: URL (string: "http://video.dailymail.co.uk/video/mol/test/2016/09/21/5739239377694275356/1024x576_MP4_5739239377694275356.mp4")!)
+
+//                galleryItem = GalleryItem.rawVideo(fetchPreviewImageBlock: { $0(UIImage(named: "2")!) }, fetchRawVideoBlock: { w in
+//                    w(AVAsset(url:URL(string: "http://video.dailymail.co.uk/video/mol/test/2016/09/21/5739239377694275356/1024x576_MP4_5739239377694275356.mp4")!))
+//                })
+
 
             case 4:
 

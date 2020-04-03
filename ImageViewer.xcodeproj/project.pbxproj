@@ -28,6 +28,8 @@
 		C7897CEF1C1350B7006447FB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7897CED1C1350B7006447FB /* LaunchScreen.storyboard */; };
 		C7897CF61C1356C6006447FB /* CGSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DABE631C12276800F5BD7B /* CGSize.swift */; };
 		C7DABE641C12276800F5BD7B /* CGSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DABE631C12276800F5BD7B /* CGSize.swift */; };
+		D043A10B24374E630069591A /* VideoRawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D043A10A24374E630069591A /* VideoRawViewController.swift */; };
+		D043A10C243750650069591A /* VideoRawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D043A10A24374E630069591A /* VideoRawViewController.swift */; };
 		EB057A151D510264007565F1 /* AVPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB057A141D510264007565F1 /* AVPlayer.swift */; };
 		EB057A161D510264007565F1 /* AVPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB057A141D510264007565F1 /* AVPlayer.swift */; };
 		EB17B3781D4A51D200EED1DA /* UIBezierPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB17B3771D4A51D200EED1DA /* UIBezierPath.swift */; };
@@ -111,6 +113,7 @@
 		C7897CF01C1350B7006447FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7DABE481C12245B00F5BD7B /* ImageViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ImageViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7DABE631C12276800F5BD7B /* CGSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGSize.swift; sourceTree = "<group>"; };
+		D043A10A24374E630069591A /* VideoRawViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoRawViewController.swift; sourceTree = "<group>"; };
 		EB057A141D510264007565F1 /* AVPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVPlayer.swift; sourceTree = "<group>"; };
 		EB17B3771D4A51D200EED1DA /* UIBezierPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBezierPath.swift; sourceTree = "<group>"; };
 		EB17B37D1D4A5A2500EED1DA /* CAShapeLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAShapeLayer.swift; sourceTree = "<group>"; };
@@ -353,6 +356,7 @@
 				EB6F46541D4660AC00984035 /* VideoView.swift */,
 				EB60EE551D58EB4800CC5BA8 /* VideoScrubber.swift */,
 				EB60EE581D590E8B00CC5BA8 /* Slider.swift */,
+				D043A10A24374E630069591A /* VideoRawViewController.swift */,
 			);
 			name = Video;
 			sourceTree = "<group>";
@@ -556,6 +560,7 @@
 				13BDF0721E573D10009C458F /* UIColor.swift in Sources */,
 				4CD1C49C1C16FF64008D5F84 /* CGPoint.swift in Sources */,
 				EBA76F711D4F855C0094931F /* ItemBaseController.swift in Sources */,
+				D043A10C243750650069591A /* VideoRawViewController.swift in Sources */,
 				EB4DEBC01C84A6FD00D5F897 /* UIView.swift in Sources */,
 				EBAF4C631D3937AE0039CA93 /* ImageViewController.swift in Sources */,
 				EB40C3771C9C5C48004EA215 /* GalleryItemsDataSource.swift in Sources */,
@@ -598,6 +603,7 @@
 				EBA0A9541C89C653005B8DD3 /* GalleryConfiguration.swift in Sources */,
 				EB17B3791D4A51D200EED1DA /* UIBezierPath.swift in Sources */,
 				EB1DB6EA1D3E595D00DC9064 /* UIApplication.swift in Sources */,
+				D043A10B24374E630069591A /* VideoRawViewController.swift in Sources */,
 				EBBFCB971D26CBA2007E7244 /* BlurView.swift in Sources */,
 				EB8BEC7B1D3D1CB500DCE3EC /* ItemControllerDelegate.swift in Sources */,
 				EB60EE5A1D590E8B00CC5BA8 /* Slider.swift in Sources */,
