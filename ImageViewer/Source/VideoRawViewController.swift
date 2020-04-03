@@ -60,15 +60,13 @@ class VideoRawViewController: ItemBaseController<VideoView> {
             if let video = video {
 
                 DispatchQueue.main.async {
-                    self?.activityIndicatorView.stopAnimating()
-//                    self?.player =
-                    let s = video as? AVURLAsset
+                    guard let S = self else { return }
 
-                    self?.player = AVPlayer(url: s!.url)
-                        //AVPlayer(playerItem: AVPlayerItem(asset: video))
+                    self?.activityIndicatorView.stopAnimating()
+                    self?.player = AVPlayer(playerItem: AVPlayerItem(asset: video))
                     self?.embeddedPlayButton.autoresizingMask = [.flexibleTopMargin, .flexibleLeftMargin, .flexibleBottomMargin, .flexibleRightMargin]
                     self?.view.addSubview(self!.embeddedPlayButton)
-                    self?.embeddedPlayButton.center = self!.view.boundsCenter
+                    self?.embeddedPlayButton.center = S.view.boundsCenter
                     self?.embeddedPlayButton.addTarget(self, action: #selector(self?.playVideoInitially), for: UIControl.Event.touchUpInside)
                     self?.itemView.player = self?.player
                     self?.itemView.contentMode = .scaleAspectFill
@@ -76,26 +74,30 @@ class VideoRawViewController: ItemBaseController<VideoView> {
                     self?.view.setNeedsLayout()
                     self?.view.layoutIfNeeded()
                     self?.performAutoPlay()
+                    self?.scrubber.player = self?.player
+
+
+                        self?.player?.addObserver(S, forKeyPath: "status", options: NSKeyValueObservingOptions.new, context: nil)
+                        self?.player?.addObserver(S, forKeyPath: "rate", options: NSKeyValueObservingOptions.new, context: nil)
                 }
             }
         }
     }
 
     override func viewWillAppear(_ animated: Bool) {
-
-        self.player?.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.new, context: nil)
-        self.player?.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.new, context: nil)
-
         UIApplication.shared.beginReceivingRemoteControlEvents()
-
+        if player != nil {
+            self.player?.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.new, context: nil)
+            self.player?.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.new, context: nil)
+        }
         super.viewWillAppear(animated)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-
-        self.player?.removeObserver(self, forKeyPath: "status")
-        self.player?.removeObserver(self, forKeyPath: "rate")
-
+        if player != nil {
+            self.player?.removeObserver(self, forKeyPath: "status")
+            self.player?.removeObserver(self, forKeyPath: "rate")
+        }
         UIApplication.shared.endReceivingRemoteControlEvents()
 
         super.viewWillDisappear(animated)
@@ -103,7 +105,11 @@ class VideoRawViewController: ItemBaseController<VideoView> {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        fetchVideo()
+        if player == nil {
+            fetchVideo()
+        }else{
+            self.performAutoPlay()
+        }
     }
 
     override func viewDidDisappear(_ animated: Bool) {

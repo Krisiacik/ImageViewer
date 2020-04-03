@@ -613,7 +613,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             self?.thumbnailsButton?.alpha = targetAlpha
             self?.deleteButton?.alpha = targetAlpha
 
-            if let _ = self?.viewControllers?.first as? VideoViewController {
+            if let _ = self?.viewControllers?.first as? ItemBaseController<VideoView> {
 
                 UIView.animate(withDuration: 0.3, animations: { [weak self] in
 
@@ -626,14 +626,17 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     public func itemControllerWillAppear(_ controller: ItemController) {
 
         if let videoController = controller as? VideoViewController {
+            scrubber.player = videoController.player
+        }
 
+        if let videoController = controller as? VideoRawViewController {
             scrubber.player = videoController.player
         }
     }
 
     public func itemControllerWillDisappear(_ controller: ItemController) {
 
-        if let _ = controller as? VideoViewController {
+        if let _ = controller as? ItemBaseController<VideoView> {
 
             scrubber.player = nil
 
@@ -652,6 +655,17 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         self.footerView?.sizeToFit()
 
         if let videoController = controller as? VideoViewController {
+            scrubber.player = videoController.player
+            if scrubber.alpha == 0 && decorationViewsHidden == false {
+
+                UIView.animate(withDuration: 0.3, animations: { [weak self] in
+
+                    self?.scrubber.alpha = 1
+                })
+            }
+        }
+
+        if let videoController = controller as? VideoRawViewController {
             scrubber.player = videoController.player
             if scrubber.alpha == 0 && decorationViewsHidden == false {
 
