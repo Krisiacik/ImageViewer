@@ -60,7 +60,7 @@ class VideoViewController: ItemBaseController<VideoView> {
         self.view.addSubview(embeddedPlayButton)
         embeddedPlayButton.center = self.view.boundsCenter
 
-        embeddedPlayButton.addTarget(self, action: #selector(playVideoInitially), for: UIControlEvents.touchUpInside)
+        embeddedPlayButton.addTarget(self, action: #selector(playVideoInitially), for: UIControl.Event.touchUpInside)
 
         self.itemView.player = player
         self.itemView.contentMode = .scaleAspectFill
@@ -193,7 +193,7 @@ class VideoViewController: ItemBaseController<VideoView> {
 
         if let event = event {
 
-            if event.type == UIEventType.remoteControl {
+            if event.type == UIEvent.EventType.remoteControl {
 
                 switch event.subtype {
 

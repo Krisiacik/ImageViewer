@@ -18,7 +18,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
     //UI
     public var itemView = T()
     let scrollView = UIScrollView()
-    let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .white)
+    let activityIndicatorView = UIActivityIndicatorView(style: .white)
 
     //DELEGATE / DATASOURCE
     weak public var delegate:                 ItemControllerDelegate?
@@ -38,7 +38,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
     fileprivate var displacementDuration: TimeInterval = 0.55
     fileprivate var reverseDisplacementDuration: TimeInterval = 0.25
     fileprivate var itemFadeDuration: TimeInterval = 0.3
-    fileprivate var displacementTimingCurve: UIViewAnimationCurve = .linear
+    fileprivate var displacementTimingCurve: UIView.AnimationCurve = .linear
     fileprivate var displacementSpringBounce: CGFloat = 0.7
     fileprivate let minimumZoomScale: CGFloat = 1
     fileprivate var maximumZoomScale: CGFloat = 8
@@ -88,7 +88,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
             case .toggleDecorationViewsBySingleTap(let enabled):    toggleDecorationViewBySingleTap = enabled
             case .activityViewByLongPress(let enabled):             activityViewByLongPress = enabled
             case .spinnerColor(let color):                          activityIndicatorView.color = color
-            case .spinnerStyle(let style):                          activityIndicatorView.activityIndicatorViewStyle = style
+            case .spinnerStyle(let style):                          activityIndicatorView.style = style
 
             case .displacementTransitionStyle(let style):
 
@@ -128,7 +128,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
-        scrollView.decelerationRate = UIScrollViewDecelerationRateFast
+        scrollView.decelerationRate = UIScrollView.DecelerationRate.fast
         scrollView.contentInset = UIEdgeInsets.zero
         scrollView.contentOffset = CGPoint.zero
         scrollView.minimumZoomScale = minimumZoomScale
@@ -304,7 +304,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
         let currentVelocity = recognizer.velocity(in: self.view)
         let currentTouchPoint = recognizer.translation(in: view)
 
-        if swipingToDismiss == nil { swipingToDismiss = (fabs(currentVelocity.x) > fabs(currentVelocity.y)) ? .horizontal : .vertical }
+        if swipingToDismiss == nil { swipingToDismiss = (abs(currentVelocity.x) > abs(currentVelocity.y)) ? .horizontal : .vertical }
         guard let swipingToDismissInProgress = swipingToDismiss else { return }
 
         switch recognizer.state {
@@ -356,7 +356,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
         let swipeToDismissCompletionBlock = { [weak self] in
 
-            UIApplication.applicationWindow.windowLevel = UIWindowLevelNormal
+            UIApplication.applicationWindow.windowLevel = UIWindow.Level.normal
             self?.swipingToDismiss = nil
             self?.delegate?.itemControllerDidFinishSwipeToDismissSuccessfully()
         }
@@ -424,7 +424,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
             if finished {
 
-                UIApplication.applicationWindow.windowLevel = UIWindowLevelNormal
+                UIApplication.applicationWindow.windowLevel = UIWindow.Level.normal
 
                 self?.isAnimating = false
             }
@@ -617,12 +617,12 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
         case .horizontal:
 
             distanceToEdge = (scrollView.bounds.width / 2) + (itemView.bounds.width / 2)
-            percentDistance = fabs(scrollView.contentOffset.x / distanceToEdge)
+            percentDistance = abs(scrollView.contentOffset.x / distanceToEdge)
 
         case .vertical:
 
             distanceToEdge = (scrollView.bounds.height / 2) + (itemView.bounds.height / 2)
-            percentDistance = fabs(scrollView.contentOffset.y / distanceToEdge)
+            percentDistance = abs(scrollView.contentOffset.y / distanceToEdge)
         }
 
         if let delegate = self.delegate {

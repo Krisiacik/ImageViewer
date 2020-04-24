@@ -1,6 +1,6 @@
-osx_image: xcode9
+osx_image: xcode11
 language: objective-c
 
 script:
 - set -o pipefail
-- xcodebuild build -scheme ImageViewer -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 6s" | xcpretty -c
+- xcodebuild build -scheme ImageViewer -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 11" | xcpretty -c

@@ -28,12 +28,12 @@ extension UIView {
 
     static func animateWithDuration(_ duration: TimeInterval, delay: TimeInterval, animations: @escaping () -> Void) {
 
-        UIView.animate(withDuration: duration, delay: delay, options: UIViewAnimationOptions(), animations: animations, completion: nil)
+        UIView.animate(withDuration: duration, delay: delay, options: UIView.AnimationOptions(), animations: animations, completion: nil)
     }
 
     static func animateWithDuration(_ duration: TimeInterval, delay: TimeInterval, animations: @escaping () -> Void, completion: ((Bool) -> Void)?) {
 
-        UIView.animate(withDuration: duration, delay: delay, options: UIViewAnimationOptions(), animations: animations, completion: completion)
+        UIView.animate(withDuration: duration, delay: delay, options: UIView.AnimationOptions(), animations: animations, completion: completion)
     }
 }
 

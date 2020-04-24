@@ -69,7 +69,7 @@ class ViewController: UIViewController {
 
         guard let displacedView = sender.view as? UIImageView else { return }
 
-        guard let displacedViewIndex = items.index(where: { $0.imageView == displacedView }) else { return }
+        guard let displacedViewIndex = items.firstIndex(where: { $0.imageView == displacedView }) else { return }
 
         let frame = CGRect(x: 0, y: 0, width: 200, height: 24)
         let headerView = CounterView(frame: frame, currentIndex: displacedViewIndex, count: items.count)
@@ -113,7 +113,7 @@ class ViewController: UIViewController {
             GalleryConfigurationItem.overlayColor(UIColor(white: 0.035, alpha: 1)),
             GalleryConfigurationItem.overlayColorOpacity(1),
             GalleryConfigurationItem.overlayBlurOpacity(1),
-            GalleryConfigurationItem.overlayBlurStyle(UIBlurEffectStyle.light),
+            GalleryConfigurationItem.overlayBlurStyle(UIBlurEffect.Style.light),
             
             GalleryConfigurationItem.videoControlsColor(.white),
 
