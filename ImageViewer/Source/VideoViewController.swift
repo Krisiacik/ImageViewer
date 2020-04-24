@@ -26,7 +26,8 @@ class VideoViewController: ItemBaseController<VideoView> {
     
     private var autoPlayStarted: Bool = false
     private var autoPlayEnabled: Bool = false
-    
+    private var autoPlayProgress: Double = 0
+
     private var videoLayerGravity: AVLayerVideoGravity? = nil
 
     init(index: Int, itemCount: Int, fetchImageBlock: @escaping FetchImageBlock, videoURL: URL, scrubber: VideoScrubber, configuration: GalleryConfiguration, isInitialController: Bool = false) {
@@ -40,8 +41,9 @@ class VideoViewController: ItemBaseController<VideoView> {
             
             switch item {
                 
-            case .videoAutoPlay(let enabled):
+            case .videoAutoPlay(let enabled, let progress):
                 autoPlayEnabled = enabled
+                autoPlayProgress = progress
             case .videoLayerGravity(let gravity):
                 videoLayerGravity = gravity
             default: break
@@ -111,16 +113,11 @@ class VideoViewController: ItemBaseController<VideoView> {
     }
 
     @objc func playVideoInitially() {
-
         self.player.play()
 
-
         UIView.animate(withDuration: 0.25, animations: { [weak self] in
-
             self?.embeddedPlayButton.alpha = 0
-
         }, completion: { [weak self] _ in
-
             self?.embeddedPlayButton.isHidden = true
         })
     }
@@ -144,7 +141,6 @@ class VideoViewController: ItemBaseController<VideoView> {
         }
 
         super.presentItem(alongsideAnimation: alongsideAnimation) {
-
             circleButtonAnimation()
             completion()
         }
@@ -157,14 +153,11 @@ class VideoViewController: ItemBaseController<VideoView> {
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-
         if keyPath == "rate" || keyPath == "status" {
-
             fadeOutEmbeddedPlayButton()
         }
 
         else if keyPath == "contentOffset" {
-
             handleSwipeToDismissTransition()
         }
 
@@ -236,6 +229,8 @@ class VideoViewController: ItemBaseController<VideoView> {
         
         autoPlayStarted = true
         embeddedPlayButton.isHidden = true
+        scrubber.player?.seek(to: CMTime(seconds: autoPlayProgress, preferredTimescale: 1))
+        scrubber.scrubber.value = Float(autoPlayProgress) * scrubber.scrubber.maximumValue
         scrubber.play()
     }
 }

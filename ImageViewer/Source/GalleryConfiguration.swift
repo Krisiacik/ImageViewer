@@ -154,9 +154,9 @@ public enum GalleryConfigurationItem {
     ///Allows the video player to automatically continue playing the next video
     case continuePlayVideoOnEnd(Bool)
 
-    ///Allows auto play video after gallery presented
-    case videoAutoPlay(Bool)
-
+    ///Allows auto play video at progress after gallery presented
+    case videoAutoPlay(Bool, Double = 0)
+    
     ///Tint color of video controls
     case videoControlsColor(UIColor)
     

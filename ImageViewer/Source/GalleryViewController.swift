@@ -22,6 +22,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     fileprivate var thumbnailsButton: UIButton? = UIButton.thumbnailsButton()
     fileprivate var deleteButton: UIButton? = UIButton.deleteButton()
     fileprivate let scrubber = VideoScrubber()
+    
+    public var progressCallback: ((Double) -> Void)?
 
     fileprivate weak var initialItemController: ItemController?
 
@@ -324,6 +326,14 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         layoutHeaderView()
         layoutFooterView()
         layoutScrubber()
+    }
+    
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if let videoViewController = viewControllers?.first as? VideoViewController {
+            progressCallback?(videoViewController.player.currentTime().seconds)
+        }
     }
 
     private var defaultInsets: UIEdgeInsets {
