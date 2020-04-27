@@ -15,6 +15,6 @@ public typealias ItemViewControllerBlock = (_ index: Int, _ itemCount: Int, _ fe
 public enum GalleryItem {
 
     case image(fetchImageBlock: FetchImageBlock)
-    case video(fetchPreviewImageBlock: FetchImageBlock, videoURL: URL)
+    case video(fetchPreviewImageBlock: FetchImageBlock, videoURL: URL, videoProgress: Double)
     case custom(fetchImageBlock: FetchImageBlock, itemViewControllerBlock: ItemViewControllerBlock)
 }

@@ -17,6 +17,7 @@ class VideoViewController: ItemBaseController<VideoView> {
     fileprivate let swipeToDismissFadeOutAccelerationFactor: CGFloat = 6
 
     let videoURL: URL
+    let videoProgress: Double
     let player: AVPlayer
     unowned let scrubber: VideoScrubber
 
@@ -26,24 +27,21 @@ class VideoViewController: ItemBaseController<VideoView> {
     
     private var autoPlayStarted: Bool = false
     private var autoPlayEnabled: Bool = false
-    private var autoPlayProgress: Double = 0
 
     private var videoLayerGravity: AVLayerVideoGravity? = nil
 
-    init(index: Int, itemCount: Int, fetchImageBlock: @escaping FetchImageBlock, videoURL: URL, scrubber: VideoScrubber, configuration: GalleryConfiguration, isInitialController: Bool = false) {
+    init(index: Int, itemCount: Int, fetchImageBlock: @escaping FetchImageBlock, videoURL: URL, videoProgress: Double, scrubber: VideoScrubber, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
         self.videoURL = videoURL
+        self.videoProgress = videoProgress
         self.scrubber = scrubber
         self.player = AVPlayer(url: self.videoURL)
         
         ///Only those options relevant to the paging VideoViewController are explicitly handled here, the rest is handled by ItemViewControllers
         for item in configuration {
-            
             switch item {
-                
-            case .videoAutoPlay(let enabled, let progress):
+            case .videoAutoPlay(let enabled):
                 autoPlayEnabled = enabled
-                autoPlayProgress = progress
             case .videoLayerGravity(let gravity):
                 videoLayerGravity = gravity
             default: break
@@ -127,7 +125,6 @@ class VideoViewController: ItemBaseController<VideoView> {
         UIView.animate(withDuration: duration, animations: { [weak self] in
 
             self?.embeddedPlayButton.alpha = 0
-            self?.itemView.previewImageView.alpha = 1
         })
     }
 
@@ -172,7 +169,6 @@ class VideoViewController: ItemBaseController<VideoView> {
     }
 
     func fadeOutEmbeddedPlayButton() {
-
         if player.isPlaying() && embeddedPlayButton.alpha != 0  {
 
             UIView.animate(withDuration: 0.3, animations: { [weak self] in
@@ -229,8 +225,7 @@ class VideoViewController: ItemBaseController<VideoView> {
         
         autoPlayStarted = true
         embeddedPlayButton.isHidden = true
-        scrubber.player?.seek(to: CMTime(seconds: autoPlayProgress, preferredTimescale: 1))
-        scrubber.scrubber.value = Float(autoPlayProgress) * scrubber.scrubber.maximumValue
+        scrubber.player?.seek(to: CMTime(seconds: videoProgress, preferredTimescale: 1))
         scrubber.play()
     }
 }
