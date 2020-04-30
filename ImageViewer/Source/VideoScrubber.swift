@@ -165,7 +165,6 @@ open class VideoScrubber: UIControl {
     }
 
     @objc func play() {
-
         self.player?.play()
     }
 

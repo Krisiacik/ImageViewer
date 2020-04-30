@@ -30,12 +30,12 @@ class VideoViewController: ItemBaseController<VideoView> {
 
     private var videoLayerGravity: AVLayerVideoGravity? = nil
 
-    init(index: Int, itemCount: Int, fetchImageBlock: @escaping FetchImageBlock, videoURL: URL, videoProgress: Double, scrubber: VideoScrubber, configuration: GalleryConfiguration, isInitialController: Bool = false) {
+    init(index: Int, itemCount: Int, fetchImageBlock: @escaping FetchImageBlock, videoURL: URL, player: AVPlayer?, videoProgress: Double, scrubber: VideoScrubber, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
         self.videoURL = videoURL
-        self.videoProgress = videoProgress
+        self.videoProgress = player == nil ? videoProgress : 0
         self.scrubber = scrubber
-        self.player = AVPlayer(url: self.videoURL)
+        self.player = player ?? AVPlayer(url: videoURL)
         
         ///Only those options relevant to the paging VideoViewController are explicitly handled here, the rest is handled by ItemViewControllers
         for item in configuration {
@@ -104,9 +104,20 @@ class VideoViewController: ItemBaseController<VideoView> {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
-        let isLandscape = itemView.bounds.width >= itemView.bounds.height
-        itemView.bounds.size = aspectFitSize(forContentOfSize: isLandscape ? fullHDScreenSizeLandscape : fullHDScreenSizePortrait, inBounds: self.scrollView.bounds.size)
+        
+        if itemView.bounds.width <= itemView.bounds.height + 10 && itemView.bounds.width >= itemView.bounds.height - 10 {
+            let minScale = min(scrollView.bounds.width, scrollView.bounds.height)
+            itemView.bounds.size = CGSize(width: minScale, height: minScale)
+        } else {
+            let isLandscape = itemView.bounds.width >= itemView.bounds.height
+            let ratio = itemView.bounds.width/itemView.bounds.height
+            let mainScreenRatio =  isLandscape ? UIScreen.main.bounds.height/UIScreen.main.bounds.width : UIScreen.main.bounds.width/UIScreen.main.bounds.height
+            if (ratio > mainScreenRatio - 0.02 && ratio < mainScreenRatio + 0.02) {
+                itemView.bounds.size = aspectFitSize(forContentOfSize: isLandscape ? CGSize(width: UIScreen.main.bounds.height, height: UIScreen.main.bounds.width) : UIScreen.main.bounds.size, inBounds: self.scrollView.bounds.size)
+            } else {
+                itemView.bounds.size = aspectFitSize(forContentOfSize: isLandscape ? fullHDScreenSizeLandscape : fullHDScreenSizePortrait, inBounds: self.scrollView.bounds.size)
+            }
+        }
         itemView.center = scrollView.boundsCenter
     }
 
@@ -225,7 +236,9 @@ class VideoViewController: ItemBaseController<VideoView> {
         
         autoPlayStarted = true
         embeddedPlayButton.isHidden = true
-        scrubber.player?.seek(to: CMTime(seconds: videoProgress, preferredTimescale: 1))
+        if (videoProgress > 0) {
+            scrubber.player?.seek(to: CMTime(seconds: videoProgress, preferredTimescale: 1))
+        }
         scrubber.play()
     }
 }
