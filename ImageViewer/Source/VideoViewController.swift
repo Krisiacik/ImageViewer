@@ -112,7 +112,7 @@ class VideoViewController: ItemBaseController<VideoView> {
             let isLandscape = itemView.bounds.width >= itemView.bounds.height
             let ratio = itemView.bounds.width/itemView.bounds.height
             let mainScreenRatio =  isLandscape ? UIScreen.main.bounds.height/UIScreen.main.bounds.width : UIScreen.main.bounds.width/UIScreen.main.bounds.height
-            if (ratio > mainScreenRatio - 0.02 && ratio < mainScreenRatio + 0.02) {
+            if (ratio > mainScreenRatio - 0.05 && ratio < mainScreenRatio + 0.05) {
                 itemView.bounds.size = aspectFitSize(forContentOfSize: isLandscape ? CGSize(width: UIScreen.main.bounds.height, height: UIScreen.main.bounds.width) : UIScreen.main.bounds.size, inBounds: self.scrollView.bounds.size)
             } else {
                 itemView.bounds.size = aspectFitSize(forContentOfSize: isLandscape ? fullHDScreenSizeLandscape : fullHDScreenSizePortrait, inBounds: self.scrollView.bounds.size)
