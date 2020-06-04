@@ -51,7 +51,7 @@ class VideoView: UIView {
 
         self.addSubview(previewImageView)
 
-        previewImageView.contentMode = .scaleAspectFill
+        previewImageView.contentMode = .scaleAspectFit
         previewImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         previewImageView.clipsToBounds = true
     }
