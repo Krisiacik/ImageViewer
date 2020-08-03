@@ -189,7 +189,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
 
     fileprivate func configureOverlayView() {
-        let _bounds = (UIApplication.shared.delegate as! AppDelegate).window!.bounds
+        let _bounds =  UIApplication.shared.keyWindow!.bounds
         overlayView.bounds.size = _bounds.insetBy(dx: -_bounds.width / 2, dy: -_bounds.height / 2).size
         overlayView.center = CGPoint(x: (_bounds.width / 2), y: (_bounds.height / 2))
 
@@ -316,7 +316,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             self.view.transform = transform
             self.view.bounds = bounds
         }
-        let _bounds = (UIApplication.shared.delegate as! AppDelegate).window!.bounds
+        let _bounds =  UIApplication.shared.keyWindow!.bounds
         overlayView.frame = view.bounds.insetBy(dx: -_bounds.width * 2, dy: -_bounds.height * 2)
 
         layoutButton(closeButton, layout: closeLayout)

@@ -128,7 +128,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
     fileprivate func configureBackgroundView(){
         backgroundView.contentMode = .scaleToFill
-        let _frame = (UIApplication.shared.delegate as! AppDelegate).window!.frame
+        let _frame =  UIApplication.shared.keyWindow!.frame
         backgroundView.frame = _frame
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
@@ -254,7 +254,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
         scrollView.frame = self.view.bounds
         activityIndicatorView.center = view.boundsCenter
-        let _frame = (UIApplication.shared.delegate as! AppDelegate).window!.frame
+        let _frame = UIApplication.shared.keyWindow!.frame
         backgroundView.frame = _frame
 
         if let size = itemView.image?.size , size != CGSize.zero {
