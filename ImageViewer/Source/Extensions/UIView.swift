@@ -41,6 +41,6 @@ extension DisplaceableView {
 
     func frameInCoordinatesOfScreen() -> CGRect {
 
-        return UIView().convert(self.bounds, to: UIScreen.main.coordinateSpace)
+        return UIView().convert(self.bounds, to: (UIApplication.shared.delegate as! AppDelegate).window!.coordinateSpace)
     }
 }
