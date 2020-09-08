@@ -97,6 +97,8 @@ open class VideoScrubber: UIControl {
 
     func setup() {
 
+        backgroundColor = UIColor.init(white: 0.0, alpha: 0.5)
+        
         self.tintColor = .white
         self.clipsToBounds = true
         pauseButton.isHidden = true
@@ -135,6 +137,8 @@ open class VideoScrubber: UIControl {
         scrubber.bounds.size.height = 20
         scrubber.center = self.boundsCenter
         scrubber.frame.origin.x = playButton.frame.maxX
+        
+        self.layer.cornerRadius = frame.height / 2.0
     }
 
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
