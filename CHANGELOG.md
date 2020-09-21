@@ -1,5 +1,11 @@
 # ImageViewer
 
+
+## Version 6.0.1
+
+* Added support as Swift Package 
+
+
 ## Version 6.0.0
 
 * Upgrade to Swift 5 and fix subsequent compiler warnings

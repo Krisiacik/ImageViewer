@@ -26,6 +26,11 @@ pod 'ImageViewer'
 github "Krisiacik/ImageViewer"
 ```
 
+### Swiftpackage
+
+Just add the repository URL in Xcode.
+
+ 
 ## Sample Usage
 
 For a detailed example, see the [Example](https://github.com/Krisiacik/ImageViewer/tree/master/Example)!
