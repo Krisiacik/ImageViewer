@@ -674,16 +674,32 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         case (_ as ImageViewController, let item as UIImageView):
             guard let image = item.image else { return }
-            let activityVC = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+            let activityVC = activityController(with: [image])
             self.present(activityVC, animated: true)
 
         case (_ as VideoViewController, let item as VideoView):
             guard let videoUrl = ((item.player?.currentItem?.asset) as? AVURLAsset)?.url else { return }
-            let activityVC = UIActivityViewController(activityItems: [videoUrl], applicationActivities: nil)
+            let activityVC = activityController(with: [videoUrl])
             self.present(activityVC, animated: true)
 
         default:  return
         }
+    }
+    
+    private func activityController(with items: [Any] ) -> UIActivityViewController {
+        let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        
+        // for MacOS and iPad the activity view needs a source rect and view, otherwise it will crash
+        
+        if UIDevice.current.userInterfaceIdiom == .pad { /// .pad is relevant for iPad and MacCatalyst
+            if let popoverController = activityVC.popoverPresentationController {
+                popoverController.sourceRect = CGRect(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2, width: 0, height: 0)
+                popoverController.sourceView = self.view
+                popoverController.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0)
+            }
+        }
+        
+        return activityVC
     }
 
     public func itemController(_ controller: ItemController, didSwipeToDismissWithDistanceToEdge distance: CGFloat) {
