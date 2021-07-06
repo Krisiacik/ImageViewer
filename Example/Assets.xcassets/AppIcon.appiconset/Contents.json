@@ -1,89 +1,112 @@
 {
   "images" : [
-    {
-      "idiom" : "iphone",
+	{
       "size" : "20x20",
-      "scale" : "2x"
+      "idiom": "iphone",
+	  "filename" : "ImageViewer-20@2x.png",
+      "scale": "2x"
     },
-    {
-      "idiom" : "iphone",
+	{
       "size" : "20x20",
-      "scale" : "3x"
+      "idiom": "iphone",
+	  "filename" : "ImageViewer-20@3x.png",
+      "scale": "3x"
+    },
+	{
+      "size" : "20x20",
+      "idiom": "ipad",
+	  "filename" : "ImageViewer-20.png",
+      "scale": "1x"
     },
     {
-      "idiom" : "iphone",
+      "size" : "20x20",
+      "idiom": "ipad",
+	  "filename" : "ImageViewer-20@2x.png",
+      "scale": "2x"
+    },
+    {
       "size" : "29x29",
+      "idiom" : "iphone",
+      "filename" : "ImageViewer-29@2x.png",
       "scale" : "2x"
     },
     {
-      "idiom" : "iphone",
       "size" : "29x29",
+      "idiom" : "iphone",
+      "filename" : "ImageViewer-29@3x.png",
       "scale" : "3x"
     },
     {
-      "idiom" : "iphone",
       "size" : "40x40",
+      "idiom" : "iphone",
+      "filename" : "ImageViewer-40@2x.png",
       "scale" : "2x"
     },
     {
-      "idiom" : "iphone",
       "size" : "40x40",
+      "idiom" : "iphone",
+      "filename" : "ImageViewer-40@3x.png",
       "scale" : "3x"
     },
     {
-      "idiom" : "iphone",
       "size" : "60x60",
+      "idiom" : "iphone",
+      "filename" : "ImageViewer-60@2x.png",
       "scale" : "2x"
     },
     {
-      "idiom" : "iphone",
       "size" : "60x60",
+      "idiom" : "iphone",
+      "filename" : "ImageViewer-60@3x.png",
       "scale" : "3x"
     },
     {
-      "idiom" : "ipad",
-      "size" : "20x20",
-      "scale" : "1x"
-    },
-    {
-      "idiom" : "ipad",
-      "size" : "20x20",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "ipad",
       "size" : "29x29",
+      "idiom" : "ipad",
+      "filename" : "ImageViewer-29.png",
       "scale" : "1x"
     },
     {
-      "idiom" : "ipad",
       "size" : "29x29",
+      "idiom" : "ipad",
+      "filename" : "ImageViewer-29@2x.png",
       "scale" : "2x"
     },
     {
-      "idiom" : "ipad",
       "size" : "40x40",
+      "idiom" : "ipad",
+      "filename" : "ImageViewer-40.png",
       "scale" : "1x"
     },
     {
-      "idiom" : "ipad",
       "size" : "40x40",
+      "idiom" : "ipad",
+      "filename" : "ImageViewer-40@2x.png",
       "scale" : "2x"
     },
     {
-      "idiom" : "ipad",
       "size" : "76x76",
+      "idiom" : "ipad",
+      "filename" : "ImageViewer-76.png",
       "scale" : "1x"
     },
     {
-      "idiom" : "ipad",
       "size" : "76x76",
+      "idiom" : "ipad",
+      "filename" : "ImageViewer-76@2x.png",
       "scale" : "2x"
     },
     {
-      "idiom" : "ipad",
       "size" : "83.5x83.5",
+      "idiom" : "ipad",
+      "filename" : "ImageViewer-83.5@2x.png",
       "scale" : "2x"
+    },
+    {
+      "size" : "1024x1024",
+      "idiom" : "ios-marketing",
+      "filename" : "ImageViewer-1024.png",
+      "scale" : "1x"
     }
   ],
   "info" : {
