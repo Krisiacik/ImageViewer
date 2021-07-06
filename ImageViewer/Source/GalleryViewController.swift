@@ -22,6 +22,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     fileprivate var thumbnailsButton: UIButton? = UIButton.thumbnailsButton()
     fileprivate var deleteButton: UIButton? = UIButton.deleteButton()
     fileprivate let scrubber = VideoScrubber()
+    fileprivate var pageControl = UIPageControl()
     
     fileprivate weak var initialItemController: ItemController?
     
@@ -39,6 +40,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     fileprivate let pagingDataSource: GalleryPagingDataSource
     
     // CONFIGURATION
+    fileprivate var statusBarStyle = UIApplication.shared.statusBarStyle
+    fileprivate var backScreenStatusBarStyle = UIApplication.shared.statusBarStyle
     fileprivate var spineDividerWidth:         Float = 10
     fileprivate var galleryPagingMode = GalleryPagingMode.standard
     fileprivate var headerLayout = HeaderLayout.center(25)
@@ -53,6 +56,10 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     fileprivate var rotationMode = GalleryRotationMode.always
     fileprivate let swipeToDismissFadeOutAccelerationFactor: CGFloat = 6
     fileprivate var decorationViewsFadeDuration = 0.15
+    fileprivate var pageControlHeight: CGFloat = 20
+    fileprivate var pageControlBottomSpacing: CGFloat = 50
+    fileprivate var pageControlCurrentPageIndicatorColor: UIColor = .red
+    fileprivate var pageControlPageIndicatorColor: UIColor = .gray
     
     /// COMPLETION BLOCKS
     /// If set, the block is executed right after the initial launch animations finish.
@@ -81,6 +88,13 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             
             switch item {
                 
+            case .pageControlHeight(let height):                pageControlHeight = height
+            case .pageControlBottomSpacing(let bottomSpacing):  pageControlBottomSpacing = bottomSpacing
+            case .pageControlPageIndicatorColor(let pageColor): pageControlPageIndicatorColor = pageColor
+                
+            case .pageControlCurrentPageIndicatorColor(let currentPageColor):
+                                                                pageControlCurrentPageIndicatorColor = currentPageColor
+            case .statusBarStyle(let style):                    statusBarStyle = style
             case .imageDividerWidth(let width):                 spineDividerWidth = Float(width)
             case .pagingMode(let mode):                         galleryPagingMode = mode
             case .headerViewLayout(let layout):                 headerLayout = layout
@@ -261,8 +275,21 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         configureThumbnailsButton()
         configureDeleteButton()
         configureScrubber()
+        configurePageControl(pageControlHeight: pageControlHeight,
+                             bottomSpacing: pageControlBottomSpacing,
+                             currentPageIndicatorColor: pageControlCurrentPageIndicatorColor,
+                             pageIndicatorColor: pageControlPageIndicatorColor)
         
         self.view.clipsToBounds = false
+    }
+    
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if #available(iOS 13.0, *) {
+            UIApplication.shared.statusBarStyle = statusBarStyle
+        }
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     open override func viewDidAppear(_ animated: Bool) {
@@ -277,6 +304,16 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         presentInitially()
         
         initialPresentationDone = true
+    }
+    
+    open override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        if #available(iOS 13.0, *) {
+            UIApplication.shared.statusBarStyle = backScreenStatusBarStyle
+        }
+        self.setNeedsStatusBarAppearanceUpdate()
+        
     }
     
     fileprivate func presentInitially() {
@@ -432,6 +469,21 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         scrubber.frame.origin.y = (footerView?.frame.origin.y ?? self.view.bounds.maxY) - scrubber.bounds.height
     }
     
+    private func configurePageControl(pageControlHeight: CGFloat ,bottomSpacing: CGFloat, currentPageIndicatorColor: UIColor, pageIndicatorColor: UIColor) {
+        self.view.addSubview(self.pageControl)
+        
+        self.pageControl.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.pageControl.heightAnchor.constraint(equalToConstant: pageControlHeight),
+            self.pageControl.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -bottomSpacing),
+            self.pageControl.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0),
+            self.pageControl.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0),
+        ])
+        self.pageControl.pageIndicatorTintColor = pageIndicatorColor
+        self.pageControl.currentPageIndicatorTintColor = currentPageIndicatorColor
+        self.pageControl.numberOfPages = self.itemsDataSource.itemCount()
+    }
+    
     @objc fileprivate func deleteItem() {
         
         deleteButton?.isEnabled = false
@@ -557,7 +609,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     /// Invoked when closed via close button
     @objc fileprivate func closeInteractively() {
         
-        closeDecorationViews(closedCompletion)
+//        closeDecorationViews(closedCompletion)
+        self.dismiss(animated: true)
     }
     
     fileprivate func closeDecorationViews(_ completion: (() -> Void)?) {
@@ -618,7 +671,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             
             self?.headerView?.alpha = targetAlpha
             self?.footerView?.alpha = targetAlpha
-            self?.closeButton?.alpha = targetAlpha
+            self?.closeButton?.alpha = 1
             self?.thumbnailsButton?.alpha = targetAlpha
             self?.deleteButton?.alpha = targetAlpha
             
@@ -656,6 +709,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     public func itemControllerDidAppear(_ controller: ItemController) {
         
         self.currentIndex = controller.index
+        self.pageControl.currentPage = self.currentIndex
         self.landedPageAtIndexCompletion?(self.currentIndex)
         self.headerView?.sizeToFit()
         self.footerView?.sizeToFit()

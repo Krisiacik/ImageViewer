@@ -17,6 +17,15 @@ public enum GalleryConfigurationItem {
 
     /// Distance (width of the area) between images when paged.
     case imageDividerWidth(CGFloat)
+    
+    /// Option to set StatusBar style
+    case statusBarStyle(UIStatusBarStyle)
+    
+    /// Page Control Options
+    case pageControlHeight(CGFloat)
+    case pageControlBottomSpacing(CGFloat)
+    case pageControlCurrentPageIndicatorColor(UIColor)
+    case pageControlPageIndicatorColor(UIColor)
 
     ///Option to set the Close button type.
     case closeButtonMode(ButtonMode)
