@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 
 @available(iOS 9.1, *)
 class LivePhotoViewController: ItemBaseController<LivePhotoView> {
@@ -61,7 +62,8 @@ class LivePhotoViewController: ItemBaseController<LivePhotoView> {
         }
         
         self.fetchLivePhotoBlock { livePhoto in
-            self.itemView.phLivePhotoView.livePhoto = livePhoto
+            
+            self.itemView.phLivePhotoView.livePhoto = livePhoto as? PHLivePhoto
         }
     }
     
