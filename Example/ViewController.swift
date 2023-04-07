@@ -27,6 +27,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var image7: UIImageView!
 
     var items: [DataItem] = []
+    
+    var galleryViewController: GalleryViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,6 +95,7 @@ class ViewController: UIViewController {
             footerView.currentIndex = index
         }
 
+        self.galleryViewController = galleryViewController
         self.presentImageGallery(galleryViewController)
     }
 
@@ -178,6 +181,21 @@ extension ViewController: GalleryItemsDelegate {
         let imageView = items[index].imageView
         imageView.removeFromSuperview()
         items.remove(at: index)
+    }
+    
+    func shouldRemoveGalleryItem(at index: Int, block: @escaping (Bool) -> Void) {
+        let alert = UIAlertController(
+            title: "Delete?",
+            message: "Are you sure you want to delete this image?",
+            preferredStyle: .alert
+        )
+        alert.addAction(.init(title: "Delete", style: .destructive) { _ in
+            block(true)
+        })
+        alert.addAction(.init(title: "Cancel", style: .cancel) { _ in
+            block(false)
+        })
+        galleryViewController?.present(alert, animated: true)
     }
 }
 
