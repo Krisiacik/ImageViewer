@@ -22,6 +22,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     fileprivate var thumbnailsButton: UIButton? = UIButton.thumbnailsButton()
     fileprivate var deleteButton: UIButton? = UIButton.deleteButton()
     fileprivate let scrubber = VideoScrubber()
+    
+    public var progressCallback: ((Double) -> Void)?
 
     fileprivate weak var initialItemController: ItemController?
 
@@ -325,6 +327,14 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         layoutFooterView()
         layoutScrubber()
     }
+    
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if let videoViewController = viewControllers?.first as? VideoViewController {
+            progressCallback?(videoViewController.player.currentTime().seconds)
+        }
+    }
 
     private var defaultInsets: UIEdgeInsets {
         if #available(iOS 11.0, *) {
@@ -420,7 +430,11 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         scrubber.bounds = CGRect(origin: CGPoint.zero, size: CGSize(width: self.view.bounds.width, height: 40))
         scrubber.center = self.view.boundsCenter
+        
         scrubber.frame.origin.y = (footerView?.frame.origin.y ?? self.view.bounds.maxY) - scrubber.bounds.height
+        if #available(iOS 11.0, *) {
+            scrubber.frame.origin.y = scrubber.frame.origin.y - self.view.safeAreaInsets.bottom
+        }
     }
 
     @objc fileprivate func deleteItem() {
@@ -675,11 +689,13 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         case (_ as ImageViewController, let item as UIImageView):
             guard let image = item.image else { return }
             let activityVC = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+            activityVC.excludedActivityTypes = [.copyToPasteboard]
             self.present(activityVC, animated: true)
 
         case (_ as VideoViewController, let item as VideoView):
             guard let videoUrl = ((item.player?.currentItem?.asset) as? AVURLAsset)?.url else { return }
             let activityVC = UIActivityViewController(activityItems: [videoUrl], applicationActivities: nil)
+            activityVC.excludedActivityTypes = [.copyToPasteboard]
             self.present(activityVC, animated: true)
 
         default:  return

@@ -17,6 +17,7 @@ class VideoViewController: ItemBaseController<VideoView> {
     fileprivate let swipeToDismissFadeOutAccelerationFactor: CGFloat = 6
 
     let videoURL: URL
+    let videoProgress: Double
     let player: AVPlayer
     unowned let scrubber: VideoScrubber
 
@@ -27,20 +28,22 @@ class VideoViewController: ItemBaseController<VideoView> {
     private var autoPlayStarted: Bool = false
     private var autoPlayEnabled: Bool = false
 
-    init(index: Int, itemCount: Int, fetchImageBlock: @escaping FetchImageBlock, videoURL: URL, scrubber: VideoScrubber, configuration: GalleryConfiguration, isInitialController: Bool = false) {
+    private var videoLayerGravity: AVLayerVideoGravity? = nil
+
+    init(index: Int, itemCount: Int, fetchImageBlock: @escaping FetchImageBlock, videoURL: URL, player: AVPlayer?, videoProgress: Double, scrubber: VideoScrubber, configuration: GalleryConfiguration, isInitialController: Bool = false) {
 
         self.videoURL = videoURL
+        self.videoProgress = player == nil ? videoProgress : 0
         self.scrubber = scrubber
-        self.player = AVPlayer(url: self.videoURL)
+        self.player = player ?? AVPlayer(url: videoURL)
         
         ///Only those options relevant to the paging VideoViewController are explicitly handled here, the rest is handled by ItemViewControllers
         for item in configuration {
-            
             switch item {
-                
             case .videoAutoPlay(let enabled):
                 autoPlayEnabled = enabled
-                
+            case .videoLayerGravity(let gravity):
+                videoLayerGravity = gravity
             default: break
             }
         }
@@ -61,6 +64,10 @@ class VideoViewController: ItemBaseController<VideoView> {
 
         self.itemView.player = player
         self.itemView.contentMode = .scaleAspectFill
+        
+        if let gravity = self.videoLayerGravity {
+            (self.itemView.layer as? AVPlayerLayer)?.videoGravity = gravity
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -97,23 +104,29 @@ class VideoViewController: ItemBaseController<VideoView> {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
-        let isLandscape = itemView.bounds.width >= itemView.bounds.height
-        itemView.bounds.size = aspectFitSize(forContentOfSize: isLandscape ? fullHDScreenSizeLandscape : fullHDScreenSizePortrait, inBounds: self.scrollView.bounds.size)
+        
+        if itemView.bounds.width <= itemView.bounds.height + 10 && itemView.bounds.width >= itemView.bounds.height - 10 {
+            let minScale = min(scrollView.bounds.width, scrollView.bounds.height)
+            itemView.bounds.size = CGSize(width: minScale, height: minScale)
+        } else {
+            let isLandscape = itemView.bounds.width >= itemView.bounds.height
+            let ratio = itemView.bounds.width/itemView.bounds.height
+            let mainScreenRatio =  isLandscape ? UIScreen.main.bounds.height/UIScreen.main.bounds.width : UIScreen.main.bounds.width/UIScreen.main.bounds.height
+            if (ratio > mainScreenRatio - 0.05 && ratio < mainScreenRatio + 0.05) {
+                itemView.bounds.size = aspectFitSize(forContentOfSize: isLandscape ? CGSize(width: UIScreen.main.bounds.height, height: UIScreen.main.bounds.width) : UIScreen.main.bounds.size, inBounds: self.scrollView.bounds.size)
+            } else {
+                itemView.bounds.size = aspectFitSize(forContentOfSize: isLandscape ? fullHDScreenSizeLandscape : fullHDScreenSizePortrait, inBounds: self.scrollView.bounds.size)
+            }
+        }
         itemView.center = scrollView.boundsCenter
     }
 
     @objc func playVideoInitially() {
-
         self.player.play()
 
-
         UIView.animate(withDuration: 0.25, animations: { [weak self] in
-
             self?.embeddedPlayButton.alpha = 0
-
         }, completion: { [weak self] _ in
-
             self?.embeddedPlayButton.isHidden = true
         })
     }
@@ -123,7 +136,6 @@ class VideoViewController: ItemBaseController<VideoView> {
         UIView.animate(withDuration: duration, animations: { [weak self] in
 
             self?.embeddedPlayButton.alpha = 0
-            self?.itemView.previewImageView.alpha = 1
         })
     }
 
@@ -137,7 +149,6 @@ class VideoViewController: ItemBaseController<VideoView> {
         }
 
         super.presentItem(alongsideAnimation: alongsideAnimation) {
-
             circleButtonAnimation()
             completion()
         }
@@ -150,14 +161,11 @@ class VideoViewController: ItemBaseController<VideoView> {
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-
         if keyPath == "rate" || keyPath == "status" {
-
             fadeOutEmbeddedPlayButton()
         }
 
         else if keyPath == "contentOffset" {
-
             handleSwipeToDismissTransition()
         }
 
@@ -172,7 +180,6 @@ class VideoViewController: ItemBaseController<VideoView> {
     }
 
     func fadeOutEmbeddedPlayButton() {
-
         if player.isPlaying() && embeddedPlayButton.alpha != 0  {
 
             UIView.animate(withDuration: 0.3, animations: { [weak self] in
@@ -229,6 +236,9 @@ class VideoViewController: ItemBaseController<VideoView> {
         
         autoPlayStarted = true
         embeddedPlayButton.isHidden = true
+        if (videoProgress > 0) {
+            scrubber.player?.seek(to: CMTime(seconds: videoProgress, preferredTimescale: 1))
+        }
         scrubber.play()
     }
 }
