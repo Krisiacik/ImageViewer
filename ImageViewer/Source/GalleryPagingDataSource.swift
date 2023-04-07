@@ -19,14 +19,15 @@ final class GalleryPagingDataSource: NSObject, UIPageViewControllerDataSource {
     fileprivate var itemCount: Int { return itemsDataSource?.itemCount() ?? 0 }
     fileprivate unowned var scrubber: VideoScrubber
 
-    init(itemsDataSource: GalleryItemsDataSource, displacedViewsDataSource: GalleryDisplacedViewsDataSource?, scrubber: VideoScrubber, configuration: GalleryConfiguration) {
+    init(itemsDataSource: GalleryItemsDataSource?, displacedViewsDataSource: GalleryDisplacedViewsDataSource?, scrubber: VideoScrubber, configuration: GalleryConfiguration) {
 
         self.itemsDataSource = itemsDataSource
         self.displacedViewsDataSource = displacedViewsDataSource
         self.scrubber = scrubber
         self.configuration = configuration
 
-        if itemsDataSource.itemCount() > 1 { // Potential carousel mode present in configuration only makes sense for more than 1 item
+        guard let source = itemsDataSource else {return}
+        if source.itemCount() > 1 { // Potential carousel mode present in configuration only makes sense for more than 1 item
 
             for item in configuration {
 

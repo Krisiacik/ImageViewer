@@ -34,8 +34,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     fileprivate var initialPresentationDone = false
 
     // DATASOURCE/DELEGATE
-    fileprivate let itemsDelegate: GalleryItemsDelegate?
-    fileprivate let itemsDataSource: GalleryItemsDataSource
+    fileprivate weak var itemsDelegate: GalleryItemsDelegate?
+    fileprivate weak var itemsDataSource: GalleryItemsDataSource?
     fileprivate let pagingDataSource: GalleryPagingDataSource
 
     // CONFIGURATION
@@ -69,7 +69,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     @available(*, unavailable)
     required public init?(coder: NSCoder) { fatalError() }
 
-    public init(startIndex: Int, itemsDataSource: GalleryItemsDataSource, itemsDelegate: GalleryItemsDelegate? = nil, displacedViewsDataSource: GalleryDisplacedViewsDataSource? = nil, configuration: GalleryConfiguration = []) {
+    public init(startIndex: Int, itemsDataSource: GalleryItemsDataSource? = nil, itemsDelegate: GalleryItemsDelegate? = nil, displacedViewsDataSource: GalleryDisplacedViewsDataSource? = nil, configuration: GalleryConfiguration = []) {
 
         self.currentIndex = startIndex
         self.itemsDelegate = itemsDelegate
@@ -148,7 +148,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             }
         }
 
-        pagingDataSource = GalleryPagingDataSource(itemsDataSource: itemsDataSource, displacedViewsDataSource: displacedViewsDataSource, scrubber: scrubber, configuration: configuration)
+        pagingDataSource = GalleryPagingDataSource(itemsDataSource:itemsDataSource, displacedViewsDataSource: displacedViewsDataSource, scrubber: scrubber, configuration: configuration)
 
         super.init(transitionStyle: UIPageViewController.TransitionStyle.scroll,
                    navigationOrientation: UIPageViewController.NavigationOrientation.horizontal,
@@ -440,8 +440,10 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     //ThumbnailsimageBlock
 
     @objc fileprivate func showThumbnails() {
+        
+        guard let source = self.itemsDataSource else {return}
 
-        let thumbnailsController = ThumbnailsViewController(itemsDataSource: self.itemsDataSource)
+        let thumbnailsController = ThumbnailsViewController(itemsDataSource: source)
 
         if let closeButton = seeAllCloseButton {
             thumbnailsController.closeButton = closeButton
@@ -464,7 +466,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
     open func page(toIndex index: Int) {
 
-        guard currentIndex != index && index >= 0 && index < self.itemsDataSource.itemCount() else { return }
+        guard let source = self.itemsDataSource else {return}
+        guard currentIndex != index && index >= 0 && index < source.itemCount() else { return }
 
         let imageViewController = self.pagingDataSource.createItemController(index)
         let direction: UIPageViewController.NavigationDirection = index > currentIndex ? .forward : .reverse
@@ -490,8 +493,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     func removePage(atIndex index: Int, completion: @escaping () -> Void) {
 
         // If removing last item, go back, otherwise, go forward
-
-        let direction: UIPageViewController.NavigationDirection = index < self.itemsDataSource.itemCount() ? .forward : .reverse
+        guard let source = self.itemsDataSource else {return}
+        let direction: UIPageViewController.NavigationDirection = index < source.itemCount() ? .forward : .reverse
 
         let newIndex = direction == .forward ? index : index - 1
 
@@ -502,8 +505,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     }
 
     open func reload(atIndex index: Int) {
-
-        guard index >= 0 && index < self.itemsDataSource.itemCount() else { return }
+        guard let source = self.itemsDataSource else {return}
+        guard index >= 0 && index < source.itemCount() else { return }
 
         guard let firstVC = viewControllers?.first, let itemController = firstVC as? ItemController else { return }
 
