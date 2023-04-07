@@ -240,15 +240,23 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
         scrollView.frame = self.view.bounds
         activityIndicatorView.center = view.boundsCenter
-
-        if let size = itemView.image?.size , size != CGSize.zero {
-
-            let aspectFitItemSize = aspectFitSize(forContentOfSize: size, inBounds: self.scrollView.bounds.size)
-
-            itemView.bounds.size = aspectFitItemSize
-            scrollView.contentSize = itemView.bounds.size
-
+        if let itemView = itemView as? VideoView{
+            
+            itemView.frame = self.view.frame
+            
             itemView.center = scrollView.boundsCenter
+            
+        }
+        else{
+            if let size = itemView.image?.size , size != CGSize.zero {
+
+                let aspectFitItemSize = aspectFitSize(forContentOfSize: size, inBounds: self.scrollView.bounds.size)
+
+                itemView.bounds.size = aspectFitItemSize
+                scrollView.contentSize = itemView.bounds.size
+
+                itemView.center = scrollView.boundsCenter
+            }
         }
     }
 
