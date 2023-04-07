@@ -16,9 +16,9 @@ public protocol ItemView {
 open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGestureRecognizerDelegate, UIScrollViewDelegate where T: ItemView {
 
     //UI
-    public var itemView = T()
-    let scrollView = UIScrollView()
-    let activityIndicatorView = UIActivityIndicatorView(style: .white)
+    open var itemView = T()
+    public let scrollView = UIScrollView()
+    public let activityIndicatorView = UIActivityIndicatorView(style: .white)
 
     //DELEGATE / DATASOURCE
     weak public var delegate:                 ItemControllerDelegate?
@@ -195,7 +195,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
         fetchImage()
     }
 
-    public func fetchImage() {
+    open func fetchImage() {
 
         fetchImageBlock { [weak self] image in
 
