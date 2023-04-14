@@ -18,6 +18,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
     //UI
     public var itemView = T()
     let scrollView = UIScrollView()
+    let backgroundView = UIImageView()
     let activityIndicatorView = UIActivityIndicatorView(style: .white)
 
     //DELEGATE / DATASOURCE
@@ -108,6 +109,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
         self.itemView.isHidden = isInitialController
 
+        configureBackgroundView()
         configureScrollView()
         configureGestureRecognizers()
 
@@ -123,6 +125,17 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
     }
 
     // MARK: - Configuration
+
+    fileprivate func configureBackgroundView(){
+        backgroundView.contentMode = .scaleToFill
+        let _frame =  UIApplication.shared.keyWindow!.frame
+        backgroundView.frame = _frame
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = backgroundView.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        backgroundView.addSubview(blurEffectView)
+    }
 
     fileprivate func configureScrollView() {
 
@@ -177,7 +190,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
     }
 
     fileprivate func createViewHierarchy() {
-
+        self.view.addSubview(backgroundView)
         self.view.addSubview(scrollView)
         scrollView.addSubview(itemView)
 
@@ -206,6 +219,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
                     var itemView = self?.itemView
                     itemView?.image = image
+                    self?.backgroundView.image = image
                     itemView?.isAccessibilityElement = image.isAccessibilityElement
                     itemView?.accessibilityLabel = image.accessibilityLabel
                     itemView?.accessibilityTraits = image.accessibilityTraits
@@ -240,6 +254,8 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
         scrollView.frame = self.view.bounds
         activityIndicatorView.center = view.boundsCenter
+        let _frame = UIApplication.shared.keyWindow!.frame
+        backgroundView.frame = _frame
 
         if let size = itemView.image?.size , size != CGSize.zero {
 

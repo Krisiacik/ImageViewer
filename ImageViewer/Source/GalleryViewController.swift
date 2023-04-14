@@ -189,9 +189,10 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
 
     fileprivate func configureOverlayView() {
+        let _bounds =  UIApplication.shared.keyWindow!.bounds
+        overlayView.bounds.size = _bounds.insetBy(dx: -_bounds.width / 2, dy: -_bounds.height / 2).size
+        overlayView.center = CGPoint(x: (_bounds.width / 2), y: (_bounds.height / 2))
 
-        overlayView.bounds.size = UIScreen.main.bounds.insetBy(dx: -UIScreen.main.bounds.width / 2, dy: -UIScreen.main.bounds.height / 2).size
-        overlayView.center = CGPoint(x: (UIScreen.main.bounds.width / 2), y: (UIScreen.main.bounds.height / 2))
 
         self.view.addSubview(overlayView)
         self.view.sendSubviewToBack(overlayView)
@@ -315,8 +316,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             self.view.transform = transform
             self.view.bounds = bounds
         }
-
-        overlayView.frame = view.bounds.insetBy(dx: -UIScreen.main.bounds.width * 2, dy: -UIScreen.main.bounds.height * 2)
+        let _bounds =  UIApplication.shared.keyWindow!.bounds
+        overlayView.frame = view.bounds.insetBy(dx: -_bounds.width * 2, dy: -_bounds.height * 2)
 
         layoutButton(closeButton, layout: closeLayout)
         layoutButton(thumbnailsButton, layout: thumbnailsLayout)
@@ -420,7 +421,13 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         scrubber.bounds = CGRect(origin: CGPoint.zero, size: CGSize(width: self.view.bounds.width, height: 40))
         scrubber.center = self.view.boundsCenter
-        scrubber.frame.origin.y = (footerView?.frame.origin.y ?? self.view.bounds.maxY) - scrubber.bounds.height
+
+        if #available(iOS 11.0, *) {
+            scrubber.frame.origin.y = (self.view.safeAreaLayoutGuide.layoutFrame.maxY) - scrubber.bounds.height
+        } else {
+            // Fallback on earlier versions
+            scrubber.frame.origin.y = (footerView?.frame.origin.y ?? self.view.bounds.maxY) - scrubber.bounds.height
+        }
     }
 
     @objc fileprivate func deleteItem() {
@@ -613,7 +620,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             self?.thumbnailsButton?.alpha = targetAlpha
             self?.deleteButton?.alpha = targetAlpha
 
-            if let _ = self?.viewControllers?.first as? VideoViewController {
+            if let _ = self?.viewControllers?.first as? ItemBaseController<VideoView> {
 
                 UIView.animate(withDuration: 0.3, animations: { [weak self] in
 
@@ -626,14 +633,17 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     public func itemControllerWillAppear(_ controller: ItemController) {
 
         if let videoController = controller as? VideoViewController {
+            scrubber.player = videoController.player
+        }
 
+        if let videoController = controller as? VideoRawViewController {
             scrubber.player = videoController.player
         }
     }
 
     public func itemControllerWillDisappear(_ controller: ItemController) {
 
-        if let _ = controller as? VideoViewController {
+        if let _ = controller as? ItemBaseController<VideoView> {
 
             scrubber.player = nil
 
@@ -652,6 +662,17 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         self.footerView?.sizeToFit()
 
         if let videoController = controller as? VideoViewController {
+            scrubber.player = videoController.player
+            if scrubber.alpha == 0 && decorationViewsHidden == false {
+
+                UIView.animate(withDuration: 0.3, animations: { [weak self] in
+
+                    self?.scrubber.alpha = 1
+                })
+            }
+        }
+
+        if let videoController = controller as? VideoRawViewController {
             scrubber.player = videoController.player
             if scrubber.alpha == 0 && decorationViewsHidden == false {
 
