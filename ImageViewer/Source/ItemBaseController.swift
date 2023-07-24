@@ -434,70 +434,85 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
     // MARK: - Present/Dismiss transitions
 
     public func presentItem(alongsideAnimation: () -> Void, completion: @escaping () -> Void) {
-
+        
         guard isAnimating == false else { return }
         isAnimating = true
-
+        
         alongsideAnimation()
-
+        
         if var displacedView = displacedViewsDataSource?.provideDisplacementItem(atIndex: index),
-            let image = displacedView.image {
-
+           let image = displacedView.image {
+            
             if presentationStyle == .displacement {
-
+                
                 //Prepare the animated imageView
                 let animatedImageView = displacedView.imageView()
-
+                
                 //rotate the imageView to starting angle
                 if UIApplication.isPortraitOnly == true {
                     animatedImageView.transform = deviceRotationTransform()
                 }
-
+                
                 //position the image view to starting center
                 animatedImageView.center = displacedView.convert(displacedView.boundsCenter, to: self.view)
-
+                
                 animatedImageView.clipsToBounds = true
                 self.view.addSubview(animatedImageView)
-
+                
                 if displacementKeepOriginalInPlace == false {
                     displacedView.isHidden = true
                 }
-
+                
                 UIView.animate(withDuration: displacementDuration, delay: 0, usingSpringWithDamping: displacementSpringBounce, initialSpringVelocity: 1, options: .curveEaseIn, animations: { [weak self] in
-
+                    
                     if UIApplication.isPortraitOnly == true {
                         animatedImageView.transform = CGAffineTransform.identity
                     }
                     /// Animate it into the center (with optionally rotating) - that basically includes changing the size and position
-
+                    
                     animatedImageView.bounds.size = self?.displacementTargetSize(forSize: image.size) ?? image.size
                     animatedImageView.center = self?.view.boundsCenter ?? CGPoint.zero
-
-                    }, completion: { [weak self] _ in
-
-                        self?.itemView.isHidden = false
-                        displacedView.isHidden = false
-                        animatedImageView.removeFromSuperview()
-
-                        self?.isAnimating = false
-                        completion()
-                    })
+                    
+                }, completion: { [weak self] _ in
+                    
+                    self?.itemView.isHidden = false
+                    displacedView.isHidden = false
+                    animatedImageView.removeFromSuperview()
+                    
+                    self?.isAnimating = false
+                    completion()
+                })
+            } else {
+                
+                itemView.alpha = 0
+                itemView.isHidden = false
+                
+                UIView.animate(withDuration: itemFadeDuration, animations: { [weak self] in
+                    
+                    self?.itemView.alpha = 1
+                    
+                }, completion: { [weak self] _ in
+                    
+                    completion()
+                    self?.isAnimating = false
+                })
             }
+            
         }
-
+        
         else {
-
+            
             itemView.alpha = 0
             itemView.isHidden = false
-
+            
             UIView.animate(withDuration: itemFadeDuration, animations: { [weak self] in
-
-            self?.itemView.alpha = 1
-
+                
+                self?.itemView.alpha = 1
+                
             }, completion: { [weak self] _ in
-
-            completion()
-            self?.isAnimating = false
+                
+                completion()
+                self?.isAnimating = false
             })
         }
     }
