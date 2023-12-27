@@ -26,7 +26,7 @@ class ThumbnailsViewController: UICollectionViewController, UICollectionViewDele
 
         super.init(collectionViewLayout: layout)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(rotate), name: UIDevice.orientationDidChangeNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(rotate), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {

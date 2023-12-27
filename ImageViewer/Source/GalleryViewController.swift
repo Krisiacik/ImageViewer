@@ -171,7 +171,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         UIApplication.applicationWindow.windowLevel = (statusBarHidden) ? UIWindow.Level.statusBar + 1 : UIWindow.Level.normal
 
-        NotificationCenter.default.addObserver(self, selector: #selector(GalleryViewController.rotate), name: UIDevice.orientationDidChangeNotification, object: nil)
+        // NotificationCenter.default.addObserver(self, selector: #selector(GalleryViewController.rotate), name: UIDevice.orientationDidChangeNotification, object: nil)
 
         if continueNextVideoOnFinish {
             NotificationCenter.default.addObserver(self, selector: #selector(didEndPlaying), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
